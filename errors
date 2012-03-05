@@ -1,0 +1,4 @@
+make ../bin/circle
+make[1]: Entering directory `/mudtest/src'
+gcc -g -O2 -Wall    -c -o clan.o clan.c
+make[1]: Leaving directory `/mudtest/src'

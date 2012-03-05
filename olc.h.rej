@@ -1,0 +1,26 @@
+***************
+*** 154,164 ****
+  #define ZEDIT_ARG1			6
+  #define ZEDIT_ARG2			7
+  #define ZEDIT_ARG3			8
+! #define ZEDIT_ZONE_NAME			9
+! #define ZEDIT_ZONE_LIFE			10
+! #define ZEDIT_ZONE_TOP			11
+! #define ZEDIT_ZONE_RESET		12
+! #define ZEDIT_CONFIRM_SAVESTRING	13
+  
+  
+  /*. Submodes of MEDIT connectedness 	.*/
+--- 154,165 ----
+  #define ZEDIT_ARG1			6
+  #define ZEDIT_ARG2			7
+  #define ZEDIT_ARG3			8
+! #define ZEDIT_ARG4                      9
+! #define ZEDIT_ZONE_NAME			10
+! #define ZEDIT_ZONE_LIFE			11
+! #define ZEDIT_ZONE_TOP			12
+! #define ZEDIT_ZONE_RESET		13	
+! #define ZEDIT_CONFIRM_SAVESTRING	14
+  
+  
+  /*. Submodes of MEDIT connectedness 	.*/

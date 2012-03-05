@@ -1,0 +1,946 @@
+diff -BbupN src.stk/Makefile src/Makefile
+--- src.stk/Makefile	Fri May  8 16:28:59 1998
++++ src/Makefile	Thu May  7 22:19:09 1998
+@@ -25,7 +25,7 @@ OBJFILES = comm.o act.comm.o act.informa
+ 	house.o interpreter.o limits.o magic.o mail.o mobact.o modify.o \
+ 	objsave.o olc.o random.o shop.o spec_assign.o spec_procs.o \
+ 	spell_parser.o spells.o utils.o weather.o redit.o oedit.o zedit.o \
+-	medit.o sedit.o
++	medit.o sedit.o hedit.o
+ 
+ CXREF_FILES = act.comm.c act.informative.c act.item.c act.movement.c \
+ 	act.offensive.c act.other.c act.social.c act.wizard.c ban.c boards.c \
+@@ -33,7 +33,7 @@ CXREF_FILES = act.comm.c act.informative
+ 	handler.c house.c interpreter.c limits.c magic.c mail.c mobact.c \
+ 	modify.c objsave.c olc.c random.c shop.c spec_assign.c spec_procs.c \
+ 	spell_parser.c spells.c utils.c weather.c redit.c oedit.c zedit.c \
+-	medit.c sedit.c
++	medit.c sedit.c hedit.c
+ 
+ default: all
+ 
+@@ -207,3 +207,7 @@ medit.o: medit.c conf.h sysdep.h structs
+ 	$(CC) -c $(CFLAGS) medit.c 
+ sedit.o: sedit.c conf.h sysdep.h structs.h utils.h comm.h db.h olc.h shop.h
+ 	$(CC) -c $(CFLAGS) sedit.c 
++hedit.o: hedit.c conf.h sysdep.h structs.h utils.h comm.h boards.h \
++  db.c olc.h
++	$(CC) -c $(CFLAGS) hedit.c
++
+diff -BbupN src.stk/Makefile.in src/Makefile.in
+--- src.stk/Makefile.in	Fri May  8 16:29:00 1998
++++ src/Makefile.in	Thu May  7 22:19:43 1998
+@@ -24,7 +24,7 @@ OBJFILES = comm.o act.comm.o act.informa
+ 	house.o interpreter.o limits.o magic.o mail.o mobact.o modify.o \
+ 	objsave.o olc.o random.o shop.o spec_assign.o spec_procs.o \
+ 	spell_parser.o spells.o utils.o weather.o redit.o oedit.o zedit.o \
+-	medit.o sedit.o
++	medit.o sedit.o hedit.o
+ 
+ CXREF_FILES = act.comm.c act.informative.c act.item.c act.movement.c \
+ 	act.offensive.c act.other.c act.social.c act.wizard.c ban.c boards.c \
+@@ -32,7 +32,7 @@ CXREF_FILES = act.comm.c act.informative
+ 	handler.c house.c interpreter.c limits.c magic.c mail.c mobact.c \
+ 	modify.c objsave.c olc.c random.c shop.c spec_assign.c spec_procs.c \
+ 	spell_parser.c spells.c utils.c weather.c redit.c oedit.c zedit.c \
+-	medit.c sedit.c
++	medit.c sedit.c hedit.c
+ 
+ default: all
+ 
+@@ -206,3 +206,7 @@ medit.o: medit.c conf.h sysdep.h structs
+ 	$(CC) -c $(CFLAGS) medit.c 
+ sedit.o: sedit.c conf.h sysdep.h structs.h utils.h comm.h db.h olc.h shop.h
+ 	$(CC) -c $(CFLAGS) sedit.c 
++hedit.o: hedit.c conf.h sysdep.h structs.h utils.h comm.h boards.h \
++  db.h olc.h
++	$(CC) -c $(CFLAGS) hedit.c
++
+diff -BbupN src.stk/act.informative.c src/act.informative.c
+--- src.stk/act.informative.c	Thu May  7 21:23:47 1998
++++ src/act.informative.c	Thu May  7 21:24:20 1998
+@@ -50,6 +50,7 @@ long find_class_bitvector(char arg);
+ int level_exp(int class, int level);
+ char *title_male(int class, int level);
+ char *title_female(int class, int level);
++extern struct help_index_element *help_table;
+ 
+ void show_obj_to_char(struct obj_data * object, struct char_data * ch,
+ 			int mode)
+@@ -844,14 +845,23 @@ ACMD(do_weather)
+     send_to_char("You have no feeling about the weather at all.\r\n", ch);
+ }
+ 
++struct help_index_element *find_help(char *keyword)
++{
++  extern int top_of_helpt;
++  int i;
++
++  for (i = 0; i < top_of_helpt; i++)
++    if (isname(keyword, help_table[i].keywords))
++      return (help_table + i);
++
++  return NULL;
++}
+ 
+ ACMD(do_help)
+ {
+-  extern int top_of_helpt;
+-  extern struct help_index_element *help_table;
+   extern char *help;
+-
+-  int chk, bot, top, mid, minlen;
++  struct help_index_element *this_help;
++  char entry[MAX_STRING_LENGTH];
+ 
+   if (!ch->desc)
+     return;
+@@ -867,30 +877,21 @@ ACMD(do_help)
+     return;
+   }
+ 
+-  bot = 0;
+-  top = top_of_helpt;
+-  minlen = strlen(argument);
+-
+-  for (;;) {
+-    mid = (bot + top) / 2;
+-
+-    if (bot > top) {
++  if (!(this_help = find_help(argument))) {
+       send_to_char("There is no help on that word.\r\n", ch);
++    sprintf(buf, "HELP: %s tried to get help on %s", GET_NAME(ch), argument);
++    log(buf);
+       return;
+-    } else if (!(chk = strn_cmp(argument, help_table[mid].keyword, minlen))) {
+-      /* trace backwards to find first matching entry. Thanks Jeff Fink! */
+-      while ((mid > 0) &&
+-	 (!(chk = strn_cmp(argument, help_table[mid - 1].keyword, minlen))))
+-	mid--;
+-      page_string(ch->desc, help_table[mid].entry, 0);
+-      return;
+-    } else {
+-      if (chk > 0)
+-        bot = mid + 1;
+-      else
+-        top = mid - 1;
+     }
++
++  if (this_help->min_level > GET_LEVEL(ch)) {
++    send_to_char("There is no help on that word.\r\n", ch);
++    return;
+   }
++
++  sprintf(entry, "%s\r\n%s", this_help->keywords, this_help->entry);
++  
++  page_string(ch->desc, entry, 0);
+ }
+ 
+ 
+diff -BbupN src.stk/db.c src/db.c
+--- src.stk/db.c	Thu May  7 21:23:46 1998
++++ src/db.c	Fri May  8 16:11:00 1998
+@@ -120,7 +120,6 @@ void sort_spells(void);
+ void load_banned(void);
+ void Read_Invalid_List(void);
+ void boot_the_shops(FILE * shop_f, char *filename, int rec_count);
+-int hsort(const void *a, const void *b);
+ 
+ /* external vars */
+ extern int no_specials;
+@@ -182,9 +181,9 @@ ACMD(do_reboot)
+   else if (!str_cmp(arg, "xhelp")) {
+     if (help_table) {
+       for (i = 0; i <= top_of_helpt; i++) {
+-        if (help_table[i].keyword)
+-	  free(help_table[i].keyword);
+-        if (help_table[i].entry && !help_table[i].duplicate)
++        if (help_table[i].keywords)
++	  free(help_table[i].keywords);
++        if (help_table[i].entry)
+ 	  free(help_table[i].entry);
+       }
+       free(help_table);
+@@ -527,7 +526,7 @@ void index_boot(int mode)
+     CREATE(zone_table, struct zone_data, rec_count);
+     break;
+   case DB_BOOT_HLP:
+-    CREATE(help_table, struct help_index_element, rec_count * 2);
++    CREATE(help_table, struct help_index_element, rec_count);
+     break;
+   }
+ 
+@@ -560,12 +559,6 @@ void index_boot(int mode)
+     fscanf(index, "%s\n", buf1);
+   }
+ 
+-  /* sort the help index */
+-  if (mode == DB_BOOT_HLP) {
+-    qsort(help_table, top_of_helpt, sizeof(struct help_index_element), hsort);
+-    top_of_helpt--;
+-  }
+-
+ }
+ 
+ 
+@@ -1298,47 +1291,38 @@ void get_one_line(FILE *fl, char *buf)
+ 
+ void load_help(FILE *fl)
+ {
+-  char key[READ_SIZE+1], next_key[READ_SIZE+1], entry[32384];
+-  char line[READ_SIZE+1], *scan;
++  char key[READ_SIZE+1], entry[32384];
++  char line[READ_SIZE+1];
+   struct help_index_element el;
+ 
+-  /* get the first keyword line */
++  /* get the keyword line */
+   get_one_line(fl, key);
+   while (*key != '$') {
+-    /* read in the corresponding help entry */
+-    strcpy(entry, strcat(key, "\r\n"));
+     get_one_line(fl, line);
++    *entry = '\0';
+     while (*line != '#') {
+       strcat(entry, strcat(line, "\r\n"));
+       get_one_line(fl, line);
+     }
+ 
++    el.min_level = 0;
++    if ((*line == '#') && (*(line + 1) != 0))
++      el.min_level = atoi((line + 1));
++
++    el.min_level = MAX(0, MIN(el.min_level, LVL_IMPL));
++    
+     /* now, add the entry to the index with each keyword on the keyword line */
+-    el.duplicate = 0;
+     el.entry = str_dup(entry);
+-    scan = one_word(key, next_key);
+-    while (*next_key) {
+-      el.keyword = str_dup(next_key);
+-      help_table[top_of_helpt++] = el;
+-      el.duplicate++;
+-      scan = one_word(scan, next_key);
+-    }
++    el.keywords = str_dup(key);
++
++    help_table[top_of_helpt] = el;
++    top_of_helpt++;
+ 
+     /* get next keyword line (or $) */
+     get_one_line(fl, key);
+   }
+ }
+ 
+-
+-int hsort(const void *a, const void *b)
+-{
+-  struct help_index_element *a1, *b1;
+-
+-  a1 = (struct help_index_element *) a;
+-  b1 = (struct help_index_element *) b;
+-
+-  return (str_cmp(a1->keyword, b1->keyword));
+-}
+ 
+ 
+ /*************************************************************************
+diff -BbupN src.stk/db.h src/db.h
+--- src.stk/db.h	Thu May  7 21:23:46 1998
++++ src/db.h	Fri May  8 16:10:35 1998
+@@ -25,7 +25,7 @@
+ #define ZON_PREFIX	"world/zon"	/* zon defs & command tables	*/
+ #define SHP_PREFIX	"world/shp"	/* shop definitions		*/
+ #define HLP_PREFIX	"text/help"	/* for HELP <keyword>		*/
+-
++#define HELP_FILE	"help.hlp"	/* default file for help 	*/
+ #define CREDITS_FILE	"text/credits"	/* for the 'credits' command	*/
+ #define NEWS_FILE	"text/news"	/* for the 'news' command	*/
+ #define MOTD_FILE	"text/motd"	/* messages of the day / mortal	*/
+@@ -160,9 +160,9 @@ struct player_index_element {
+ 
+ 
+ struct help_index_element {
+-   char	*keyword;
++   char	*keywords;
+    char *entry;
+-   int duplicate;
++   int min_level;
+ };
+ 
+ 
+diff -BbupN src.stk/hedit.c src/hedit.c
+--- src.stk/hedit.c	Wed Dec 31 19:00:00 1969
++++ src/hedit.c	Fri May  8 16:23:56 1998
+@@ -0,0 +1,352 @@
++/************************************************************************
++* hedit.c 	Hedit version 2.0 for Oasis OLC				*
++* by Steve Wolfe - siv@cyberenet.net					*
++ ************************************************************************/
++
++#include "conf.h"
++#include "sysdep.h"
++#include "structs.h"
++#include "comm.h"
++#include "utils.h"
++#include "db.h"
++#include "boards.h"
++#include "olc.h"
++
++/* List each help entry saved, was used for debugging. */
++#if 0
++#define HEDIT_LIST	1
++#endif
++
++/*------------------------------------------------------------------------*/
++
++/*
++ * External data structures.
++ */
++extern struct help_index_element *help_table;
++extern int top_of_helpt;
++extern struct descriptor_data *descriptor_list;
++
++/*------------------------------------------------------------------------*/
++
++/*
++ * Function Prototypes
++ */
++void hedit_disp_extradesc_menu(struct descriptor_data *d);
++void hedit_disp_exit_menu(struct descriptor_data *d);
++void hedit_disp_exit_flag_menu(struct descriptor_data *d);
++void hedit_disp_flag_menu(struct descriptor_data *d);
++void hedit_disp_sector_menu(struct descriptor_data *d);
++void hedit_disp_menu(struct descriptor_data *d);
++void hedit_parse(struct descriptor_data *d, char *arg);
++void hedit_setup_new(struct descriptor_data *d, char *new_key);
++void hedit_setup_existing(struct descriptor_data *d, int rnum);
++void hedit_save_to_disk(void);
++void hedit_save_internally(struct descriptor_data *d);
++void free_help(struct help_index_element *help);
++int isname(char *str, char *namelist);
++
++/*------------------------------------------------------------------------*/
++
++/*------------------------------------------------------------------------*\
++  Utils and exported functions.
++\*------------------------------------------------------------------------*/
++
++void hedit_setup_new(struct descriptor_data *d, char *new_key)
++{
++  CREATE(OLC_HELP(d), struct help_index_element, 1);
++
++  OLC_HELP(d)->keywords = str_dup(new_key);
++  OLC_HELP(d)->entry = str_dup("This is an unfinished help entry.\r\n");
++  hedit_disp_menu(d);
++  OLC_VAL(d) = 0;
++}
++
++/*------------------------------------------------------------------------*/
++
++void hedit_setup_existing(struct descriptor_data *d, int rnum)
++{
++  struct help_index_element *help;
++
++  /*
++   * Build a copy of the help entry for editing.
++   */
++  CREATE(help, struct help_index_element, 1);
++
++  *help = help_table[rnum];
++  /*
++   * Allocate space for all strings.
++   */
++  help->keywords = str_dup(help_table[rnum].keywords ?
++	help_table[rnum].keywords : "UNDEFINED");
++  help->entry = str_dup(help_table[rnum].entry ?
++	help_table[rnum].entry : "undefined\r\n");
++
++  /*
++   * Attach copy of help entry to player's descriptor.
++   */
++  OLC_HELP(d) = help;
++  OLC_VAL(d) = 0;
++  hedit_disp_menu(d);
++}
++
++/*------------------------------------------------------------------------*/
++
++void hedit_save_internally(struct descriptor_data *d)
++{
++  int i, rnum;
++  struct help_index_element *new_help_table;
++
++  rnum = OLC_ZNUM(d);
++  /*
++   * Help entry exists exists: free and replace it.
++   */
++  if (rnum > 0) {
++    free_help(help_table + rnum);
++    help_table[rnum] = *OLC_HELP(d);
++  } else {			/* Entry doesn't exist, hafta add it. */
++    CREATE(new_help_table, struct help_index_element, top_of_helpt + 2);
++
++    /*
++     * Insert new entry at the top - why not?
++     */
++    new_help_table[0] = *(OLC_HELP(d));
++
++    /*
++     * Count through help table.
++     */
++    for (i = 0; i <= top_of_helpt; i++)
++      new_help_table[i + 1] = help_table[i];
++
++    /*
++     * Copy help table over to new one.
++     */
++    free(help_table);
++    help_table = new_help_table;
++    top_of_helpt++;
++  }
++  olc_add_to_save_list(HEDIT_PERMISSION, OLC_SAVE_HELP);
++}
++
++/*------------------------------------------------------------------------*/
++
++void hedit_save_to_disk(void)
++{
++  int i;
++  FILE *fp;
++  struct help_index_element *help;
++
++  sprintf(buf, "%s/%s.new", HLP_PREFIX, HELP_FILE);
++  if (!(fp = fopen(buf, "w+"))) {
++    mudlog("SYSERR: OLC: Cannot open help file!", BRF, LVL_BUILDER, TRUE);
++    return;
++  }
++  for (i = 0; i <= top_of_helpt; i++) {
++    help = (help_table + i);
++
++#if defined(HEDIT_LIST)
++    sprintf(buf1, "OLC: Saving help entry %d.", i);
++    log(buf1);
++#endif
++
++    /*
++     * Remove the '\r\n' sequences from description.
++     */
++    strcpy(buf1, help->entry ? help->entry : "Empty");
++    strip_string(buf1);
++
++    /*
++     * Forget making a buffer, lets just write the thing now.
++     */
++    fprintf(fp, "%s\n%s\n#%d\n",
++      help->keywords ? help->keywords : "UNDEFINED", buf1,
++      help->min_level);
++  }
++
++  /*
++   * Write final line and close.
++   */
++  fprintf(fp, "$~\n");
++  fclose(fp);
++  sprintf(buf2, "%s/%s", HLP_PREFIX, HELP_FILE);
++  /*
++   * We're fubar'd if we crash between the two lines below.
++   */
++  remove(buf2);
++  rename(buf, buf2);
++
++  olc_remove_from_save_list(HEDIT_PERMISSION, OLC_SAVE_HELP);
++}
++
++/*------------------------------------------------------------------------*/
++
++void free_help(struct help_index_element *help)
++{
++
++  if (help->keywords)
++    free(help->keywords);
++  if (help->entry)
++    free(help->entry);
++  free(help);
++
++}
++
++/**************************************************************************
++ Menu functions 
++ **************************************************************************/
++
++/*
++ * The main menu.
++ */
++void hedit_disp_menu(struct descriptor_data *d)
++{
++  struct help_index_element *help;
++
++  get_char_cols(d->character);
++  help = OLC_HELP(d);
++
++  sprintf(buf,
++#if defined(CLEAR_SCREEN)
++	  "[H[J"
++#endif
++	  "%s1%s) Keywords    : %s%s\r\n"
++	  "%s2%s) Entry       :\r\n%s%s"
++	  "%s3%s) Min Level   : %s%d\r\n"
++	  "%sQ%s) Quit\r\n"
++	  "Enter choice : ",
++
++	  grn, nrm, yel, help->keywords,
++	  grn, nrm, yel, help->entry,
++	  grn, nrm, cyn, help->min_level,
++	  grn, nrm
++	  );
++  send_to_char(buf, d->character);
++
++  OLC_MODE(d) = HEDIT_MAIN_MENU;
++}
++
++/**************************************************************************
++  The main loop
++ **************************************************************************/
++
++void hedit_parse(struct descriptor_data *d, char *arg)
++{
++  int number;
++
++  switch (OLC_MODE(d)) {
++  case HEDIT_CONFIRM_SAVESTRING:
++    switch (*arg) {
++    case 'y':
++    case 'Y':
++      hedit_save_internally(d);
++      sprintf(buf, "OLC: %s edits help for %s.", GET_NAME(d->character), OLC_HELP(d)->keywords);
++      mudlog(buf, CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), TRUE);
++      /*
++       * Do NOT free strings! Just the help structure. 
++       */
++      cleanup_olc(d, CLEANUP_STRUCTS);
++      send_to_char("Help entry saved to memory.\r\n", d->character);
++      break;
++    case 'n':
++    case 'N':
++      /*
++       * Free everything up, including strings, etc.
++       */
++      cleanup_olc(d, CLEANUP_ALL);
++      break;
++    default:
++      send_to_char("Invalid choice!\r\nDo you wish to save this help entry internally? : ", d->character);
++      break;
++    }
++    return;
++
++  case HEDIT_MAIN_MENU:
++    switch (*arg) {
++    case 'q':
++    case 'Q':
++      if (OLC_VAL(d)) { /* Something has been modified. */
++	send_to_char("Do you wish to save this help entry internally? : ", d->character);
++	OLC_MODE(d) = HEDIT_CONFIRM_SAVESTRING;
++      } else
++	cleanup_olc(d, CLEANUP_ALL);
++      return;
++    case '1':
++      send_to_char("Enter keywords:-\r\n] ", d->character);
++      OLC_MODE(d) = HEDIT_KEYWORDS;
++      break;
++    case '2':
++      OLC_MODE(d) = HEDIT_ENTRY;
++#if defined(CLEAR_SCREEN)
++      SEND_TO_Q("\x1B[H\x1B[J", d);
++#endif
++      SEND_TO_Q("Enter help entry: (/s saves /h for help)\r\n\r\n", d);
++      d->backstr = NULL;
++      if (OLC_HELP(d)->entry) {
++	SEND_TO_Q(OLC_HELP(d)->entry, d);
++	d->backstr = str_dup(OLC_HELP(d)->entry);
++      }
++      d->str = &OLC_HELP(d)->entry;
++      d->max_str = MAX_HELP_ENTRY;
++      d->mail_to = 0;
++      OLC_VAL(d) = 1;
++      break;
++    case '3':
++      send_to_char("Enter min level:-\r\n] ", d->character);
++      OLC_MODE(d) = HEDIT_MIN_LEVEL;
++      break;
++    default:
++      send_to_char("Invalid choice!\r\n", d->character);
++      hedit_disp_menu(d);
++      break;
++    }
++    return;
++
++  case HEDIT_KEYWORDS:
++    if (OLC_HELP(d)->keywords)
++      free(OLC_HELP(d)->keywords);
++    if (strlen(arg) > MAX_HELP_KEYWORDS)
++      arg[MAX_HELP_KEYWORDS - 1] = '\0';
++    OLC_HELP(d)->keywords = str_dup((arg && *arg) ? arg : "UNDEFINED");
++    break;
++
++  case HEDIT_ENTRY:
++    /*
++     * We will NEVER get here, we hope.
++     */
++    mudlog("SYSERR: Reached HEDIT_ENTRY case in parse_hedit", BRF, LVL_BUILDER, TRUE);
++    break;
++
++  case HEDIT_MIN_LEVEL:
++    number = atoi(arg);
++    if ((number < 0) || (number > LVL_IMPL))
++      send_to_char("That is not a valid choice!\r\nEnter min level:-\r\n] ", d->character);
++    else {
++      OLC_HELP(d)->min_level = number;
++      break;
++    }
++    return;
++
++  default:
++    /*
++     * We should never get here.
++     */
++    mudlog("SYSERR: Reached default case in parse_hedit", BRF, LVL_BUILDER, TRUE);
++    break;
++  }
++  /*
++   * If we get this far, something has been changed.
++   */
++  OLC_VAL(d) = 1;
++  hedit_disp_menu(d);
++}
++
++int find_help_rnum(char *keyword)
++{
++  extern int top_of_helpt;
++  int i;
++
++  for (i = 0; i < top_of_helpt; i++)
++    if (isname(keyword, help_table[i].keywords))
++      return i;
++
++  return -1;
++}
+diff -BbupN src.stk/interpreter.c src/interpreter.c
+--- src.stk/interpreter.c	Fri May  8 16:29:02 1998
++++ src/interpreter.c	Fri May  8 00:34:01 1998
+@@ -52,6 +52,7 @@ int isbanned(char *hostname);
+ int Valid_Name(char *newname);
+ void oedit_parse(struct descriptor_data *d, char *arg);
+ void redit_parse(struct descriptor_data *d, char *arg);
++void hedit_parse(struct descriptor_data *d, char *arg);
+ void zedit_parse(struct descriptor_data *d, char *arg);
+ void medit_parse(struct descriptor_data *d, char *arg);
+ void sedit_parse(struct descriptor_data *d, char *arg);
+@@ -314,6 +315,7 @@ const struct command_info cmd_info[] = {
+   { "gtell"    , POS_SLEEPING, do_gsay     , 0, 0 },
+ 
+   { "help"     , POS_DEAD    , do_help     , 0, 0 },
++  { "hedit"    , POS_DEAD    , do_olc	   , LVL_BUILDER, SCMD_OLC_HEDIT },
+   { "handbook" , POS_DEAD    , do_gen_ps   , LVL_IMMORT, SCMD_HANDBOOK },
+   { "hcontrol" , POS_DEAD    , do_hcontrol , LVL_GRGOD, 0 },
+   { "hiccup"   , POS_RESTING , do_action   , 0, 0 },
+@@ -1285,6 +1287,9 @@ void nanny(struct descriptor_data *d, ch
+   switch (STATE(d)) {
+ 
+   /*. OLC states .*/
++  case CON_HEDIT:
++    hedit_parse(d, arg);
++    break;
+   case CON_OEDIT: 
+     oedit_parse(d, arg);
+     break;
+diff -BbupN src.stk/interpreter.h src/interpreter.h
+--- src.stk/interpreter.h	Fri May  8 16:29:02 1998
++++ src/interpreter.h	Fri May  8 00:34:45 1998
+@@ -205,5 +205,6 @@ struct alias {
+ #define SCMD_OLC_ZEDIT  2
+ #define SCMD_OLC_MEDIT  3
+ #define SCMD_OLC_SEDIT  4
+-#define SCMD_OLC_SAVEINFO  5
++#define SCMD_OLC_HEDIT	5
++#define SCMD_OLC_SAVEINFO  6
+ 
+diff -BbupN src.stk/modify.c src/modify.c
+--- src.stk/modify.c	Fri May  8 16:29:02 1998
++++ src/modify.c	Fri May  8 16:19:17 1998
+@@ -611,6 +611,7 @@ void string_add(struct descriptor_data *
+     extern void redit_disp_extradesc_menu(struct descriptor_data *d);
+     extern void redit_disp_exit_menu(struct descriptor_data *d);
+     extern void medit_disp_menu(struct descriptor_data *d);
++    extern void hedit_disp_menu(struct descriptor_data *d);
+ 
+ #if defined(OASIS_MPROG)
+     extern void medit_change_mprog(struct descriptor_data *d);
+@@ -632,6 +633,7 @@ void string_add(struct descriptor_data *
+      */
+     if ((terminator == 2) &&
+ 	((STATE(d) == CON_REDIT) ||
++	 (STATE(d) == CON_HEDIT) ||
+ 	 (STATE(d) == CON_MEDIT) ||
+ 	 (STATE(d) == CON_OEDIT) ||
+ 	 (STATE(d) == CON_EXDESC))) {
+@@ -663,7 +665,9 @@ void string_add(struct descriptor_data *
+ 	oedit_disp_extradesc_menu(d);
+ 	break;
+       }
+-    } else if (STATE(d) == CON_REDIT) {
++    } else if (STATE(d) == CON_HEDIT)
++      hedit_disp_menu(d);
++    else if (STATE(d) == CON_REDIT) {
+       switch (OLC_MODE(d)) {
+       case REDIT_DESC:
+ 	redit_disp_menu(d);
+diff -BbupN src.stk/olc.c src/olc.c
+--- src.stk/olc.c	Fri May  8 16:29:03 1998
++++ src/olc.c	Fri May  8 16:08:34 1998
+@@ -48,6 +48,11 @@
+  extern free_shop(struct shop_data *shop);
+  extern free_room(struct room_data *room);
+  extern void medit_free_mobile(struct char_data *mob);
++ extern hedit_save_to_disk(void);
++ extern free_help(struct help_index_element *help);
++ int find_help_rnum(char *keyword);
++ extern hedit_setup_new(struct descriptor_data *d, char *new_key);
++ extern hedit_setup_existing(struct descriptor_data *d, int rnum);
+   
+  /*
+   * Internal function prototypes.
+@@ -58,8 +63,8 @@
+  /*
+   * Global string constants.
+   */
+- const char *save_info_msg[5] = {"Rooms", "Objects", "Zone info",
+- 	"Mobiles", "Shops"}; 
++ const char *save_info_msg[6] = {"Rooms", "Objects", "Zone info",
++ 	"Mobiles", "Shops", "Help"}; 
+  
+  /*
+   * Internal data structures.
+@@ -69,13 +74,14 @@
+    int con_type;
+   };
+   
+- struct olc_scmd_data olc_scmd_info[5] =
++ struct olc_scmd_data olc_scmd_info[6] =
+  {
+    {"room", CON_REDIT},
+    {"object", CON_OEDIT},
+    {"room", CON_ZEDIT},
+    {"mobile", CON_MEDIT},
+-   {"shop", CON_SEDIT}
++   {"shop", CON_SEDIT},
++   {"help", CON_HEDIT}
+   };
+   
+  /*------------------------------------------------------------*/
+@@ -119,10 +125,17 @@
+        sprintf(buf, "Specify a %s VNUM to edit.\r\n", olc_scmd_info[subcmd].text);
+         send_to_char(buf, ch);
+         return;
++     case SCMD_OLC_HEDIT:
++       sprintf(buf, "Specify a %s entry to edit.\r\n", olc_scmd_info[subcmd].text);
++        send_to_char(buf, ch);
++        return;
+       }
+    } else if (!isdigit(*buf1)) {
+      if (strn_cmp("save", buf1, 4) == 0) {
+-       if (!*buf2) {
++       if (subcmd == SCMD_OLC_HEDIT) {
++           save = 1;
++           number = 0;
++       } else if (!*buf2) {
+  	if (GET_OLC_ZONE(ch)) {
+  	  save = 1;
+  	  number = (GET_OLC_ZONE(ch) * 100);
+@@ -134,7 +147,9 @@
+  	save = 1;
+  	number = atoi(buf2) * 100;
+        }
+-     } else if (subcmd == SCMD_OLC_ZEDIT && GET_LEVEL(ch) >= LVL_IMPL) {
++     } else if (subcmd == SCMD_OLC_HEDIT)
++       number = 0;
++     else if (subcmd == SCMD_OLC_ZEDIT && GET_LEVEL(ch) >= LVL_IMPL) {
+        if ((strn_cmp("new", buf1, 3) == 0) && *buf2)
+  	zedit_new_zone(ch, atoi(buf2));
+        else
+@@ -157,6 +172,10 @@
+    for (d = descriptor_list; d; d = d->next)
+      if (d->connected == olc_scmd_info[subcmd].con_type)
+        if (d->olc && OLC_NUM(d) == number) {
++	if (subcmd == SCMD_OLC_HEDIT)
++	  sprintf(buf, "Help files are already being editted by %s.\r\n",
++		  (CAN_SEE(ch, d->character) ? GET_NAME(d->character) : "someone"));
++	else
+  	sprintf(buf, "That %s is currently being edited by %s.\r\n",
+  		olc_scmd_info[subcmd].text, GET_NAME(d->character));
+  	send_to_char(buf, ch);
+@@ -170,9 +189,11 @@
+    CREATE(d->olc, struct olc_data, 1);
+  
+    /*
+-    * Find the zone.
++    * Find the zone (or help rnum).
+     */
+-   if ((OLC_ZNUM(d) = real_zone(number)) == -1) {
++   if (subcmd == SCMD_OLC_HEDIT && !save)
++     OLC_ZNUM(d) = find_help_rnum(buf1);
++   else if ((OLC_ZNUM(d) = real_zone(number)) == -1) {
+      send_to_char("Sorry, there is no zone for that number!\r\n", ch);
+      free(d->olc);
+       return;
+@@ -180,16 +201,22 @@
+    /*
+     * Everyone but IMPLs can only edit zones they have been assigned.
+     */
+-   if ((GET_LEVEL(ch) < LVL_IMPL) &&
+-       (zone_table[OLC_ZNUM(d)].number != GET_OLC_ZONE(ch))) {
++   if (GET_LEVEL(ch) < LVL_IMPL) {
++     if (subcmd == SCMD_OLC_HEDIT && GET_OLC_ZONE(ch) != HEDIT_PERMISSION) {
++       send_to_char("You do not have permssion to edit help entries.\r\n", ch);
++       free(d->olc);
++       return;
++     } else if (zone_table[OLC_ZNUM(d)].number != GET_OLC_ZONE(ch)) {
+      send_to_char("You do not have permission to edit this zone.\r\n", ch);
+      free(d->olc);
+       return;
+     }
++   }
+    if (save) {
+      const char *type = NULL;
+   
+      switch (subcmd) {
++     case SCMD_OLC_HEDIT: type = "help"; break;
+      case SCMD_OLC_REDIT: type = "room";	break;
+      case SCMD_OLC_ZEDIT: type = "zone";	break;
+      case SCMD_OLC_SEDIT: type = "shop"; break;
+@@ -200,12 +227,18 @@
+        send_to_char("Oops, I forgot what you wanted to save.\r\n", ch);
+        return;
+      }
++     if (subcmd == SCMD_OLC_HEDIT) {
++       send_to_char("Saving all help entries.\r\n", ch);
++       sprintf(buf, "OLC: %s saves help entries.", GET_NAME(ch));
++       mudlog(buf, CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), TRUE);
++     } else {
+      sprintf(buf, "Saving all %ss in zone %d.\r\n",
+  		type, zone_table[OLC_ZNUM(d)].number);
+      send_to_char(buf, ch);
+      sprintf(buf, "OLC: %s saves %s info for zone %d.", GET_NAME(ch), type,
+  		zone_table[OLC_ZNUM(d)].number);
+      mudlog(buf, CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), TRUE);
++     }
+  
+      switch (subcmd) {
+      case SCMD_OLC_REDIT: redit_save_to_disk(OLC_ZNUM(d)); break;
+@@ -213,6 +246,7 @@
+      case SCMD_OLC_OEDIT: oedit_save_to_disk(OLC_ZNUM(d)); break;
+      case SCMD_OLC_MEDIT: medit_save_to_disk(OLC_ZNUM(d)); break;
+      case SCMD_OLC_SEDIT: sedit_save_to_disk(OLC_ZNUM(d)); break;
++     case SCMD_OLC_HEDIT: hedit_save_to_disk(); break;
+      }
+      free(d->olc);
+       return;
+@@ -223,6 +257,13 @@
+     * Steal player's descriptor start up subcommands.
+     */
+    switch (subcmd) {
++   case SCMD_OLC_HEDIT:
++     if (OLC_ZNUM(d) < 0)
++       hedit_setup_new(d, buf1);
++     else
++       hedit_setup_existing(d, OLC_ZNUM(d));
++     STATE(d) = CON_HEDIT;
++     break;
+    case SCMD_OLC_REDIT:
+      if ((real_num = real_room(number)) >= 0)
+        redit_setup_existing(d, real_num);
+@@ -279,6 +320,9 @@
+      send_to_char("The database is up to date.\r\n", ch);
+   
+    for (entry = olc_save_list; entry; entry = entry->next) {
++     if ((int)entry->type == OLC_SAVE_HELP)
++       sprintf(buf, " - Help Entries.\r\n");
++     else
+      sprintf(buf, " - %s for zone %d.\r\n",
+  		save_info_msg[(int)entry->type], entry->zone);
+      send_to_char(buf, ch);
+@@ -384,6 +428,16 @@
+  void cleanup_olc(struct descriptor_data *d, byte cleanup_type)
+  {
+    if (d->olc) {
++     /*
++      * Check for help.
++      */
++     if (OLC_HELP(d)) {
++       switch (cleanup_type) {
++       case CLEANUP_ALL:	free_help(OLC_HELP(d));	break;
++       case CLEANUP_STRUCTS:  free(OLC_HELP(d));	break;
++       default: /* The caller has screwed up. */	break;
++       }
++     }
+      /*
+       * Check for a room.
+       */
+diff -BbupN src.stk/olc.h src/olc.h
+--- src.stk/olc.h	Fri May  8 16:29:03 1998
++++ src/olc.h	Fri May  8 00:52:19 1998
+@@ -81,6 +81,7 @@ struct olc_data {
+   struct zone_data *zone;
+   struct shop_data *shop;
+   struct extra_descr_data *desc;
++  struct help_index_element *help;
+ #if defined(OASIS_MPROG)
+   struct mob_prog_data *mprog;
+   struct mob_prog_data *mprogl;
+@@ -117,6 +118,7 @@ extern struct olc_save_info *olc_save_li
+ #define OLC_MOB(d)	((d)->olc->mob)		/* Mob structure.	*/
+ #define OLC_SHOP(d) 	((d)->olc->shop)	/* Shop structure.	*/
+ #define OLC_DESC(d) 	((d)->olc->desc)	/* Extra description.	*/
++#define OLC_HELP(d)	((d)->olc->help)	/* help entries		*/
+ #ifdef OASIS_MPROG
+ #define OLC_MPROG(d)	((d)->olc->mprog)	/* Temporary MobProg.	*/
+ #define OLC_MPROGL(d)	((d)->olc->mprogl)	/* MobProg list.	*/
+@@ -143,6 +145,7 @@ extern struct olc_save_info *olc_save_li
+ #define OLC_SAVE_ZONE		(byte)	2
+ #define OLC_SAVE_MOB		(byte)	3
+ #define OLC_SAVE_SHOP		(byte)	4
++#define OLC_SAVE_HELP		(byte)	5
+ 
+ /*
+  * Submodes of OEDIT connectedness.
+@@ -298,3 +301,17 @@ extern struct olc_save_info *olc_save_li
+ #define MAX_EXTRA_DESC  512
+ #define MAX_MOB_DESC	512
+ #define MAX_OBJ_DESC	512
++#define MAX_HELP_KEYWORDS	75
++#define MAX_HELP_ENTRY		1024
++
++#define HEDIT_PERMISSION	666
++#define HEDIT_MAIN_MENU			0
++#define HEDIT_ENTRY			1
++#define HEDIT_MIN_LEVEL			2
++#define HEDIT_KEYWORDS			3
++#define HEDIT_CONFIRM_SAVESTRING 	4
++
++#define HEDIT_PERMISSION	666	/* set people's olc_zone to	*
++ 					 * this to allow them to edit 	*
++					 * help entries			*/
++/* #define HEDIT_LIST		1 */	/* define to log saves		*/
+diff -BbupN src.stk/structs.h src/structs.h
+--- src.stk/structs.h	Fri May  8 16:29:04 1998
++++ src/structs.h	Thu May  7 22:25:03 1998
+@@ -229,7 +229,7 @@
+ #define CON_ZEDIT	 19		/*. OLC mode - zone info edit  .*/
+ #define CON_MEDIT	 20		/*. OLC mode - mobile edit     .*/
+ #define CON_SEDIT	 21		/*. OLC mode - shop edit       .*/
+-
++#define CON_HEDIT	 22		/*. OLC mode - help edit       .*/
+ 
+ /* Character equipment positions: used as index for char_data.equipment[] */
+ /* NOTE: Don't confuse these constants with the ITEM_ bitvectors
+Common subdirectories: src.stk/util and src/util

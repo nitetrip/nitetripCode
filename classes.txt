@@ -1,0 +1,42 @@
+: warning: implicit declaration of function `clanlog'
+ In function `do_wdamage':
+
+fight.c
+limts.c
+
+
+
+
+                         ==== Ranger
+	==== Shaman ==== |
+        |                ==== Druid
+ Priest |
+        |                ==== Disciple
+        ==== Cleric ==== |
+                         ==== Crusader
+
+
+                         ==== Barbarian
+        ==== Warrior === |
+        |                ==== Monk
+Fighter |
+        |                ==== Paladin
+        ==== Knight ==== |  
+                         ==== Shadow Knight
+
+
+                         ==== Chaos Mage
+        ==== Battle Mage |
+        |                ==== Sorceror
+Mage    |                
+        |                ==== Necromancer
+	==== Enchanter   |
+                         ==== Alchemist
+
+			 ==== Assassin
+	==== Thief ===== |
+	|                ==== Bounty Hunter
+Rogue	|
+	| 		 ==== Jester
+	==== Bard ====== |
+			 ==== BLade

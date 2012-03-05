@@ -1,0 +1,245 @@
+act.informative.c:      mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s tried to get help on %s", GET_NAME(ch), argument);
+Binary file act.informative.o matches
+act.item.c:        mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "(GC) %s claimed %s from %s.",
+act.item.c:                mudlog(BRF, LVL_SAINT, TRUE, "%s killed by %s at %s", GET_NAME(ch), 
+act.item.c:                    mudlog(BRF, LVL_SAINT, TRUE, "%s killed by %s at %s", GET_NAME(tch), 
+act.item.c:                    mudlog(BRF, LVL_SAINT, TRUE, "%s killed by %s at %s", GET_NAME(ch), 
+act.item.c:                    mudlog(BRF, LVL_SAINT, TRUE, "%s killed by %s at %s", GET_NAME(tch), 
+act.item.c:                    mudlog(BRF, LVL_SAINT, TRUE, "%s killed by %s at %s", GET_NAME(ch), 
+act.item.c:                    mudlog(BRF, LVL_SAINT, TRUE, "%s killed by %s at %s", GET_NAME(tch), 
+act.item.c:              mudlog(BRF, LVL_SAINT, TRUE, "%s killed by DT %s at %s", GET_NAME(ch), 
+act.item.c:              mudlog(BRF, LVL_SAINT, TRUE, "%s killed by DT %s at %s", GET_NAME(tch), 
+Binary file act.item.o matches
+act.other.c:    mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s has quit the game.", GET_NAME(ch));
+act.other.c:  mudlog(CMP, LVL_SAINT, FALSE, "%s %s: %s", GET_NAME(ch), CMD_NAME, argument);
+act.other.c:     mudlog(BRF, LVL_IMPL, TRUE,
+Binary file act.other.o matches
+act.wizard.c:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s was jailed by %s.", GET_NAME(victim), GET_NAME(ch));
+act.wizard.c:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s was released from jail by %s.", GET_NAME(victim), GET_NAME(ch));
+act.wizard.c:      mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s transfered %s to room [%5d].",
+act.wizard.c:	mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s transfered %s to room [%5d].",
+act.wizard.c:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s teleported %s to room [%5d].",
+act.wizard.c:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s statted room [%5d].",
+act.wizard.c:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s statted object [%5d] %s .",
+act.wizard.c:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s statted mob [%5d] %s.",
+act.wizard.c:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s statted player %s.",
+act.wizard.c:    mudlog(NRM, MAX(LVL_IMPL, GET_INVIS_LEV(ch)), TRUE, "(GC) %s snooped %s.",
+act.wizard.c:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s switched into %s.",
+act.wizard.c:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s loaded mob [%5d].",
+act.wizard.c:     mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s loaded obj [%5d].",
+act.wizard.c:	mudlog(BRF, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s has purged %s.", GET_NAME(ch), GET_NAME(vict));
+act.wizard.c:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s restored %s.",
+act.wizard.c:      mudlog(NRM, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s forced %s to %s", GET_NAME(ch), GET_NAME(vict), to_force);
+act.wizard.c:    mudlog(NRM, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s forced room %d to %s",
+act.wizard.c:    mudlog(NRM, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s forced all to %s", GET_NAME(ch), to_force);
+act.wizard.c:     mudlog(NRM, MAX(LVL_IMPL, GET_INVIS_LEV(ch)), TRUE, "(GC) %s tried to reset entire world.", GET_NAME(ch));
+act.wizard.c:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s reset entire world.", GET_NAME(ch));
+act.wizard.c:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s tried to reset zone %d (%s) allowed zone %d (%s)", GET_NAME(ch), i, zone_table[i].name, GET_OLC_ZONE(ch), zone_table[GET_OLC_ZONE(ch)].name);
+act.wizard.c:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s reset zone %d (%s)", GET_NAME(ch), i, zone_table[i].name);
+act.wizard.c:      mudlog(BRF, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s pardoned by %s", GET_NAME(vict), GET_NAME(ch));
+act.wizard.c:      mudlog(NRM, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) Notitle %s for %s by %s.",
+act.wizard.c:      mudlog(BRF, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) Squelch %s for %s by %s.",
+act.wizard.c:      mudlog(BRF, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s frozen by %s.", GET_NAME(vict), GET_NAME(ch));
+act.wizard.c:      mudlog(BRF, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s un-frozen by %s.", GET_NAME(vict), GET_NAME(ch));
+act.wizard.c:         mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s removed affects from %s.",
+act.wizard.c:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s set - %s %s.",
+act.wizard.c:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s seized %s from %s.",
+act.wizard.c:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s used peace in room [%5d].",
+act.wizard.c.save:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s was jailed by %s.", GET_NAME(victim), GET_NAME(ch));
+act.wizard.c.save:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s was released from jail by %s.", GET_NAME(victim), GET_NAME(ch));
+act.wizard.c.save:      mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s transfered %s to room [%5d].",
+act.wizard.c.save:	mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s transfered %s to room [%5d].",
+act.wizard.c.save:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s teleported %s to room [%5d].",
+act.wizard.c.save:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s statted room [%5d].",
+act.wizard.c.save:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s statted object [%5d] %s .",
+act.wizard.c.save:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s statted mob [%5d] %s.",
+act.wizard.c.save:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s statted player %s.",
+act.wizard.c.save:    mudlog(NRM, MAX(LVL_IMPL, GET_INVIS_LEV(ch)), TRUE, "(GC) %s snooped %s.",
+act.wizard.c.save:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s switched into %s.",
+act.wizard.c.save:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s loaded mob [%5d].",
+act.wizard.c.save:     mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s loaded obj [%5d].",
+act.wizard.c.save:	mudlog(BRF, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s has purged %s.", GET_NAME(ch), GET_NAME(vict));
+act.wizard.c.save:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s restored %s.",
+act.wizard.c.save:      mudlog(NRM, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s forced %s to %s", GET_NAME(ch), GET_NAME(vict), to_force);
+act.wizard.c.save:    mudlog(NRM, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s forced room %d to %s",
+act.wizard.c.save:    mudlog(NRM, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s forced all to %s", GET_NAME(ch), to_force);
+act.wizard.c.save:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s reset entire world.", GET_NAME(ch));
+act.wizard.c.save:    mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s reset zone %d (%s)", GET_NAME(ch), i, zone_table[i].name);
+act.wizard.c.save:      mudlog(BRF, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s pardoned by %s", GET_NAME(vict), GET_NAME(ch));
+act.wizard.c.save:      mudlog(NRM, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) Notitle %s for %s by %s.",
+act.wizard.c.save:      mudlog(BRF, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) Squelch %s for %s by %s.",
+act.wizard.c.save:      mudlog(BRF, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s frozen by %s.", GET_NAME(vict), GET_NAME(ch));
+act.wizard.c.save:      mudlog(BRF, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "(GC) %s un-frozen by %s.", GET_NAME(vict), GET_NAME(ch));
+act.wizard.c.save:         mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s removed affects from %s.",
+act.wizard.c.save:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s set - %s %s.",
+act.wizard.c.save:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s seized %s from %s.",
+act.wizard.c.save:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s used peace in room [%5d].",
+Binary file act.wizard.o matches
+ban.c:  mudlog(NRM, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "%s has banned %s for %s players.",
+ban.c:  mudlog(NRM, MAX(LVL_DEITY, GET_INVIS_LEV(ch)), TRUE, "%s removed the %s-player ban on %s.",
+Binary file ban.o matches
+class.c:  mudlog(BRF, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s advanced to level %d", GET_NAME(ch), GET_LEVEL(ch));
+Binary file class.o matches
+comm.c:      mudlog(CMP, LVL_SAINT, TRUE, "Signal received - rereading wizlists.");
+comm.c:      mudlog(BRF, LVL_SAINT, TRUE, "Received SIGUSR2 - completely unrestricting game (emergent)");
+comm.c:    mudlog(CMP, LVL_DEITY, TRUE, "Connection attempt denied from [%s]", newd->host);
+comm.c:  mudlog(CMP, LVL_DEITY, FALSE, "New connection from [%s]", newd->host);
+comm.c:      mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(link_challenged)), TRUE, "Closing link to: %s.", GET_NAME(link_challenged));
+comm.c:      mudlog(CMP, LVL_SAINT, TRUE, "Losing player: %s.", GET_NAME(d->character) ? GET_NAME(d->character) : "<null>");
+comm.c:    mudlog(CMP, LVL_SAINT, TRUE, "Losing descriptor without char.");
+Binary file comm.o matches
+db.c:      mudlog(CMP, LVL_DEITY, FALSE, "Auto zone reset: %s", zone_table[update_u->zone_to_reset].name);
+db.c:  mudlog(NRM, LVL_DEITY, TRUE, "SYSERR: zone file: %s", message);
+db.c:  mudlog(NRM, LVL_DEITY, TRUE, "SYSERR: ...offending cmd: '%c' cmd in zone #%d, line %d",
+db.c:       mudlog(NRM, LVL_DEITY, TRUE, "SYSERR: Couldn't open player file %s", filename);
+db.c:       mudlog(NRM, LVL_DEITY, TRUE, "SYSERR: Couldn't open player file %s for write", outname);
+Binary file db.o matches
+dg_db_scripts.c:    mudlog(BRF, LVL_BUILDER, TRUE, 
+dg_db_scripts.c:        mudlog(BRF, LVL_BUILDER, TRUE, 
+dg_db_scripts.c:        mudlog(BRF, LVL_BUILDER, TRUE, 
+dg_db_scripts.c:        mudlog(BRF, LVL_BUILDER, TRUE, 
+dg_db_scripts.c:        mudlog(BRF, LVL_BUILDER, TRUE, 
+dg_db_scripts.c:      mudlog(BRF, LVL_BUILDER, TRUE, 
+dg_db_scripts.c:    mudlog(BRF, LVL_BUILDER, TRUE, 
+dg_db_scripts.c:    mudlog(BRF, LVL_BUILDER, TRUE, 
+dg_db_scripts.c:          mudlog(BRF, LVL_BUILDER, TRUE, 
+dg_db_scripts.c:          mudlog(BRF, LVL_BUILDER, TRUE, 
+dg_db_scripts.c:      mudlog(BRF, LVL_BUILDER, TRUE, 
+Binary file dg_db_scripts.o matches
+dg_mobcmd.c:      mudlog( BRF, 0, TRUE, "%s killed (script) by %s at %s", 
+Binary file dg_mobcmd.o matches
+dg_objcmd.c:      mudlog( BRF, 0, TRUE, "%s killed by a trap at %s", 
+Binary file dg_objcmd.o matches
+dg_olc.c:          mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), TRUE,
+dg_olc.c:    mudlog(BRF, MAX(LVL_DEITY, GET_INVIS_LEV(d->character)), TRUE, 
+dg_olc.c:        mudlog(BRF, MAX(LVL_DEITY, GET_INVIS_LEV(d->character)), TRUE,
+dg_olc.c:    mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: DG_OLC: Failed to open %s", old_name);
+dg_olc.c:    mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: DG_OLC: Failed to open %s", new_name);
+Binary file dg_olc.o matches
+dg_scripts.c:   mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s tstatted trigger [%5d].",
+dg_scripts.c:        mudlog(NRM, LVL_DEITY, TRUE, "%s", DG_SCRIPT_VERSION);
+dg_scripts.c:    mudlog( NRM, LVL_DEITY, TRUE, 
+Binary file dg_scripts.o matches
+dg_triggers.c:          mudlog(NRM, LVL_BUILDER, TRUE, "SYSERR: Command Trigger #%d has no text argument!",
+dg_triggers.c:          mudlog(NRM, LVL_BUILDER, TRUE, "SYSERR: Speech Trigger #%d has no text argument!",
+dg_triggers.c:        mudlog(NRM, LVL_BUILDER, TRUE, "SYSERR: Act Trigger #%d has no text argument!",
+dg_triggers.c:        mudlog(NRM, LVL_BUILDER, TRUE, "SYSERR: O-Command Trigger #%d has no text argument!",
+dg_triggers.c:      mudlog(NRM, LVL_BUILDER, TRUE, "SYSERR: W-Command Trigger #%d has no text argument!",
+dg_triggers.c:      mudlog(NRM, LVL_BUILDER, TRUE, "SYSERR: W-Speech Trigger #%d has no text argument!",
+Binary file dg_triggers.o matches
+dg_wldcmd.c:      mudlog(BRF, 0, TRUE,  "%s killed by a trap at %s", GET_NAME(ch),
+Binary file dg_wldcmd.o matches
+fight.c:  mudlog(BRF, LVL_SAINT, TRUE, "PC Killer bit set on %s for initiating attack on %s at %s.",
+fight.c:      mudlog(BRF, LVL_SAINT, TRUE, "%s killed by %s at [%5d]", GET_NAME(victim), GET_NAME(ch), GET_ROOM_VNUM(IN_ROOM(victim)));
+Binary file fight.o matches
+genmob.c:    mudlog(BRF, LVL_DEITY, TRUE, "SYSERR: GenOLC: Cannot open mob file for writing.");
+genmob.c:    mudlog(BRF, LVL_DEITY, TRUE, smbuf);
+Binary file genmob.o matches
+genobj.c:    mudlog(BRF, LVL_SAINT, TRUE, "SYSERR: OLC: Cannot open objects file!");
+genobj.c:	    mudlog(BRF, LVL_SAINT, TRUE, "SYSERR: OLC: oedit_save_to_disk: Corrupt ex_desc!");
+Binary file genobj.o matches
+genolc.c:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s used slist for zone %d.",
+genolc.c:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s used tlist from %d to %d.",
+genolc.c:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s used mlist from %d to %d.",
+genolc.c:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s used rlist from %d to %d.",
+genolc.c:  mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s used olist from %d to %d.",
+Binary file genolc.o matches
+genshp.c:      mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: GenOLC: Cannot determine shop zone.");
+genshp.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: GenOLC: Cannot determine shop zone.");
+genshp.c:    mudlog(BRF, LVL_DEITY, TRUE, "SYSERR: OLC: Cannot open shop file!");
+genshp.c:    mudlog(BRF, LVL_DEITY, TRUE, "SYSERR: OLC: Cannot write to shop file!");
+Binary file genshp.o matches
+genwld.c:        mudlog(BRF, LVL_DEITY, TRUE, "SYSERR: GenOLC: add_room: Unknown zone entry found!");
+genwld.c:        mudlog(BRF, LVL_DEITY, TRUE, "SYSERR: GenOLC: delete_room: Unknown zone entry found!");
+Binary file genwld.o matches
+genzon.c:    mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Can't write new zone file.");
+genzon.c:    mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Can't write new world file.");
+genzon.c:    mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Can't write new mob file.");
+genzon.c:    mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Can't write new obj file.");
+genzon.c:    mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Can't write new shop file.");
+genzon.c:    mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Can't write new trigger file");
+genzon.c:    mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Failed to open %s.", old_name);
+genzon.c:    mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: OLC: Failed to open %s.", new_name);
+genzon.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: save_zones:  Can't write zone %d.", zone_table[zone_num].number);
+genzon.c:      mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: z_save_to_disk(): Unknown cmd '%c' - NOT saving", ZCMD(zone_num, subcmd).command);
+Binary file genzon.o matches
+house.c:    mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "Payment for house %s collected by %s.", arg, GET_NAME(ch));
+Binary file house.o matches
+improved-edit.c:    mudlog(BRF, LVL_IMPL, TRUE, "SYSERR: invalid command passed to parse_action");
+Binary file improved-edit.o matches
+interpreter.c:    mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(d->character)), TRUE, "%s [%s] has reconnected.", GET_NAME(d->character), d->host);
+interpreter.c:    mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(d->character)), TRUE,
+interpreter.c:    mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(d->character)), TRUE, "%s [%s] has reconnected.", GET_NAME(d->character), d->host);
+interpreter.c:	mudlog(NRM, LVL_DEITY, TRUE, "Request for new char %s denied from [%s] (siteban)", GET_PC_NAME(d->character), d->host);
+interpreter.c:	mudlog(NRM, LVL_DEITY, TRUE, "Request for new char %s denied from [%s] (wizlock)", GET_PC_NAME(d->character), d->host);
+interpreter.c:	mudlog(BRF, LVL_DEITY, TRUE, "Bad PW: %s [%s]", GET_NAME(d->character), d->host);
+interpreter.c:	mudlog(NRM, LVL_DEITY, TRUE, "Connection attempt for %s denied from %s", GET_NAME(d->character), d->host);
+interpreter.c:	mudlog(NRM, LVL_DEITY, TRUE, "Request for login denied for %s [%s] (wizlock)", GET_NAME(d->character), d->host);
+interpreter.c:      mudlog(BRF, MAX(LVL_SAINT, GET_INVIS_LEV(d->character)), TRUE, "%s [%s] has connected.", GET_NAME(d->character), d->host);
+interpreter.c:      mudlog(NRM, LVL_SAINT, TRUE, "%s [%s] new player.", GET_NAME(d->character), d->host);   
+interpreter.c:      mudlog(NRM, LVL_DEITY, TRUE, "%s (lev %d) has self-deleted.", GET_NAME(d->character), GET_LEVEL(d->character));
+interpreter.c:    mudlog(BRF, LVL_SAINT, TRUE, "Stat total below 0: possible code error");
+Binary file interpreter.o matches
+limits.c:      mudlog(CMP, LVL_SAINT, FALSE, "Initiating autowiz.");
+limits.c:      mudlog(BRF, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s advanced %d level%s to level %d.",
+limits.c:      mudlog(BRF, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s advanced %d level%s to level %d.",
+limits.c:      mudlog(CMP, LVL_DEITY, TRUE, "%s force-rented and extracted (idle).", GET_NAME(ch));
+Binary file limits.o matches
+medit.c:      mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), TRUE, "OLC: %s edits mob %d", GET_NAME(d->character), OLC_NUM(d));
+medit.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: medit_parse(): Reached D_DESC case!");
+medit.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: medit_parse(): Reached MPROG_COMLIST case!");
+medit.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: medit_parse(): Reached default case!");
+Binary file medit.o matches
+modify.c:  mudlog(BRF, LVL_SAINT, TRUE, "%s changed %s's %s to %d.", GET_NAME(ch), GET_NAME(vict), spell_info[skill].name, value);
+Binary file modify.o matches
+oasis.c:    mudlog(BRF, LVL_SAINT, TRUE, "SYSERR: do_oasis: Player already had olc structure.");
+oasis.c:    mudlog(BRF, LVL_GOD, TRUE, "OLC: %s tried to edit zone %d allowed zone %d", GET_NAME(ch), zone_table[OLC_ZNUM(d)].number, GET_OLC_ZONE(ch));
+oasis.c:    mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), TRUE, "OLC: %s saves %s info for zone %d.", GET_NAME(ch), type, zone_table[OLC_ZNUM(d)].number);
+oasis.c:  mudlog(CMP, LVL_SAINT, TRUE, "OLC: %s starts editing zone %d allowed zone %d", GET_NAME(ch), zone_table[OLC_ZNUM(d)].number, GET_OLC_ZONE(ch));
+oasis.c:    mudlog(CMP, LVL_SAINT, TRUE, "OLC: %s stops editing zone %d allowed zone %d", GET_NAME(d->character), zone_table[OLC_ZNUM(d)].number, GET_OLC_ZONE(d->character));
+Binary file oasis.o matches
+objsave.c:        mudlog(BRF, LVL_SAINT, TRUE, "SYSERR: autoeq: '%s' already equipped in position %d.", GET_NAME(ch), location);
+objsave.c:    mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s entering game with no equipment.", GET_NAME(ch));
+objsave.c:      mudlog(BRF, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s entering game, rented equipment lost (no $).", GET_NAME(ch));
+objsave.c:    mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s un-renting and entering game.", GET_NAME(ch));
+objsave.c:    mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s retrieving crash-saved items and entering game.", GET_NAME(ch));
+objsave.c:    mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s un-cryo'ing and entering game.", GET_NAME(ch));
+objsave.c:    mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s retrieving force-saved items and entering game.", GET_NAME(ch));
+objsave.c:    mudlog(BRF, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE,
+objsave.c:  mudlog(NRM, MAX(GET_INVIS_LEV(ch), LVL_DEITY), TRUE, "%s (level %d) has %d object%s (max %d).",
+objsave.c:      mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s has rented (%d/day, %d tot.)",
+objsave.c:      mudlog(NRM, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s has cryo-rented.", GET_NAME(ch));
+Binary file objsave.o matches
+oedit.c:      mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), TRUE, 
+oedit.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: Reached default case in oedit_parse()!");
+Binary file oedit.o matches
+redit.c:      mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), TRUE, "OLC: %s edits room %d.", GET_NAME(d->character), OLC_NUM(d));
+redit.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Reached REDIT_DESC case in parse_redit().");
+redit.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Reached REDIT_EXIT_DESC case in parse_redit");
+redit.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: Reached default case in parse_redit");
+Binary file redit.o matches
+sedit.c:      mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), TRUE,
+sedit.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: sedit_parse(): Reached default case!");
+Binary file sedit.o matches
+spells.c:      mudlog(BRF, LVL_SAINT, TRUE, "%s failed summoning %s to %s.", GET_NAME(ch), GET_NAME(victim), world[IN_ROOM(ch)].name);
+Binary file spells.o matches
+tedit.c:      mudlog(CMP, LVL_IMPL, TRUE, "SYSERR: Can't write file '%s'.", storage);
+tedit.c:      mudlog(CMP, LVL_DEITY, TRUE, "OLC: %s saves '%s'.", GET_NAME(d->character), storage);
+Binary file tedit.o matches
+utils.c:  mudlog(BRF, LVL_SAINT, TRUE, "%s hit a Death Trap at [%5d]", GET_NAME(ch), GET_ROOM_VNUM(IN_ROOM(ch)));
+utils.c:/* So mudlog() can use the same function. */
+utils.c: * mudlog -- log mud messages to a file & to online imm's syslogs
+utils.c:void mudlog(int type, int level, int file, const char *str, ...)
+utils.h:void	mudlog(int type, int level, int file, const char *str, ...) __attribute__ ((format (printf, 4, 5)));
+utils.h:/* defines for mudlog() */
+Binary file utils.o matches
+zedit.c:  mudlog(BRF, MAX(LVL_BUILDER, GET_INVIS_LEV(ch)), TRUE, "OLC: %s creates new zone #%d", GET_NAME(ch), vzone_num);
+zedit.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: zedit_disp_arg1(): Help!");
+zedit.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: zedit_disp_arg2(): Help!");
+zedit.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: zedit_disp_arg3(): Help!");
+zedit.c:      mudlog(CMP, MAX(LVL_BUILDER, GET_INVIS_LEV(d->character)), TRUE, "OLC: %s edits zone info for room %d.", GET_NAME(d->character), OLC_NUM(d));
+zedit.c:      mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: zedit_parse(): case ARG1: Ack!");
+zedit.c:      mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: zedit_parse(): case ARG2: Ack!");
+zedit.c:      mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: zedit_parse(): case ARG3: Ack!");
+zedit.c:    mudlog(BRF, LVL_BUILDER, TRUE, "SYSERR: OLC: zedit_parse(): Reached default case!");
+Binary file zedit.o matches

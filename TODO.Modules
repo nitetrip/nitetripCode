@@ -1,0 +1,54 @@
+# This file is a template for a dynamic OasisOLC module loading facility.
+# It will not be limited to OasisOLC but customized for it in the beginning.
+# If you have any suggestions on the format of this file, drop me a line at
+# greerga@circlemud.org.  This will use the 'dl' library of course. Hopefully
+# this will enable on-the-fly changing of the OasisOLC menus, ranges, and
+# allow it to remain unloaded until someone uses it.  Naturally this is a
+# large project, but hey, it's v2.0 right?  Perhaps we can do a dependency
+# type thing where OasisOLC and OBuild both depend on GenOLC and you can
+# dynamically load and unload any of the two OLC's or everything at will.
+# Of course this does mean that we could have run-time checks for the improved
+# editor and other changing things.  I plan to have a version #define in the
+# module.h header file in the form 0xFFF, major/minor/rev...
+
+modules.cfg
+Module	: olc
+Options	: DynLoad
+
+olc.mod
+Module	: redit
+Options	: Disabled
+Module	: medit
+Module	: zedit
+Module	: sedit
+Module	: oedit
+Module	: hedit
+Options	: Unload
+Module	: aedit
+
+medit.mod
+File	: medit.oc3
+
+Menu	: Description
+Letter	: D
+CRLF	: Y
+Type	: String
+Length	: 128
+
+Menu	: Level
+Letter	: L
+Type	: Integer
+CRLF	: N
+Range	: 0-LVL_IMPL
+
+Menu	: DamageDice
+Letter	: d
+Type	: Integer
+Range	: 0-100
+CRLF	: N
+
+Menu	: DamageSize
+Letter	: s
+Type	: Integer
+Range	: 0-100
+CRLF	: Y

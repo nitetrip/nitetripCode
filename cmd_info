@@ -1,0 +1,86 @@
+Binary file act.comm.o matches
+act.informative.c:  return strcmp(complete_cmd_info[*(const int *)a].sort_as, 
+act.informative.c:                complete_cmd_info[*(const int *)b].sort_as);
+act.informative.c:  while (complete_cmd_info[num_of_cmds].command[0] != '\n')
+act.informative.c:  for (no = 1, cmd_num = 1; complete_cmd_info[cmd_sort_info[cmd_num]].command[0] != '\n'; cmd_num++) {
+act.informative.c:   if (complete_cmd_info[i].minimum_level < 0 || GET_LEVEL(vict) < complete_cmd_info[i].minimum_level)
+act.informative.c:    if ((complete_cmd_info[i].minimum_level >= LVL_SAINT) != wizhelp)
+act.informative.c:    if (!wizhelp && socials != (complete_cmd_info[i].command_pointer == do_action || complete_cmd_info[i].command_pointer == do_insult))
+act.informative.c:    send_to_char(ch, "%-11s%s", complete_cmd_info[i].command, no++ % 7 == 0 ? "\r\n" : "");
+act.informative.c.bak:  return strcmp(complete_cmd_info[*(const int *)a].sort_as, complete_cmd_info[*(const int *)b].sort_as);
+act.informative.c.bak:  while (complete_cmd_info[num_of_cmds].command[0] != '\n')
+act.informative.c.bak:   for (no = 1, cmd_num = 1; complete_cmd_info[cmd_sort_info[cmd_num]].command[0] != '\n'; cmd_num++) { 
+act.informative.c.bak:     if (complete_cmd_info[i].minimum_level < 0 || GET_LEVEL(vict) < complete_cmd_info[i].minimum_level)
+act.informative.c.bak:    if ((complete_cmd_info[i].minimum_level >= LVL_SAINT) != wizhelp)
+act.informative.c.bak:    if (!wizhelp && socials != (complete_cmd_info[i].command_pointer == do_action || complete_cmd_info[i].command_pointer == do_insult))
+act.informative.c.bak:    send_to_char(ch, "%-11s%s", complete_cmd_info[i].command, no++ % 7 == 0 ? "\r\n" : "");
+Binary file act.informative.o matches
+Binary file act.other.o matches
+act.social.c:  extern struct command_info cmd_info[];
+act.social.c:  if (complete_cmd_info) free(complete_cmd_info);
+act.social.c:    complete_cmd_info = NULL;
+act.social.c:  while(*cmd_info[i].command != '\n') i++;
+act.social.c:  CREATE(complete_cmd_info, struct command_info, top_of_socialt + i + 2);
+act.social.c:  while ((*cmd_info[i].command != '\n') || (j <= top_of_socialt))  {
+act.social.c:	(str_cmp(cmd_info[i].sort_as, soc_mess_list[j].sort_as) < 1))
+act.social.c:      complete_cmd_info[k++] = cmd_info[i++];
+act.social.c:      complete_cmd_info[k].command		= soc_mess_list[j].command;
+act.social.c:      complete_cmd_info[k].sort_as		= soc_mess_list[j].sort_as;
+act.social.c:      complete_cmd_info[k].minimum_position	= soc_mess_list[j].min_char_position;
+act.social.c:      complete_cmd_info[k].command_pointer	= do_action;
+act.social.c:      complete_cmd_info[k].minimum_level    	= soc_mess_list[j++].min_level_char;
+act.social.c:      complete_cmd_info[k++].subcmd		= 0;
+act.social.c:  complete_cmd_info[k].command		= strdup("\n");
+act.social.c:  complete_cmd_info[k].sort_as		= strdup("zzzzzzz");
+act.social.c:  complete_cmd_info[k].minimum_position = 0;
+act.social.c:  complete_cmd_info[k].command_pointer	= 0;
+act.social.c:  complete_cmd_info[k].minimum_level	= 0;
+act.social.c:  complete_cmd_info[k].subcmd		= 0;
+Binary file act.social.o matches
+aedit.c:         complete_cmd_info[i].command = soc_mess_list[OLC_ZNUM(d)].command;
+aedit.c:         complete_cmd_info[i].sort_as  = soc_mess_list[OLC_ZNUM(d)].sort_as;
+aedit.c:         complete_cmd_info[i].minimum_position = soc_mess_list[OLC_ZNUM(d)].min_char_position;
+aedit.c:         complete_cmd_info[i].minimum_level  = soc_mess_list[OLC_ZNUM(d)].min_level_char;
+aedit.patch:+         complete_cmd_info[i].command = soc_mess_list[OLC_ZNUM(d)].command;
+aedit.patch:+         complete_cmd_info[i].sort_as  = soc_mess_list[OLC_ZNUM(d)].sort_as;
+aedit.patch:+         complete_cmd_info[i].minimum_position = soc_mess_list[OLC_ZNUM(d)].min_char_position;
+aedit.patch:+         complete_cmd_info[i].minimum_level  = soc_mess_list[OLC_ZNUM(d)].min_level_char;
+dg_objcmd.c:const struct obj_command_info obj_cmd_info[] = {
+dg_objcmd.c:         *obj_cmd_info[cmd].command != '\n'; cmd++)
+dg_objcmd.c:        if (!strncmp(obj_cmd_info[cmd].command, arg, length))
+dg_objcmd.c:    if (*obj_cmd_info[cmd].command == '\n')
+dg_objcmd.c:        ((*obj_cmd_info[cmd].command_pointer) 
+dg_objcmd.c:         (obj, line, cmd, obj_cmd_info[cmd].subcmd));
+dg_scripts.c:/* NOTE: you may need to replace "cmd_info" with "complete_cmd_info", */
+dg_scripts.c:    extern const struct command_info cmd_info[];
+dg_scripts.c:/* on older source bases:    extern struct command_info *cmd_info; */
+dg_scripts.c:         *cmd_info[cmd].command != '\n'; cmd++)
+dg_scripts.c:      if (!strncmp(cmd_info[cmd].command, vd->value, length))
+dg_scripts.c:    if (*cmd_info[cmd].command == '\n') strcpy(str,"");
+dg_scripts.c:    else strcpy(str, cmd_info[cmd].command);
+dg_wldcmd.c:const struct wld_command_info wld_cmd_info[] = {
+dg_wldcmd.c:         *wld_cmd_info[cmd].command != '\n'; cmd++)
+dg_wldcmd.c:        if (!strncmp(wld_cmd_info[cmd].command, arg, length))
+dg_wldcmd.c:    if (*wld_cmd_info[cmd].command == '\n')
+dg_wldcmd.c:      ((*wld_cmd_info[cmd].command_pointer) 
+dg_wldcmd.c:       (room, line, cmd, wld_cmd_info[cmd].subcmd));
+interpreter.c:cpp_extern const struct command_info cmd_info[] = {
+interpreter.c:  for (length = strlen(arg), cmd = 0; *cmd_info[cmd].command != '\n'; cmd++)
+interpreter.c:    if (!strncmp(cmd_info[cmd].command, arg, length))
+interpreter.c:      if (GET_LEVEL(ch) >= cmd_info[cmd].minimum_level)
+interpreter.c:  if (*cmd_info[cmd].command == '\n')
+interpreter.c: else if (!IS_NPC(ch) && PLR_FLAGGED(ch, PLR_JAIL) && GET_LEVEL(ch) < LVL_IMPL && *cmd_info[cmd].command_pointer != do_say && *cmd_info[cmd].command_pointer != do_look)
+interpreter.c:  else if (cmd_info[cmd].command_pointer == NULL)
+interpreter.c:  else if (IS_NPC(ch) && cmd_info[cmd].minimum_level >= LVL_SAINT)
+interpreter.c:  else if (GET_POS(ch) < cmd_info[cmd].minimum_position)
+interpreter.c:    ((*cmd_info[cmd].command_pointer) (ch, line, cmd, cmd_info[cmd].subcmd));
+interpreter.c:  for (cmd = 0; *cmd_info[cmd].command != '\n'; cmd++)
+interpreter.c:    if (!strcmp(cmd_info[cmd].command, command))
+interpreter.h:#define CMD_NAME (complete_cmd_info[cmd].command)
+interpreter.h:#define CMD_IS(cmd_name) (!strcmp(cmd_name, complete_cmd_info[cmd].command))
+interpreter.h:#define IS_MOVE(cmdnum) (complete_cmd_info[cmdnum].command_pointer == do_move)
+interpreter.h:extern struct command_info *complete_cmd_info;
+oasis.c:struct olc_scmd_info_t {
+oasis.c:} olc_scmd_info[] = {
+oasis.c.pa:+struct olc_scmd_info_t {
+oasis.c.pa:+} olc_scmd_info[] = {

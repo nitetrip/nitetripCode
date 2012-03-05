@@ -1,0 +1,47 @@
+act.comm.c:void clanlog(struct char_data *ch, const char *str, ...);
+act.comm.c:void clanlog(struct char_data *ch, const char *str, ...)
+Binary file act.comm.o matches
+act.item.c:void clanlog(struct char_data *ch, const char *str, ...);
+act.item.c:		clanlog(ch, "%s killed by %s.", GET_NAME(ch), i->short_description);
+act.item.c:		    clanlog(tch, "%s killed by %s",  GET_NAME(tch), i->short_description);	
+act.item.c:		    clanlog(ch, "%s killed by %s", GET_NAME(ch), i->short_description);
+act.item.c:		    clanlog(tch, "%s killed by %s", GET_NAME(tch), i->short_description);	
+act.item.c:		    clanlog(ch, "%s killed by %s", GET_NAME(ch), i->short_description);
+act.item.c:		    clanlog(tch, "%s killed by %s", GET_NAME(tch), i->short_description);
+act.item.c:	      clanlog(ch, "%s entered a Death Room.", GET_NAME(ch));              
+act.item.c:	      clanlog(tch, "%s entered a Death Room.", GET_NAME(tch));     
+Binary file act.item.o matches
+act.other.c:void clanlog(struct char_data *ch, const char *str, ...);
+act.other.c:    clanlog(ch, "%s has left the game.", GET_NAME(ch));
+Binary file act.other.o matches
+class.c:void clanlog(struct char_data *ch, const char *str, ...);
+class.c:  clanlog(ch, "%s advanced to level %d", GET_NAME(ch), GET_LEVEL(ch));
+Binary file class.o matches
+comm.c:void clanlog(struct char_data *ch, const char *str, ...);
+comm.c:      clanlog(link_challenged, "%s has lost link", GET_NAME(link_challenged));
+Binary file comm.o matches
+dg_objcmd.c:void clanlog(struct char_data *ch, const char *str, ...);
+dg_objcmd.c:   clanlog(ch, "%s killed by a trap", GET_NAME(ch));
+Binary file dg_objcmd.o matches
+dg_wldcmd.c:      clanlog(ch, "%s killed by a trap", GET_NAME(ch));
+Binary file dg_wldcmd.o matches
+fight.c:void clanlog(struct char_data *ch, const char *str, ...);
+fight.c:  clanlog(ch, "PC Killer bit set on %s for initiating attack on %s at %s.", GET_NAME(ch), GET_NAME(vict), world[IN_ROOM(vict)].name);
+fight.c:      clanlog(victim, "%s killed by %s", GET_NAME(victim), GET_NAME(ch)); 
+Binary file fight.o matches
+interpreter.c:void clanlog(struct char_data *ch, const char *str, ...);
+interpreter.c:    clanlog(d->character, "%s has reconnected", GET_NAME(d->character));
+interpreter.c:    clanlog(d->character, "%s has reconnected", GET_NAME(d->character));
+interpreter.c:    clanlog(d->character, "%s has reconnected", GET_NAME(d->character));
+Binary file interpreter.o matches
+objsave.c:void clanlog(struct char_data *ch, const char *str, ...);
+objsave.c:    clanlog(ch, "%s has entered the game.", GET_NAME(ch));
+objsave.c:      clanlog(ch, "%s has entered the game.", GET_NAME(ch));
+objsave.c:    clanlog(ch, "%s has entered the game.", GET_NAME(ch));
+objsave.c:    clanlog(ch, "%s has entered the game.", GET_NAME(ch)); 
+objsave.c:    clanlog(ch, "%s has entered the game.", GET_NAME(ch));
+objsave.c:    clanlog(ch, "%s has entered the game.", GET_NAME(ch));
+objsave.c:    clanlog(ch, "%s has entered the game.", GET_NAME(ch));
+Binary file objsave.o matches
+utils.c:void clanlog(struct char_data *ch, const char *str, ...);
+utils.c:  clanlog(ch, "%s enter a Death Room.", GET_NAME(ch));
