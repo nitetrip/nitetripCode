@@ -407,9 +407,9 @@ room_rnum find_target_room(struct char_data *ch, char *rawroomstr)
     else
     return (location);
  }
- /* irrelevant because of lin/max lvl rooms - mak 8.21.05 - reinstated 2.9.06 */
-  if (ROOM_FLAGGED(location, ROOM_GODROOM))
-    send_to_char(ch, "You are not godly enough to use that room!\r\n");
+ /* irrelevant because of lin/max lvl rooms - mak 8.21.05 - reinstated 2.9.06 */  
+//  if (ROOM_FLAGGED(location, ROOM_GODROOM))
+//    send_to_char(ch, "You are not godly enough to use that room!\r\n");
    if (ROOM_FLAGGED(location, ROOM_IMPROOM))
    send_to_char(ch, "You dare not disturb the Implementors!\r\n"); 
   else if (ROOM_FLAGGED(location, ROOM_PRIVATE) && world[location].people && world[location].people->next_in_room)

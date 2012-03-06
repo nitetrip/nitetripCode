@@ -408,24 +408,24 @@ void fry_victim(struct char_data *ch)
   case 3:
     send_to_char(ch, "You raise your hand in a dramatical gesture.\r\n");
     act("$n raises $s hand in a dramatical gesture.", 1, ch, 0, 0, TO_ROOM);
-    cast_spell(ch, tch, 0, SPELL_COLOR_SPRAY);
+    cast_spell(ch, tch, 0, NOWHERE, SPELL_COLOR_SPRAY);
     break;
   case 4:
   case 5:
     send_to_char(ch, "You concentrate and mumble to yourself.\r\n");
     act("$n concentrates, and mumbles to $mself.", 1, ch, 0, 0, TO_ROOM);
-    cast_spell(ch, tch, 0, SPELL_HARM);
+    cast_spell(ch, tch, 0, NOWHERE, SPELL_HARM);
     break;
   case 6:
   case 7:
     act("You look deeply into the eyes of $N.", 1, ch, 0, tch, TO_CHAR);
     act("$n looks deeply into the eyes of $N.", 1, ch, 0, tch, TO_NOTVICT);
     act("You see an ill-boding flame in the eye of $n.", 1, ch, 0, tch, TO_VICT);
-    cast_spell(ch, tch, 0, SPELL_FIREBALL);
+    cast_spell(ch, tch, 0, NOWHERE, SPELL_FIREBALL);
     break;
   default:
     if (!rand_number(0, 1))
-      cast_spell(ch, ch, 0, SPELL_HEAL);
+      cast_spell(ch, ch, 0, NOWHERE, SPELL_HEAL);
     break;
   }
 

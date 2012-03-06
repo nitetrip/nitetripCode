@@ -453,7 +453,7 @@ SPECIAL(snake)
 
   act("$n bites $N!", 1, ch, 0, FIGHTING(ch), TO_NOTVICT);
   act("$n bites you!", 1, ch, 0, FIGHTING(ch), TO_VICT);
-  call_magic(ch, FIGHTING(ch), 0, SPELL_POISON, GET_LEVEL(ch), CAST_SPELL);
+  call_magic(ch, FIGHTING(ch), 0, NOWHERE, SPELL_POISON, GET_LEVEL(ch), CAST_SPELL);
   return (TRUE);
 }
 
@@ -496,16 +496,16 @@ SPECIAL(magic_user)
     return (TRUE);
 
   if (GET_LEVEL(ch) > 13 && rand_number(0, 10) == 0)
-    cast_spell(ch, vict, NULL, SPELL_POISON);
+    cast_spell(ch, vict, NULL, NOWHERE, SPELL_POISON);
 
   if (GET_LEVEL(ch) > 7 && rand_number(0, 8) == 0)
-    cast_spell(ch, vict, NULL, SPELL_BLINDNESS);
+    cast_spell(ch, vict, NULL, NOWHERE, SPELL_BLINDNESS);
 
   if (GET_LEVEL(ch) > 12 && rand_number(0, 12) == 0) {
     if (IS_EVIL(ch))
-      cast_spell(ch, vict, NULL, SPELL_ENERGY_DRAIN);
+      cast_spell(ch, vict, NULL, NOWHERE, SPELL_ENERGY_DRAIN);
     else if (IS_GOOD(ch))
-      cast_spell(ch, vict, NULL, SPELL_DISPEL_EVIL);
+      cast_spell(ch, vict, NULL, NOWHERE, SPELL_DISPEL_EVIL);
   }
 
   if (rand_number(0, 4))
@@ -514,32 +514,32 @@ SPECIAL(magic_user)
   switch (GET_LEVEL(ch)) {
   case 4:
   case 5:
-    cast_spell(ch, vict, NULL, SPELL_MAGIC_MISSILE);
+    cast_spell(ch, vict, NULL, NOWHERE, SPELL_MAGIC_MISSILE);
     break;
   case 6:
   case 7:
-    cast_spell(ch, vict, NULL, SPELL_CHILL_TOUCH);
+    cast_spell(ch, vict, NULL, NOWHERE, SPELL_CHILL_TOUCH);
     break;
   case 8:
   case 9:
-    cast_spell(ch, vict, NULL, SPELL_BURNING_HANDS);
+    cast_spell(ch, vict, NULL, NOWHERE, SPELL_BURNING_HANDS);
     break;
   case 10:
   case 11:
-    cast_spell(ch, vict, NULL, SPELL_SHOCKING_GRASP);
+    cast_spell(ch, vict, NULL, NOWHERE, SPELL_SHOCKING_GRASP);
     break;
   case 12:
   case 13:
-    cast_spell(ch, vict, NULL, SPELL_LIGHTNING_BOLT);
+    cast_spell(ch, vict, NULL, NOWHERE, SPELL_LIGHTNING_BOLT);
     break;
   case 14:
   case 15:
   case 16:
   case 17:
-    cast_spell(ch, vict, NULL, SPELL_COLOR_SPRAY);
+    cast_spell(ch, vict, NULL, NOWHERE, SPELL_COLOR_SPRAY);
     break;
   default:
-    cast_spell(ch, vict, NULL, SPELL_FIREBALL);
+    cast_spell(ch, vict, NULL, NOWHERE, SPELL_FIREBALL);
     break;
   }
   return (TRUE);

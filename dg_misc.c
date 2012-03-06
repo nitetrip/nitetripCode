@@ -151,10 +151,10 @@ void do_dg_cast(void *go, struct script_data *sc, trig_data *trig,
     caster->next_in_room = caster_room->people;
     caster_room->people = caster;
     caster->in_room = real_room(caster_room->number);
-    call_magic(caster, tch, tobj, spellnum, DG_SPELL_LEVEL, CAST_SPELL);
+    call_magic(caster, tch, tobj, NOWHERE, spellnum, DG_SPELL_LEVEL, CAST_SPELL);
     extract_char(caster);
   } else
-    call_magic(caster, tch, tobj, spellnum, GET_LEVEL(caster), CAST_SPELL);
+    call_magic(caster, tch, tobj, NOWHERE, spellnum, GET_LEVEL(caster), CAST_SPELL);
 }
 
 

@@ -227,6 +227,29 @@ ASPELL(spell_hang)
   greet_mtrigger(ch, -1);
   greet_memory_mtrigger(ch);
 }
+
+ASPELL(spell_phase_door)
+{
+  if ((param1 != NOWHERE) && IS_VALID_EXIT(ch, param1) && EXIT_FLAGGED(EXIT(ch, param1), EX_CLOSED) && (EXIT(ch, param1)->to_room != NOWHERE)){
+    int from_room = IN_ROOM(ch);
+    int to_room = EXIT(ch, param1)->to_room;
+    const char *doorname = EXIT(ch, param1)->keyword;
+    send_to_char(ch, "You phase %s through the %s\r\n", dirs[param1], doorname);
+    char_from_room(ch);
+    char_to_room(ch, to_room);
+    send_to_room(from_room, "%s phases %s through the %s.\r\n", GET_NAME(ch), dirs[param1], doorname);
+    act("$n's body becomes substantial as $e phases into the room.", FALSE, ch, obj, 0, TO_ROOM);
+    look_at_room(IN_ROOM(ch), ch, 0);
+    entry_memory_mtrigger(ch);
+    greet_mtrigger(ch, -1);
+    greet_memory_mtrigger(ch);
+   }
+   else
+    send_to_char(ch, "You can't phase through that.\r\n");
+}
+
+
+
 ASPELL(spell_teleport)
 {
   room_rnum to_room;

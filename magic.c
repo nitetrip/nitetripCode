@@ -1091,6 +1091,7 @@ case SPELL_DECREPIFY:
 void perform_mag_groups(int level, struct char_data *ch,
 			struct char_data *tch, int spellnum, int savetype)
 {
+  const char *to_room = NULL;
   switch (spellnum) {
     case SPELL_GROUP_HEAL:
     mag_points(level, ch, tch, SPELL_HEAL, savetype);
@@ -1101,28 +1102,34 @@ void perform_mag_groups(int level, struct char_data *ch,
   case SPELL_SUSTAIN_GROUP:
     mag_affects(level, ch, tch, SPELL_SUSTAIN, savetype);
   case SPELL_GROUP_RECALL:
-    spell_recall(level, ch, tch, NULL);
+    send_to_char(ch, "You open a shimmering portal and step through it along with your group.\r\n");
+    to_room = "$n opens a shimmering portal that disappears when $s entire group enters.";
+    act(to_room, TRUE, ch, 0, ch, TO_ROOM);
+    spell_recall(level, ch, tch, NULL, NOWHERE, SPELL_GROUP_RECALL);
     break;
   case SPELL_GROUP_SORIN_RECALL:
-    spell_sorin_recall(level, ch, tch, NULL);
+    send_to_char(ch, "You open a shimmering portal and step through it along with your group.\r\n");
+    to_room = "$n opens a shimmering portal that disappears when $s entire group enters.";
+    act(to_room, TRUE, ch, 0, ch, TO_ROOM);
+    spell_recall(level, ch, tch, NULL, NOWHERE, SPELL_GROUP_SORIN_RECALL);
     break;
   case SPELL_VIGORIZE_GROUP:
     mag_points(level, ch, tch, SPELL_VIGORIZE_CRITICAL, savetype);
     break;
   case SPELL_TALES_OF_ARCANE_LORE:
-    spell_arcane_lore(level, ch, tch, NULL);
+    spell_arcane_lore(level, ch, tch, NULL,NOWHERE,SPELL_TALES_OF_ARCANE_LORE);
     break;
   case SPELL_FORESTATION:
-    spell_arboreal_form(level, ch, tch, NULL);
+    spell_arboreal_form(level, ch, tch, NULL, NOWHERE, SPELL_FORESTATION);
     break;
   case SPELL_ETHEREAL_SPHERE:
-    spell_ethereal_projection(level, ch, tch, NULL);
+    spell_ethereal_projection(level, ch, tch, NULL, NOWHERE, SPELL_ETHEREAL_SPHERE);
     break;
   case SPELL_ASTRAL_ASCENSION:
-    spell_astral_projection(level, ch, tch, NULL);
+    spell_astral_projection(level, ch, tch, NULL, NOWHERE, SPELL_ASTRAL_ASCENSION);
     break;
   case SPELL_MASS_SUICIDE:
-    spell_hang(level, ch, tch, NULL);
+    spell_hang(level, ch, tch, NULL, NOWHERE, SPELL_MASS_SUICIDE);
     break;
   }
 }

@@ -99,7 +99,7 @@
 #define SPELL_ICE_STORM		     60 /* Reserved Skill[] DO NOT CHANGE */
 #define SPELL_CHI_FIST               61 /* Reserved Skill[] DO NOT CHANGE */
 #define SPELL_BOULDER                62 /* Reserved Skill[] DO NOT CHANGE */
-#define SPELL_METEOR                 63 /* Reserved Skill[] DO NOT CHANGE */	     
+#define SPELL_METEOR                 63 /* Reserved Skill[] DO NOT CHANGE */
 #define SPELL_METEOR_SHOWER          64 /* Reserved Skill[] DO NOT CHANGE */
 #define SPELL_THUNDER_SWARM          65 /* Reserved Skill[] DO NOT CHANGE */
 #define SPELL_ROAR                   66 /* Reserved Skill[] DO NOT CHANGE */
@@ -119,7 +119,7 @@
 #define SPELL_VIGORIZE_GROUP         80 /* Reserved Skill[] DO NOT CHANGE */
 #define SPELL_VITALIZE_MANA          81 /* Reserved Skill[] DO NOT CHANGE */
 #define SPELL_EXCOMMUNICATE          82 /* Reserved Skill[] DO NOT CHANGE */
-#define SPELL_DECREPIFY              83 
+#define SPELL_DECREPIFY              83
 #define SPELL_TELEVIEW_MINOR         84
 #define SPELL_TELEVIEW_MAJOR         85
 #define SPELL_CLAN_RECALL            86
@@ -132,9 +132,9 @@
 #define SPELL_PRISMATIC_SPRAY        93
 #define SPELL_CLENCHED_FIST          94
 #define SPELL_ELEMENTAL_BURST        95
-#define SPELL_ELEMENTAL_BLAST        96 
+#define SPELL_ELEMENTAL_BLAST        96
 #define SPELL_ELEMENTAL_HANDS        97
-#define SPELL_ELEMENTAL_STRIKE       98 
+#define SPELL_ELEMENTAL_STRIKE       98
 #define SPELL_FIREBOLT               99
 #define SPELL_FLAILING_FISTS         100
 #define SPELL_FLAMESTRIKE            101
@@ -185,7 +185,7 @@
 #define SPELL_DETECT_GOOD            146
 #define SPELL_DETECT_NEUTRAL         147
 #define SPELL_SUSTAIN_GROUP          148
-
+#define SPELL_PHASE_DOOR	     149
 
 /* Insert new spells here, up to MAX_SPELLS */
 #define MAX_SPELLS		    1000
@@ -229,8 +229,8 @@
 #define SPELL_ACID_BREATH            2005
 #define SPELL_LIGHTNING_BREATH       2006
 
-                                           
-#define SPELL_DG_AFFECT              2098  /* to make an affect induced by dg_affect 
+
+#define SPELL_DG_AFFECT              2098  /* to make an affect induced by dg_affect
                                            * look correct on 'stat' we need to define
                                            * it with a 'spellname'.
                                            */
@@ -281,6 +281,7 @@
 #define TAR_OBJ_WORLD   (1 << 9)
 #define TAR_OBJ_EQUIP	(1 << 10)
 #define TAR_CHAR_ZONE   (1 << 11)
+#define TAR_DIRECTION   (1 << 12)
 
 struct spell_info_type {
    byte min_position;	/* Position for caster	 */
@@ -328,11 +329,9 @@ struct attack_hit_type {
 };
 
 
-#define ASPELL(spellname) \
-void	spellname(int level, struct char_data *ch, \
-		  struct char_data *victim, struct obj_data *obj)
+#define ASPELL(spellname) void spellname(int level, struct char_data *ch, struct char_data *victim, struct obj_data *obj, int param1, int spellnum)
 
-#define MANUAL_SPELL(spellname)	spellname(level, caster, cvict, ovict);
+#define MANUAL_SPELL(spellname)	spellname(level, caster, cvict, ovict, param1, spellnum);
 ASPELL(spell_arboreal_form);
 ASPELL(spell_arcane_lore);
 ASPELL(spell_astral_projection);
@@ -352,7 +351,8 @@ ASPELL(spell_identify);
 ASPELL(spell_enchant_weapon);
 ASPELL(spell_detect_poison);
 ASPELL(spell_spook);
-ASPELL(spell_clan_recall); //dan clan system 
+ASPELL(spell_clan_recall);
+ASPELL(spell_phase_door);
 
 /* basic magic calling functions */
 
@@ -385,13 +385,13 @@ void mag_alter_objs(int level, struct char_data *ch, struct obj_data *obj,
 void mag_creations(int level, struct char_data *ch, int spellnum);
 
 int	call_magic(struct char_data *caster, struct char_data *cvict,
-  struct obj_data *ovict, int spellnum, int level, int casttype);
+  struct obj_data *ovict, int param1, int spellnum, int level, int casttype);
 
 void	mag_objectmagic(struct char_data *ch, struct obj_data *obj,
 			char *argument);
 
 int	cast_spell(struct char_data *ch, struct char_data *tch,
-  struct obj_data *tobj, int spellnum);
+  struct obj_data *tobj, int param1, int spellnum);
 
 
 /* other prototypes */

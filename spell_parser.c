@@ -205,8 +205,7 @@ int find_skill_num(char *name)
  * This is also the entry point for non-spoken or unrestricted spells.
  * Spellnum 0 is legal but silently ignored here, to make callers simpler.
  */
-int call_magic(struct char_data *caster, struct char_data *cvict,
-	     struct obj_data *ovict, int spellnum, int level, int casttype)
+int call_magic(struct char_data *caster, struct char_data *cvict, struct obj_data *ovict, int param1, int spellnum, int level, int casttype)
 {
   int savetype;
 
@@ -328,7 +327,7 @@ TO_ROOM);
  * the DikuMUD format did not specify staff and wand levels in the world
  * files (this is a CircleMUD enhancement).
  */
-void mag_objectmagic(struct char_data *ch, struct obj_data *obj,
+void mag_objectmagic(struct char_data *ch, struct obj_data *obj, 
 		          char *argument)
 {
   char arg[MAX_INPUT_LENGTH];
@@ -369,12 +368,12 @@ void mag_objectmagic(struct char_data *ch, struct obj_data *obj,
         for (i = 0, tch = world[IN_ROOM(ch)].people; tch; tch = tch->next_in_room)
 	  i++;
 	while (i-- > 0 )
-	  call_magic(ch, NULL, NULL, GET_OBJ_VAL(obj, 3), k, CAST_STAFF);
+	  call_magic(ch, NULL, NULL, NOWHERE, GET_OBJ_VAL(obj, 3), k, CAST_STAFF);
       } else {
 	for (tch = world[IN_ROOM(ch)].people; tch; tch = next_tch) {
 	  next_tch = tch->next_in_room;
 	  if (ch != tch)
-	    call_magic(ch, tch, NULL, GET_OBJ_VAL(obj, 3), k, CAST_STAFF);
+	    call_magic(ch, tch, NULL, NOWHERE, GET_OBJ_VAL(obj, 3), k, CAST_STAFF);
 	}
       }
     }
@@ -416,10 +415,10 @@ void mag_objectmagic(struct char_data *ch, struct obj_data *obj,
     GET_OBJ_VAL(obj, 2)--;
     WAIT_STATE(ch, PULSE_VIOLENCE);
     if (GET_OBJ_VAL(obj, 0))
-      call_magic(ch, tch, tobj, GET_OBJ_VAL(obj, 3),
+      call_magic(ch, tch, tobj, NOWHERE, GET_OBJ_VAL(obj, 3),
 		 GET_OBJ_VAL(obj, 0), CAST_WAND);
     else
-      call_magic(ch, tch, tobj, GET_OBJ_VAL(obj, 3),
+      call_magic(ch, tch, tobj, NOWHERE, GET_OBJ_VAL(obj, 3),
 		 DEFAULT_WAND_LVL, CAST_WAND);
  }   
 else
@@ -443,7 +442,7 @@ act("You can't use $p on $N.", FALSE, ch, obj, tch, TO_CHAR);
 
     WAIT_STATE(ch, PULSE_VIOLENCE);
     for (i = 1; i <= 3; i++)
-      if (call_magic(ch, tch, tobj, GET_OBJ_VAL(obj, i),
+      if (call_magic(ch, tch, tobj, NOWHERE, GET_OBJ_VAL(obj, i),
 		       GET_OBJ_VAL(obj, 0), CAST_SCROLL) <= 0)
 	break;
 
@@ -460,7 +459,7 @@ act("You can't use $p on $N.", FALSE, ch, obj, tch, TO_CHAR);
 
     WAIT_STATE(ch, PULSE_VIOLENCE);
     for (i = 1; i <= 3; i++)
-      if (call_magic(ch, ch, NULL, GET_OBJ_VAL(obj, i),
+      if (call_magic(ch, ch, NULL, NOWHERE, GET_OBJ_VAL(obj, i),
 		       GET_OBJ_VAL(obj, 0), CAST_POTION) <= 0)
 	break;
 
@@ -484,7 +483,7 @@ act("You can't use $p on $N.", FALSE, ch, obj, tch, TO_CHAR);
  * by NPCs via specprocs.
  */
 int cast_spell(struct char_data *ch, struct char_data *tch,
-	           struct obj_data *tobj, int spellnum)
+	           struct obj_data *tobj, int param1, int spellnum)
 {
   if (spellnum < 0 || spellnum > TOP_SPELL_DEFINE) {
     log("SYSERR: cast_spell trying to call spellnum %d/%d.", spellnum,
@@ -533,7 +532,7 @@ int cast_spell(struct char_data *ch, struct char_data *tch,
   
   say_spell(ch, spellnum, tch, tobj);
 
-  return (call_magic(ch, tch, tobj, spellnum, GET_LEVEL(ch), CAST_SPELL));
+  return (call_magic(ch, tch, tobj, NOWHERE, spellnum, GET_LEVEL(ch), CAST_SPELL));
 }
 
 
@@ -548,8 +547,8 @@ ACMD(do_cast)
   struct char_data *tch = NULL;
   struct obj_data *tobj = NULL;
   char *s, *t;
-  int mana, spellnum, i, target = 0;
-
+  int mana, spellnum, i, target = 0, param1=NOTHING;
+ 
   if (IS_NPC(ch))
     return;
 
@@ -634,6 +633,8 @@ ACMD(do_cast)
       if ((tobj = get_obj_in_list_vis(ch, t, NULL, world[IN_ROOM(ch)].contents)) != NULL)
 	target = TRUE;
 
+
+
     if (!target && IS_SET(SINFO.targets, TAR_OBJ_WORLD))
       if ((tobj = get_obj_vis(ch, t, NULL)) != NULL)
 	target = TRUE;
@@ -644,6 +645,7 @@ ACMD(do_cast)
 	tch = ch;
 	target = TRUE;
       }
+
     if (!target && IS_SET(SINFO.targets, TAR_FIGHT_VICT))
       if (FIGHTING(ch) != NULL) {
 	tch = FIGHTING(ch);
@@ -686,7 +688,7 @@ ACMD(do_cast)
     if (SINFO.violent && tch && IS_NPC(tch))
       hit(tch, ch, TYPE_UNDEFINED);
   } else { /* cast spell returns 1 on success; subtract mana & set waitstate */
-    if (cast_spell(ch, tch, tobj, spellnum)) {
+    if (cast_spell(ch, tch, tobj, NOWHERE, spellnum)) {
       WAIT_STATE(ch, PULSE_VIOLENCE);
       if (mana > 0)
 	GET_MANA(ch) = MAX(0, MIN(GET_MAX_MANA(ch), GET_MANA(ch) - mana));
@@ -695,10 +697,9 @@ ACMD(do_cast)
 
   /* send a warning message when mana is getting low */
   if ( GET_MANA(ch) < (GET_MAX_MANA(ch) / 10) )
-  {
-    send_to_char(ch, "Your power is fading fast!\r\n");
+     send_to_char(ch, "Your power is fading fast!\r\n");
   }
-}
+//}
 
 
 
@@ -818,7 +819,7 @@ void unused_spell(int spl)
  * set on any spell that inflicts damage, is considered aggressive (i.e.
  * charm, curse), or is otherwise nasty.
  *
- * routines:  A list of magic routines which are associated with this spell
+ *  routines:  A list of magic routines which are associated with this spell
  * if the spell uses spell templates.  Also joined with bitwise OR ('|').
  *
  * See the CircleMUD documentation for a more detailed description of these
@@ -843,7 +844,7 @@ void mag_assign_spells(void)
   /* Do not change the loop above. */
 
     spello(SPELL_ACID_ARROW, "acid arrow", 50, 20, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
-  
+
   spello(SPELL_AIRWALK, "airwalk", 50, 15, 3, POS_STANDING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
 	"You feet feel heavier and began to drag as you walk.");
@@ -855,7 +856,7 @@ void mag_assign_spells(void)
   spello(SPELL_ARBOREAL_FORM, "arboreal form", 200, 150, 10, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_MANUAL,
 	NULL);
-        
+
   spello(SPELL_ARCANE_LORE, "arcane lore", 200, 150, 10, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_MANUAL,
 	NULL);
@@ -863,15 +864,15 @@ void mag_assign_spells(void)
   spello(SPELL_ARMOR, "armor", 30, 15, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
 	"You feel less protected.");
-  
+
   spello(SPELL_ASTRAL_ASCENSION, "astral ascension", 300, 300, 0, POS_STANDING,
 	TAR_IGNORE, FALSE, MAG_GROUPS,
 	NULL);
-                    
+
   spello(SPELL_ASTRAL_PROJECTION, "astral projection", 200, 150, 10, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_MANUAL,
 	NULL);
-        
+
 spello(SPELL_BALL_LIGHTNING, "ball lightning", 100, 70, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
 
 spello(SPELL_BAT_SONAR, "bat sonar", 50, 10, 5, POS_STANDING,
@@ -924,7 +925,7 @@ spello(SPELL_BOLT_OF_STEEL, "bolt of steel", 35, 15, 2, POS_FIGHTING, TAR_CHAR_R
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE | MAG_AFFECTS,
 	"You feel your strength return.");
 
-//dan clan system
+//clan system
   spello(SPELL_CLAN_RECALL, "clan recall", 20, 10, 2, POS_FIGHTING,
 	TAR_CHAR_ROOM, FALSE, MAG_MANUAL,
 	NULL);
@@ -981,7 +982,7 @@ spello(SPELL_BOLT_OF_STEEL, "bolt of steel", 35, 15, 2, POS_FIGHTING, TAR_CHAR_R
 
   spello(SPELL_DEATHS_DOOR, "deaths door", 40, 20, 4, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel death closer at hand.");
-   
+
   spello(SPELL_DECREPIFY, "decrepify", 60, 40, 5, POS_STANDING,
         TAR_CHAR_ROOM | TAR_NOT_SELF, TRUE, MAG_AFFECTS | MAG_MATERIALS,
         "You feel less decrepid");
@@ -994,11 +995,11 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_DETECT_ALIGN, "detect alignment", 20, 10, 2, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
 	"You feel less aware.");
-        
+
   spello(SPELL_DETECT_EVIL, "detect evil", 20, 10, 2, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
 	"You feel less aware of the evil of the world.");
-        
+
   spello(SPELL_DETECT_GOOD, "detect good", 20, 10, 2, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
 	"You lose sight of the good in the world.");
@@ -1199,7 +1200,7 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
 
   spello(SPELL_PARALYZE, "paralyze", 25, 10, 1, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTS, "Your feel that your limbs will move again.");
-
+  spello(SPELL_PHASE_DOOR, "phase door", 60, 30, 3, POS_STANDING, TAR_DIRECTION, FALSE, MAG_MANUAL, NULL);
 
     spello(SPELL_PILLAR_OF_FLAME, "pillar of flame", 35, 10, 5, POS_FIGHTING,
             TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
