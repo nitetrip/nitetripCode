@@ -36,10 +36,10 @@ extern int pk_allowed;
 extern struct clan_type *clan_info; //dan clan system
 
 /* external functions */
-byte saving_throws(int class_num, int type, int level);
+byte saving_throws_nat(int class_num, int type, int level);
 void clearMemory(struct char_data *ch);
 void weight_change_object(struct obj_data *obj, int weight);
-int mag_savingthrow(struct char_data *ch, int type, int modifier);
+int mag_savingthrow(struct char_data *ch, struct char_data *victim, int type, int modifier);
 void name_to_drinkcon(struct obj_data *obj, int type);
 void name_from_drinkcon(struct obj_data *obj);
 int compute_armor_class(struct char_data *ch);
@@ -211,6 +211,7 @@ ASPELL(spell_astral_projection)
   greet_mtrigger(ch, -1);
   greet_memory_mtrigger(ch);
 }
+
 ASPELL(spell_hang)
 {
 
@@ -229,12 +230,14 @@ ASPELL(spell_hang)
 }
 
 ASPELL(spell_phase_door)
-{
-  if ((param1 != NOWHERE) && IS_VALID_EXIT(ch, param1) && EXIT_FLAGGED(EXIT(ch, param1), EX_CLOSED) && (EXIT(ch, param1)->to_room != NOWHERE)){
+{return; }// just return  out for now}
+/*{
+ if ((param1 != NOWHERE) && IS_VALID_EXIT(ch, param1) && EXIT_FLAGGED(EXIT(ch, param1), EX_CLOSED) && (EXIT(ch, param1)->to_room != NOWHERE)) {
+   send_to_char(ch, "PARAM1 IS NOT NOWHERE.\r\n");
     int from_room = IN_ROOM(ch);
     int to_room = EXIT(ch, param1)->to_room;
     const char *doorname = EXIT(ch, param1)->keyword;
-    send_to_char(ch, "You phase %s through the %s\r\n", dirs[param1], doorname);
+    send_to_char(ch, "You phase %s through the %s.\r\n", dirs[param1], doorname);
     char_from_room(ch);
     char_to_room(ch, to_room);
     send_to_room(from_room, "%s phases %s through the %s.\r\n", GET_NAME(ch), dirs[param1], doorname);
@@ -243,10 +246,12 @@ ASPELL(spell_phase_door)
     entry_memory_mtrigger(ch);
     greet_mtrigger(ch, -1);
     greet_memory_mtrigger(ch);
-   }
-   else
+  }
+  else if (EXIT_FLAGGED(EXIT(ch, param1), EX_CLOSED))
+     send_to_char(ch, "PARAM1 IS NOT NOWHERE.\r\n");
+  else
     send_to_char(ch, "You can't phase through that.\r\n");
-}
+}*/
 
 
 
@@ -326,7 +331,7 @@ ASPELL(spell_summon)
   }
 
   if (MOB_FLAGGED(victim, MOB_NOSUMMON) ||
-      (IS_NPC(victim) && mag_savingthrow(victim, SAVING_SPELL, 0))) {
+      (IS_NPC(victim) && mag_savingthrow(ch, victim, SAVING_SPELL, 0))) {
     send_to_char(ch, "%s", SUMMON_FAIL);
     return;
   }
@@ -354,7 +359,7 @@ ASPELL(spell_locate_object)
   int j;
   int itemnum = 1;
 
-  /* FRENZY
+  /* 
    * FIXME: This is broken.  The spell parser routines took the argument
    * the player gave to the spell and located an object with that keyword.
    * Since we're passed the object and not the keyword we can only guess
@@ -425,7 +430,7 @@ ASPELL(spell_charm)
     send_to_char(ch, "Your victim resists!\r\n");
   else if (circle_follow(victim, ch))
     send_to_char(ch, "Sorry, following in circles can not be allowed.\r\n");
-  else if (mag_savingthrow(victim, SAVING_PARA, 0))
+  else if (mag_savingthrow(ch, victim, SAVING_PARA, 0))
     send_to_char(ch, "Your victim resists!\r\n");
   else {
     if (victim->master)
@@ -653,7 +658,7 @@ ASPELL(spell_spook)
       intadd = 10;
 
 
-   if (((saving_throws(GET_CLASS(victim), SAVING_SPELL, GET_LEVEL(victim)) + GET_SAVE(victim, 4)) - intadd) > percent) {
+   if (((saving_throws_nat(GET_CLASS(victim), SAVING_SPELL, GET_LEVEL(victim)) + GET_SAVE(victim, 4)) - intadd) > percent) {
  act("$n places fear in the heart of $N and $E RUNS!", FALSE, ch, 0, victim, TO_NOTVICT);
  act("$n's gazes meets yours and fear strikes your heart, you RUN!", FALSE, ch, 0, victim, TO_VICT);
  act("Your gaze meets $N's and fear strikes $S heart, $E RUNS!", FALSE, ch, 0, victim, TO_CHAR);

@@ -63,7 +63,7 @@ char *title_male(int chclass, int level);
 char *title_female(int chclass, int level);
 struct time_info_data *real_time_passed(time_t t2, time_t t1);
 int compute_armor_class(struct char_data *ch);
-byte saving_throws(int class_num, int type, int level); /* class.c */
+byte saving_throws_nat(int class_num, int type, int level); /* class.c */
 int get_num_attacks(struct char_data *ch);
 int parse_class(char arg);
 void get_one_line(FILE *fl, char *buf);
@@ -900,7 +900,7 @@ ACMD(do_score)
      playing_time.day, playing_time.day == 1 ? "" : "s",
      playing_time.hours, playing_time.hours == 1 ? "" : "s");
 
-//dan clan system 
+
  if(GET_CLAN(ch) > CLAN_NONE)
     send_to_char(ch,   "Clan : %s (%s)\r\nRank : %s%s\r\n",
      get_blank_clan_name(GET_CLAN(ch)), get_clan_name(GET_CLAN(ch)),
@@ -945,9 +945,76 @@ ACMD(do_score)
 
   if (GET_COND(ch, DRUNK) > 10)
     send_to_char(ch, "You are intoxicated.\r\n");
+  if (GET_COND(ch, FULL) == 0)
+    send_to_char(ch, "You are hungry.\r\n");
+  if (GET_COND(ch, THIRST) == 0)
+    send_to_char(ch, "You are thirsty.\r\n");
 
     if (PRF_FLAGGED(ch, PRF_SUMMONABLE))
     send_to_char(ch, "You are summonable by other players.\r\n");
+
+
+//Spells
+ if (affected_by_spell(ch, SPELL_ACCURACY))
+    send_to_char(ch, "You hit with exactness and precision.\r\n");
+  if (affected_by_spell(ch, SPELL_AID))
+    send_to_char(ch, "You feel more fit.\r\n");
+  if (affected_by_spell(ch, SPELL_ARMOR))
+    send_to_char(ch, "You feel protected.\r\n");
+  if (affected_by_spell(ch, SPELL_BARKSKIN))
+    send_to_char(ch, "Your skin is all covered with bark.\r\n");
+  if (affected_by_spell(ch, SPELL_BLESS))
+    send_to_char(ch, "You feel righteous.\r\n");
+  if (affected_by_spell(ch, SPELL_CHAMPIONS_STRENGTH))
+    send_to_char(ch, "The strength of past heroes run through your muscles.\r\n");
+  if (affected_by_spell(ch, SPELL_CURSE))
+    send_to_char(ch, "You have been cursed.\r\n");
+  if (affected_by_spell(ch, SPELL_DEATH_STRIKE))
+    send_to_char(ch, "Your attacks are ferocious since you're filled with Ki power.\r\n");
+  if (affected_by_spell(ch, SPELL_DRAW_UPON_HOLY_MIGHT))
+    send_to_char(ch, "Your deity has endowed you with power.\r\n");
+  if (affected_by_spell(ch, SPELL_ELEMENTAL_SHIELD))
+    send_to_char(ch, "You are protected by an elemental shield.\r\n");
+  if (affected_by_spell(ch, SPELL_ELEMENTAL_AURA))
+    send_to_char(ch, "You are surrounded by an elemental aura.\r\n");
+  if (affected_by_spell(ch, SPELL_ENFEEBLEMENT))
+    send_to_char(ch, "Your muscles feel exhausted.\r\n");
+  if (affected_by_spell(ch, SPELL_ENLARGE))
+    send_to_char(ch, "You have been enlarged in size.\r\n");
+  if (affected_by_spell(ch, SPELL_FLAMEWALK))
+    send_to_char(ch, "You feel resistant to fire attacks.\r\n");
+  if (affected_by_spell(ch, SPELL_INTIMIDATE))
+    send_to_char(ch, "You feel intimidated.\r\n");
+  if (affected_by_spell(ch, SPELL_IMMUNITY_TO_COLD))
+    send_to_char(ch, "You are immune to cold.\r\n");
+  if (affected_by_spell(ch, SPELL_IMMUNITY_TO_ELEC))
+    send_to_char(ch, "You are immune to electricity.\r\n");
+  if (affected_by_spell(ch, SPELL_MAGICAL_VESTMANTS))
+    send_to_char(ch, "Your faith protects you against the dangers of the world.\r\n");
+  if (affected_by_spell(ch, SPELL_POWER_STRIKE))
+    send_to_char(ch, "Your attacks hit at maximum damage.\r\n");
+  if (affected_by_spell(ch, SPELL_RESISTANCE_TO_COLD))
+    send_to_char(ch, "You are resistant to cold.\r\n");
+  if (affected_by_spell(ch, SPELL_RESISTANCE_TO_ELEC))
+    send_to_char(ch, "You are resistant to electricity.\r\n");
+  if (affected_by_spell(ch, SPELL_SHIELD))
+    send_to_char(ch, "You sense a strong shield of magic protecting you.\r\n");
+  if (affected_by_spell(ch, SPELL_SHRINK))
+    send_to_char(ch, "You have been shrunk in size.\r\n");
+  if (affected_by_spell(ch, SPELL_SKELETAL_GUISE))
+    send_to_char(ch, "Your features are skeletal.\r\n");
+  if (affected_by_spell(ch, SPELL_SOMNOLENT_GAZE))
+    send_to_char(ch, "You feel lethargic.\r\n");
+  if (affected_by_spell(ch, SPELL_STRENGTH))
+    send_to_char(ch, "You feel physically strong.\r\n");
+  if (affected_by_spell(ch, SPELL_STRENGTH_BURST))
+    send_to_char(ch, "Your muscles are filled with Ki power.\r\n");
+  if (affected_by_spell(ch, SPELL_WINDWALK))
+    send_to_char(ch, "You feel resistant to gas and electrical attacks.\r\n");
+  if (affected_by_spell(ch, SPELL_WITHER))
+    send_to_char(ch, "Your wielding arm is all shriveled up.\r\n");
+
+
 }
 
 
@@ -2174,11 +2241,11 @@ ACMD(do_attributes)
 	   GET_STR(ch), GET_ADD(ch), GET_INT(ch), GET_WIS(ch), GET_DEX(ch), 
 	   GET_CON(ch), GET_CHA(ch) );
 	send_to_char(ch, "Saving Throws: Para[%d]  Rod[%d]  Petri[%d]  Breath[%d]  Spell[%d]\r\n",
-	   saving_throws(GET_CLASS(ch), SAVING_PARA, GET_LEVEL(ch)) + GET_SAVE(ch, 0),
-	   saving_throws(GET_CLASS(ch), SAVING_ROD, GET_LEVEL(ch))+ GET_SAVE(ch, 1), 
-	   saving_throws(GET_CLASS(ch), SAVING_PETRI, GET_LEVEL(ch)) + GET_SAVE(ch, 2),
-	   saving_throws(GET_CLASS(ch), SAVING_BREATH, GET_LEVEL(ch)) + GET_SAVE(ch, 3), 
-	   saving_throws(GET_CLASS(ch), SAVING_SPELL, GET_LEVEL(ch)) + GET_SAVE(ch, 4));
+	   saving_throws_nat(GET_CLASS(ch), SAVING_PARA, GET_LEVEL(ch)) + GET_SAVE(ch, 0),
+	   saving_throws_nat(GET_CLASS(ch), SAVING_ROD, GET_LEVEL(ch))+ GET_SAVE(ch, 1), 
+	   saving_throws_nat(GET_CLASS(ch), SAVING_PETRI, GET_LEVEL(ch)) + GET_SAVE(ch, 2),
+	   saving_throws_nat(GET_CLASS(ch), SAVING_BREATH, GET_LEVEL(ch)) + GET_SAVE(ch, 3), 
+	   saving_throws_nat(GET_CLASS(ch), SAVING_SPELL, GET_LEVEL(ch)) + GET_SAVE(ch, 4));
     
     if (ch->master)
     send_to_char(ch, "You are following:  %s.\r\n", GET_NAME(ch->master));

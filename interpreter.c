@@ -307,7 +307,6 @@ cpp_extern const struct command_info cmd_info[] = {
   { "autosplit", POS_DEAD    , do_gen_tog  , 0, SCMD_AUTOSPLIT },
   { "ack"      , POS_RESTING , do_action   , 0, 0 },
   { "admire"   , POS_RESTING , do_action   , 0, 0 },
-
   { "backstab" , POS_STANDING, do_backstab , 1, 0 },
   { "ban"      , POS_DEAD    , do_ban      , LVL_GOD, 0 },
   { "balance"  , POS_STANDING, do_not_here , 1, 0 },
@@ -334,7 +333,6 @@ cpp_extern const struct command_info cmd_info[] = {
   { "boo"      , POS_RESTING , do_action   , 0, 0 },
   { "bird"     , POS_RESTING , do_action   , 0, 0 },
   { "bounce"   , POS_STANDING, do_action   , 0, 0 },
-  
   { "cast"     , POS_SITTING , do_cast     , 1, 0 },
   { "cackle"   , POS_RESTING , do_action   , 0, 0 },
   { "caress"   , POS_RESTING , do_action   , 0, 0 },
@@ -351,7 +349,7 @@ cpp_extern const struct command_info cmd_info[] = {
   { "cdemote"  , POS_SLEEPING, do_clan     , LVL_IMPL, SCMD_CLAN_DEMOTE},
   { "cdeposit" , POS_SLEEPING, do_clan     , LVL_IMPL, SCMD_CLAN_DEPOSIT },
   { "cdismiss" , POS_SLEEPING, do_clan     , LVL_IMPL, SCMD_CLAN_DISMISS },
-  { "cpromote" , POS_SLEEPING, do_clan     , LVL_IMPL, SCMD_CLAN_PROMOTE},  
+  { "cpromote" , POS_SLEEPING, do_clan     , LVL_IMPL, SCMD_CLAN_PROMOTE},
   { "clans"    , POS_SLEEPING, do_show_clan, 0, 0 },
   { "clantalk" , POS_SLEEPING, do_gen_tog  , 0, SCMD_CLANTALK },
   { "cls"      , POS_DEAD    , do_gen_ps   , 0, SCMD_CLEAR },
@@ -409,7 +407,6 @@ cpp_extern const struct command_info cmd_info[] = {
   { "examine"  , POS_SITTING , do_examine  , 0, 0 },
   { "edit"     , POS_DEAD    , do_edit	   ,LVL_IMPL, 0 },	/* Testing! */
   { "eyeroll"  , POS_RESTING , do_action   , 0, 0 },
-
   { "fill"     , POS_STANDING, do_pour     , 0, SCMD_FILL },
   { "file"     , POS_SLEEPING, do_file     , LVL_GOD, 0 },
   { "flee"     , POS_FIGHTING, do_flee     , 1, 0 },
@@ -428,7 +425,6 @@ cpp_extern const struct command_info cmd_info[] = {
   { "force"    , POS_SLEEPING, do_force    , LVL_BUILDER, 0 }, /* change back to leige */
   { "fart"     , POS_RESTING , do_action   , 0, 0 },
   { "fury"     , POS_FIGHTING, do_fury     , 1, 0 },
-
   { "gecho"    , POS_DEAD    , do_gecho    , LVL_COUNT, 0 },
   { "give"     , POS_RESTING , do_give     , 0, 0 },
   { "giggle"   , POS_RESTING , do_action   , 0, 0 },
@@ -453,7 +449,6 @@ cpp_extern const struct command_info cmd_info[] = {
   { "grimace"  , POS_RESTING , do_action   , 0, 0 },
   { "get"      , POS_RESTING , do_get      , 0, 0 },
   { "gasp"     , POS_RESTING , do_action   , 0, 0 },
-
   { "help"     , POS_DEAD    , do_help     , 0, 0 },
   { "handbook" , POS_DEAD    , do_gen_ps   , LVL_SAINT, SCMD_HANDBOOK },
   { "hcontrol" , POS_DEAD    , do_hcontrol , LVL_COUNT, 0 },
@@ -470,7 +465,6 @@ cpp_extern const struct command_info cmd_info[] = {
   { "hiss"     , POS_RESTING , do_action   , 0, 0 },
   { "howl"     , POS_RESTING , do_action   , 0, 0 },
   { "har"      , POS_RESTING , do_action   , 0, 0 },
-
   { "inventory", POS_DEAD    , do_inventory, 0, 0 },
   { "idea"     , POS_DEAD    , do_gen_write, 0, SCMD_IDEA },
   { "impnet"   , POS_DEAD    , do_impnet, LVL_IMPL, 0 },
@@ -479,13 +473,10 @@ cpp_extern const struct command_info cmd_info[] = {
   { "info"     , POS_SLEEPING, do_gen_ps   , 0, SCMD_INFO },
   { "insult"   , POS_RESTING , do_insult   , 0, 0 },
   { "invis"    , POS_DEAD    , do_invis    , LVL_LIEGE, 0 },
-
   { "jail"    , POS_DEAD    , do_jail    , LVL_GOD, 0 },
-
   { "kill"     , POS_FIGHTING, do_kill     , 0, 0 },
   { "kick"     , POS_FIGHTING, do_kick     , 1, 0 },
   { "kiss"     , POS_RESTING , do_action   , 0, 0 },
-
   { "look"     , POS_RESTING , do_look     , 0, SCMD_LOOK },
   { "laugh"    , POS_RESTING , do_action   , 0, 0 },
   { "last"     , POS_DEAD    , do_last     , LVL_DEITY, 0 },
@@ -497,7 +488,6 @@ cpp_extern const struct command_info cmd_info[] = {
   { "lock"     , POS_SITTING , do_gen_door , 0, SCMD_LOCK },
   { "load"     , POS_DEAD    , do_load     , LVL_BUILDER, 0 }, /* change back to liege */
   { "love"     , POS_RESTING , do_action   , 0, 0 },
-
   { "motd"     , POS_DEAD    , do_gen_ps   , 0, SCMD_MOTD },
 /*{ "mail"     , POS_STANDING, do_not_here , 1, 0 }, Removed Mail System */
   { "massage"  , POS_RESTING , do_action   , 0, 0 },
@@ -509,7 +499,6 @@ cpp_extern const struct command_info cmd_info[] = {
   { "mumble"   , POS_RESTING , do_action   , 0, 0 },
   { "moon"     , POS_STANDING, do_action   , 0, 0 },
   { "moan"     , POS_RESTING , do_action   , 0, 0 },
-
   { "news"     , POS_SLEEPING, do_gen_ps   , 0, SCMD_NEWS },
   { "nibble"   , POS_RESTING , do_action   , 0, 0 },
   { "nod"      , POS_RESTING , do_action   , 0, 0 },
@@ -525,14 +514,12 @@ cpp_extern const struct command_info cmd_info[] = {
   { "nudge"    , POS_RESTING , do_action   , 0, 0 },
   { "nuzzle"   , POS_RESTING , do_action   , 0, 0 },
   { "noogie"   , POS_RESTING , do_action   , 0, 0 },
-
   { "order"    , POS_RESTING , do_order    , 1, 0 },
   { "offer"    , POS_STANDING, do_not_here , 1, 0 },
   { "open"     , POS_SITTING , do_gen_door , 0, SCMD_OPEN },
   { "olc"      , POS_DEAD    , do_oasis    , LVL_BUILDER, SCMD_OLC_SAVEINFO },
   { "olist"    , POS_DEAD    , do_builder_list, LVL_BUILDER, SCMD_OLIST },
   { "oedit"    , POS_DEAD    , do_oasis    , LVL_BUILDER, SCMD_OASIS_OEDIT },
-
   { "page"     , POS_DEAD    , do_page     , LVL_COUNT, 0 },
   { "pardon"   , POS_DEAD    , do_wizutil  , LVL_DEITY, SCMD_PARDON },
   { "peer"     , POS_RESTING , do_action   , 0, 0 },
@@ -562,14 +549,12 @@ cpp_extern const struct command_info cmd_info[] = {
   { "pace"     , POS_RESTING , do_action   , 0, 0 },
   { "put"      , POS_RESTING , do_put      , 0, 0 },
   { "pat"      , POS_RESTING , do_action   , 0, 0 },
-
   { "quaff"    , POS_RESTING , do_use      , 0, SCMD_QUAFF },
   { "qecho"    , POS_DEAD    , do_qcomm    , LVL_BUILDER, SCMD_QECHO },
   { "quest"    , POS_DEAD    , do_gen_tog  , 0, SCMD_QUEST },
   { "qui"      , POS_DEAD    , do_quit     , 0, 0 },
   { "quit"     , POS_DEAD    , do_quit     , 0, SCMD_QUIT },
   { "qsay"     , POS_RESTING , do_qcomm    , 0, SCMD_QSAY },
-
   { "rest"     , POS_RESTING , do_rest     , 0, 0 },
   { "read"     , POS_RESTING , do_look     , 0, SCMD_READ },
   { "reload"   , POS_DEAD    , do_reboot   , LVL_DEITY, 0 },
@@ -591,7 +576,6 @@ cpp_extern const struct command_info cmd_info[] = {
   { "raise"    , POS_RESTING , do_action   , 0, 0 },
   { "roar"     , POS_RESTING , do_action   , 0, 0 },
   { "reply"    , POS_SLEEPING, do_reply    , 0, 0 },
-
   { "say"      , POS_RESTING , do_say      , 0, 0 },
   { "'"        , POS_RESTING , do_say      , 0, 0 },
   { "save"     , POS_SLEEPING, do_save     , 0, 0 },
@@ -651,7 +635,6 @@ cpp_extern const struct command_info cmd_info[] = {
   { "salute"   , POS_RESTING , do_action   , 0, 0 },
   { "scratch"  , POS_RESTING , do_action   , 0, 0 },
   { "stomp"    , POS_RESTING , do_action   , 0, 0 },
-
   { "tell"     , POS_DEAD    , do_tell     , 0, 0 },
   { "tackle"   , POS_RESTING , do_action   , 0, 0 },
   { "take"     , POS_RESTING , do_get      , 0, 0 },
@@ -678,7 +661,6 @@ cpp_extern const struct command_info cmd_info[] = {
   { "tap"      , POS_RESTING , do_action   , 0, 0 },
   { "tease"    , POS_RESTING , do_action   , 0, 0 },
   { "twitch"   , POS_RESTING , do_action   , 0, 0 },
-
   { "unlock"   , POS_SITTING , do_gen_door , 0, SCMD_UNLOCK },
   { "ungroup"  , POS_DEAD    , do_ungroup  , 0, 0 },
   { "unban"    , POS_DEAD    , do_unban    , LVL_GOD, 0 },
@@ -686,13 +668,11 @@ cpp_extern const struct command_info cmd_info[] = {
   { "uptime"   , POS_DEAD    , do_date     , LVL_SAINT, SCMD_UPTIME },
   { "use"      , POS_SITTING , do_use      , 1, SCMD_USE },
   { "users"    , POS_DEAD    , do_users    , LVL_DEITY, 0 },
-
   { "value"    , POS_STANDING, do_not_here , 0, 0 },
   { "version"  , POS_DEAD    , do_gen_ps   , 0, SCMD_VERSION },
   { "visible"  , POS_RESTING , do_visible  , 1, 0 },
   { "vnum"     , POS_DEAD    , do_vnum     , LVL_BUILDER, 0 },
   { "vstat"    , POS_DEAD    , do_vstat    , LVL_BUILDER, 0 },
-
   { "wake"     , POS_SLEEPING, do_wake     , 0, 0 },
   { "wave"     , POS_RESTING , do_action   , 0, 0 },
   { "wear"     , POS_RESTING , do_wear     , 0, 0 },
@@ -716,15 +696,12 @@ cpp_extern const struct command_info cmd_info[] = {
   { "wizlock"  , POS_DEAD    , do_wizlock  , LVL_IMPL, 0 },
   { "worship"  , POS_RESTING , do_action   , 0, 0 },
   { "write"    , POS_STANDING, do_write    , 1, 0 },
-
   { "yell"   , POS_RESTING , do_gen_comm , 1, SCMD_YELL },
   { "yawn"     , POS_RESTING , do_action   , 0, 0 },
   { "yodel"    , POS_RESTING , do_action   , 0, 0 },
-
   { "zreset"   , POS_DEAD    , do_zreset   , LVL_BUILDER, 0 },
   { "zone"     , POS_DEAD    , do_zone     , 0, 0 },
   { "zedit"    , POS_DEAD    , do_oasis    , LVL_BUILDER, SCMD_OASIS_ZEDIT },
-
   /* DG trigger commands */
   { "attach"   , POS_DEAD    , do_attach   , LVL_LIEGE, 0 },
   { "detach"   , POS_DEAD    , do_detach   , LVL_LIEGE, 0 },

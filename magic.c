@@ -27,16 +27,18 @@
 extern int mini_mud;
 extern int pk_allowed;
 extern struct spell_info_type spell_info[];
+struct config_data config_info;
 
 /* external functions */
-byte saving_throws(int class_num, int type, int level); /* class.c */
+byte saving_throws_nat(int class_num, int type, int level); /* class.c */
 void clearMemory(struct char_data *ch);
 void weight_change_object(struct obj_data *obj, int weight);
+byte saving_throws_tot(struct char_data *ch, int type);
 
 /* local functions */
 int mag_materials(struct char_data *ch, int item0, int item1, int item2, int extract, int verbose, int spellnum);
 void perform_mag_groups(int level, struct char_data *ch, struct char_data *tch, int spellnum, int savetype);
-int mag_savingthrow(struct char_data *ch, int type, int modifier);
+int mag_savingthrow(struct char_data *ch, struct char_data *victim, int type, int modifier);
 void affect_update(void);
 int check_mag_resists(struct char_data *ch, struct char_data *victim, int damage, int type);
 
@@ -52,23 +54,13 @@ int check_mag_resists(struct char_data *ch, struct char_data *victim, int damage
  * saving throw instead of the random number of the character as
  * in some other systems.
  */
-int mag_savingthrow(struct char_data *ch, int type, int modifier)
+int mag_savingthrow(struct char_data *ch, struct char_data *victim, int type, int modifier)
 {
-  /* NPCs use warrior tables according to some book */
-  int class_sav = CLASS_WARRIOR;
   int save;
+  int level_diff = GET_LEVEL(ch)-GET_LEVEL(victim);
 
-  if (!IS_NPC(ch))
-    class_sav = GET_CLASS(ch);
-
-  save = saving_throws(class_sav, type, GET_LEVEL(ch));
-  save += GET_SAVE(ch, type);
+  save = saving_throws_tot(victim, type) + level_diff*5/((level_diff > 0) ? 4:2);
   save += modifier;
-
-  /* Dwarves and gnomes get intrinsic saves vs. magic */
-  if ((type == SAVING_SPELL || type == SAVING_ROD) &&
-           (IS_DWARF(ch) || IS_GNOME(ch)))
-    save += (-5 * (GET_CON(ch) / 3.5));
 
   /* Throwing a 0 is always a failure. */
   if (MAX(1, save) < rand_number(0, 99))
@@ -77,6 +69,7 @@ int mag_savingthrow(struct char_data *ch, int type, int modifier)
   /* Oops, failed. Sorry. */
   return (FALSE);
 }
+
 
 
 /* affect_update: called from comm.c (causes spells to wear off) */
@@ -519,7 +512,7 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
 
 
   /* divide damage by two if victim makes his saving throw */
-  if (mag_savingthrow(victim, savetype, 0))
+  if (mag_savingthrow(ch, victim, savetype, 0))
     dam /= 2;
 
   /* and finally, inflict the damage */
@@ -612,7 +605,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     break;
 
   case SPELL_BLINDNESS:
-    if (MOB_FLAGGED(victim,MOB_NOBLIND) || mag_savingthrow(victim, savetype, 0)) {
+    if (MOB_FLAGGED(victim,MOB_NOBLIND) || mag_savingthrow(ch, victim, savetype, 0)) {
       send_to_char(ch, "You fail.\r\n");
       return;
     }
@@ -644,7 +637,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
 
   case SPELL_CHILL_TOUCH:
     af[0].location = APPLY_STR;
-    if (mag_savingthrow(victim, savetype, 0))
+    if (mag_savingthrow(ch, victim, savetype, 0))
       af[0].duration = 1;
     else
       af[0].duration = 4;
@@ -693,7 +686,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     break;
 
   case SPELL_CURSE:
-    if (mag_savingthrow(victim, savetype, 0)) {
+    if (mag_savingthrow(ch, victim, savetype, 0)) {
       send_to_char(ch, "%s", NOEFFECT);
       return;
     }
@@ -895,7 +888,7 @@ case SPELL_DECREPIFY:
     break;
 
   case SPELL_POISON:
-    if (mag_savingthrow(victim, savetype, 0) || victim->char_specials.immune[ATTACK_POISON] > 0 || (victim->char_specials.resist[ATTACK_POISON] > 0 && rand_number(1,100) > 50))
+    if (mag_savingthrow(ch, victim, savetype, 0) || victim->char_specials.immune[ATTACK_POISON] > 0 || (victim->char_specials.resist[ATTACK_POISON] > 0 && rand_number(1,100) > 50))
     {
       send_to_char(ch, "%s", NOEFFECT);
       return;
@@ -973,7 +966,7 @@ case SPELL_DECREPIFY:
       return;
     if (MOB_FLAGGED(victim, MOB_NOSLEEP))
       return;
-    if (mag_savingthrow(victim, savetype, 0))
+    if (mag_savingthrow(ch, victim, savetype, 0))
       return;
 
     af[0].duration = 4 + (GET_LEVEL(ch) / 4);
@@ -1027,6 +1020,22 @@ case SPELL_DECREPIFY:
     accum_duration = TRUE;
     to_vict = "You feel webbing between your toes.";
     break;
+  case SPELL_WITHER:
+    if (mag_savingthrow(ch, victim, SAVING_PETRI, 0)) {
+      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      return;
+    }
+    af[0].location = APPLY_ATTACKS;
+    af[0].duration = MAX(1, GET_LEVEL(ch)/10);
+    af[0].round_duration = FALSE;
+    af[0].modifier = -2;
+    to_vict = "Your wielding arm shrivels to that of an old man.";
+    to_room = "$n's wielding arms shrivels up to the bone!";
+    break;
+
+    default:
+      break;
+
   }
 
   /* TO USE THE AFF2 flags just add affect2 = TRUE; to the spell case */
@@ -1784,3 +1793,11 @@ int check_mag_resists(struct char_data *ch, struct char_data *victim, int damage
   damage = 0;  
  return(damage); 
 }
+
+// taken from cwe -  unsure if needed - seems to be done in spell_parser.c
+void mag_manual(int level, struct char_data *caster, struct char_data *cvict, struct obj_data *ovict, int param1, int spellnum) {
+  switch (spellnum) {
+    case SPELL_PHASE_DOOR:            MANUAL_SPELL(spell_phase_door); break;
+  }
+}
+

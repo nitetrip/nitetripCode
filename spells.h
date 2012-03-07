@@ -30,7 +30,7 @@
 #define MAG_CREATIONS	(1 << 9)
 #define MAG_MANUAL	(1 << 10)
 #define MAG_MATERIALS   (1 << 11)
-
+#define MAG_AFFECTSV	(1 << 12)
 
 #define TYPE_UNDEFINED               (-1)
 #define SPELL_RESERVED_DBC            0  /* SKILL NUMBER ZERO -- RESERVED */
@@ -186,6 +186,97 @@
 #define SPELL_DETECT_NEUTRAL         147
 #define SPELL_SUSTAIN_GROUP          148
 #define SPELL_PHASE_DOOR	     149
+#define SPELL_ACCURACY		     150
+#define SPELL_AID		     151
+#define SPELL_ANIMAL_FRIENDSHIP		152
+#define SPELL_BARKSKIN			153
+#define SPELL_BEFRIEND_DRYAD		154
+#define SPELL_BIND_PORTAL_MAJOR		155
+#define SPELL_BIND_PORTAL_MINOR		156
+#define SPELL_CALM			157
+#define SPELL_CANNIBALIZE		158
+#define SPELL_CHAMPIONS_STRENGTH	159
+#define SPELL_CHARM_BEAST		160
+#define SPELL_CHARM_MONSTER		161
+#define SPELL_CHARM_PERSON		162
+#define SPELL_CONJURE_ELEMENTAL		163
+#define SPELL_CONJURE_UNDEAD		164
+#define SPELL_CONTROL_PLANT		165
+#define SPELL_CONTROL_UNDEAD		166
+#define SPELL_CURE_SERIOUS		167
+#define SPELL_DIMENSION_SHIFT		168
+#define SPELL_DIMENSION_WALK		169
+#define SPELL_DIMENSION_DOOR		170
+#define SPELL_DISPEL_MAGIC		171
+#define SPELL_DISPEL_SILENCE		172
+#define SPELL_DRAW_UPON_HOLY_MIGHT	173
+#define SPELL_ELEMENTAL_AURA		174
+//#define SPELL_ELEMENTAL_BLAST		175 **********USE THIS FIRST, WAS DEFINED TWICE
+#define SPELL_EMBALM			176
+#define SPELL_ENFEEBLEMENT		177
+#define SPELL_ENLARGE			178
+#define SPELL_FEIGN_DEATH		179
+#define SPELL_FLAMEWALK			180
+#define SPELL_FUMBLE			181
+#define SPELL_GATE			182
+#define SPELL_GHOUL_GAUNTLET		183
+#define SPELL_GHOUL_TOUCH		184
+#define SPELL_HEAL_LIGHT		185
+#define SPELL_HEROES_FEAST		186
+#define SPELL_HOLD_ANIMAL		187
+#define SPELL_HOLD_BEAST		188
+#define SPELL_HOLD_MONSTER		189
+#define SPELL_HOLD_PERSON		190
+#define SPELL_HOLD_PLANT		191
+#define SPELL_HOLD_UNDEAD		192
+#define SPELL_IMMUNITY_TO_COLD		193
+#define SPELL_IMMUNITY_TO_ELEC		194
+#define SPELL_INTIMIDATE		195
+#define SPELL_LEGEND_LORE		196
+#define SPELL_LIFE_LEECH		197
+#define SPELL_LOCATE_SHADOW_PLANE	198
+#define SPELL_PACIFY			199
+#define SPELL_PASS_WITHOUT_TRACE	200
+#define SPELL_PLANAR_TRAVEL		201
+#define SPELL_PORTAL			202
+#define SPELL_POWER_STRIKE		203
+#define SPELL_PROTECTION_FROM_GOOD	204
+#define SPELL_REMOVE_PARALYSIS		205
+#define SPELL_RESISTANCE_TO_COLD	206
+#define SPELL_RESISTANCE_TO_ELEC	207
+#define SPELL_REST_IN_PEACE		208
+#define SPELL_SCRY_GREATER		209
+#define SPELL_SCRY_LESSER		210
+#define SPELL_SHADOW_DOOR		211
+#define SPELL_SHADOW_WALK		212
+#define SPELL_SHIELD			213
+#define SPELL_SHIELD_AGAINST_EVIL	214
+#define SPELL_SHIELD_AGAINST_GOOD	215
+#define SPELL_SHRINK			216
+#define SPELL_SKELETAL_GUISE		217
+#define SPELL_SOMNOLENT_GAZE		218
+#define SPELL_STRENGTH_BURST		219
+#define SPELL_STUN			220
+#define SPELL_SUCCOR			221
+#define SPELL_SUMMON_AVENGER		222
+#define SPELL_SUMMON_BEAST		223
+#define SPELL_SUMMON_LESSER		224
+#define SPELL_SUMMON_GREATER		225
+#define SPELL_SUNBURST			226
+#define SPELL_SUNRAY			227
+#define SPELL_SYNOSTODWEOMER		228
+#define SPELL_TELEPORT_MAJOR		229
+#define SPELL_TELEPORT_MINOR		230
+#define SPELL_TOWER_OF_STRENGTH		231
+#define SPELL_TRAIL_OF_WOODLANDS	232
+#define SPELL_VAMPIRIC_GAZE		233
+#define SPELL_VAMPIRIC_TOUCH		234
+#define SPELL_VITALITY			235
+#define SPELL_WINDWALK			236
+#define SPELL_WITHER			237
+#define SPELL_DEATH_STRIKE              238
+#define SPELL_MAGICAL_VESTMANTS         239
+#define SPELL_ELEMENTAL_SHIELD          240
 
 /* Insert new spells here, up to MAX_SPELLS */
 #define MAX_SPELLS		    1000
@@ -390,8 +481,7 @@ int	call_magic(struct char_data *caster, struct char_data *cvict,
 void	mag_objectmagic(struct char_data *ch, struct obj_data *obj,
 			char *argument);
 
-int	cast_spell(struct char_data *ch, struct char_data *tch,
-  struct obj_data *tobj, int param1, int spellnum);
+int	cast_spell(struct char_data *ch, struct char_data *tch,  struct obj_data *tobj, int param1, int spellnum);
 
 
 /* other prototypes */

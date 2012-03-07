@@ -731,3 +731,6 @@ void	update_pos(struct char_data *victim);
 #define CRYPT(a,b) ((char *) crypt((a),(b)))
 #endif
 
+#define CONFIG_NOEFFECT         config_info.play.NOEFFECT
+
+

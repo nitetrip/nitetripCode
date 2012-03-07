@@ -49,6 +49,16 @@ const char *dirs[] =
   "\n"
 };
 
+const char *abbr_dirs[] =
+{
+  "n",
+  "e",
+  "s",
+  "w",
+  "u",
+  "d",
+  "\n"
+};
 
 /* ROOM_x */
 const char *room_bits[] = {

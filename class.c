@@ -38,7 +38,7 @@ void snoop_check(struct char_data *ch);
 int parse_class(char arg);
 int parse_full_class(char *arg);
 bitvector_t find_class_bitvector(const char *arg);
-byte saving_throws(int class_num, int type, int level);
+byte saving_throws_nat(int class_num, int type, int level);
 int thaco(int class_num, int level);
 void roll_real_abils(struct char_data *ch);
 void do_start(struct char_data *ch);
@@ -47,7 +47,7 @@ int invalid_class(struct char_data *ch, struct obj_data *obj);
 int level_exp(int chclass, int level);
 const char *title_male(int chclass, int level);
 const char *title_female(int chclass, int level);
-
+byte saving_throws_tot(struct char_data *ch, int type);
 /* Names first */
 
 const char *class_abbrevs[] = {
@@ -370,7 +370,7 @@ struct guild_info_type guild_info[] = {
  * Do not forget to change extern declaration in magic.c if you add to this.
  */
 
-byte saving_throws(int class_num, int type, int level)
+byte saving_throws_nat(int class_num, int type, int level)
 {
   switch (class_num) {
   case CLASS_MAGIC_USER:
@@ -1514,6 +1514,17 @@ byte saving_throws(int class_num, int type, int level)
   /* Should not get here unless something is wrong. */
   return 100;
 }
+
+
+byte saving_throws_tot(struct char_data *ch, int type) {
+  byte save;
+  save = (GET_SAVE(ch, type)+saving_throws_nat(GET_CLASS(ch), type, GET_LEVEL(ch)));
+  /* Dwarves and gnomes get intrinsic saves vs. magic */
+  if ((type == SAVING_SPELL || type == SAVING_ROD) && (IS_DWARF(ch) || IS_GNOME(ch)))
+    save += (-5 * (GET_TOT_CON(ch) / 3.5));
+  return save;
+}
+
 
 /* THAC0 for classes and levels.  (To Hit Armor Class 0) */
 /* This is no longer actualy to hit ac 0  it is now a bonus to your hitroll
@@ -2727,6 +2738,7 @@ void init_spell_levels(void)
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CHARM, CLASS_NECROMANCER, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_NECROMANCER, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ENCHANT_WEAPON, CLASS_NECROMANCER, 17);
+  spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_WITHER, CLASS_NECROMANCER, 25);
   spell_level(SPELL_DETECT_INVIS,TYPE_UNDEFINED, SPELL_BAT_SONAR, CLASS_NECROMANCER, 26);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DEATHS_DOOR, CLASS_NECROMANCER, 26); 
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DECREPIFY, CLASS_NECROMANCER, 26);

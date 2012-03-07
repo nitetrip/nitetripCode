@@ -36,7 +36,7 @@ char *find_exdesc(char *word, struct extra_descr_data *list);
 void die(struct char_data *ch);
 void check_dump(struct char_data *ch, int drop);
 room_rnum find_target_room(struct char_data *ch, char *rawroomstr);
-int mag_savingthrow(struct char_data *ch, int type, int modifier);
+int mag_savingthrow(struct char_data *ch, struct char_data *victim, int type, int modifier);
 int invalid_class(struct char_data *ch, struct obj_data *obj);
 int invalid_race(struct char_data *ch, struct obj_data *obj);
 void clanlog(struct char_data *ch, const char *str, ...);
@@ -2105,7 +2105,7 @@ bool trap_check(struct char_data *ch, int location) {
          if(location == GET_OBJ_VAL(i, 3) )    {
              for (tch = world[IN_ROOM(ch)].people; tch; tch = tch->next_in_room) {
               is_hit = FALSE;              
-              if (!mag_savingthrow(tch, APPLY_SAVING_SPELL, 0)) {  
+              if (!mag_savingthrow(ch, tch, APPLY_SAVING_SPELL, 0)) { 
                 if (!strcmp(GET_NAME(ch), GET_NAME(tch)))         
                 if ((desc = find_exdesc("TO_VICT", i->ex_description)) != NULL) 
                    send_to_char(tch, "%s", desc);

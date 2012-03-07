@@ -24,7 +24,6 @@
 #include "constants.h"
 #include "oasis.h"
 #include "dg_scripts.h"
-//dan clan system
 #include "clan.h"
 //for goto/at real_zone_by_thing
 #include "genzon.h"
@@ -43,7 +42,6 @@ extern int circle_restrict;
 extern int load_into_inventory;
 extern int buf_switches, buf_largecount, buf_overflows;
 extern int top_of_p_table;
-//dan clan system
 extern struct clan_type *clan_info;
 extern int cnum;
 //goto_at - mak

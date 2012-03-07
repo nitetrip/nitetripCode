@@ -156,6 +156,7 @@ void	reset_char(struct char_data *ch);
 void	free_char(struct char_data *ch);
 void	save_player_index(void);
 long  get_ptable_by_name(const char *name);
+extern struct config_data config_info;
 
 struct obj_data *create_obj(void);
 void	clear_object(struct obj_data *obj);
