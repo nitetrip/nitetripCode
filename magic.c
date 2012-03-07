@@ -779,6 +779,57 @@ case SPELL_DECREPIFY:
     to_room = "$n gets a strange twinkle in $s eyes.";    
     break;
 
+case SPELL_ELEMENTAL_SHIELD:
+    if (affected_by_spell(victim, SPELL_ELEMENTAL_AURA)) {
+      send_to_char(ch, "This spell does not work in conjunction with Elemental Aura.\r\n");
+      return;
+    }
+    duration = GET_LEVEL(ch)*2;
+    switch (rand_number(0, 3)) {
+      case ELEMENTAL_TYPE_GREY:
+        af[0].location = APPLY_PHYS_RESIST;
+        af[0].duration = duration;
+        af[0].modifier = 50;
+        to_vict = "You see a dull grey shield of elemental power form before you.";
+        to_room = "You see a dull grey shield of elemental power form before $n.";
+        break;
+      case ELEMENTAL_TYPE_RED:
+        af[0].location = APPLY_FIRE_RESIST;
+        af[0].duration = duration;
+        af[0].modifier = 50;
+        af[1].location = APPLY_LGHT_RESIST;
+        af[1].duration = duration;
+        af[1].modifier = 50;
+        to_vict = "You see a flickering red shield of elemental power form before you.";
+        to_room = "You see a flickering red shield of elemental power form before $n.";
+        break;
+      case ELEMENTAL_TYPE_BLUE:
+        af[0].location = APPLY_COLD_RESIST;
+        af[0].duration = duration;
+        af[0].modifier = 50;
+        af[1].location = APPLY_ACID_RESIST;
+        af[1].duration = duration;
+        af[1].modifier = 50;
+        to_vict = "You see a shimmering blue shield of elemental power form before you.";
+        to_room = "You see a shimmering blue shield of elemental power form before $n.";
+        break;
+      case ELEMENTAL_TYPE_WHITE:
+        af[0].location = APPLY_ELEC_RESIST;
+        af[0].duration = duration;
+        af[0].modifier = 50;
+        af[1].location = APPLY_GAS_RESIST;
+        af[1].duration = duration;
+        af[1].modifier = 50;
+        to_vict = "You see a hazy white shield of elemental power form before you.";
+        to_room = "You see a hazy white shield of elemental power form before $n.";
+        break;
+      default:
+        break;
+    }
+    accum_duration = FALSE;
+    break;
+
+
   case SPELL_FLEET_FEET:
     af[0].duration = GET_LEVEL(ch);
     af[0].bitvector = AFF_FLEET_FEET;

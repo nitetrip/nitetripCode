@@ -161,7 +161,16 @@ struct char_data *guildmaster1;
 #define ATTACK_ELECTRIC 8
 #define ATTACK_LIGHT 9
 #define ATTACK_POISON 10
-#define MAX_ATTACK_TYPES  11  /* total number of res, imm, and vuln...*/
+#define APPLY_BLDG_RESIST      11       /* Apply to bludgeon resistance */
+#define APPLY_FIRE_RESIST      12       /* Apply to fire resistance     */
+#define APPLY_LGHT_RESIST      13       /* Apply to light resistance    */
+#define APPLY_COLD_RESIST      14       /* Apply to cold resistance     */
+#define APPLY_ACID_RESIST      15       /* Apply to acid resistance     */
+#define APPLY_ELEC_RESIST      16       /* Apply to electrical resistance */
+#define APPLY_GAS_RESIST       17       /* Apply to gas resistance      */
+#define APPLY_PHYS_RESIST      18       /* resist to physical  */
+#define MAX_ATTACK_TYPES  19            /* total number of res, imm, and vuln...*/
+#define NUM_RESISTANCES		8       // This could change
 
 /* Room/mob/obj/pc sizes */
 #define SIZE_SPECIAL    0
@@ -677,7 +686,7 @@ struct char_data *guildmaster1;
 /* Priest Types */
 #define ITEM_ANTI_PRIEST             (1ULL << 0)
 #define ITEM_ANTI_SHAMAN             (1ULL << 1)
-#define ITEM_ANTI_CLERIC             (1ULL << 2)	
+#define ITEM_ANTI_CLERIC             (1ULL << 2)
 #define ITEM_ANTI_RANGER             (1ULL << 3)
 #define ITEM_ANTI_DRUID              (1ULL << 4)
 #define ITEM_ANTI_DISCIPLE           (1ULL << 5)
@@ -923,6 +932,12 @@ struct char_data *guildmaster1;
 #define MAX_OBJ_AFFECT		6 /* Used in obj_file_elem *DO*NOT*CHANGE* */
 #define MAX_NOTE_LENGTH		1000	/* arbitrary */
 
+/* Element types for elemental spells */
+#define ELEMENTAL_TYPE_GREY    0
+#define ELEMENTAL_TYPE_RED     1
+#define ELEMENTAL_TYPE_BLUE    2
+#define ELEMENTAL_TYPE_WHITE   3
+
 /*
  * A MAX_PWD_LENGTH of 10 will cause BSD-derived systems with MD5 passwords
  * and GNU libc 2 passwords to be truncated.  On BSD this will enable anyone
@@ -985,10 +1000,6 @@ struct extra_descr_data {
    struct extra_descr_data *next; /* Next in list                     */
 };
 
- 
-
-//dan clan system 
-
 struct clan_type {
   int  number;            /* clan's UNIQUE ID Number      */
   char *name;             /* No color name of clan (string)  */
@@ -1026,7 +1037,7 @@ struct obj_flag_data {
    int	timer;		/* Timer for object                 */
    bitvector_t	bitvector;	/* To set chars bits                */
    bitvector_t	bitvector2;	/* To set chars bits                */
-   
+
 };
 
 
@@ -1237,24 +1248,33 @@ struct char_ability_data {
 
 /* Char's points.  Used in char_file_u *DO*NOT*CHANGE* */
 struct char_point_data {
+   sh_int nat_mana;     /* Natural mana without int+wis bonuses */
    sh_int mana;
    sh_int max_mana;     /* Max mana for PC/NPC			   */
+   sh_int nat_hit;      /* Natural HP without con bonuses */
    int hit;
    sh_int max_hit;      /* Max hit for PC/NPC                      */
+   sh_int nat_move;     /* Natural moves without dex bonuses */
    sh_int move;
    sh_int max_move;     /* Max move for PC/NPC                     */
-
+   sh_int mana_gain;    /* extra gain per tick  */
+   sh_int hit_gain;
+   sh_int move_gain;
+   int gold_gain;
+   int exp_gain;
+   sbyte bonus_pracs;
+   sh_int resistance[NUM_RESISTANCES];  /* -100 to 100 scale  */
+   sh_int nat_armor;    /* Natural armor points - does not include dex applies or eq applies */
    sh_int armor;        /* Internal -100..100, external -10..10 AC */
    int	gold;           /* Money carried                           */
    int	bank_gold;	/* Gold the char has in a bank account	   */
    int	exp;            /* The experience of the player            */
-   
    int hitroll;       /* Any bonus or penalty to the hit roll    */
    int damroll;       /* Any bonus or penalty to the damage roll */
 };
 
 
-/* 
+/*
  * char_special_data_saved: specials which both a PC and an NPC have in
  * common, but which must be saved to the playerfile for PC's.
  *

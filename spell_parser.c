@@ -1049,6 +1049,8 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_ELEMENTAL_BURST, "elemental burst", 100, 60, 8, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);
   spello(SPELL_ELEMENTAL_HANDS, "elemental hands", 25, 10, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+ spello(SPELL_ELEMENTAL_SHIELD, "elemental shield", 50, 20, 5, POS_FIGHTING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "The shield of elemental power dissipates into nothingness.");
+
   spello(SPELL_ELEMENTAL_STRIKE, "elemental strike", 50, 30, 2, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
   spello(SPELL_ENCHANT_WEAPON, "enchant weapon", 150, 100, 10, POS_STANDING,
