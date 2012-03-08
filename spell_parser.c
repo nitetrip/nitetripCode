@@ -1049,6 +1049,9 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_ELEMENTAL_BURST, "elemental burst", 100, 60, 8, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);
   spello(SPELL_ELEMENTAL_HANDS, "elemental hands", 25, 10, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+  spello(SPELL_ELEMENTAL_AURA, "elemental aura", 80, 50, 5, POS_FIGHTING,
+        TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "The aura of elemental power surrounding you fades away.");
+
  spello(SPELL_ELEMENTAL_SHIELD, "elemental shield", 50, 20, 5, POS_FIGHTING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "The shield of elemental power dissipates into nothingness.");
 
   spello(SPELL_ELEMENTAL_STRIKE, "elemental strike", 50, 30, 2, POS_FIGHTING,
@@ -1171,7 +1174,7 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
 
   spello(SPELL_ICE_STORM, "ice storm", 60, 25, 5, POS_FIGHTING,
 	TAR_IGNORE, TRUE, MAG_AREAS,
-	NULL);     
+	NULL);
    spello(SPELL_INFRAVISION, "infravision", 25, 10, 1, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
 	"Your night vision seems to fade.");
@@ -1191,16 +1194,19 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_MAGIC_MISSILE, "magic missile", 25, 10, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
 	NULL);
-  
-  spello(SPELL_MASS_HEAL, "mass heal", 165, 150, 5, POS_FIGHTING,
+  spello(SPELL_MAGICAL_VESTMANTS, "magical vestmants", 40, 10, 3, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "You feel the protection of your prayers unravel from your body.");
+
+
+   spello(SPELL_MASS_HEAL, "mass heal", 165, 150, 5, POS_FIGHTING,
         TAR_CHAR_ROOM, FALSE, MAG_MASSES,
         NULL);
-        
-  spello(SPELL_MASS_SUICIDE, "mass suicide", 300, 300, 0, POS_STANDING,
-	TAR_IGNORE, FALSE, MAG_GROUPS,
-	NULL);      
 
-  spello(SPELL_METEOR, "meteor", 150, 50, 25, POS_FIGHTING,
+   spello(SPELL_MASS_SUICIDE, "mass suicide", 300, 300, 0, POS_STANDING,
+	TAR_IGNORE, FALSE, MAG_GROUPS,
+	NULL);
+
+   spello(SPELL_METEOR, "meteor", 150, 50, 25, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
         NULL);
 
@@ -1395,6 +1401,7 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
    * min level to use the skill for other classes is set up in class.c.
    */
 
+  
   skillo(SKILL_BACKSTAB, "backstab");
   skillo(SKILL_BASH, "bash");
   skillo(SKILL_CIRCLE, "circle");
@@ -1414,5 +1421,9 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   skillo(SKILL_PROF_BLUDGEON, "weap type bludgeon");
   skillo(SKILL_PROF_SLASH, "weap type slash");
   skillo(SKILL_PROF_WHIP, "weap type whip");
+  skillo(SKILL_SHIELD_SPEC, "shield specialization");
+  skillo(SKILL_PARRY, "parry");
+  skillo(SKILL_RAGE, "rage");
+  skillo(SKILL_WHIRLWIND, "whirlwind");
 }
 

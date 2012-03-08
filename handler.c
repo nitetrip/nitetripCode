@@ -31,7 +31,7 @@ extern const char *MENU;
 
 
 /* local functions */
-int apply_ac(struct char_data *ch, int eq_pos);
+int apply_ap(struct char_data *ch, int eq_pos);
 void update_object(struct obj_data *obj, int use);
 void update_char_objects(struct char_data *ch);
 
@@ -778,7 +778,7 @@ void obj_from_char(struct obj_data *object)
 
 
 /* Return the effect of a piece of armor in position eq_pos */
-int apply_ac(struct char_data *ch, int eq_pos)
+int apply_ap(struct char_data *ch, int eq_pos)
 {
   int factor;
 
@@ -855,8 +855,21 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos)
   obj->worn_by = ch;
   obj->worn_on = pos;
 
-  if (GET_OBJ_TYPE(obj) == ITEM_ARMOR)
-    GET_AC(ch) += apply_ac(ch, pos);
+//  if (GET_OBJ_TYPE(obj) == ITEM_ARMOR)
+//    GET_AC(ch) += apply_ac(ch, pos);
+
+  if (GET_OBJ_TYPE(obj) == ITEM_ARMOR) {
+    if (IS_NPC(ch))
+      GET_AP(ch) -= apply_ap(ch, pos);
+    else {
+      if ((GET_TOT_SKILL(ch, SKILL_SHIELD_SPEC)) && (pos == WEAR_SHIELD))
+        GET_AP(ch) -= (int)((1.0+((double)GET_TOT_SKILL(ch, SKILL_SHIELD_SPEC)/25.0))*(double)apply_ap(ch, pos));
+      else if ((GET_TOT_SKILL(ch, SKILL_ARMOR_SPEC)) && ((pos == ITEM_WEAR_HEAD) || (pos == ITEM_WEAR_BODY) || (pos == ITEM_WEAR_ARMS) || (pos == ITEM_WEAR_HANDS) || (pos == ITEM_WEAR_LEGS) || (pos == ITEM_WEAR_FEET)))
+        GET_AP(ch) -= (int)((1.0+((double)GET_TOT_SKILL(ch, SKILL_ARMOR_SPEC)/25.0))*(double)apply_ap(ch, pos));
+      else
+        GET_AP(ch) -= apply_ap(ch, pos);
+    }
+  }
 
   if (IN_ROOM(ch) != NOWHERE) {
     if (pos == WEAR_LIGHT && GET_OBJ_TYPE(obj) == ITEM_LIGHT)
@@ -906,8 +919,21 @@ struct obj_data *unequip_char(struct char_data *ch, int pos)
   obj->worn_by = NULL;
   obj->worn_on = -1;
 
-  if (GET_OBJ_TYPE(obj) == ITEM_ARMOR)
-    GET_AC(ch) -= apply_ac(ch, pos);
+//  if (GET_OBJ_TYPE(obj) == ITEM_ARMOR)
+//    GET_AC(ch) -= apply_ac(ch, pos);
+
+  if (GET_OBJ_TYPE(obj) == ITEM_ARMOR) {
+    if (IS_NPC(ch))
+      GET_AP(ch) += apply_ap(ch, pos);
+    else {
+      if ((GET_TOT_SKILL(ch, SKILL_SHIELD_SPEC)) && (pos == WEAR_SHIELD))
+        GET_AP(ch) += (int)((1.0+((double)GET_TOT_SKILL(ch, SKILL_SHIELD_SPEC)/25.0))*(double)apply_ap(ch, pos));
+      else if ((GET_TOT_SKILL(ch, SKILL_ARMOR_SPEC)) && ((pos == ITEM_WEAR_HEAD) || (pos == ITEM_WEAR_BODY) || (pos == ITEM_WEAR_ARMS) || (pos == ITEM_WEAR_HANDS) || (pos == ITEM_WEAR_LEGS) || (pos == ITEM_WEAR_FEET)))
+        GET_AP(ch) += (int)((1.0+((double)GET_TOT_SKILL(ch, SKILL_ARMOR_SPEC)/25.0))*(double)apply_ap(ch, pos));
+      else
+        GET_AP(ch) += apply_ap(ch, pos);
+    }
+  }
 
   if (IN_ROOM(ch) != NOWHERE) {
     if (pos == WEAR_LIGHT && GET_OBJ_TYPE(obj) == ITEM_LIGHT)

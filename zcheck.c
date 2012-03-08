@@ -235,7 +235,7 @@ ACMD (do_zcheck)
       if (MAX_GOLD_ALLOWED)  
       {
         if (GET_GOLD(mob)>MAX_GOLD_ALLOWED)
-          sprintf(buf2 + strlen(buf2), "[%5d] %-30s : Has %ld gold (limit: %d)\r\n", GET_MOB_VNUM(mob), GET_NAME(mob), GET_GOLD(mob), MAX_GOLD_ALLOWED);
+          sprintf(buf2 + strlen(buf2), "[%5d] %-30s : Has %d gold (limit: %d)\r\n", GET_MOB_VNUM(mob), GET_NAME(mob), GET_GOLD(mob), MAX_GOLD_ALLOWED);
       }
       if (MAX_EXP_ALLOWED)  
       {

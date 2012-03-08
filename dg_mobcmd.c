@@ -66,7 +66,7 @@ void mob_log(char_data *mob, const char *format, ...)
 {
   va_list args;
   char output[MAX_STRING_LENGTH];
-    
+
   snprintf(output, sizeof(output), "Mob (%s, VNum %d):: %s", 
                    GET_SHORT(mob), GET_MOB_VNUM(mob), format);
 
@@ -88,7 +88,7 @@ ACMD(do_masound)
 {
     sh_int was_in_room;
     int  door;
-  
+
     if (!MOB_OR_IMPL(ch))
     {
         send_to_char(ch, "Huh?!?\r\n");
@@ -168,7 +168,7 @@ ACMD(do_mkill)
         mob_log(ch, "mkill: already fighting");
         return;
     }
-    
+
     hit(ch, victim, TYPE_UNDEFINED);
     return;
 }

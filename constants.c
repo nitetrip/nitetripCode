@@ -20,6 +20,18 @@ cpp_extern const char *circlemud_version =
 /* strings corresponding to ordinals/bitvectors in structs.h ***********/
 
 
+const char *NOEFFECT_RACE = "This spell doesn't affect the victim's race.\r\n";
+const char *NOEFFECT_PC = "You cannot do that to PCs or their charmies.\r\n";
+// "Use 'murder' to attack another player.\r\n"
+const char *VICTIM_RESISTS = "Your victim resists your puny attempt!\r\n";
+const char *NOPROFICIENCY = "You have no idea how to do that.\r\n";
+const char *PEACE_ROOM_WARNING = "This room just has such a peaceful, easy feeling...\r\n";
+const char *FEIGNING_DEATH = "You cannot do that while you're feigning death! (type 'wake' to get up)\r\n";
+const char *PC_IS_BURIED = "You cannot do that while you're resting underground! (type 'wake' to get up)\r\n";
+const char *PS_RESISTS_POISON = "You resist the deadly toxin... this time.\r\n";
+
+
+
 /* (Note: strings for class definitions in class.c instead of here) */
 
 

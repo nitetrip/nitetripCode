@@ -20,7 +20,7 @@
 #include "spells.h"
 #include "handler.h"
 #include "interpreter.h"
-
+#include "constants.h"
 
 /* external globals */
 extern struct time_info_data time_info;
@@ -29,6 +29,7 @@ extern struct time_info_data time_info;
 struct time_info_data *real_time_passed(time_t t2, time_t t1);
 struct time_info_data *mud_time_passed(time_t t2, time_t t1);
 void prune_crlf(char *txt);
+int get_total_dambonus(struct char_data *ch);
 
 void clanlog(struct char_data *ch, const char *str, ...);
 
@@ -812,6 +813,17 @@ ave_dam = (fdie * sdie  + fdie) / 2;
 return ave_dam;
 }
 
+int get_total_hitbonus(struct char_data *ch)
+{
+   int calc_hitbonus;
+   calc_hitbonus = ((ch)->points.hitroll + str_app[STRENGTH_APPLY_INDEX(ch)].tohit);
+   calc_hitbonus += (int) ((GET_TOT_INT(ch) - 13) / 1.5);       /* Intelligence helps! */
+   calc_hitbonus += (int) ((GET_TOT_WIS(ch) - 13) / 1.5);       /* So does wisdom */
+   if IS_SET(MSC_FLAGS(ch), MSC_JUST_MANAGED_TO_PARRY)
+     calc_hitbonus += 4 + str_app[STRENGTH_APPLY_INDEX(ch)].tohit;
+   return calc_hitbonus;
+}
+
 
 void infochan(const char *str, ...)
 {
@@ -951,4 +963,31 @@ int convert_damage_type_to_resistance(int attacktype)
      default: return RESIST_TYPE_MISC;*/
 //   }
 }
+int get_max_damage_per_hit(struct char_data *ch, bool use_held)
+{
+  struct obj_data *wielded = GET_EQ(ch, WEAR_WIELD);
+  struct obj_data *held = GET_EQ(ch, WEAR_HOLD);
+  int dam = 0;
+
+  if (use_held) {
+    if (held && GET_OBJ_TYPE(held) == ITEM_WEAPON) {
+      dam = get_total_dambonus(ch);
+      dam += GET_OBJ_VAL(held, 1) * GET_OBJ_VAL(held, 2);
+    }
+  }
+  else {
+    if (wielded && GET_OBJ_TYPE(wielded) == ITEM_WEAPON)
+      dam += GET_OBJ_VAL(wielded, 1) * GET_OBJ_VAL(wielded, 2);
+    else
+      dam += GET_DAMNODICE(ch) * GET_DAMSIZEDICE(ch) + GET_DAMBONUS(ch);
+  }
+  dam = MAX(1, dam);
+  return dam;
+}
+
+int get_total_dambonus(struct char_data *ch)
+{
+   return ((ch)->points.damroll + str_app[STRENGTH_APPLY_INDEX(ch)].todam);
+}
+
 

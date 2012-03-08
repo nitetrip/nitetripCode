@@ -779,7 +779,68 @@ case SPELL_DECREPIFY:
     to_room = "$n gets a strange twinkle in $s eyes.";    
     break;
 
-case SPELL_ELEMENTAL_SHIELD:
+  case SPELL_ELEMENTAL_AURA:
+    if (affected_by_spell(victim, SPELL_SKELETAL_GUISE)) {
+      send_to_char(ch, "This spell does not work in conjunction with Skeletal Guise.\r\n");
+      return;
+    }
+    if (affected_by_spell(victim, SPELL_ELEMENTAL_SHIELD)) {
+      send_to_char(ch, "This spell does not work in conjunction with Elemental Shield.\r\n");
+      return;
+    }
+    duration = GET_LEVEL(ch);
+    switch (rand_number(0, 3)) {
+      case ELEMENTAL_TYPE_GREY:
+        af[0].location = APPLY_SLSH_RESIST;
+        af[0].duration = duration;
+        af[0].modifier = 50;
+        af[1].location = APPLY_PIER_RESIST;
+        af[1].duration = duration;
+        af[1].modifier = 50;
+        af[2].location = APPLY_BLDG_RESIST;
+        af[2].duration = duration;
+        af[2].modifier = 50;
+        to_vict = "You see a dull grey aura of elemental power surround you.";
+        to_room = "You see a dull grey aura of elemental power surround $n.";
+        break;
+     case ELEMENTAL_TYPE_RED:
+        af[0].location = APPLY_FIRE_RESIST;
+        af[0].duration = duration;
+        af[0].modifier = MAX_RESIST;
+        af[1].location = APPLY_LGHT_RESIST;
+        af[1].duration = duration;
+        af[1].modifier = MAX_RESIST;
+        to_vict = "You see a flickering red aura of elemental power surround you.";
+        to_room = "You see a flickering red aura of elemental power surround $n.";
+        break;
+      case ELEMENTAL_TYPE_BLUE:
+        af[0].location = APPLY_COLD_RESIST;
+        af[0].duration = duration;
+        af[0].modifier = MAX_RESIST;
+        af[1].location = APPLY_ACID_RESIST;
+        af[1].duration = duration;
+        af[1].modifier = MAX_RESIST;
+        to_vict = "You see a shimmering blue aura of elemental power surround you.";
+        to_room = "You see a shimmering blue aura of elemental power surround $n.";
+        break;
+      case ELEMENTAL_TYPE_WHITE:
+        af[0].location = APPLY_ELEC_RESIST;
+        af[0].duration = duration;
+        af[0].modifier = MAX_RESIST;
+        af[1].location = APPLY_GAS_RESIST;
+        af[1].duration = duration;
+        af[1].modifier = MAX_RESIST;
+        to_vict = "You see a hazy white aura of elemental power surround you.";
+        to_room = "You see a hazy white aura of elemental power surround $n.";
+        break;
+      default:
+        break;
+    }
+    accum_duration = FALSE;
+    break;
+
+
+  case SPELL_ELEMENTAL_SHIELD:
     if (affected_by_spell(victim, SPELL_ELEMENTAL_AURA)) {
       send_to_char(ch, "This spell does not work in conjunction with Elemental Aura.\r\n");
       return;
@@ -787,7 +848,7 @@ case SPELL_ELEMENTAL_SHIELD:
     duration = GET_LEVEL(ch)*2;
     switch (rand_number(0, 3)) {
       case ELEMENTAL_TYPE_GREY:
-        af[0].location = APPLY_PHYS_RESIST;
+        af[0].location = APPLY_BLDG_RESIST;
         af[0].duration = duration;
         af[0].modifier = 50;
         to_vict = "You see a dull grey shield of elemental power form before you.";
@@ -936,6 +997,15 @@ case SPELL_ELEMENTAL_SHIELD:
     accum_duration = TRUE;
     to_vict = "You vanish.";
     to_room = "$n slowly fades out of existence.";
+    break;
+
+  case SPELL_MAGICAL_VESTMANTS:
+    af[0].location = APPLY_AP;
+    af[0].modifier = -10*(GET_LEVEL(ch)/10)-10;
+    af[0].duration = 24;
+    accum_duration = FALSE;
+    to_vict = "You draw upon your faith to protect you against the dangers of the world.";
+    to_room = "$n grasps $s holy symbol and makes a few strange gestures.";
     break;
 
   case SPELL_POISON:

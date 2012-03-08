@@ -186,7 +186,7 @@ int do_simple_move(struct char_data *ch, int dir, int need_specials_check)
     send_to_char(ch, "You aren't godly enough to use that room!\r\n");
     return (0);
   }
-uncomment to fix GODROOM
+uncomment to fix GODROOM */
 /* No access for non-IMPs */
   if (ROOM_FLAGGED(EXIT(ch, dir)->to_room, ROOM_IMPROOM) &&
 	GET_LEVEL(ch) < LVL_IMPL) {

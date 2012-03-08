@@ -324,7 +324,7 @@ ACMD(do_steal)
   }
 
   if (ohoh && IS_NPC(vict) && AWAKE(vict))
-    hit(vict, ch, TYPE_UNDEFINED);
+        hit(vict, ch, TYPE_UNDEFINED);
 }
 
 /* For Class Branching - Frenzy */
@@ -1251,4 +1251,22 @@ send_to_char(ch, "Your eyesight sharpens and vision becomes more keen.\r\n");
 
 }
 
+
+void skill_gain(struct char_data *ch, int skill_num)
+{
+  int gain, temp;
+
+  if (GET_LEVEL(ch) >= LVL_IMMORT)
+    /* Immortals and the untrained can't improve their skills */
+    return;
+  temp = (GET_NAT_SKILL(ch, skill_num));
+  if ((temp >= MAX_PROFICIENCY) || (temp <= MIN_PROFICIENCY)) return;
+  gain = (rand_number(1, GET_NAT_INT(ch)));
+  temp = temp + gain;
+  if (IS_NPC(ch))
+    SET_NAT_MSKILL(ch, skill_num, MIN(MAX_PROFICIENCY, temp));
+  else
+    SET_NAT_PSKILL(ch, skill_num, MIN(MAX_PROFICIENCY, temp));
+//  send_to_char(ch,"Your skill in %s improves and you gain %dXP!\r\n", spell_info[skill_num].name, gain_exp(ch, gain*(GET_LEVEL(ch)+1)));
+}
 

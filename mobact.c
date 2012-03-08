@@ -118,7 +118,7 @@ void mobile_activity(void)
    if(GET_CLASS(ch) == MOB_CLASS_THIEF)
       hit(ch, vict, SKILL_BACKSTAB);
 	 else
-	    hit(ch, vict, TYPE_UNDEFINED);	 
+	    hit(ch, vict, TYPE_UNDEFINED);
 	 found = TRUE;
 	}
       }

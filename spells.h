@@ -210,7 +210,7 @@
 #define SPELL_DISPEL_MAGIC		171
 #define SPELL_DISPEL_SILENCE		172
 #define SPELL_DRAW_UPON_HOLY_MIGHT	173
-#define SPELL_ELEMENTAL_AURA		174
+#define SPELL_ELEMENTAL_AURA		174 // partially done
 //#define SPELL_ELEMENTAL_BLAST		175 **********USE THIS FIRST, WAS DEFINED TWICE
 #define SPELL_EMBALM			176
 #define SPELL_ENFEEBLEMENT		177
@@ -274,9 +274,9 @@
 #define SPELL_VITALITY			235
 #define SPELL_WINDWALK			236
 #define SPELL_WITHER			237
-#define SPELL_DEATH_STRIKE              238
-#define SPELL_MAGICAL_VESTMANTS         239
-#define SPELL_ELEMENTAL_SHIELD          240
+#define SPELL_DEATH_STRIKE              238 // from cwe
+#define SPELL_MAGICAL_VESTMANTS         239 //
+#define SPELL_ELEMENTAL_SHIELD          240 // partially implemented
 
 /* Insert new spells here, up to MAX_SPELLS */
 #define MAX_SPELLS		    1000
@@ -302,6 +302,20 @@
 #define SKILL_DIST_SIGHT            1048 /* Reserved Skill[] DO NOT CHANGE */
 #define SKILL_CRIT_HIT              1049 /* Reserved Skill[] DO NOT CHANGE */
 #define SKILL_CIRCLE                1050 /* from odin's cwe */
+#define SKILL_SHIELD_SPEC           1051 //
+#define SKILL_PARRY		    1052 //
+#define SKILL_RAGE		    1053 //
+#define SKILL_WHIRLWIND             1054 //
+#define SKILL_ARMOR_SPEC        	1055 //
+
+
+#define SKILL_WP_PIERCE             1300 /* Weapon prof - form CWE March 7, 2012*/
+#define SKILL_WP_SLASH              1301
+#define SKILL_WP_BLUDGEON           1302
+#define SKILL_WP_SPECIAL            1303
+#define SKILL_WP_UNARMED            1304 /* Barehanded weapon group        */
+
+
 /* New skills may be added here up to MAX_SKILLS (2000) */
 
 
@@ -319,6 +333,8 @@
 #define SPELL_FROST_BREATH           2004
 #define SPELL_ACID_BREATH            2005
 #define SPELL_LIGHTNING_BREATH       2006
+
+
 
 
 #define SPELL_DG_AFFECT              2098  /* to make an affect induced by dg_affect
@@ -346,7 +362,8 @@
 #define TYPE_BLAST		     2312
 #define TYPE_PUNCH		     2313
 #define TYPE_STAB		     2314
-
+#define TYPE_KICK                    2315
+#define TYPE_POIS                    2316
 /* new attack types can be added here - up to TYPE_SUFFERING */
 #define TYPE_SUFFERING		     2399
 #define TYPE_SUNDAM                  2400

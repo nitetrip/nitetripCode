@@ -29,6 +29,7 @@ void raw_kill(struct char_data *ch, struct char_data * killer);
 void check_killer(struct char_data *ch, struct char_data *vict);
 int compute_armor_class(struct char_data *ch);
 bool trap_check(struct char_data *ch, int location);
+void skill_gain(struct char_data *ch, int skill_num);
 
 /* local functions */
 ACMD(do_assist);
@@ -43,6 +44,18 @@ ACMD(do_kick);
 ACMD(do_fury);
 ACMD(do_disarm);
 ACMD(do_circle);
+
+// working on these - 3/7/2012
+ACMD(do_parry);
+ACMD(do_rage);
+
+/*ACMD(do_rescue);
+ACMD(do_retreat);
+ACMD(do_shieldpunch);
+ACMD(do_shieldrush);
+ACMD(do_turn);
+ACMD(do_whirlwind); will add later */
+
 
 ACMD(do_assist)
 {
@@ -214,7 +227,7 @@ ACMD(do_backstab)
     act("You notice $N lunging at you!", FALSE, vict, 0, ch, TO_CHAR);
     act("$e notices you lunging at $m!", FALSE, vict, 0, ch, TO_VICT);
     act("$n notices $N lunging at $m!", FALSE, vict, 0, ch, TO_NOTVICT);
-    hit(vict, ch, TYPE_UNDEFINED);
+    hit(ch, vict, TYPE_UNDEFINED);
     return;
   }
 
@@ -295,7 +308,8 @@ ACMD(do_circle)
   if (AWAKE(victim) && (percent > prob))
     damage(ch, victim, 0, SKILL_CIRCLE);
   else
-    hit(ch, victim, SKILL_CIRCLE);
+     hit(ch, victim, SKILL_CIRCLE);
+
     
 /*  if (FIGHTING(victim) == tmp_ch)
     stop_fighting(victim);
@@ -664,9 +678,137 @@ ACMD(do_disarm)
         act("$N smashes your weapon from your hand!", FALSE, vict, obj, ch, TO_CHAR);
         act("$n disarms $N, $p drops to the ground.", FALSE, ch, obj, vict, TO_ROOM);
   }
-  hit(vict , ch, TYPE_UNDEFINED);
+  hit(ch, vict, TYPE_UNDEFINED);
   WAIT_STATE(ch, PULSE_VIOLENCE * 3);
 }
+
+ACMD(do_parry)
+{
+  if (!GET_TOT_SKILL(ch, SKILL_PARRY)) {
+    send_to_char(ch, "%s", NOPROFICIENCY);
+    return;
+  }
+  if IS_SET(MSC_FLAGS(ch), MSC_ACTIVE_SKILL_PARRY) {
+    send_to_char(ch, "You will no longer parry in combat.\r\n");
+    REMOVE_BIT(MSC_FLAGS(ch), MSC_ACTIVE_SKILL_PARRY);
+    return;
+  }
+  else {
+    send_to_char(ch, "You will now attempt to parry in combat!\r\n");
+    SET_BIT(MSC_FLAGS(ch), MSC_ACTIVE_SKILL_PARRY);
+    return;
+  }
+}
+
+ACMD(do_rage)
+{
+  int percent, prob;
+
+  if (!GET_TOT_SKILL(ch, SKILL_RAGE)) {
+    send_to_char(ch, "%s", NOPROFICIENCY);
+    return;
+  }
+  else if (AFF_FLAGGED(ch, AFF_RAGE) || IS_SET(MSC_FLAGS(ch), MSC_ACTIVE_SKILL_RAGE)) {
+    send_to_char(ch, "You're already in a rage!\r\n");
+    return;
+  }
+  if (IS_FIGHTING(ch)) {
+    percent = rand_number(1, 101);
+    prob = GET_TOT_SKILL(ch, SKILL_RAGE);
+    if (percent < prob) {
+      SET_BIT(MSC_FLAGS(ch), MSC_ACTIVE_SKILL_RAGE);
+      send_to_char(ch, "You draw upon your battle lust and go into a RAGE!\r\n");
+      act("$n draws upon $s battle lust and go into a RAGE!", FALSE, ch, 0, ch, TO_ROOM);
+    }
+    else
+      send_to_char(ch, "You try to enter a rage, but can't get excited enough.\r\n");
+    if (percent < SG_MIN)
+      skill_gain(ch, SKILL_RAGE);
+      GET_WAIT_STATE(ch) = PULSE_VIOLENCE; //wait 1 round a failed rage can be attempted again
+  }
+  else {
+    send_to_char(ch, "But you aren't fighting anyone?\r\n");
+    return;
+  }
+}
+
+ACMD(do_whirlwind)
+{
+  struct char_data *vict, *next_vict;
+  int percent, prob;
+  int w_wielded_type, dam;
+  struct obj_data *wielded = WIELDED_WEAPON(ch);
+  int snum_wielded, wskill_wielded;
+  /* If player is a mob or skill isn't learned, we can't do this. */
+  if (!GET_TOT_SKILL(ch, SKILL_WHIRLWIND)) {
+    send_to_char(ch, "%s", NOPROFICIENCY);
+    return;
+  }
+  /* Neither can we do this in a peaceful room */
+  if (ROOM_FLAGGED(IN_ROOM(ch), ROOM_PEACEFUL)) {
+    send_to_char(ch, "%s", PEACE_ROOM_WARNING);
+    return;
+  }
+  /* And finally, the show costs 30 moves, so the player must be able to pay */
+  if (GET_MANA(ch) < BASE_MANA_WHIRLWIND) {
+    send_to_char(ch, "You don't have the energy to do that just now!\r\n");
+    return;
+  }
+  /* Now we just need to calculate the chance for sucess before we begin. */
+  percent = rand_number(1, 101);                    /* 101% is a complete failure */
+  prob = GET_TOT_SKILL(ch, SKILL_WHIRLWIND);
+  if (percent > prob) {
+    send_to_char(ch, "You fail to complete your whirlwind!\r\n");
+    act("$n fails to complete $s whirlwind attack!", FALSE, ch, 0, NULL, TO_NOTVICT);
+    return;
+  }
+ else {
+    if (percent < SG_MIN)
+      skill_gain(ch, SKILL_WHIRLWIND);
+    /* Find the weapon type (for display purposes only) */
+    if (wielded && GET_OBJ_TYPE(wielded) == ITEM_WEAPON)
+      w_wielded_type = GET_OBJ_VAL(wielded, 3) + TYPE_HIT;
+    else {
+      if (IS_NPC(ch) && ch->mob_specials.attack_type != 0)
+        w_wielded_type = ch->mob_specials.attack_type + TYPE_HIT;
+      else if (IS_MONK(ch))
+        if (rand_number(0,1))
+          w_wielded_type = TYPE_PUNCH;
+        else
+          w_wielded_type = TYPE_KICK;
+      else
+        w_wielded_type = TYPE_HIT;
+    }
+    if (wielded)
+      snum_wielded = (GET_OBJ_VAL(wielded, 0));
+    else
+      snum_wielded = SKILL_WP_UNARMED;
+    wskill_wielded = GET_TOT_SKILL(ch, snum_wielded);
+    /* Find first target, hit it, then move on to next one */
+    act("You make a whirlwind attack, wounding ALL of your opponents!", FALSE, ch, 0, NULL, TO_CHAR);
+    // act("$n attacks widely about, hitting everyone!", FALSE, ch, 0, NULL, TO_NOTVICT);
+    act("$n explodes into a whirlwind of attacking frenzy.", FALSE, ch, 0, NULL, TO_NOTVICT);
+    for (vict = world[ch->in_room].people; vict; vict = next_vict) {
+      next_vict = vict->next_in_room;
+    /*  We'll leave out immortals, players (for !pk muds) and pets from the
+        hit list  */
+     if (vict == ch)
+        continue;
+      if (!IS_NPC(vict) && GET_LEVEL(vict) >= LVL_SAINT)
+        continue;
+      if (!pk_allowed)
+        continue;
+      dam = get_max_damage_per_hit(ch, FALSE);
+      act("You are struck by $N's horrible whirlwind-like attack!", FALSE, vict, 0, ch, TO_CHAR);
+//      damage(ch, vict, dam, w_wielded_type, DEATH_MSG_ATTACKER);
+	damage(ch,vict, dam, w_wielded_type);
+    }
+    GET_MANA(ch)=GET_MANA(ch) - BASE_MANA_WHIRLWIND;
+  }
+  if (IS_NPC(ch)) SET_BIT(MSC_FLAGS(ch), MSC_JUST_ATTACKED);
+  GET_WAIT_STATE(ch) = 2 * PULSE_VIOLENCE;
+}
+
 
 
 

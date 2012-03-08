@@ -43,6 +43,11 @@ bool is_daytime();
 int can_see_room(struct char_data *ch, room_rnum room);
 int get_ave_dam(struct obj_data *obj);
 void infochan(const char *str, ...);
+int get_max_damage_per_hit(struct char_data *ch, bool use_held);
+int get_total_hitbonus(struct char_data *ch);
+int get_total_dambonus(struct char_data *ch);
+
+
 #define core_dump()		core_dump_real(__FILE__, __LINE__)
 
 /*
@@ -222,6 +227,17 @@ void	update_pos(struct char_data *victim);
 #define AFF2_FLAGS(ch)	((ch)->char_specials.saved.affected_by2)
 #define ROOM_FLAGS(loc)	(world[(loc)].room_flags)
 #define SPELL_ROUTINES(spl)	(spell_info[spl].routines)
+#define MSC_FLAGS(ch)   ((ch)->char_specials.misc_flags_bitvector)
+
+#define IS_FIGHTING(ch)          (GET_POS(ch) == POS_FIGHTING)
+#define WIELDED_WEAPON(ch)       (GET_EQ(ch, WEAR_WIELD))
+#define IS_USING_HELD_WEAPON(ch) (GET_EQ(ch, WEAR_HOLD) && (GET_OBJ_TYPE(GET_EQ(ch, WEAR_HOLD)) == ITEM_WEAPON))
+#define IS_USING_WEAPON(ch)      (WIELDED_WEAPON(ch) || IS_USING_HELD_WEAPON(ch))
+#define GET_DAMNODICE(ch)        ((ch)->player.damnodice)
+#define GET_DAMSIZEDICE(ch)      ((ch)->player.damsizedice)
+#define GET_DAMBONUS(ch)         ((ch)->player.dambonus)
+#define IS_USING_SHIELD(ch)      (GET_EQ(ch, WEAR_SHIELD) && (GET_OBJ_TYPE(GET_EQ(ch, WEAR_SHIELD)) == ITEM_WEAR_SHIELD))
+#define GET_AP(ch)               ((ch)->points.armor)
 
 /*
  * See http://www.circlemud.org/~greerga/todo/todo.009 to eliminate MOB_ISNPC.
@@ -323,6 +339,14 @@ void	update_pos(struct char_data *victim);
 #define GET_TOT_WIS(ch)          ((ch)->aff_abils.wis)
 #define GET_TOT_CON(ch)          ((ch)->aff_abils.con)
 #define GET_TOT_CHA(ch)          ((ch)->aff_abils.cha)
+#define GET_NAT_STR(ch)          ((ch)->real_abils.str)
+#define GET_NAT_ADD(ch)          ((ch)->real_abils.str_add)
+#define GET_NAT_DEX(ch)          ((ch)->real_abils.dex)
+#define GET_NAT_INT(ch)          ((ch)->real_abils.intel)
+#define GET_NAT_WIS(ch)          ((ch)->real_abils.wis)
+#define GET_NAT_CON(ch)          ((ch)->real_abils.con)
+#define GET_NAT_CHA(ch)          ((ch)->real_abils.cha)
+
 
 #define GET_EXP(ch)	  ((ch)->points.exp)
 #define GET_AC(ch)        ((ch)->points.armor)
@@ -346,8 +370,11 @@ void	update_pos(struct char_data *victim);
 #define HUNTING(ch)	  ((ch)->char_specials.hunting)
 #define GET_SAVE(ch, i)	  ((ch)->char_specials.saved.apply_saving_throw[i])
 #define GET_ALIGNMENT(ch) ((ch)->char_specials.saved.alignment)
-#define GET_ATTACKS(ch)   ((ch)->char_specials.extra_attack) /*seymour */ 
-#define FORTDAM(ch)       ((ch)->char_specials.damback) /*seymour */ 
+#define GET_ATTACKS(ch)   ((ch)->char_specials.extra_attack)
+#define FORTDAM(ch)       ((ch)->char_specials.damback)
+#define GET_STUN_RECOVER_CHANCE(ch) ((ch)->char_specials.stun_recovery_chance)
+#define GET_STUN_DURATION(ch)    ((ch)->char_specials.stun_min_duration)
+
 
 #define GET_COND(ch, i)		CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.conditions[(i)]))
 #define GET_LOADROOM(ch)	CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.load_room))
@@ -364,11 +391,30 @@ void	update_pos(struct char_data *victim);
 #define GET_ALIASES(ch)		CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->aliases))
 #define GET_LAST_TELL(ch)	CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->last_tell))
 
+#define GET_MOD_SKILL(ch, i)        (IS_NPC(ch) ? ((ch)->mob_specials.mod_mskills[i]) : \
+                                    CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.mod_skills[i])))
+
+#define GET_TOT_SKILL(ch, i)        MIN(MAX_PROFICIENCY,MAX(MIN_PROFICIENCY,(GET_NAT_SKILL(ch, i) + GET_MOD_SKILL(ch, i))))
+
+
+
 #define GET_CLAN(ch)		((ch)->player.clan)
 #define GET_CLAN_RANK(ch) 	((ch)->player.rank)
 
 #define GET_SKILL(ch, i)	CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.skills[i]))
 #define SET_SKILL(ch, i, pct)	do { CHECK_PLAYER_SPECIAL((ch), (ch)->player_specials->saved.skills[i]) = pct; } while(0)
+
+
+#define SET_NAT_PSKILL(ch, i, pct)   do { CHECK_PLAYER_SPECIAL((ch), (ch)->player_specials->saved.nat_skills[i]) = pct; } while(0)
+#define SET_NAT_MSKILL(ch, i, pct)  ((ch)->mob_specials.nat_mskills[i] = pct)
+#define GET_NAT_SKILL(ch, i)        (IS_NPC(ch) ? ((ch)->mob_specials.nat_mskills[i]) : \
+                                    CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.nat_skills[i])))
+
+#define SET_MOD_PSKILL(ch, i, pct)   do { CHECK_PLAYER_SPECIAL((ch), (ch)->player_specials->saved.mod_skills[i]) = pct; } while(0)
+#define SET_MOD_MSKILL(ch, i, pct)  ((ch)->mob_specials.mod_mskills[i] = pct)
+#define GET_MOD_SKILL(ch, i)        (IS_NPC(ch) ? ((ch)->mob_specials.mod_mskills[i]) : \
+                                    CHECK_PLAYER_SPECIAL((ch), ((ch)->player_specials->saved.mod_skills[i])))
+
 
 #define GET_EQ(ch, i)		((ch)->equipment[i])
 
@@ -403,6 +449,7 @@ void	update_pos(struct char_data *victim);
 #define SENDOK(ch)    (((ch)->desc || SCRIPT_CHECK((ch), MTRIG_ACT)) && \
                       (to_sleeping || AWAKE(ch)) && \
                       !PLR_FLAGGED((ch), PLR_WRITING))
+#define IS_MOBILE(ch) (GET_POS(ch)>POS_SLEEPING)
 
 /* These three deprecated. */
 #define WAIT_STATE(ch, cycle) do { GET_WAIT_STATE(ch) = (cycle); } while(0)

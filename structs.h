@@ -58,7 +58,10 @@
 #define SPECIAL(name) \
    int (name)(struct char_data *ch, void *me, int cmd, char *argument)
 
-//dan clan system
+#define SG_MIN          2 /* Skill gain check must be less than this number in order to be successful.  IE: 1 p of a skill gain */
+#define MIN_PROFICIENCY  0
+#define MAX_PROFICIENCY  100
+
 /* Clan ranks */
 #define CLAN_UNDEFINED     -1
 #define CLAN_NONE           0
@@ -251,6 +254,24 @@ struct char_data *guildmaster1;
 #define MAX_BAG_ROWS             5
 
 
+// CWE's version of resistance - will probably take this out - march 2012
+#define RESIST_TYPE_FIRE       0
+#define RESIST_TYPE_ELEC       1
+#define RESIST_TYPE_COLD       2
+#define RESIST_TYPE_POIS       3
+#define RESIST_TYPE_SONC       4
+#define RESIST_TYPE_ACID       5
+#define RESIST_TYPE_GAS        6
+#define RESIST_TYPE_LGHT       7
+#define RESIST_TYPE_DIVN       8
+#define RESIST_TYPE_SUMN       9
+#define RESIST_TYPE_LIFE       10
+#define RESIST_TYPE_FEAR       11
+#define RESIST_TYPE_MISC       12
+#define RESIST_TYPE_SLSH       13
+#define RESIST_TYPE_PIER       14
+#define RESIST_TYPE_BLDG       15
+
 /* PC classes */
 #define CLASS_UNDEFINED	  (-1)
 #define CLASS_MAGIC_USER  0
@@ -438,7 +459,7 @@ struct char_data *guildmaster1;
 #define MOB_NOBASH	     (1 << 16) /* Mob can't be bashed (e.g. trees)	*/
 #define MOB_NOBLIND	     (1 << 17) /* Mob can't be blinded		*/
 #define MOB_NOTDEADYET   (1 << 18) /* (R) Mob being extracted.		*/
-
+#define MOB_NOPARALYZE		(1 << 19) // unable t be paralyze -- need to finish up in db.c
 
 /* Preference flags: used by char_data.player_specials.pref */
 #define PRF_BRIEF       (1 << 0)  /* Room descs won't normally be shown	*/
@@ -538,10 +559,25 @@ struct char_data *guildmaster1;
 #define AFF_DETECT_EVIL       (1ULL << 59)  /* char can detect evil */
 #define AFF_DETECT_GOOD       (1ULL << 60)     /* char can detect good */
 #define AFF_DETECT_NEUTRAL    (1ULL << 61)     /* char can detect neutral */
+#define AFF_RAGE	      (1ULL << 62)  // Rage!
 
 /* Affect2 bits: used in char_data.char_specials.saved.affected_by */
 /* WARNING: In the world files, NEVER set the bits marked "R" ("Reserved") */
 #define AFF2_UNUSED             (1ULL << 0)	   /* 		*/
+
+// from CWE V
+/* Miscellaneous flags */
+#define MSC_HIGH_ATTACKS_THIS_ROUND     (1 << 0)   /* Boolean used during combat to adjust \
+                                                    * for fractional attacks per round */
+#define MSC_ACTIVE_SKILL_RAGE           (1 << 1)   /* Boolean used to keep track of whether \
+                                                    * rage affect is from a skill or item. */
+#define MSC_ACTIVE_SKILL_PARRY          (1 << 2)
+#define MSC_JUST_MANAGED_TO_PARRY       (1 << 3)  /* The player just parried an enemy attack */
+#define MSC_HALVE_ATTACKS               (1 << 4)  /* The player number of natural attacks/2rounds is halved */
+#define MSC_LOST_POWERS                 (1 << 5)  /* The player lost his/her/its powers */
+#define MSC_JUST_ATTACKED               (1 << 6)  /* The NPC just attacked. Don't let him be allowed to flee! (see do_flee) */
+                                                  /* No, you can use 'WAIT_STATE' to achieve this... */
+//^ from CWE
 
 
 /* Modes of connectedness: used by descriptor_data.state */
@@ -788,6 +824,25 @@ struct char_data *guildmaster1;
 #define APPLY_PRACTICE         31       /* Apply to practices           */
 #define APPLY_SONC_RESIST      32      /* Apply to sonic resistance    */
 #define APPLY_AP               33       /* Apply to Armor Points        */
+#define APPLY_AGGR_GENERAL      34       /* Apply to mobile's general aggression */
+#define APPLY_AGGR_EVIL        35       /* Apply to mobile's evil aggression */
+#define APPLY_AGGR_GOOD        36       /* Apply to mobile's good aggression */
+#define APPLY_AGGR_NEUTRAL     37       /* Apply to mobile's neutral aggression */
+#define APPLY_AGGR_WIMPY       38       /* Apply to mobile's wimpy aggression */
+#define APPLY_AGGR_COWARD      39       /* Apply to mobile's coward aggression */
+#define APPLY_AGGR_MEMORY      40       /* Apply to mobile's memory aggression */
+#define APPLY_POIS_RESIST      44       /* Apply to poison resistance   */
+#define APPLY_DIVN_RESIST      49       /* Apply to divine resistance   */
+#define APPLY_SUMN_RESIST      50       /* Apply to bludgeon resistance */
+#define APPLY_LIFE_RESIST      51       /* Apply to bludgeon resistance */
+#define APPLY_FEAR_RESIST      52       /* Apply to bludgeon resistance */
+#define APPLY_MISC_RESIST      53       /* Apply to misc resistance     */
+#define APPLY_SLSH_RESIST      54       /* Apply to slash resistance    */
+#define APPLY_PIER_RESIST      55       /* Apply to pierce resistance   */
+
+// ******************** ^^ have to relocate these
+
+
 /* Container flags - value[1] */
 #define CONT_CLOSEABLE      (1 << 0)	/* Container can be closed	*/
 #define CONT_PICKPROOF      (1 << 1)	/* Container is pickproof	*/
@@ -858,6 +913,7 @@ struct char_data *guildmaster1;
  * LVL_SAINT should always be the LOWEST immortal level.  The number of
  * mortal levels will always be LVL_SAINT - 1.
  */
+#define LVL_IMMORT      41
 #define LVL_IMPL	47
 #define LVL_GOD	        46
 #define LVL_DEITY	45
@@ -1211,6 +1267,9 @@ struct pclean_criteria_data {
 }; 
 
 
+
+#define NUM_AGGR_TYPES          7  //1+AGGR_TYPE_MEMORY
+
 /* general player-related info, usually PC's and NPC's */
 struct char_player_data {
    char	passwd[MAX_PWD_LENGTH+1]; /* character's password      */
@@ -1231,6 +1290,10 @@ struct char_player_data {
    byte race;          /* PC / NPC's race                      */
    int clan;           /* PC / NPC's clan                      */
    int rank;           /* PC / NPC's clan rank                 */
+   sh_int aggression[NUM_AGGR_TYPES];  /* NPC's aggression  */
+   ubyte damnodice;    /* Number of dice for unarmed damage */
+   ubyte damsizedice;  /* Size of each unarmed damage die   */
+   sbyte dambonus;     /* Bonus to unarmed damage           */
    };
 
 
@@ -1311,8 +1374,11 @@ struct char_special_data {
    sh_int resist[MAX_ATTACK_TYPES];           /* Anubis  */
    sh_int immune[MAX_ATTACK_TYPES];
    sh_int vulnerable[MAX_ATTACK_TYPES];
-   sh_int extra_attack;  /* extra attacks?? seymour */
+   sh_int extra_attack;  /* extra attacks */
    int damback; /*fort damage back*/ 
+ sbyte  stun_recovery_chance;   /* chance (0 to 100) per round to recover from being stunned */
+   int  stun_min_duration;        /* minimum number of rounds that you will remain stunned */
+ bitvector_t misc_flags_bitvector;  /* contains temp info related to skills and attacks/round */
 
    struct char_special_data_saved saved; /* constants saved in plrfile	*/
 };
@@ -1337,6 +1403,13 @@ struct player_special_data_saved {
    long /*bitvector_t*/	pref;	/* preference flags for PC's.		*/
    ubyte bad_pws;		/* number of bad password attemps	*/
    sbyte conditions[3];         /* Drunk, full, thirsty			*/
+   byte nat_skills[MAX_SKILLS+1]; /* array of skills plus skill 0               */
+   sh_int mod_skills[MAX_SKILLS+1]; /* array of skills plus skill 0             */
+   int rebirths;   /* Number of times a player has been reborn ('resurrected') */
+   sh_int stat_maximums[6];        /* attribute caps */
+   byte dishonor;        /* The number of dishonor points the player has accumulated */
+   byte endurance[2];    /* The number of ticks*5 that the player has endured without food/drink */
+
 
    /* spares below for future expansion.  You can change the names from
       'sparen' to something meaningful, but don't change the order.  */
@@ -1395,6 +1468,14 @@ struct mob_special_data {
    byte damnodice;          /* The number of damage dice's	       */
    byte damsizedice;        /* The size of the damage dice's           */
    int num_attacks;
+// From CWE - 03-07-12
+   /** NOTICE THESE TWO ARRAYS BELOW MAKE A HUGE DIFFERENCE IN MEMORY USAGE OF CIRCLE!!! **/
+   byte nat_mskills[MAX_SKILLS+1];  /* array of natural skills plus skill 0 */
+   byte mod_mskills[MAX_SKILLS+1];  /* modified skills plus skill 0--should be type sh_int */
+   room_rnum loadroom;       /* room number of mobile's home */
+   int return_time;          /* ticks remaining until a formerly charmed mobile returns to its loading room */
+   int newitem;                 /* Check if mob has new inv item       */
+
 };
 
 

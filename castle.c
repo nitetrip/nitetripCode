@@ -306,7 +306,7 @@ int banzaii(struct char_data *ch)
 
   act("$n roars: 'Protect the Kingdom of Great King Welmar!  BANZAIIII!!!'",
 	FALSE, ch, 0, 0, TO_ROOM);
-  hit(ch, chOpponent, TYPE_UNDEFINED);
+   hit(ch, chOpponent, TYPE_UNDEFINED);
   return (TRUE);
 }
 

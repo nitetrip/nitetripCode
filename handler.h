@@ -34,6 +34,9 @@ struct obj_data *create_money(int amount);
 int	isname(const char *str, const char *namelist);
 char	*fname(const char *namelist);
 int	get_number(char **name);
+void  hit_with_wielded_weapon(struct char_data *ch, struct char_data *victim, int type);
+
+
 
 /* ******** objects *********** */
 

@@ -1,3 +1,12 @@
+extern const char *NOEFFECT_RACE;
+extern const char *NOEFFECT_PC;
+extern const char *VICTIM_RESISTS;
+extern const char *NOPROFICIENCY;
+extern const char *PEACE_ROOM_WARNING;
+extern const char *FEIGNING_DEATH;
+extern const char *PC_IS_BURIED;
+extern const char *PS_RESISTS_POISON;
+
 extern const char *circlemud_version;
 extern const char *dirs[];
 extern const char *room_bits[];
