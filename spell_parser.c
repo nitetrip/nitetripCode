@@ -309,6 +309,7 @@ TO_ROOM);
     case SPELL_TELEVIEW_MAJOR:
     case SPELL_TELEVIEW_MINOR:	MANUAL_SPELL(spell_teleview); break;
     case SPELL_SPOOK:           MANUAL_SPELL(spell_spook); break;
+    case SPELL_VITALITY:              MANUAL_SPELL(spell_vitality); break;
     }
 
   return (1);
@@ -854,8 +855,11 @@ void mag_assign_spells(void)
   for (i = 0; i <= TOP_SPELL_DEFINE; i++)
     unused_spell(i);
   /* Do not change the loop above. */
+  spello(SPELL_ACCURACY, "accuracy", 55, 25, 3, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "Your attacks hit with less precision now.");
 
-    spello(SPELL_ACID_ARROW, "acid arrow", 50, 20, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+  spello(SPELL_ACID_ARROW, "acid arrow", 50, 20, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+  spello(SPELL_AID, "aid", 40, 10, 3, POS_STANDING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel less fit.");
 
   spello(SPELL_AIRWALK, "airwalk", 50, 15, 3, POS_STANDING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
@@ -874,6 +878,7 @@ void mag_assign_spells(void)
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
 	"You feel less protected.");
   
+ spello(SPELL_ASPHYXIATE, "asphyxiate", 100, 60, 4, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, "You finally inhale some fresh air and catch your breath.");
   spello(SPELL_ASTRAL_ASCENSION, "astral ascension", 300, 300, 0, POS_STANDING,
 	TAR_IGNORE, FALSE, MAG_GROUPS,
 	NULL);
@@ -883,6 +888,8 @@ void mag_assign_spells(void)
 	NULL);
         
 spello(SPELL_BALL_LIGHTNING, "ball lightning", 100, 70, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+ spello(SPELL_BARKSKIN, "barkskin", 25, 5, 2, POS_STANDING,
+        TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel your skin revert back to flesh.");
 
 spello(SPELL_BAT_SONAR, "bat sonar", 50, 10, 5, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "You notice that sound is no longer as sharp.");
@@ -925,6 +932,8 @@ spello(SPELL_BOLT_OF_STEEL, "bolt of steel", 35, 15, 2, POS_FIGHTING, TAR_CHAR_R
 
  spello(SPELL_CHAIN_LIGHTNING, "chain lightning", 140, 100, 10, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);
  
+ spello(SPELL_CHAMPIONS_STRENGTH, "champions strength", 75, 50, 5, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "Your armor grows heavy as the strength of ancient heroes vacate your body.");
 
   spello(SPELL_CHARM, "charm person", 75, 50, 2, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_NOT_SELF, TRUE, MAG_MANUAL,
@@ -1031,14 +1040,19 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_DISPEL_EVIL, "dispel evil", 40, 25, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
 	NULL);
-
   spello(SPELL_DISPEL_GOOD, "dispel good", 40, 25, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
 	NULL);
+ spello(SPELL_DISPEL_MAGIC, "dispel magic", 40, 10, 5, POS_STANDING,
+        TAR_CHAR_ROOM | TAR_OBJ_INV, FALSE, MAG_UNAFFECTS | MAG_ALTER_OBJS, NULL);
+ spello(SPELL_DISPEL_SILENCE, "dispel silence", 25, 5, 5, POS_STANDING,
+        TAR_CHAR_ROOM, FALSE, MAG_UNAFFECTS, NULL);
 
   spello(SPELL_DIVINE_HEAL, "divine heal", 165, 150, 5, POS_FIGHTING,
         TAR_CHAR_ROOM, FALSE, MAG_POINTS,
         NULL);
+ spello(SPELL_DRAW_UPON_HOLY_MIGHT, "draw upon holy might", 30, 10, 2, POS_FIGHTING,
+        TAR_ATTRIBUTE, FALSE, MAG_AFFECTS, "You feel physically weak as the energy of your god drains from your body.");
 
   spello(SPELL_EARTHQUAKE, "earthquake", 40, 25, 3, POS_FIGHTING,
 	TAR_IGNORE, TRUE, MAG_AREAS,
@@ -1063,7 +1077,9 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_ENERGY_DRAIN, "energy drain", 40, 25, 1, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE | MAG_MANUAL,
 	NULL);
-        
+ spello(SPELL_ENLARGE, "enlarge", 50, 20, 3, POS_STANDING,
+        TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You shrink back to your natural size.");
+
   spello(SPELL_ETHEREAL_PROJECTION, "ethereal projection", 200, 150, 10, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_MANUAL,
 	NULL);
@@ -1077,6 +1093,9 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
         NULL);
   spello(SPELL_FEATHER_FALL, "feather fall", 20, 5, 3, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel more substantial in the air.");
+  spello(SPELL_FLAMEWALK, "flamewalk", 40, 20, 4, POS_STANDING,
+        TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "You no longer feel resistant to the element of fire.");
+
   spello(SPELL_FLEET_FEET, "fleet feet", 40, 10, 2, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "Your feet and legs feel their normal weight again.");
         
@@ -1086,6 +1105,8 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
               
   spello(SPELL_FREE_ACTION, "free action", 50, 20, 5, POS_FIGHTING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You find it slightly more difficult to move.");
+ spello(SPELL_GHOUL_GAUNTLET, "ghoul gauntlet", 80, 40, 4, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "Your hands no longer itch.");
 
   spello(SPELL_GRANT_BAT_SONAR, "grant bat sonar", 60, 20, 4, POS_STANDING,
         TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_AFFECTS, "You notice that sound is no longer as sharp.");
@@ -1110,6 +1131,10 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_HORNET_SWARM, "hornet swarm", 75, 25, 25, POS_FIGHTING,
             TAR_IGNORE, TRUE, MAG_AREAS,
             NULL);
+ spello(SPELL_IMMUNITY_TO_COLD, "immunity to cold", 60, 35, 5, POS_STANDING,
+        TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel a cold chill creep back into your body.");
+  spello(SPELL_IMMUNITY_TO_ELEC, "immunity to electricity", 60, 35, 5, POS_STANDING,
+        TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You no longer feel insulated against electricity.");
 
   spello(SPELL_IMPROVED_INVISIBILITY, "improved invisibility", 50, 30, 2, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel yourself exposed.");
@@ -1233,7 +1258,11 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_PROT_FROM_EVIL, "protection from evil", 40, 10, 3, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
 	"You feel less protected.");
-  
+spello(SPELL_PROTECTION_FROM_EVIL, "protection from evil", 60, 20, 4, POS_STANDING,
+        TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel less protected.");
+   spello(SPELL_PROTECTION_FROM_GOOD, "protection from good", 60, 20, 4, POS_STANDING,
+        TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel less protected.");
+
   spello(SPELL_RECALL_TO_SORIN, "recall to sorin", 20, 10, 2, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_MANUAL,
         NULL);      
@@ -1252,6 +1281,11 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_REMOVE_POISON, "remove poison", 40, 8, 4, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE, MAG_UNAFFECTS | MAG_ALTER_OBJS,
 	NULL);
+ spello(SPELL_RESISTANCE_TO_COLD, "resistance to cold", 50, 25, 5, POS_STANDING,
+        TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel a cold chill creep back into your body.");
+  spello(SPELL_RESISTANCE_TO_ELEC, "resistance to electricity", 50, 25, 5, POS_STANDING,
+        TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You no longer feel insulated against electricity.");
+
   spello(SPELL_ROAR, "roar", 30, 5, 5, POS_FIGHTING,
             TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
             NULL);
@@ -1268,8 +1302,21 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "The shadows dissipates from around your body leaving you vulnerable.");
   spello(SPELL_SILENCE, "silence", 50, 15, 5, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, FALSE, MAG_AFFECTS, "You feel your vocal cords loosen up.");
+ spello(SPELL_SHIELD, "shield", 25, 10, 3, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "You feel less protected.");
+ 
+spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING,
+        TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "You feel less protected.");
+ spello(SPELL_SHIELD_AGAINST_GOOD, "shield against good", 40, 10, 3, POS_STANDING,
+        TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "You feel less protected.");
+
   spello(SPELL_SHOCKING_GRASP, "shocking grasp", 30, 15, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+ spello(SPELL_SHRINK, "shrink", 50, 20, 3, POS_STANDING,
+        TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You grow back to your natural size.");
+ spello(SPELL_SKELETAL_GUISE, "skeletal guise", 80, 50, 5, POS_FIGHTING,
+        TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel your skin stretch and expand as skeletal guise expires.");
+
   spello(SPELL_SLEEP, "sleep", 40, 25, 5, POS_STANDING,
 	TAR_CHAR_ROOM, TRUE, MAG_AFFECTS,
 	"You feel less tired.");
@@ -1292,6 +1339,9 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_STRENGTH, "strength", 35, 30, 1, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
 	"You feel weaker.");
+  spello(SPELL_STRENGTH_BURST, "strength burst", 75, 50, 5, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "Your armor grows heavy as the strength of ancient heroes vacate your body.");
+
 
   spello(SPELL_SUMMON, "summon", 75, 50, 3, POS_STANDING,
 	TAR_CHAR_WORLD | TAR_NOT_SELF, FALSE, MAG_MANUAL,
@@ -1323,18 +1373,18 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
             TAR_IGNORE, TRUE, MAG_AREAS,
             NULL);
     spello(SPELL_UNHOLY_WORD, "unholy word", 100, 60, 8, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);  
+    spello(SPELL_VAMPIRIC_TOUCH, "vampiric touch", 35, 15, 2, POS_FIGHTING,
+            TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_POINTS, NULL);
+
   spello(SPELL_VIGORIZE_CRITICAL, "vigorize critical", 40, 25, 5, POS_FIGHTING,
             TAR_CHAR_ROOM, FALSE, MAG_POINTS,
             NULL);
-            
   spello(SPELL_VIGORIZE_GROUP, "vigorize group", 65, 50, 5, POS_STANDING, 
             TAR_IGNORE, FALSE, MAG_GROUPS,
             NULL);
-            
   spello(SPELL_VIGORIZE_LIGHT, "vigorize light", 25, 10, 5, POS_FIGHTING,
             TAR_CHAR_ROOM, FALSE, MAG_POINTS,
             NULL);
-            
   spello(SPELL_VIGORIZE_SERIOUS, "vigorize serious", 35, 20, 5, POS_FIGHTING,
             TAR_CHAR_ROOM, FALSE, MAG_POINTS,
             NULL);
@@ -1342,12 +1392,18 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_VITALIZE_MANA, "vitalize mana", 33, 33, 0, POS_STANDING,
             TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_POINTS,
             NULL);
+  spello(SPELL_VITALITY, "vitality", 30, 10, 3, POS_STANDING,
+        TAR_CHAR_ROOM, FALSE, MAG_MANUAL, NULL);
+
     spello(SPELL_WAIL_OF_THE_BANSHEE, "wail of the banshee", 150, 100, 10, POS_FIGHTING,
 	TAR_IGNORE, TRUE, MAG_AREAS, NULL);          
-            
   spello(SPELL_WATERWALK, "waterwalk", 40, 20, 2, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
 	"Your feet seem less buoyant.");
+ spello(SPELL_WINDWALK, "windwalk", 50, 25, 5, POS_STANDING,
+        TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "The wind stops swirling about your body.");
+
+
   spello(SPELL_WITHER, "wither", 55, 25, 3, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_FIGHT_VICT, FALSE, MAG_AFFECTSV, "Your shriveled arm grows back to normal.");
 

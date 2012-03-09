@@ -552,6 +552,27 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
 
   switch (spellnum) {
 
+  case SPELL_ACCURACY:
+    af[0].duration = 1;
+    af[0].round_duration = TRUE;
+    af[0].location = APPLY_AP;
+    af[0].modifier = 10; //ac penalty
+    accum_duration = FALSE;
+    // to_vict = "You now attack with exactness and precision!";
+    to_vict = "You feel your senses temporarily increase!";
+    to_room = "$n's attacks hit with exactness and precision!";
+    break;
+
+  case SPELL_AID:
+    mag_affects(level, ch, victim, 0, SPELL_BLESS, savetype);
+    af[0].location = APPLY_HIT;
+    af[0].modifier = get_advance_hitpoints(ch);
+    af[0].duration = GET_LEVEL(ch);
+    accum_duration = FALSE;
+    to_vict = "You feel more fit.";
+    to_room = "$n looks more fit.";
+    break;
+
   case SPELL_AIRWALK:
     if (AFF_FLAGGED(ch, AFF_AIRWALK)) {
        send_to_char(ch, "%s", NOEFFECT);
@@ -569,6 +590,22 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     accum_duration = TRUE;
     to_vict = "You feel someone protecting you.";
     break;
+  case SPELL_BARKSKIN:
+    if (affected_by_spell(victim, SPELL_ARMOR)) {
+      send_to_char(ch, "This spell does not work in conjunction with Armor.\r\n");
+      return;
+    }
+    af[0].location = APPLY_AP;
+    af[0].modifier = -30;
+    af[0].duration = 24;
+    af[1].location = APPLY_DEX;
+    af[1].modifier = -1;
+    af[1].duration = 24;
+    accum_duration = FALSE;
+    to_vict = "You feel your skin replaced by bark.";
+    break;
+
+
   case SPELL_GRANT_BAT_SONAR:
   case SPELL_BAT_SONAR:
     duration = (spellnum == SPELL_BAT_SONAR) ? 2*GET_LEVEL(ch) : GET_LEVEL(ch);
@@ -706,7 +743,35 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     to_room = "$n briefly glows red!";
     to_vict = "You feel very uncomfortable.";
     break;
-  
+
+  case SPELL_DEATH_STRIKE:
+  case SPELL_POWER_STRIKE:
+    af[0].duration = 1;
+    af[0].round_duration = TRUE;
+    af[0].location = APPLY_AP;
+    af[0].modifier = 10; //ac penalty
+    accum_duration = FALSE;
+    to_vict = ((spellnum == SPELL_POWER_STRIKE) ? "You concentrate an aura of power against your opponent!" : "You concenrate a massive aura of power against your opponent!");
+    // "You draw upon your Ki power and your attacks become ferocious!");
+    to_room = "$n becomes ferocious as $e draws upon $s Ki power!";
+    break;
+  case SPELL_DEATHS_DOOR:
+    if AFF_FLAGGED(victim, AFF_REGENERATION) {
+      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      return;
+    }
+    duration = GET_LEVEL(ch)*3;
+    af[0].duration = duration;
+    af[0].bitvector = AFF_DEATHS_DOOR;
+    af[1].location = APPLY_CON;
+    af[1].duration = duration;
+    af[1].modifier = 1;
+    af[1].bitvector = AFF_DEATHS_DOOR;
+    accum_duration = FALSE;
+    send_to_char(ch, "%s looks more hardy.\r\n", CAP(GET_NAME(victim)));
+    to_vict = "You feel more hardy.";
+    break;
+
   case SPELL_DERVISH_SPIN:
     af[0].duration = 1;
     af[0].bitvector = AFF_DERVISH_SPIN;
@@ -778,6 +843,16 @@ case SPELL_DECREPIFY:
     to_vict = "You feel your senses heighten.";
     to_room = "$n gets a strange twinkle in $s eyes.";    
     break;
+
+  case SPELL_DRAW_UPON_HOLY_MIGHT:
+    af[0].duration = GET_LEVEL(ch);
+    af[0].location = APPLY_STR+param1;
+    af[0].modifier = 1+(GET_LEVEL(ch)/10);
+    accum_duration = FALSE;
+    to_vict = "Your body shudders violently as the power of your god is channeled into you.";
+    to_room = "$n's body shudders violently as a bright aura envelopes $m.";
+    break;
+
 
   case SPELL_ELEMENTAL_AURA:
     if (affected_by_spell(victim, SPELL_SKELETAL_GUISE)) {
@@ -889,6 +964,39 @@ case SPELL_DECREPIFY:
     }
     accum_duration = FALSE;
     break;
+  case SPELL_ENLARGE:
+/*    if (affected_by_spell(victim, SPELL_SHRINK)) {
+      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      return;
+    } This isn't necesary for now. */
+    duration = 4+(GET_LEVEL(ch)>>1);
+    af[0].duration = duration;
+    af[0].location = APPLY_SIZE;
+    af[0].modifier = 1;
+    af[1].duration = duration;
+    af[1].location = APPLY_DAMROLL;
+    af[1].modifier = 2;
+    accum_duration = FALSE;
+    to_vict = "You grow up to a larger size.";
+    to_room = "$n grows up to a larger size.";
+    break;
+
+  case SPELL_FEATHER_FALL:
+    af[0].duration = GET_LEVEL(ch);
+    af[0].bitvector = AFF_FEATHER_FALL;
+    accum_duration = FALSE;
+    to_vict = "You feel like you are drifting on the wind.";
+    break;
+
+  case SPELL_FLAMEWALK:
+    duration = GET_LEVEL(ch);
+    af[0].location = APPLY_FIRE_RESIST;
+    af[0].duration = duration;
+    af[0].modifier = 50;
+    to_vict = "You suddenly feel resistant to fire.";
+    accum_duration = FALSE;
+    break;
+
 
 
   case SPELL_FLEET_FEET:
@@ -925,6 +1033,14 @@ case SPELL_DECREPIFY:
    to_vict = "Nothing seems to happen.";
    break;
 
+  case SPELL_GHOUL_GAUNTLET:
+    af[0].duration = (GET_LEVEL(ch)/10)+1;
+    af[0].bitvector = AFF_PARALYZING_TOUCH;
+    accum_duration = FALSE;
+    to_vict = "You feel a sudden itch in your hands.";
+    break;
+
+
   case SPELL_HASTE:
     duration = GET_LEVEL(ch)/4 + GET_TOT_CON(victim)/2;
     af[0].duration = duration;
@@ -949,6 +1065,25 @@ case SPELL_DECREPIFY:
     send_to_char(ch, "Peaceful dreams of joy and happiness fill %s's sleep.\r\n", GET_NAME(victim));
     to_vict = "Peaceful dreams of joy and happiness fill your sleep.";
     break;
+
+  case SPELL_IMMUNITY_TO_COLD:
+    duration = GET_LEVEL(ch);
+    af[0].location = APPLY_COLD_RESIST;
+    af[0].duration = duration;
+    af[0].modifier = MAX_RESIST;
+    to_vict = "You feel a chill leave your body!";
+    accum_duration = FALSE;
+    break;
+
+  case SPELL_IMMUNITY_TO_ELEC:
+    duration = GET_LEVEL(ch);
+    af[0].location = APPLY_ELEC_RESIST;
+    af[0].duration = duration;
+    af[0].modifier = MAX_RESIST;
+    to_vict = "You feel insulated against electricity!";
+    accum_duration = FALSE;
+    break;
+
   
   case SPELL_INFRAVISION:
     af[0].duration = 12 + level;
@@ -1048,7 +1183,34 @@ case SPELL_DECREPIFY:
     accum_duration = FALSE;
     send_to_char(ch, "%s looks more fit.\r\n", CAP(GET_NAME(victim)));
     to_vict = "You feel more fit.";
-    break;    
+    break;
+
+  case SPELL_RESISTANCE_TO_COLD:
+    if (affected_by_spell(victim, SPELL_IMMUNITY_TO_COLD)) {
+      send_to_char(ch, "You're already immune to cold!\r\n");
+      return;
+    }
+    duration = GET_LEVEL(ch)*2;
+    af[0].location = APPLY_COLD_RESIST;
+    af[0].duration = duration;
+    af[0].modifier = 50;
+    to_vict = "You feel a chill leave your body!";
+    accum_duration = FALSE;
+    break;
+
+  case SPELL_RESISTANCE_TO_ELEC:
+    if (affected_by_spell(victim, SPELL_IMMUNITY_TO_ELEC)) {
+      send_to_char(ch, "You're already immune to electricity!\r\n");
+      return;
+    }
+    duration = GET_LEVEL(ch)*2;
+    af[0].location = APPLY_ELEC_RESIST;
+    af[0].duration = duration;
+    af[0].modifier = 50;
+    to_vict = "You feel insulated against electricity!";
+    accum_duration = FALSE;
+    break;
+
 
   case SPELL_SANCTUARY:
     if (!AFF_FLAGGED(ch, AFF_FORT)) {
@@ -1081,6 +1243,98 @@ case SPELL_DECREPIFY:
     to_vict = "The shadows in the room swarm about your body, providing a protective barrier.";
     to_room = "The shadows in the room swarm about $n's body, providing a protective barrier.";    
     break;
+
+  case SPELL_SHIELD:
+    af[0].location = APPLY_AP;
+    af[0].modifier = -10;
+    af[0].duration = 24;
+    af[1].location = APPLY_SAVING_PARA;
+    af[1].duration = 24;
+    af[1].modifier = -5;
+    af[2].location = APPLY_SAVING_ROD;
+    af[2].duration = 24;
+    af[2].modifier = -5;
+    af[3].location = APPLY_SAVING_PETRI;
+    af[3].duration = 24;
+    af[3].modifier = -5;
+    af[4].location = APPLY_SAVING_BREATH;
+    af[4].duration = 24;
+    af[4].modifier = -5;
+    af[5].location = APPLY_SAVING_SPELL;
+    af[5].duration = 24;
+    af[5].modifier = -5;
+    accum_duration = FALSE;
+    to_vict = "You sense a strong shield of magic protecting you.";
+    break;
+  
+
+case SPELL_SHIELD_AGAINST_EVIL:
+  case SPELL_PROTECTION_FROM_EVIL:
+    if IS_EVIL(victim) {
+      act("The evilness in your spirit prevents the spell form working.", FALSE, victim, 0, ch, TO_CHAR);
+      return;
+    }
+    duration = 10+GET_LEVEL(ch)/4;
+    af[0].duration = duration;
+    af[0].bitvector = AFF_PROTECT_EVIL;
+    accum_duration = TRUE;
+    to_vict = "You have a righteous feeling!";
+    to_room = "A blue aura shaped as a shield briefly grows in front of $n.";
+    break;
+
+  case SPELL_SHIELD_AGAINST_GOOD:
+  case SPELL_PROTECTION_FROM_GOOD:
+    if IS_GOOD(victim) {
+      act("The goodness in your spirit prevents the spell form working.", FALSE, victim, 0, ch, TO_CHAR);
+      return;
+    }
+    duration = 10+GET_LEVEL(ch)/4;
+    af[0].duration = duration;
+    af[0].bitvector = AFF_PROTECT_GOOD;
+    accum_duration = TRUE;
+    to_vict = "You have a wicked feeling!";
+    to_room = "A red aura shaped as a shield briefly grows in front of $n.";
+    break;
+
+
+  case SPELL_SHRINK:
+    if (affected_by_spell(victim, SPELL_ENLARGE)) {
+      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      return;
+    }
+    duration = 4+(GET_LEVEL(ch)>>1);
+    af[0].duration = duration;
+    af[0].location = APPLY_SIZE;
+    af[0].modifier = -1;
+    af[1].duration = duration;
+    af[1].location = APPLY_AP;
+    af[1].modifier = -20;
+    accum_duration = FALSE;
+    to_vict = "You shrink down to a smaller size.";
+    to_room = "$n shrinks down to a smaller size.";
+    break;
+
+  case SPELL_SKELETAL_GUISE:
+    if (affected_by_spell(victim, SPELL_ELEMENTAL_AURA)) {
+      send_to_char(ch, "This spell does not work in conjunction with Elemental Aura.\r\n");
+      return;
+    }
+    duration = 6+((GET_LEVEL(ch)-1)/10)*3;
+    af[0].location = APPLY_SLSH_RESIST;
+    af[0].duration = duration;
+    af[0].modifier = 50;
+    af[1].location = APPLY_PIER_RESIST;
+    af[1].duration = duration;
+    af[1].modifier = 50;
+    af[2].location = APPLY_CHA;
+    af[2].duration = duration;
+    af[2].modifier = -3;
+    accum_duration = FALSE;
+    to_vict = "You feel your skin grow taut as it stretches tightly over your bones.";
+    to_room = "$n's features grow taut and skeletal.";
+    break;
+
+
 
   case SPELL_SLEEP:
     if (!pk_allowed && !IS_NPC(ch) && !IS_NPC(victim))
@@ -1121,6 +1375,22 @@ case SPELL_DECREPIFY:
     to_vict = "You feel stronger!";
     break;
 
+  case SPELL_STRENGTH_BURST:
+  case SPELL_CHAMPIONS_STRENGTH:
+    if (GET_TOT_STR(victim) >= MAX_STAT_ATTRIBUTE) {
+      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      return;
+    }
+    af[0].location = APPLY_STR;
+    af[0].duration = 1;
+    af[0].modifier = MAX_STAT_ATTRIBUTE + 10; //the 10 is for the ten subdivisions between str 18 and str 19
+    af[0].round_duration = (spellnum == SPELL_STRENGTH_BURST);
+    accum_duration = FALSE;
+    accum_affect = FALSE;
+    to_vict = ((spellnum == SPELL_STRENGTH_BURST) ? "You feel your strength temporarily increase!" : "You feel the strength of past heroes run through you$
+    break;
+
+
   case SPELL_SENSE_LIFE:
     to_vict = "Your feel your awareness improve.";
     af[0].duration = GET_LEVEL(ch);
@@ -1134,6 +1404,17 @@ case SPELL_DECREPIFY:
     accum_duration = FALSE;
     to_vict = "You feel your hunger fade away.";
     break;
+  case SPELL_TOWER_OF_STRENGTH:
+    if AFF_FLAGGED(victim, AFF_SANCTUARY) {
+      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      return;
+    }
+    af[0].duration = MAX(1,(GET_LEVEL(ch)/5));
+    af[0].bitvector = AFF_SANCTUARY;
+    accum_duration = FALSE;
+    to_vict = "From your holiness and purity, you will a tower of strength about your body.";
+    to_room = "$n is surrounded by white tower of strength.";
+    break;
 
   case SPELL_WATERWALK:
     af[0].duration = 24;
@@ -1141,6 +1422,20 @@ case SPELL_DECREPIFY:
     accum_duration = TRUE;
     to_vict = "You feel webbing between your toes.";
     break;
+  case SPELL_WINDWALK:
+    duration = GET_LEVEL(ch);
+    af[0].duration = duration;
+    af[0].bitvector = AFF_AIRWALK;
+    af[1].location = APPLY_ELEC_RESIST;
+    af[1].duration = duration;
+    af[1].modifier = 50;
+    af[2].location = APPLY_GAS_RESIST;
+    af[2].duration = duration;
+    af[2].modifier = 50;
+    to_vict = "You feel the wind stir around your body.";
+    accum_duration = FALSE;
+    break;
+
   case SPELL_WITHER:
     if (mag_savingthrow(ch, victim, SAVING_PETRI, 0)) {
       send_to_char(ch, "%s", CONFIG_NOEFFECT);
@@ -1310,7 +1605,7 @@ void mag_groups(int level, struct char_data *ch, int spellnum, int savetype)
 
 /*
  * mass spells affect every creature in the room except the caster.
- * 
+ * ****Might change this to affect caster also - sey 03/12
  * There weren't any implemented spells in circle stock here.
  * I added the return message fields    - mak 8.10.04
  *
@@ -1371,6 +1666,32 @@ void mag_areas(int level, struct char_data *ch, int spellnum, int savetype)
    * in mag_damage for the damaging part of the spell.
    */
   switch (spellnum) {
+  case SPELL_ASPHYXIATE:
+    to_char = "You breath some noxious gas into the air!";
+    to_room = "$n breaths some noxious gas into the air!";
+    break;
+  case SPELL_BREATH_FIRE:
+    to_char = "You breath fire into the room burning everyone in the area!";
+    to_room = "$n breaths fire into the room that burns everyone nearby!";
+    break;
+
+  case SPELL_BREATH_GAS:
+    to_char = "You breath gas into the room suffocating everyone in the area!";
+    to_room = "$n breaths gas into the room that suffocates everyone nearby!";
+    break;
+  case SPELL_BREATH_FROST:
+    to_char = "You breath frost into the room freezing everyone in the area!";
+    to_room = "$n breaths frost into the room that freezes everyone nearby!";
+    break;
+  case SPELL_BREATH_ACID:
+    to_char = "You breath acid into the room eroding everyone in the area!";
+    to_room = "$n breaths acid into the room that erodes everyone nearby!";
+    break;
+  case SPELL_BREATH_LIGHTNING:
+    to_char = "You breath lightning into the room electrocuting everyone in the area!";
+    to_room = "$n breaths lightning into the room that electrocutes everyone nearby!";
+    break;
+
   case SPELL_CHAIN_LIGHTNING:
     to_char = "Lightning bolts spray from your fingertips and connect with nearby lifeforms!";
     to_room = "$n sprays bolts of lightning from $s fingertips which connect with nearby lifeforms.";
@@ -1530,6 +1851,8 @@ void mag_summons(int level, struct char_data *ch, struct obj_data *obj,
   switch (spellnum) {
   case SPELL_CLONE:
     msg = 10;
+  spello(SPELL_VAMPIRIC_TOUCH, "vampiric touch", 35, 15, 2, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_POINTS, NULL);
     fmsg = rand_number(2, 6);	/* Random fail message. */
     mob_num = MOB_CLONE;
     pfail = 50;	/* 50% failure, should be based on something later. */
@@ -1607,6 +1930,8 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
     break;
   case SPELL_CURE_LIGHT:
     healing = dice(1, 8) + 1 + (level / 4);
+  spello(SPELL_VAMPIRIC_TOUCH, "vampiric touch", 35, 15, 2, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_POINTS, NULL);
     send_to_char(victim, "You feel better.\r\n");
     break;
   case SPELL_CURE_CRITIC:
@@ -1726,6 +2051,36 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
     healing = 240;
     send_to_char(victim, "You glow slightly as warmth floods through your veins.\r\n");
     break;
+
+  case SPELL_VAMPIRIC_TOUCH:
+    if (spellnum == SPELL_VAMPIRIC_TOUCH) {
+      caster_add_hits = attacker_successfully_hit_victim(ch, victim, TRUE, TRUE) ? MIN(10,MAX(0,GET_LEVEL(ch)-5)+5):0;
+      //dont allow caster to suck more life from the victim than the victim has
+      caster_add_hits = MIN(GET_HIT(victim)-MIN_HIT_POINTS, rand_number(caster_add_hits, 3*caster_add_hits));
+    }
+    else {
+      caster_add_hits = attacker_successfully_hit_victim(ch, victim, TRUE, TRUE) ? MIN(10,MAX(0,GET_LEVEL(ch)-13)+10):0;
+      //dont allow caster to suck more life from the victim than the victim has
+      caster_add_hits = MIN(GET_HIT(victim)-MIN_HIT_POINTS, rand_number(caster_add_hits, 2*caster_add_hits));
+      caster_add_move = MIN(GET_MOVE(victim), rand_number(caster_add_hits, 2*caster_add_hits));
+      caster_add_mana = MIN(GET_MANA(victim), rand_number(caster_add_hits, 2*caster_add_hits));
+      victim_add_move = -1*caster_add_move;
+      victim_add_mana = -1*caster_add_mana;
+    }
+    if (caster_add_hits) {
+      damage(ch, victim, caster_add_hits, spellnum, DEATH_MSG_ATTACKER);
+      to_room = "$n drains $N - what a waste of energy!";
+      to_vict = "$N drains some of your energy!";
+      to_char = "You drain $N of some of $S energy.\r\nYou feel better as life force flows into you.";
+    }
+    else {
+      to_vict = "$N reaches out to touch you but misses!";
+      to_char = "You need more draining lessons.";
+      to_room = "$n fails to drain $N - what a waste of energy.";
+    }
+    break;
+
+
   case SPELL_VIGORIZE_CRITICAL:
     move = 45 + (level / 4);
     send_to_char(victim, "You feel very well-rested. \r\n");
@@ -1743,6 +2098,10 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
     move = -(GET_MOVE(victim));
     send_to_char(victim, "Your mind feels refreshed, though you collapse from the effort.\r\n");
     break;
+
+
+
+
      default:
     log("SYSERR: unknown spellnum %d passed to mag_points.", spellnum);
     return;
@@ -1757,13 +2116,15 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
     act(to_room, TRUE, victim, 0, ch, TO_ROOM);
   if (to_notvict != NULL)
     act(to_notvict, TRUE, victim, 0, ch, TO_NOTVICT);
+
+
 }
 
 
 void mag_unaffects(int level, struct char_data *ch, struct char_data *victim,
 		        int spellnum, int type)
 {
-  int spell = 0, msg_not_affected = TRUE;
+  int spell = 0, msg_not_affected = TRUE, new_position = -1;
   const char *to_vict = NULL, *to_room = NULL;
 
   if (victim == NULL)
@@ -1784,6 +2145,25 @@ void mag_unaffects(int level, struct char_data *ch, struct char_data *victim,
     spell = SPELL_CURSE;
     to_vict = "You don't feel so unlucky.";
     break;
+
+  case SPELL_DISPEL_MAGIC:
+    if (affected_by_spell(victim, SPELL_PARALYZE)) {
+      spell = SPELL_PARALYZE;
+      msg_not_affected = TRUE;
+      new_position = POS_STANDING;
+      to_vict = "You can move again!";
+      to_room = "$n can move again.";
+    }
+  case SPELL_DISPEL_SILENCE:
+    spell = SPELL_SILENCE;
+    msg_not_affected = TRUE;
+    to_vict = "Your voice returns to you.";
+    to_room = "Sound once again emits from $n.";
+    break;
+
+
+
+
   default:
     log("SYSERR: unknown spellnum %d passed to mag_unaffects.", spellnum);
     return;
@@ -1826,6 +2206,12 @@ void mag_alter_objs(int level, struct char_data *ch, struct obj_data *obj,
 	if (GET_OBJ_TYPE(obj) == ITEM_WEAPON)
 	  GET_OBJ_VAL(obj, 2)--;
 	to_char = "$p briefly glows red.";
+      }
+      break;
+    case SPELL_DISPEL_MAGIC:
+      if (OBJ_FLAGGED(obj, ITEM_INVISIBLE)) {
+        REMOVE_BIT(GET_OBJ_EXTRA(obj), ITEM_INVISIBLE);
+        to_char = "$p flickers into view.";
       }
       break;
     case SPELL_INVISIBLE:

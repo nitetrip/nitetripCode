@@ -207,7 +207,7 @@
 #define SPELL_DIMENSION_SHIFT		168
 #define SPELL_DIMENSION_WALK		169
 #define SPELL_DIMENSION_DOOR		170
-#define SPELL_DISPEL_MAGIC		171
+#define SPELL_DISPEL_MAGIC		171 //
 #define SPELL_DISPEL_SILENCE		172
 #define SPELL_DRAW_UPON_HOLY_MIGHT	173
 #define SPELL_ELEMENTAL_AURA		174 // partially done
@@ -271,9 +271,9 @@
 #define SPELL_TRAIL_OF_WOODLANDS	232
 #define SPELL_VAMPIRIC_GAZE		233
 #define SPELL_VAMPIRIC_TOUCH		234
-#define SPELL_VITALITY			235
-#define SPELL_WINDWALK			236
-#define SPELL_WITHER			237
+#define SPELL_VITALITY			235 //
+#define SPELL_WINDWALK			236 //
+#define SPELL_WITHER			237 // part done
 #define SPELL_DEATH_STRIKE              238 // from cwe
 #define SPELL_MAGICAL_VESTMANTS         239 //
 #define SPELL_ELEMENTAL_SHIELD          240 // partially implemented
@@ -461,6 +461,7 @@ ASPELL(spell_detect_poison);
 ASPELL(spell_spook);
 ASPELL(spell_clan_recall);
 ASPELL(spell_phase_door);
+ASPELL(spell_vitality);
 
 /* basic magic calling functions */
 
