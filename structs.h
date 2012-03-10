@@ -152,19 +152,24 @@ struct char_data *guildmaster1;
 /* char and mob-related defines *****************************************/
 
 /* Resistance, Immunity, and vulnerability types these should never be changed
-*  new types can be added at the end  Anubis */
-#define ATTACK_PHYSICAL 0
-#define ATTACK_PIERCE 1
-#define ATTACK_BLUDGEON 2
-#define ATTACK_SLASH  3
-#define ATTACK_WHIP 4
-#define ATTACK_MAGIC  5
-#define ATTACK_FIRE 6
-#define ATTACK_COLD 7
-#define ATTACK_ELECTRIC 8
-#define ATTACK_LIGHT 9
-#define ATTACK_POISON 10
-#define MAX_ATTACK_TYPES  19            /*FIXME March 9, 2012 do we need this? */
+*  new types can be added at the end   */
+#define ATTACK_PHYSICAL 	0
+#define ATTACK_PIERCE 		1
+#define ATTACK_BLUDGEON 	2
+#define ATTACK_SLASH  		3
+#define ATTACK_WHIP 		4
+#define ATTACK_MAGIC  		5
+#define ATTACK_FIRE 		6
+#define ATTACK_COLD 		7
+#define ATTACK_ELECTRIC 	8
+#define ATTACK_LIGHT 		9
+#define ATTACK_POISON 		10
+#define ATTACK_SONIC   		11
+#define ATTACK_ACID		12
+#define ATTACK_GAS   		13
+
+#define MAX_ATTACK_TYPES  	13
+
 /* Room/mob/obj/pc sizes */
 #define SIZE_SPECIAL    0
 #define SIZE_TINY       1

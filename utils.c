@@ -844,7 +844,7 @@ void infochan(const char *str, ...)
 
 int convert_damage_type_to_resistance(int attacktype)
 {
-/*   switch (attacktype) {
+   switch (attacktype) {
      case TYPE_HIT:
      case TYPE_BLUDGEON:
      case TYPE_CRUSH:
@@ -856,8 +856,8 @@ int convert_damage_type_to_resistance(int attacktype)
      case SPELL_FLAILING_FISTS:
      case SKILL_BASH:
      case SKILL_KICK:
-     case SKILL_SHIELDPUNCH:
-     case SKILL_SHIELDRUSH:
+     //case SKILL_SHIELDPUNCH:
+//     case SKILL_SHIELDRUSH:
      case SKILL_WP_UNARMED:
      case SKILL_WP_BLUDGEON:
        return RESIST_TYPE_BLDG;
@@ -879,7 +879,7 @@ int convert_damage_type_to_resistance(int attacktype)
      case SKILL_WP_PIERCE:
        return RESIST_TYPE_PIER;
 
-     case TYPE_FIRE:
+     // case TYPE_FIRE:
      case SPELL_BREATH_FIRE:
      case SPELL_BURNING_HANDS:
      case SPELL_FIREBALL:
@@ -887,7 +887,7 @@ int convert_damage_type_to_resistance(int attacktype)
      case SPELL_FLAMESTRIKE:
      case SPELL_FLAMING_ARROW:
        return RESIST_TYPE_FIRE;
-     case TYPE_ELEC:
+     //case TYPE_ELEC:
      case SPELL_BALL_LIGHTNING:
      case SPELL_CALL_LIGHTNING:
      case SPELL_CHAIN_LIGHTNING:
@@ -895,7 +895,7 @@ int convert_damage_type_to_resistance(int attacktype)
      case SPELL_BREATH_LIGHTNING:
      case SPELL_SHOCKING_GRASP:
        return RESIST_TYPE_ELEC;
-     case TYPE_COLD:
+  //   case TYPE_COLD:
      case SPELL_BREATH_FROST:
      case SPELL_CHILL_TOUCH:
      case SPELL_ICE_LANCE:
@@ -904,31 +904,31 @@ int convert_damage_type_to_resistance(int attacktype)
      case TYPE_STING:
      case TYPE_POIS:
      case SPELL_POISON:
-     case SKILL_ENVENOM:
+    // case SKILL_ENVENOM:
        return RESIST_TYPE_POIS;
-     case TYPE_SONC:
+    // case TYPE_SONC:
      case SPELL_ROAR:
      case SPELL_SONIC_BLAST:
      case SPELL_WAIL_OF_THE_BANSHEE:
        return RESIST_TYPE_SONC;
-     case TYPE_ACID:
+      //case TYPE_ACID:
      case SPELL_ACID_ARROW:
      case SPELL_BREATH_ACID:
        return RESIST_TYPE_ACID;
 
-     case TYPE_GAS:
+     //case TYPE_GAS:
      case SPELL_BREATH_GAS:
      case SPELL_ASPHYXIATE:
        return RESIST_TYPE_GAS;
-     case TYPE_LGHT:
+     //case TYPE_LGHT:
      case SPELL_COLOR_SPRAY:
-     case SPELL_MOON_MOTE:
+     //case SPELL_MOON_MOTE:
      case SPELL_PRISMATIC_SPRAY:
      case SPELL_SUNRAY:
      case SPELL_SUNBURST:
      case SPELL_SEARING_ORB:
        return RESIST_TYPE_LGHT;
-     case TYPE_DIVN:
+    // case TYPE_DIVN:
      case SPELL_DISPEL_EVIL:
      case SPELL_DISPEL_GOOD:
      case SPELL_SMITE_EVIL:
@@ -938,30 +938,28 @@ int convert_damage_type_to_resistance(int attacktype)
      case SPELL_HARM:
      case SPELL_CAUSE_MINOR:
      case SPELL_CAUSE_MAJOR:
-     case SPELL_PROTECTION_FROM_EVIL:
-     case SPELL_PROTECTION_FROM_GOOD:
      case SPELL_SHIELD_AGAINST_EVIL:
      case SPELL_SHIELD_AGAINST_GOOD:
-     case SKILL_TURNING:
+     //case SKILL_TURNING:
        return RESIST_TYPE_DIVN;
      case SPELL_SUMMON_LESSER:
      case SPELL_SUMMON_GREATER:
-     case TYPE_SUMN:
+    // case TYPE_SUMN:
        return RESIST_TYPE_SUMN;
-     case TYPE_LIFE:
+    // case TYPE_LIFE:
      case SPELL_LIFE_LEECH:
      case SPELL_VAMPIRIC_TOUCH:
      case SPELL_ENERGY_DRAIN:
  return RESIST_TYPE_LIFE;
-     case TYPE_FEAR:
+    // case TYPE_FEAR:
      case SPELL_SPOOK:
        return RESIST_TYPE_FEAR;
      case SKILL_WP_SPECIAL:
      case SPELL_REFLECT_DAMAGE:
-     case TYPE_MISC:
+    // case TYPE_MISC:
        return RESIST_TYPE_MISC;
-     default: return RESIST_TYPE_MISC;*/
-//   }
+     default: return RESIST_TYPE_MISC;
+   }
 }
 int get_max_damage_per_hit(struct char_data *ch, bool use_held)
 {
@@ -988,6 +986,26 @@ int get_max_damage_per_hit(struct char_data *ch, bool use_held)
 int get_total_dambonus(struct char_data *ch)
 {
    return ((ch)->points.damroll + str_app[STRENGTH_APPLY_INDEX(ch)].todam);
+}
+
+int get_capped_resistance(struct char_data *ch, int resist_type)
+{
+  if (IS_NPC(ch)) {  //NPCs may be completely immune to everything
+      return (MAX(MIN_RESIST, MIN(MAX_RESIST, GET_RESIST(ch, resist_type))));
+  }
+  else if (GET_LEVEL(ch) < LVL_IMMORT) {
+    //mortals must alway be partially vulnerable to physical attacks
+    switch (resist_type) {
+      case RESIST_TYPE_SLSH:
+      case RESIST_TYPE_PIER:
+      case RESIST_TYPE_BLDG:
+       return (MAX(MIN_RESIST, MIN(MAX_PHYSICAL_RESIST, GET_RESIST(ch, resist_type))));
+      default:
+        return (MAX(MIN_RESIST, MIN(MAX_RESIST, GET_RESIST(ch, resist_type))));
+    }
+  }
+  else
+    return (MAX(MIN_RESIST, MIN(MAX_RESIST, GET_RESIST(ch, resist_type))));
 }
 
 

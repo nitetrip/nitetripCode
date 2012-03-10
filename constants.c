@@ -608,6 +608,10 @@ const char *res_types[] =
   "ELECTRIC",
   "LIGHT",
   "POISON",
+  "SONIC",
+  "ACID",
+  "GAS",
+
   "\n"
 };
 
@@ -615,18 +619,21 @@ const char *res_types[] =
 /* strings must match values in res_types */
 const char *sorted_res_types[] =
 {
-  "BLUDGEON",
-  "COLD",
-  "ELECTRIC",
-  "FIRE",
-  "LIGHT",
-  "MAGIC",
   "PHYSICAL",
   "PIERCE",
-  "POISON",
+  "BLUDGEON",
   "SLASH",
   "WHIP",
-  "\n"
+  "MAGIC",
+  "FIRE",
+  "COLD",
+  "ELECTRIC",
+  "LIGHT",
+  "POISON",
+  "SONIC",
+  "ACID",
+  "GAS",
+"\n"
 };
 
 /* CON_x */

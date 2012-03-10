@@ -1263,8 +1263,8 @@ int compute_thaco(struct char_data *ch, struct char_data *victim)
 void hit(struct char_data *ch, struct char_data *victim, int type)
 {
   struct obj_data *wielded = GET_EQ(ch, WEAR_WIELD);
-  int level_diff, w_type, victim_ac, calc_thaco, dam, diceroll;
-
+   int  level_diff, w_type, victim_ac, calc_thaco, dam, diceroll;
+  
   /* check if the character has a fight trigger */
   fight_mtrigger(ch);
 
