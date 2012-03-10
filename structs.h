@@ -164,17 +164,7 @@ struct char_data *guildmaster1;
 #define ATTACK_ELECTRIC 8
 #define ATTACK_LIGHT 9
 #define ATTACK_POISON 10
-#define APPLY_BLDG_RESIST      11       /* Apply to bludgeon resistance */
-#define APPLY_FIRE_RESIST      12       /* Apply to fire resistance     */
-#define APPLY_LGHT_RESIST      13       /* Apply to light resistance    */
-#define APPLY_COLD_RESIST      14       /* Apply to cold resistance     */
-#define APPLY_ACID_RESIST      15       /* Apply to acid resistance     */
-#define APPLY_ELEC_RESIST      16       /* Apply to electrical resistance */
-#define APPLY_GAS_RESIST       17       /* Apply to gas resistance      */
-#define APPLY_PHYS_RESIST      18       /* resist to physical  */
-#define MAX_ATTACK_TYPES  19            /* total number of res, imm, and vuln...*/
-#define NUM_RESISTANCES		8       // This could change
-
+#define MAX_ATTACK_TYPES  19            /*FIXME March 9, 2012 do we need this? */
 /* Room/mob/obj/pc sizes */
 #define SIZE_SPECIAL    0
 #define SIZE_TINY       1
@@ -839,6 +829,15 @@ struct char_data *guildmaster1;
 #define APPLY_MISC_RESIST      53       /* Apply to misc resistance     */
 #define APPLY_SLSH_RESIST      54       /* Apply to slash resistance    */
 #define APPLY_PIER_RESIST      55       /* Apply to pierce resistance   */
+#define APPLY_BLDG_RESIST      56       /* Apply to bludgeon resistance */
+#define APPLY_FIRE_RESIST      57       /* Apply to fire resistance     */
+#define APPLY_LGHT_RESIST      58       /* Apply to light resistance    */
+#define APPLY_COLD_RESIST      59       /* Apply to cold resistance     */
+#define APPLY_ACID_RESIST      60       /* Apply to acid resistance     */
+#define APPLY_ELEC_RESIST      61       /* Apply to electrical resistance */
+#define APPLY_GAS_RESIST       62       /* Apply to gas resistance      */
+#define APPLY_PHYS_RESIST      63       /* resist to physical  */
+#define NUM_RESISTANCES         16       // This could change
 
 // ******************** ^^ have to relocate these
 
@@ -1266,8 +1265,15 @@ struct pclean_criteria_data {
   int days;		/* time limit in days			*/
 }; 
 
-
-
+/* Mobile Aggression Types */
+#define AGGR_TYPE_NONE          -1
+#define AGGR_TYPE_GENERAL       0
+#define AGGR_TYPE_EVIL          1
+#define AGGR_TYPE_GOOD          2
+#define AGGR_TYPE_NEUTRAL       3
+#define AGGR_TYPE_WIMPY         4
+#define AGGR_TYPE_COWARD        5
+#define AGGR_TYPE_MEMORY        6
 #define NUM_AGGR_TYPES          7  //1+AGGR_TYPE_MEMORY
 
 /* general player-related info, usually PC's and NPC's */

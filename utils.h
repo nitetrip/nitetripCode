@@ -303,11 +303,15 @@ void	update_pos(struct char_data *victim);
 #define GET_PC_NAME(ch)	((ch)->player.name)
 #define GET_NAME(ch)    (IS_NPC(ch) ? \
 			 (ch)->player.short_descr : GET_PC_NAME(ch))
+#define GET_PC_NAME(ch)          ((ch)->player.name)
+
 #define GET_TITLE(ch)   ((ch)->player.title)
 #define GET_LEVEL(ch)   ((ch)->player.level)
 #define GET_DIFFICULTY(ch)   ((ch)->player.difficulty)
 #define GET_PASSWD(ch)	((ch)->player.passwd)
 #define GET_PFILEPOS(ch)((ch)->pfilepos)
+#define GET_AGGRESSION(ch, i)    ((ch)->player.aggression[i])
+
 
 /*
  * I wonder if this definition of GET_REAL_LEVEL should be the definition
@@ -350,6 +354,7 @@ void	update_pos(struct char_data *victim);
 
 #define GET_EXP(ch)	  ((ch)->points.exp)
 #define GET_AC(ch)        ((ch)->points.armor)
+#define GET_RESIST(ch, i)        ((ch)->points.resistance[i])
 #define GET_HIT(ch)	  ((ch)->points.hit)
 #define GET_MAX_HIT(ch)	  ((ch)->points.max_hit)
 #define GET_MOVE(ch)	  ((ch)->points.move)

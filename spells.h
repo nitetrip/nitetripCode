@@ -277,8 +277,19 @@
 #define SPELL_DEATH_STRIKE              238 // from cwe
 #define SPELL_MAGICAL_VESTMANTS         239 //
 #define SPELL_ELEMENTAL_SHIELD          240 // partially implemented
-
+#define SPELL_ASPHYXIATE		241 //
+#define SPELL_PROTECTION_FROM_EVIL    	241 //
 /* Insert new spells here, up to MAX_SPELLS */
+
+
+
+#define SPELL_BREATH_FIRE            324
+#define SPELL_BREATH_GAS             325
+#define SPELL_BREATH_FROST           326
+#define SPELL_BREATH_ACID            327
+#define SPELL_BREATH_LIGHTNING       328
+
+
 #define MAX_SPELLS		    1000
 
 /* PLAYER SKILLS - Numbered from MAX_SPELLS+1 to MAX_SKILLS */
@@ -390,6 +401,7 @@
 #define TAR_OBJ_EQUIP	(1 << 10)
 #define TAR_CHAR_ZONE   (1 << 11)
 #define TAR_DIRECTION   (1 << 12)
+#define TAR_ATTRIBUTE   (1 << 13) //
 
 struct spell_info_type {
    byte min_position;	/* Position for caster	 */

@@ -2480,7 +2480,7 @@ return TRUE;
 void init_spell_levels(void)
 {
   /* MAGES */
-  spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_MAGIC_USER, 1)
+  spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_MAGIC_USER, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_MAGIC_USER, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_MAGIC_USER, 1); 
   spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_SHIELD, CLASS_MAGIC_USER, 1);
@@ -5352,4 +5352,25 @@ switch (chclass) {
   /* Default title for classes which do not have titles defined */
   return "the Classless";
 }
+
+
+int get_advance_hitpoints(struct char_data *ch)
+{
+  switch (GET_CLASS(ch)) {
+    case CLASS_MAGIC_USER: return rand_number(5, 8);
+    case CLASS_CLERIC: return rand_number(6, 10);
+    case CLASS_THIEF: return rand_number(8, 12);
+    case CLASS_FIGHTER: return rand_number(10, 14);
+    case CLASS_PALADIN: return rand_number(9, 13);
+    case CLASS_SKNIGHT: return rand_number(9, 13);
+    case CLASS_BARD: return rand_number(8, 12);
+    case CLASS_MONK: return rand_number(9, 13);
+    //case CLASS_SAMURAI: return rand_number(12, 16);
+    case CLASS_RANGER: return rand_number(9, 13);
+    case CLASS_DRUID: return rand_number(6, 10);
+    case CLASS_NECROMANCER: return rand_number(5, 8);
+    default: return rand_number(10, 14);
+  }
+}
+
 

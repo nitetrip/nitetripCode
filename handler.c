@@ -282,9 +282,77 @@ void affect_modify(struct char_data *ch, byte loc, sbyte mod,
      GET_SIZE(ch) = SIZE_TINY;
    if (GET_SIZE(ch) >= SIZE_BEHEMOTH)
      GET_SIZE(ch) = SIZE_GIANT;
-
      break;
-
+// Mass imported from CWE March  9, 2012 V
+ case APPLY_AGGR_GENERAL:
+    GET_AGGRESSION(ch, AGGR_TYPE_GENERAL) += mod;
+    break;
+  case APPLY_AGGR_EVIL:
+    GET_AGGRESSION(ch, AGGR_TYPE_EVIL) += mod;
+    break;
+  case APPLY_AGGR_GOOD:
+    GET_AGGRESSION(ch, AGGR_TYPE_GOOD) += mod;
+    break;
+  case APPLY_AGGR_NEUTRAL:
+    GET_AGGRESSION(ch, AGGR_TYPE_NEUTRAL) += mod;
+  case APPLY_AGGR_WIMPY:
+    GET_AGGRESSION(ch, AGGR_TYPE_WIMPY) += mod;
+    break;
+  case APPLY_AGGR_COWARD:
+    GET_AGGRESSION(ch, AGGR_TYPE_COWARD) += mod;
+    break;
+  case APPLY_AGGR_MEMORY:
+    GET_AGGRESSION(ch, AGGR_TYPE_MEMORY) += mod;
+    break;
+  case APPLY_FIRE_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_FIRE) += mod;
+    break;
+ case APPLY_ELEC_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_ELEC) += mod;
+    break;
+  case APPLY_COLD_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_COLD) += mod;
+    break;
+  case APPLY_POIS_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_POIS) += mod;
+    break;
+  case APPLY_SONC_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_SONC) += mod;
+    break;
+  case APPLY_ACID_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_ACID) += mod;
+    break;
+  case APPLY_GAS_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_GAS) += mod;
+    break;
+ case APPLY_LGHT_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_LGHT) += mod;
+    break;
+  case APPLY_DIVN_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_DIVN) += mod;
+    break;
+  case APPLY_SUMN_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_SUMN) += mod;
+    break;
+  case APPLY_LIFE_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_LIFE) += mod;
+    break;
+  case APPLY_FEAR_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_FEAR) += mod;
+    break;
+  case APPLY_MISC_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_MISC) += mod;
+    break;
+  case APPLY_SLSH_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_SLSH) += mod;
+    break;
+  case APPLY_PIER_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_PIER) += mod;
+    break;
+  case APPLY_BLDG_RESIST:
+    GET_RESIST(ch, RESIST_TYPE_BLDG) += mod;
+    break;
+// ^^ imported from CWE
   default:
     log("SYSERR: Unknown apply adjust %d attempt (%s, affect_modify).", loc, __FILE__);
     break;

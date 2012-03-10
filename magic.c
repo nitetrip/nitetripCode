@@ -34,6 +34,7 @@ byte saving_throws_nat(int class_num, int type, int level); /* class.c */
 void clearMemory(struct char_data *ch);
 void weight_change_object(struct obj_data *obj, int weight);
 byte saving_throws_tot(struct char_data *ch, int type);
+int get_advance_hitpoints(struct char_data *ch);
 
 /* local functions */
 int mag_materials(struct char_data *ch, int item0, int item1, int item2, int extract, int verbose, int spellnum);
@@ -564,7 +565,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     break;
 
   case SPELL_AID:
-    mag_affects(level, ch, victim, 0, SPELL_BLESS, savetype);
+    mag_affects(level, ch, victim, 0, SPELL_BLESS);
     af[0].location = APPLY_HIT;
     af[0].modifier = get_advance_hitpoints(ch);
     af[0].duration = GET_LEVEL(ch);
@@ -846,7 +847,7 @@ case SPELL_DECREPIFY:
 
   case SPELL_DRAW_UPON_HOLY_MIGHT:
     af[0].duration = GET_LEVEL(ch);
-    af[0].location = APPLY_STR+param1;
+    af[0].location = APPLY_STR+10;// +param1; needs to be fixed
     af[0].modifier = 1+(GET_LEVEL(ch)/10);
     accum_duration = FALSE;
     to_vict = "Your body shudders violently as the power of your god is channeled into you.";
@@ -1387,7 +1388,7 @@ case SPELL_SHIELD_AGAINST_EVIL:
     af[0].round_duration = (spellnum == SPELL_STRENGTH_BURST);
     accum_duration = FALSE;
     accum_affect = FALSE;
-    to_vict = ((spellnum == SPELL_STRENGTH_BURST) ? "You feel your strength temporarily increase!" : "You feel the strength of past heroes run through you$
+    to_vict = ((spellnum == SPELL_STRENGTH_BURST) ? "You feel your strength temporarily increase!" : "You feel the strength of past heroes run through your body");
     break;
 
 
@@ -1851,8 +1852,6 @@ void mag_summons(int level, struct char_data *ch, struct obj_data *obj,
   switch (spellnum) {
   case SPELL_CLONE:
     msg = 10;
-  spello(SPELL_VAMPIRIC_TOUCH, "vampiric touch", 35, 15, 2, POS_FIGHTING,
-        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_POINTS, NULL);
     fmsg = rand_number(2, 6);	/* Random fail message. */
     mob_num = MOB_CLONE;
     pfail = 50;	/* 50% failure, should be based on something later. */
@@ -1917,8 +1916,11 @@ void mag_summons(int level, struct char_data *ch, struct obj_data *obj,
 void mag_points(int level, struct char_data *ch, struct char_data *victim,
 		     int spellnum, int savetype)
 {
+
   int healing = 0, move = 0, manaadd = 0;
-  const char *to_vict = NULL, *to_room = NULL, *to_notvict = NULL;
+  int victim_add_hits = 0, caster_add_hits = 0, victim_add_move = 0, caster_add_move = 0, victim_add_mana = 0, caster_add_mana = 0;
+
+  const char *to_vict = NULL, *to_room = NULL, *to_notvict = NULL, *to_char = NULL;
   if (victim == NULL)
     return;
 
@@ -2054,12 +2056,12 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
 
   case SPELL_VAMPIRIC_TOUCH:
     if (spellnum == SPELL_VAMPIRIC_TOUCH) {
-      caster_add_hits = attacker_successfully_hit_victim(ch, victim, TRUE, TRUE) ? MIN(10,MAX(0,GET_LEVEL(ch)-5)+5):0;
+     // FIXME  caster_add_hits = attacker_successfully_hit_victim(ch, victim, TRUE, TRUE) ? MIN(10,MAX(0,GET_LEVEL(ch)-5)+5):0;
       //dont allow caster to suck more life from the victim than the victim has
       caster_add_hits = MIN(GET_HIT(victim)-MIN_HIT_POINTS, rand_number(caster_add_hits, 3*caster_add_hits));
     }
     else {
-      caster_add_hits = attacker_successfully_hit_victim(ch, victim, TRUE, TRUE) ? MIN(10,MAX(0,GET_LEVEL(ch)-13)+10):0;
+     // FIXME caster_add_hits = attacker_successfully_hit_victim(ch, victim, TRUE, TRUE) ? MIN(10,MAX(0,GET_LEVEL(ch)-13)+10):0;
       //dont allow caster to suck more life from the victim than the victim has
       caster_add_hits = MIN(GET_HIT(victim)-MIN_HIT_POINTS, rand_number(caster_add_hits, 2*caster_add_hits));
       caster_add_move = MIN(GET_MOVE(victim), rand_number(caster_add_hits, 2*caster_add_hits));
@@ -2068,7 +2070,7 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
       victim_add_mana = -1*caster_add_mana;
     }
     if (caster_add_hits) {
-      damage(ch, victim, caster_add_hits, spellnum, DEATH_MSG_ATTACKER);
+      damage(ch, victim, caster_add_hits, spellnum);
       to_room = "$n drains $N - what a waste of energy!";
       to_vict = "$N drains some of your energy!";
       to_char = "You drain $N of some of $S energy.\r\nYou feel better as life force flows into you.";

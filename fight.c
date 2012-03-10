@@ -1263,7 +1263,7 @@ int compute_thaco(struct char_data *ch, struct char_data *victim)
 void hit(struct char_data *ch, struct char_data *victim, int type)
 {
   struct obj_data *wielded = GET_EQ(ch, WEAR_WIELD);
-  int w_type, victim_ac, calc_thaco, dam, diceroll;
+  int level_diff, w_type, victim_ac, calc_thaco, dam, diceroll;
 
   /* check if the character has a fight trigger */
   fight_mtrigger(ch);
@@ -1337,6 +1337,32 @@ void hit(struct char_data *ch, struct char_data *victim, int type)
       dam += dice(GET_OBJ_VAL(wielded, 1), GET_OBJ_VAL(wielded, 2));
     } else {
       /* If no weapon, add bare hand damage instead */
+      if ((GET_LEVEL(victim)<LVL_IMMORT) && AFF_FLAGGED(ch, AFF_PARALYZING_TOUCH) && !IS_NECROMANCER(victim) &&(GET_POS(victim) > POS_PARALYZED)) {
+       struct affected_type af;
+      level_diff = GET_LEVEL(ch) - GET_LEVEL(victim);
+      if ((level_diff >9) && !MOB_FLAGGED(victim, MOB_NOPARALYZE) && !AFF_FLAGGED(victim, AFF_FREE_ACTION)) {
+        af.duration = MAX(1, GET_LEVEL(ch)/10);
+        af.bitvector = AFF_PARALYZE;
+        af.type = SPELL_PARALYZE;
+        GET_POS(victim) = POS_PARALYZED;
+        affect_join(victim, &af, FALSE, FALSE, FALSE, FALSE);
+        act("You feel your limbs freeze!", FALSE, victim, 0, ch, TO_CHAR);
+        act("$n seems paralyzed!", TRUE, victim, 0, ch, TO_ROOM);
+      }
+      else if (GET_POS(victim) > POS_STUNNED) {
+        if (level_diff >= 0) {
+          GET_STUN_RECOVER_CHANCE(victim) = 50;
+          GET_STUN_DURATION(victim) = -1; //indefinatly
+        }
+        else {
+          GET_STUN_RECOVER_CHANCE(victim) = 100;
+          GET_STUN_DURATION(victim) = 2;
+        }
+        GET_POS(victim) = POS_STUNNED;
+        act("You are stunned!", FALSE, victim, 0, ch, TO_CHAR);
+        act("$n seems to be frozen!", TRUE, victim, 0, ch, TO_ROOM);
+      }
+    }
       if (IS_NPC(ch))
 	dam += dice(ch->mob_specials.damnodice, ch->mob_specials.damsizedice);
       else
@@ -1800,7 +1826,7 @@ int calc_weap_resists(struct char_data *ch, struct char_data *victim, int damage
   return(damage);  
 }
 
-/* dunno where to put this, so I'm going to try here can move it later - Seymour */
+/* dunno where to put this, so I'm going to try here can move it later - Seymour --gotta fix this */ 
 void check_pain_room()
 {
 struct descriptor_data *d;

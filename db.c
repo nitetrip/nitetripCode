@@ -1551,7 +1551,7 @@ void interpret_espec(const char *keyword, const char *value, int i, int nr)
     GET_CLAN(mob_proto + i) = num_arg;
   }
 
- 
+  // this stuff below has to be checked and probably removed. 
   /*resistance   Anubis*/
   CASE("Res0") {
     RANGE(0, 1);
