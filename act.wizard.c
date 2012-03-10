@@ -974,7 +974,7 @@ CCGRN(ch, C_NRM), GET_OBJ_VAL(j, 0));
       send_to_char(ch, "%s\r\n", CCNRM(ch, C_NRM));
       resists = FALSE;
   }
-		
+
 	send_to_char(ch, "Resists: %s", CCCYN(ch, C_NRM));
 	  for(i3 = 0;i3 < MAX_ATTACK_TYPES; i3++) {
 	    if (j->resist[i3] == 1) {
@@ -2916,7 +2916,7 @@ char buf[MAX_INPUT_LENGTH];
    { "hit", 		LVL_DEITY, 	BOTH, 	NUMBER },
    { "mana",		LVL_DEITY, 	BOTH, 	NUMBER },
    { "move",		LVL_DEITY, 	BOTH, 	NUMBER },
-   { "align",		LVL_DEITY, 	BOTH, 	NUMBER },  /* 10 */
+    { "align",		LVL_DEITY, 	BOTH, 	NUMBER },  /* 10 */
    { "str",		LVL_DEITY, 	BOTH, 	NUMBER },
    { "stradd",		LVL_DEITY, 	BOTH, 	NUMBER },
    { "int", 		LVL_DEITY, 	BOTH, 	NUMBER },
@@ -2960,11 +2960,33 @@ char buf[MAX_INPUT_LENGTH];
    { "olc",		LVL_DEITY,	PC,	NUMBER },
    { "race",            LVL_DEITY,        BOTH,     MISC },
    { "size",            LVL_DEITY,        BOTH,   NUMBER },
-//dan clan system
    { "clan",            LVL_DEITY,        PC,     NUMBER },  
    { "rank",            LVL_DEITY,        PC,     NUMBER }, /*55*/
    { "clan_gold",       LVL_IMPL,       PC,     BINARY },
    { "hometown",        LVL_DEITY,      PC,     NUMBER }, 
+   { "dishonor",        LVL_GOD,        PC,     NUMBER },  
+   { "fire_resist",     LVL_GOD,      BOTH,   NUMBER },
+   { "elec_resist",     LVL_GOD,      BOTH,   NUMBER }, /* 60*/
+   { "cold_resist",     LVL_GOD,      BOTH,   NUMBER },
+   { "pois_resist",     LVL_GOD,      BOTH,   NUMBER },
+   { "sonc_resist",     LVL_GOD,      BOTH,   NUMBER },  
+   { "acid_resist",     LVL_GOD,      BOTH,   NUMBER },
+   { "gas_resist",      LVL_GOD,      BOTH,   NUMBER },/* 65 */
+   { "lght_resist",     LVL_GOD,      BOTH,   NUMBER },
+   { "divn_resist",     LVL_GOD,      BOTH,   NUMBER },
+   { "sumn_resist",     LVL_GOD,      BOTH,   NUMBER },  
+   { "life_resist",     LVL_GOD,      BOTH,   NUMBER },
+   { "fear_resist",     LVL_GOD,      BOTH,   NUMBER }, /* 70 */
+   { "misc_resist",     LVL_GOD,      BOTH,   NUMBER },
+   { "slsh_resist",     LVL_GOD,      BOTH,   NUMBER },
+   { "pier_resist",     LVL_GOD,      BOTH,   NUMBER }, 
+   { "bldg_resist",     LVL_GOD,      BOTH,   NUMBER }, 
+   { "hitgain",         LVL_GOD,      BOTH,   NUMBER },  /* 75 */
+   { "managain",        LVL_GOD,      BOTH,   NUMBER },
+   { "movegain",        LVL_GOD,      BOTH,   NUMBER },
+   { "gpgain",          LVL_GOD,      BOTH,   NUMBER },
+   { "xpgain",          LVL_GOD,      BOTH,   NUMBER }, /* 79 */
+
    { "\n", 0, BOTH, MISC }
   };
 
@@ -3277,10 +3299,10 @@ int perform_set(struct char_data *ch, struct char_data *vict, int mode,
     GET_IDNUM(vict) = value;
     break;
   case 45:
-    if (GET_IDNUM(ch) > 1) {
-      send_to_char(ch, "Please don't use this command, yet.\r\n");
-      return (0);
-    }
+   // if (GET_IDNUM(ch) > 1) {
+    //  send_to_char(ch, "Please don't use this command, yet.\r\n");
+   //   return (0);
+   // }
     if (GET_LEVEL(vict) >= LVL_GOD) {
       send_to_char(ch, "You cannot change that.\r\n");
       return (0);
@@ -3338,7 +3360,6 @@ int perform_set(struct char_data *ch, struct char_data *vict, int mode,
    vict->player.size = RANGE(0, 6);
     break;
 
-//dan clan system
   case 54:
     RANGE(0, cnum);
     if (value == 0)
@@ -3364,6 +3385,38 @@ int perform_set(struct char_data *ch, struct char_data *vict, int mode,
     RANGE(0, NUM_STARTROOMS);
     GET_HOME(vict) = value;
     break;
+ case 58:
+    //if ((value < 0) || (value > DISHONOR_THRESHOLD))   {
+      send_to_char(ch, "Not yet Implemented.\r\n");
+    //  return (0);
+  //  }
+  //  else {
+   //   GET_DISHONOR(vict) = value;
+    //}
+  case 59:
+  case 60:
+  case 61:
+  case 62:
+  case 63:
+  case 64:
+  case 65:
+  case 66:
+  case 67:
+  case 68:
+  case 69:
+  case 70:
+  case 71:
+  case 72:
+  case 73:
+  case 74:
+    if ((value < MIN_RESIST) || (value > MAX_RESIST)) {
+      send_to_char(ch, "Valid values for resistance are -100 to 100.\r\n");
+      return (0);
+    }
+    else {
+      GET_RESIST(vict, (mode - 61)) = value;
+      affect_total(vict);
+    }
 
   default:
     send_to_char(ch, "Can't set that!\r\n");
