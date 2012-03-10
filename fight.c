@@ -1315,6 +1315,8 @@ void hit(struct char_data *ch, struct char_data *victim, int type)
       dam = TRUE;   
     else 
       dam = FALSE; 
+  if (affected_by_spell(ch, SPELL_ACCURACY))
+     dam = TRUE; // Accuracy hits 100% of the time
   }
   
   if (!dam)

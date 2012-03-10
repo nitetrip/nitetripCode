@@ -1233,7 +1233,7 @@ ACMD(do_detect_traps)
 ACMD(do_distant_sight)
 {
 
-/* FRENZY - This will currently turn off dist sight on eq as well */
+/* This will currently turn off dist sight on eq as well */
 
 if (!GET_SKILL(ch, SKILL_DIST_SIGHT)) {
    send_to_char(ch, "You have no idea how.\r\n");
@@ -1270,3 +1270,22 @@ void skill_gain(struct char_data *ch, int skill_num)
 //  send_to_char(ch,"Your skill in %s improves and you gain %dXP!\r\n", spell_info[skill_num].name, gain_exp(ch, gain*(GET_LEVEL(ch)+1)));
 }
 
+void check_progression(struct char_data *ch)
+{
+ if (GET_LEVEL(ch) == 10)
+                        {
+                   send_to_char(ch, "\r\n");
+                   send_to_char(ch, "With the sound of the death cry\nringing in your ears you are suddenly\nstruck by a vision of your future. You\nappear stronger, more experienced, and\nmore powerful.  It is time to make an\nimpportant decision, you must meet with\nyour guildmaster before continuing on\nyour quest...\r\n\r\n");
+
+           SET_BIT(PLR_FLAGS(ch), PLR_NOEXPGAIN);
+                   SET_BIT(PLR_FLAGS(ch), PLR_PROGRESS);
+                        }
+           if (GET_LEVEL(ch) == 25)
+                        {
+                   send_to_char(ch, "\r\n");
+                   send_to_char(ch, "With the sound of the death cry\nringing in your ears you are suddenly\nstruck by a vision of your future. You\nappear stronger, more experienced, and\nmore powerful.  It is time to make an\nimpportant decision, you must meet with\nyour guildmaster before continuing on\nyour quest...\r\n\r\n");
+
+           SET_BIT(PLR_FLAGS(ch), PLR_NOEXPGAIN);
+                   SET_BIT(PLR_FLAGS(ch), PLR_PROGRESS);
+                        }
+}

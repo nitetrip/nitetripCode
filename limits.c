@@ -49,6 +49,8 @@ void clanlog(struct char_data *ch, const char *str, ...);
 void perform_cinfo( int clan_number, const char *messg, ... );
 void die(struct char_data *ch);
 void affect_update(void);
+void check_progression(struct char_data *ch);
+
 /* When age < 15 return the value p0 */
 /* When age in 15..29 calculate the line between p1 & p2 */
 /* When age in 30..44 calculate the line between p2 & p3 */
@@ -351,30 +353,33 @@ void gain_exp(struct char_data *ch, int gain)
     if (is_altered) {
       mudlog(BRF, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s advanced %d level%s to level %d.",
 		GET_NAME(ch), num_levels, num_levels == 1 ? "" : "s", GET_LEVEL(ch));
-         if (num_levels == 1)
-		 perform_cinfo(GET_CLAN(ch), "%s advanced to level %d!", GET_NAME(ch), GET_LEVEL(ch)); 
-         else
-         perform_cinfo(GET_CLAN(ch), "%s advanced to level %d!", GET_NAME(ch), GET_LEVEL(ch)); 
+ /*        if (GET_LEVEL(ch) == 10)
+                        {
+                   send_to_char(ch, "\r\n");
+                   send_to_char(ch, "With the sound of the death cry\nringing in your ears you are suddenly\nstruck by a vision of your future. You\nappear stronger, more experienced, and\nmore powerful.  It is time to make an\nimpportant decision, you must meet with\nyour guildmaster before continuing on\nyour quest...\r\n\r\n");
+
+           SET_BIT(PLR_FLAGS(ch), PLR_NOEXPGAIN);
+                   SET_BIT(PLR_FLAGS(ch), PLR_PROGRESS);
+                        }
+           if (GET_LEVEL(ch) == 25)
+                        {
+                   send_to_char(ch, "\r\n");
+                   send_to_char(ch, "With the sound of the death cry\nringing in your ears you are suddenly\nstruck by a vision of your future. You\nappear stronger, more experienced, and\nmore powerful.  It is time to make an\nimpportant decision, you must meet with\nyour guildmaster before continuing on\nyour quest...\r\n\r\n");
+
+           SET_BIT(PLR_FLAGS(ch), PLR_NOEXPGAIN);
+                   SET_BIT(PLR_FLAGS(ch), PLR_PROGRESS);
+                        }*/ // will delete this soon, made new function for it, check_progression(ch)
+             check_progression(ch);
+
+ 	 perform_cinfo(GET_CLAN(ch), "%s advanced to level %d!", GET_NAME(ch), GET_LEVEL(ch)); 
+ 
 	  if (num_levels == 1)
 		{
        send_to_char(ch, "You rise a level!\r\n");
-         if (GET_LEVEL(ch) == 10)
-			{
-		   send_to_char(ch, "\r\n");
-		   send_to_char(ch, "With the sound of the death cry\nringing in your ears you are suddenly\nstruck by a vision of your future. You\nappear stronger, more experienced, and\nmore powerful.  It is time to make an\nimportant decision, you must meet with\nyour guildmaster before continuing on\nyour quest...\r\n\r\n");
-           SET_BIT(PLR_FLAGS(ch), PLR_NOEXPGAIN);
-		   SET_BIT(PLR_FLAGS(ch), PLR_PROGRESS);
-			}
-	   if (GET_LEVEL(ch) == 25)
-			{
-		   send_to_char(ch, "\r\n");
-		   send_to_char(ch, "With the sound of the death cry\nringing in your ears you are suddenly\nstruck by a vision of your future. You\nappear stronger, more experienced, and\nmore powerful.  It is time to make an\nimportant decision, you must meet with\nyour guildmaster before continuing on\nyour quest...\r\n\r\n");
-           SET_BIT(PLR_FLAGS(ch), PLR_NOEXPGAIN);		 
-		   SET_BIT(PLR_FLAGS(ch), PLR_PROGRESS);
-			}
 		}
 	  else
 	send_to_char(ch, "You rise %d levels!\r\n", num_levels);
+
 
      /*if (GET_SEX(ch) == SEX_FEMALE)
       sprintf(buf,"* %s", title_female(GET_RACE(ch), GET_LEVEL(ch)));

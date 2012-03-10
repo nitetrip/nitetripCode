@@ -556,8 +556,8 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
   case SPELL_ACCURACY:
     af[0].duration = 1;
     af[0].round_duration = TRUE;
-    af[0].location = APPLY_AP;
-    af[0].modifier = 10; //ac penalty
+    af[0].location = APPLY_AC;
+    af[0].modifier = 17; //ac penalty
     accum_duration = FALSE;
     // to_vict = "You now attack with exactness and precision!";
     to_vict = "You feel your senses temporarily increase!";
@@ -596,7 +596,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
       send_to_char(ch, "This spell does not work in conjunction with Armor.\r\n");
       return;
     }
-    af[0].location = APPLY_AP;
+    af[0].location = APPLY_AC;
     af[0].modifier = -30;
     af[0].duration = 24;
     af[1].location = APPLY_DEX;
@@ -749,7 +749,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
   case SPELL_POWER_STRIKE:
     af[0].duration = 1;
     af[0].round_duration = TRUE;
-    af[0].location = APPLY_AP;
+    af[0].location = APPLY_AC;
     af[0].modifier = 10; //ac penalty
     accum_duration = FALSE;
     to_vict = ((spellnum == SPELL_POWER_STRIKE) ? "You concentrate an aura of power against your opponent!" : "You concenrate a massive aura of power against your opponent!");
@@ -1046,7 +1046,7 @@ case SPELL_DECREPIFY:
     duration = GET_LEVEL(ch)/4 + GET_TOT_CON(victim)/2;
     af[0].duration = duration;
     af[0].bitvector = AFF_HASTE;
-    af[1].location = APPLY_AP;
+    af[1].location = APPLY_AC;
     af[1].modifier = -5;
     af[1].duration = duration;
     af[1].bitvector = AFF_HASTE;
@@ -1101,7 +1101,7 @@ case SPELL_DECREPIFY:
     }
     af[0].duration = 4+GET_LEVEL(ch);
     af[0].modifier = -40;
-    af[0].location = APPLY_AP;
+    af[0].location = APPLY_AC;
     af[0].bitvector = AFF_IMPROVED_INVIS;
     accum_duration = FALSE;
     to_vict = "You vanish.";
@@ -1115,7 +1115,8 @@ case SPELL_DECREPIFY:
     }
     af[0].duration = 4+GET_LEVEL(ch)/2;
     af[0].modifier = -40;
-    af[0].location = APPLY_AP;
+    af[0].location = APPLY_AC;
+
     af[0].bitvector = AFF_INVIS_TO_ENEMIES;
     accum_duration = FALSE;
     to_vict = "Hmmm...you still see yourself.";
@@ -1136,7 +1137,7 @@ case SPELL_DECREPIFY:
     break;
 
   case SPELL_MAGICAL_VESTMANTS:
-    af[0].location = APPLY_AP;
+    af[0].location = APPLY_AC;
     af[0].modifier = -10*(GET_LEVEL(ch)/10)-10;
     af[0].duration = 24;
     accum_duration = FALSE;
@@ -1246,7 +1247,7 @@ case SPELL_DECREPIFY:
     break;
 
   case SPELL_SHIELD:
-    af[0].location = APPLY_AP;
+    af[0].location = APPLY_AC;
     af[0].modifier = -10;
     af[0].duration = 24;
     af[1].location = APPLY_SAVING_PARA;
@@ -1308,7 +1309,7 @@ case SPELL_SHIELD_AGAINST_EVIL:
     af[0].location = APPLY_SIZE;
     af[0].modifier = -1;
     af[1].duration = duration;
-    af[1].location = APPLY_AP;
+    af[1].location = APPLY_AC;
     af[1].modifier = -20;
     accum_duration = FALSE;
     to_vict = "You shrink down to a smaller size.";

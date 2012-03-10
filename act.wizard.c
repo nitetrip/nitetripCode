@@ -67,6 +67,7 @@ int parse_race(char arg);
 void run_autowiz(void);
 int save_all(void);
 struct char_data *find_char(int n);
+void check_progression(struct char_data *ch);
 
 /* local functions */
 int perform_set(struct char_data *ch, struct char_data *vict, int mode, char *val_arg);
@@ -1912,6 +1913,8 @@ ACMD(do_advance)
   gain_exp_regardless(victim,
 	 level_exp(GET_CLASS(victim), newlevel) - GET_EXP(victim));
   save_char(victim, GET_LOADROOM(ch));
+
+ check_progression(victim);
 }
 
 ACMD(do_restore)
