@@ -596,7 +596,7 @@ ACMD(do_cast)
   spellnum = find_skill_num(s);
 
   if ((spellnum < 1) || (spellnum > MAX_SPELLS)) {
-    send_to_char(ch, "Cast what?!?\r\n");
+    send_to_char(ch, "Cast what?!?\r\n");           
     return;
   }
   if (GET_LEVEL(ch) < SINFO.min_level[(int) GET_CLASS(ch)]) {
@@ -625,7 +625,7 @@ ACMD(do_cast)
     tobj->name = (t && *t ? strdup(t) : NULL);
     /* could get fancy here and support multiple arguments, but the code in
      * spells.c would have to be updated too.  Anyone want to write it? :-)
-     */
+     */                       
     target = TRUE;
   }
 
@@ -666,6 +666,19 @@ ACMD(do_cast)
       if (((param1 = search_block(t, dirs, FALSE)) > -1) || ((param1 = search_block(t, abbr_dirs, FALSE)) > -1))
         target = TRUE;
 
+ if (!target && IS_SET(SINFO.targets, TAR_PORTAL_CODE)) {
+      param1 = portal_code_decrypt(ch, t, spellnum);
+      if (VALID_ROOM_RNUM(param1)) {
+        if (CAN_USE_ROOM(ch, param1)) {
+          target = TRUE;
+          if ((IS_SET(SINFO.targets, TAR_ROOM_IN_ZONE)) && (world[IN_ROOM(ch)].zone != world[param1].zone))
+            target = FALSE;
+        }
+      }
+    }
+
+
+
 
   } else {			/* if target string is empty */
     if (!target && IS_SET(SINFO.targets, TAR_FIGHT_SELF))
@@ -684,9 +697,14 @@ ACMD(do_cast)
       tch = ch;
       target = TRUE;
     }
+    if (!target && IS_SET(SINFO.targets, TAR_PORTAL_CODE)) {
+      send_to_char(ch, "What is the portal name?\r\n");
+      return;
+    }
+
     if (!target && IS_SET(SINFO.targets, TAR_DIRECTION)) {
       send_to_char(ch, "In which direction should the spell be cast?\r\n");
-      return;
+      return;           
     }
 
     if (!target) {
@@ -695,11 +713,21 @@ ACMD(do_cast)
       return;
     }
   }
-
+ 
   if (target && (tch == ch) && SINFO.violent) {
     send_to_char(ch, "You shouldn't cast that on yourself -- could be bad for your health!\r\n");
     return;
   }
+
+ if (!target) {
+    if IS_SET(SINFO.targets, TAR_PORTAL_CODE) {
+      send_to_char(ch, "Invalid portal name. What is the correct portal name?\r\n");
+      return;
+    }
+ }
+
+
+
   if (!target) {
     send_to_char(ch, "Cannot find the target of your spell!\r\n");
     return;
@@ -730,14 +758,14 @@ ACMD(do_cast)
       if (mana > 0)
 	GET_MANA(ch) = MAX(0, MIN(GET_MAX_MANA(ch), GET_MANA(ch) - mana));
     }
-  }
+  }                            
 
   /* send a warning message when mana is getting low */
   if ( GET_MANA(ch) < (GET_MAX_MANA(ch) / 10) )
   {
     send_to_char(ch, "Your power is fading fast!\r\n");
   }
-}
+ }
 
 
 
@@ -921,9 +949,12 @@ spello(SPELL_BALL_LIGHTNING, "ball lightning", 100, 70, 3, POS_FIGHTING, TAR_CHA
 
 spello(SPELL_BAT_SONAR, "bat sonar", 50, 10, 5, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "You notice that sound is no longer as sharp.");
+spello(SPELL_BEFRIEND_DRYAD, "befriend dryad", 30, 10, 2, POS_STANDING, TAR_IGNORE, FALSE, MAG_MANUAL, NULL);
 
  spello(SPELL_BENEFICENCE, "beneficence", 50, 35, 5, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "You no longer feel the mystical aura of peace and harmony.");
+ spello(SPELL_BIND_PORTAL_MAJOR, "bind portal major", 40, 20, 2, POS_STANDING, TAR_IGNORE, FALSE, MAG_MANUAL, NULL);
+  spello(SPELL_BIND_PORTAL_MINOR, "bind portal minor", 20, 10, 2, POS_STANDING, TAR_IGNORE, FALSE, MAG_MANUAL, NULL);
 
   spello(SPELL_BLESS, "bless", 35, 5, 3, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_OBJ_INV, FALSE, MAG_AFFECTS | MAG_ALTER_OBJS,
@@ -1073,6 +1104,12 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_DETECT_POISON, "detect poison", 15, 5, 1, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE, MAG_MANUAL,
 	"The detect poison wears off.");
+  spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
+        TAR_PORTAL_CODE, FALSE, MAG_GROUPS, NULL);
+  spello(SPELL_DIMENSION_SHIFT, "dimension shift", 35, 15, 4, POS_STANDING,
+        TAR_PORTAL_CODE | TAR_ROOM_IN_ZONE, FALSE, MAG_MANUAL, NULL);
+spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
+        TAR_PORTAL_CODE, FALSE, MAG_GROUPS, NULL);
 
   spello(SPELL_DISPEL_EVIL, "dispel evil", 40, 25, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
@@ -1252,6 +1289,8 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_LOCATE_OBJECT, "locate object", 25, 20, 1, POS_STANDING,
 	TAR_OBJ_WORLD, FALSE, MAG_MANUAL,
 	NULL);
+ spello(SPELL_LOCATE_SHADOW_PLANE, "locate shadow plane", 20, 10, 2, POS_STANDING, TAR_IGNORE, FALSE, MAG_MANUAL, NULL);
+
 
   spello(SPELL_MAGIC_MISSILE, "magic missile", 25, 10, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
@@ -1278,12 +1317,15 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
 
   spello(SPELL_PARALYZE, "paralyze", 25, 10, 1, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTS, "Your feel that your limbs will move again.");
+ spello(SPELL_PASS_WITHOUT_TRACE, "pass without trace", 35, 15, 4, POS_STANDING,
+        TAR_PORTAL_CODE, FALSE, MAG_MANUAL, NULL);
 
  spello(SPELL_PHASE_DOOR, "phase door", 60, 30, 3, POS_STANDING, TAR_DIRECTION, FALSE, MAG_MANUAL, NULL);
 
     spello(SPELL_PILLAR_OF_FLAME, "pillar of flame", 35, 10, 5, POS_FIGHTING,
             TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
             NULL);
+ spello(SPELL_PLANAR_TRAVEL, "planar travel", 125, 100, 5, POS_STANDING, TAR_PORTAL_CODE, FALSE, MAG_GROUPS, NULL);
 
   spello(SPELL_POISON, "poison", 50, 20, 3, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_NOT_SELF | TAR_OBJ_INV, TRUE,
@@ -1337,6 +1379,10 @@ spello(SPELL_PROTECTION_FROM_EVIL, "protection from evil", 60, 20, 4, POS_STANDI
   spello(SPELL_SEARING_ORB, "searing orb", 100, 70, 5, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);      
   spello(SPELL_SHADOW_ARMOR, "shadow armor", 35, 15, 2, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "The shadows dissipates from around your body leaving you vulnerable.");
+  spello(SPELL_SHADOW_DOOR, "shadow door", 120, 75, 5, POS_STANDING, TAR_PORTAL_CODE, FALSE, MAG_GROUPS, NULL);
+
+  spello(SPELL_SHADOW_WALK, "shadow walk", 35, 15, 4, POS_STANDING, TAR_PORTAL_CODE, FALSE, MAG_MANUAL, NULL);
+
   spello(SPELL_SILENCE, "silence", 50, 15, 5, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, FALSE, MAG_AFFECTS, "You feel your vocal cords loosen up.");
  spello(SPELL_SHIELD, "shield", 25, 10, 3, POS_FIGHTING,
@@ -1349,8 +1395,10 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
 
   spello(SPELL_SHOCKING_GRASP, "shocking grasp", 30, 15, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+
  spello(SPELL_SHRINK, "shrink", 50, 20, 3, POS_STANDING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You grow back to your natural size.");
+
  spello(SPELL_SKELETAL_GUISE, "skeletal guise", 80, 50, 5, POS_FIGHTING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel your skin stretch and expand as skeletal guise expires.");
 
@@ -1412,11 +1460,12 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
    spello(SPELL_TOWER_OF_STRENGTH, "tower of strength", 70, 50, 4, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "You feel vulnerable as your tower of strength disappears.");
 
+ spello(SPELL_TRAIL_OF_WOODLANDS, "trail of the woodlands", 120, 75, 5, POS_STANDING, TAR_PORTAL_CODE, FALSE, MAG_GROUPS, NULL);
+
    spello(SPELL_UNHOLY_WORD, "unholy word", 100, 60, 8, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);  
 
    spello(SPELL_VAMPIRIC_GAZE, "vampiric gaze", 75, 35, 2, POS_STANDING,
         TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, "You feel more self-confident.");
-
 
    spello(SPELL_VAMPIRIC_TOUCH, "vampiric touch", 35, 15, 2, POS_FIGHTING,
             TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_POINTS, NULL);
@@ -1441,7 +1490,7 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
         TAR_CHAR_ROOM, FALSE, MAG_MANUAL, NULL);
 
    spello(SPELL_WAIL_OF_THE_BANSHEE, "wail of the banshee", 150, 100, 10, POS_FIGHTING,
-	TAR_IGNORE, TRUE, MAG_AREAS, NULL);          
+	TAR_IGNORE, TRUE, MAG_AREAS, NULL);
    spello(SPELL_WATERWALK, "waterwalk", 40, 20, 2, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
 	"Your feet seem less buoyant.");
@@ -1502,7 +1551,7 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
    * min level to use the skill for other classes is set up in class.c.
    */
 
-  
+
   skillo(SKILL_BACKSTAB, "backstab");
   skillo(SKILL_BASH, "bash");
   skillo(SKILL_CIRCLE, "circle");

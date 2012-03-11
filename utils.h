@@ -46,7 +46,7 @@ void infochan(const char *str, ...);
 int get_max_damage_per_hit(struct char_data *ch, bool use_held);
 int get_total_hitbonus(struct char_data *ch);
 int get_total_dambonus(struct char_data *ch);
-
+room_rnum portal_code_decrypt(struct char_data *ch, char *encrypted_string, int spellnum);
 
 #define core_dump()		core_dump_real(__FILE__, __LINE__)
 
@@ -618,6 +618,8 @@ void	update_pos(struct char_data *victim);
 			 (EXIT(ch,door)->to_room != NOWHERE) && \
 			 !IS_SET(EXIT(ch, door)->exit_info, EX_CLOSED))
 
+#define CAN_USE_ROOM(ch, room) (!(ROOM_FLAGGED(room, ROOM_PRIVATE) || ROOM_FLAGGED(room, ROOM_DEATH) \
+        || ROOM_FLAGGED(room, ROOM_GODROOM)))
 
 #define CLASS_ABBR(ch) (IS_NPC(ch) ? "--" : class_abbrevs[(int)GET_CLASS(ch)])
 #define RACE_ABBR(ch) (IS_NPC(ch) ? "--" : race_abbrevs[(int)GET_RACE(ch)])

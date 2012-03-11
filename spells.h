@@ -402,6 +402,11 @@
 #define TAR_CHAR_ZONE   (1 << 11)
 #define TAR_DIRECTION   (1 << 12)
 #define TAR_ATTRIBUTE   (1 << 13) //
+#define TAR_PORTAL_CODE      (1 << 14) //target = a valid portal code
+#define TAR_ROOM_IN_ZONE     (1 << 15) //target = a room in the same zone as caster
+#define TAR_WEATHER          (1 << 16) //target = better or worse weather
+
+
 
 struct spell_info_type {
    byte min_position;	/* Position for caster	 */
@@ -475,6 +480,7 @@ ASPELL(spell_clan_recall);
 ASPELL(spell_phase_door);
 ASPELL(spell_vitality);
 ASPELL(spell_bind_portal);
+ASPELL(spell_portal);
 
 /* basic magic calling functions */
 
