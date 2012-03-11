@@ -22,6 +22,8 @@
 #include "interpreter.h"
 #include "dg_scripts.h"
 #include "genolc.h"
+#include "screen.h"
+
 /* external variables */
 extern room_rnum recall_room;
 extern room_rnum sorin_recall_room; /* mak 5.14.05 */
@@ -727,7 +729,8 @@ ASPELL(spell_bind_portal)
      //   send_to_char(ch, "Something prevents you from binding the portal.\r\n");
      //   return;
      // }
-      act("@BYou open up a shimmering blue portal and gaze into it...@n", FALSE, ch, 0, 0, TO_CHAR);
+     // act("You open up a shimmering blue portal and gaze into it...", FALSE, ch, 0, 0, TO_CHAR);
+      send_to_char(ch, "You open up a %sshimmering blue portal%s and gaze into it...\r\n", CCBLU(ch, C_CMP), CCNRM(ch, C_CMP)); 
       send_to_char(ch, "'%s' briefly appears as a portal shimmers into view and then disappears.\r\n", encrypted_string);
       act("Undecipherable characters briefly shimmer before your eyes.", FALSE, ch, 0, 0, TO_ROOM);
       break;
@@ -736,8 +739,9 @@ ASPELL(spell_bind_portal)
        // send_to_char(ch, "Something prevents you from binding the portal.\r\n");
        // return;
      // }
-      act("@RYou open up a shimmering red portal and gaze into it...@n", FALSE, ch, 0, 0, TO_CHAR);
-      send_to_char(ch, "'%s' briefly appears as a portal shimmers into view and then disappears.\r\n", encrypted_string);
+      //act("You open up a shimmering red portal and gaze into it...", FALSE, ch, 0, 0, TO_CHAR);
+      send_to_char(ch, "You open up a %sshimmering red portal%s and gaze into it...\r\n", CCRED(ch, C_CMP), CCNRM(ch, C_CMP));
+      send_to_char(ch, "'%s%s%s' briefly appears as a portal shimmers into view and then disappears.\r\n", CCRED(ch, C_CMP),encrypted_string, CCNRM(ch, C_CMP));
       act("Undecipherable characters briefly shimmer before your eyes.", FALSE, ch, 0, 0, TO_ROOM);
       break;
     case SPELL_LOCATE_SHADOW_PLANE:
@@ -830,13 +834,15 @@ ASPELL(spell_portal)
         break;
       case SPELL_SHADOW_DOOR:
       case SPELL_SHADOW_WALK:
-        act("@WYou journey through the plane of shadows.@n", FALSE, ch, 0, 0, TO_CHAR);
-        act("@cYou step out of the plane of shadows and look about.@n", FALSE, ch, 0, 0, TO_CHAR);
-        act("@cA dark portal briefly shimmers open as $n emerges from it.@n", FALSE, ch, 0, 0, TO_ROOM);
+        act("You journey through the plane of shadows.", FALSE, ch, 0, 0, TO_CHAR); //colorize?
+        act("@cYou step out of the plane of shadows and look about.@n", FALSE, ch, 0, 0, TO_CHAR); // Colorize?
+        act("A dark portal briefly shimmers open as $n emerges from it.", FALSE, ch, 0, 0, TO_ROOM); // Colorize?
         break;
       case SPELL_TRAIL_OF_WOODLANDS:
-        act("@WYou journey through a shimmering green tunnel through the earth past the massive roots of trees.@n", FALSE, ch, 0, 0, TO_CHAR);
-        act("@gYou step out of a green tunnel and look about.@n", FALSE, ch, 0, 0, TO_CHAR);
+        // act("@WYou journey through a shimmering green tunnel through the earth past the massive roots of trees.@n", FALSE, ch, 0, 0, TO_CHAR);
+        send_to_char(ch, "You journey through a %sshimmering green tunnel%s through the earth past the massive roots of trees.\r\n",CCGRN(ch, C_CMP), CCNRM(ch, C_CMP));
+	//act("@gYou step out of a green tunnel and look about.@n", FALSE, ch, 0, 0, TO_CHAR);
+        send_to_char(ch, "You step out of a %sgreen tunnel%s and look about.", CCGRN(ch, C_CMP), CCNRM(ch, C_CMP)); 
         act("@gA green portal briefly shimmers open as $n emerges from it.@n", FALSE, ch, 0, 0, TO_ROOM);
         break;
       default:

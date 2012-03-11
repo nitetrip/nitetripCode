@@ -1014,6 +1014,7 @@ int get_capped_resistance(struct char_data *ch, int resist_type)
 room_rnum portal_code_decrypt(struct char_data *ch, char *encrypted_string, int spellnum)
 {
   int spell_used_to_obtain_portal_code;
+  room_rnum return_room;
   switch (spellnum) {
     case SPELL_PASS_WITHOUT_TRACE:
     case SPELL_TRAIL_OF_WOODLANDS: spell_used_to_obtain_portal_code = SPELL_BEFRIEND_DRYAD; break;
@@ -1029,6 +1030,8 @@ room_rnum portal_code_decrypt(struct char_data *ch, char *encrypted_string, int 
   }
 
   int encrypted_location = asciiflag_conv(encrypted_string);
-  return real_room((((encrypted_location>>2)/(long)spell_used_to_obtain_portal_code)-(long)GET_IDNUM(ch)));
+  return_room = real_room((((encrypted_location>>2)/(long)spell_used_to_obtain_portal_code)-(long)GET_IDNUM(ch)));
+  //  return real_room((((encrypted_location>>2)/(long)spell_used_to_obtain_portal_code)-(long)GET_IDNUM(ch)));
+  return return_room; // for troubleshooting
 }
 
