@@ -298,6 +298,13 @@ TO_ROOM);
     case SPELL_CONTROL_UNDEAD:
     case SPELL_VAMPIRIC_GAZE:
     case SPELL_CHARM:		MANUAL_SPELL(spell_charm); break;
+
+   //  Spells to get portal names
+    case SPELL_BEFRIEND_DRYAD:
+    case SPELL_BIND_PORTAL_MAJOR:
+    case SPELL_BIND_PORTAL_MINOR:
+    case SPELL_LOCATE_SHADOW_PLANE:   MANUAL_SPELL(spell_bind_portal); break;
+
     case SPELL_CREATE_WATER:	MANUAL_SPELL(spell_create_water); break;
     case SPELL_DETECT_POISON:	MANUAL_SPELL(spell_detect_poison); break;
     case SPELL_ENCHANT_WEAPON:  MANUAL_SPELL(spell_enchant_weapon); break;
@@ -310,6 +317,17 @@ TO_ROOM);
     case SPELL_RECALL_TO_SORIN: MANUAL_SPELL(spell_sorin_recall); break;
     case SPELL_PHASE_DOOR:      MANUAL_SPELL(spell_phase_door); break;
     case SPELL_TELEPORT:	MANUAL_SPELL(spell_teleport); break;
+ 
+    // Spells to travel through portals
+    case SPELL_DIMENSION_SHIFT:
+    case SPELL_DIMENSION_WALK:
+    case SPELL_SHADOW_WALK:
+    case SPELL_PASS_WITHOUT_TRACE:
+    case SPELL_DIMENSION_DOOR:
+    case SPELL_PLANAR_TRAVEL:
+    case SPELL_SHADOW_DOOR:
+    case SPELL_TRAIL_OF_WOODLANDS:    MANUAL_SPELL(spell_portal); break;
+
 
     case SPELL_CLAN_RECALL:	MANUAL_SPELL(spell_clan_recall); break;
 

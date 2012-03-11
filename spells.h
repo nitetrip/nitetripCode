@@ -474,6 +474,7 @@ ASPELL(spell_spook);
 ASPELL(spell_clan_recall);
 ASPELL(spell_phase_door);
 ASPELL(spell_vitality);
+ASPELL(spell_bind_portal);
 
 /* basic magic calling functions */
 

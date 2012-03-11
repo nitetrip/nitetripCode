@@ -1008,4 +1008,27 @@ int get_capped_resistance(struct char_data *ch, int resist_type)
     return (MAX(MIN_RESIST, MIN(MAX_RESIST, GET_RESIST(ch, resist_type))));
 }
 
+// Portal routines
+
+
+room_rnum portal_code_decrypt(struct char_data *ch, char *encrypted_string, int spellnum)
+{
+  int spell_used_to_obtain_portal_code;
+  switch (spellnum) {
+    case SPELL_PASS_WITHOUT_TRACE:
+    case SPELL_TRAIL_OF_WOODLANDS: spell_used_to_obtain_portal_code = SPELL_BEFRIEND_DRYAD; break;
+    case SPELL_SHADOW_WALK:
+    case SPELL_SHADOW_DOOR: spell_used_to_obtain_portal_code = SPELL_LOCATE_SHADOW_PLANE; break;
+    case SPELL_DIMENSION_DOOR:
+    case SPELL_PLANAR_TRAVEL: spell_used_to_obtain_portal_code = SPELL_BIND_PORTAL_MAJOR; break;
+    case SPELL_DIMENSION_SHIFT:
+    case SPELL_DIMENSION_WALK:
+    case SPELL_SCRY_GREATER:
+    case SPELL_SCRY_LESSER: spell_used_to_obtain_portal_code = SPELL_BIND_PORTAL_MINOR; break;
+    default: spell_used_to_obtain_portal_code = spellnum; break;
+  }
+
+  int encrypted_location = asciiflag_conv(encrypted_string);
+  return real_room((((encrypted_location>>2)/(long)spell_used_to_obtain_portal_code)-(long)GET_IDNUM(ch)));
+}
 
