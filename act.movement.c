@@ -130,8 +130,8 @@ int do_simple_move(struct char_data *ch, int dir, int need_specials_check)
 
   /* move points needed is avg. move loss for src and destination sect type
    * You know .. I don't like this system, let's base this not ONLY on terrain type
-   * but also on dex of char. - Frenzy
-   * FRENZY - Needs to adjust on max abils
+   * but also on dex of char. 
+   * Needs to adjust on max abils
    * Original:
    * need_movement = (movement_loss[SECT(IN_ROOM(ch))] +
 		   movement_loss[SECT(EXIT(ch, dir)->to_room)]) / 2;

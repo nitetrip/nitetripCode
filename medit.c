@@ -1688,7 +1688,7 @@ case 2:
   if (GET_AC(mob) > 0)
     GET_AC(mob) - MAX(GET_AC(mob), 10);
  break;
-case 3:
+case 3: // 3 is the default
   break;
 case 4:
   GET_HITROLL(mob) *= 1.5;
@@ -1706,7 +1706,7 @@ case 4:
    GET_HITROLL(mob) = 40;
   if (GET_DAMROLL(mob) > 160)
    GET_DAMROLL(mob) = 160;
-  SET_BIT(MOB_FLAGS(mob), MOB_NOCHARM);
+//  SET_BIT(MOB_FLAGS(mob), MOB_NOCHARM);
  break;
 case 5:
   GET_HITROLL(mob) *= 2;
@@ -1724,7 +1724,7 @@ case 5:
    GET_HITROLL(mob) = 40;
   if (GET_DAMROLL(mob) > 160)
    GET_DAMROLL(mob) = 160;
-  SET_BIT(MOB_FLAGS(mob), MOB_NOCHARM);
+//  SET_BIT(MOB_FLAGS(mob), MOB_NOCHARM);
  break;
 case 6:
   GET_HITROLL(mob) *= 3;
@@ -1742,7 +1742,7 @@ case 6:
    GET_HITROLL(mob) = 40;
   if (GET_DAMROLL(mob) > 160)
    GET_DAMROLL(mob) = 160;
-  SET_BIT(MOB_FLAGS(mob), MOB_NOCHARM);
+//  SET_BIT(MOB_FLAGS(mob), MOB_NOCHARM);
  break;
 
 case 7:
@@ -1761,7 +1761,7 @@ case 7:
    GET_HITROLL(mob) = 40;
   if (GET_DAMROLL(mob) > 160)
    GET_DAMROLL(mob) = 160;
-  SET_BIT(MOB_FLAGS(mob), MOB_NOCHARM);
+//  SET_BIT(MOB_FLAGS(mob), MOB_NOCHARM);
  break;
 
 case 8:
@@ -1798,7 +1798,7 @@ case 9:
    GET_HITROLL(mob) = 40;
   if (GET_DAMROLL(mob) > 160)
    GET_DAMROLL(mob) = 160;
-  SET_BIT(MOB_FLAGS(mob), MOB_NOCHARM);
+   SET_BIT(MOB_FLAGS(mob), MOB_NOCHARM);
  break;
 case 10:
   GET_HITROLL(mob) *= 5;

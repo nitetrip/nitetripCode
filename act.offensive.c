@@ -131,9 +131,9 @@ ACMD(do_hit)
 	  check_killer(ch, vict);
 	}
       }
-      if (AFF_FLAGGED(ch, AFF_CHARM) && !IS_NPC(ch->master) && !IS_NPC(vict))
-	return;			/* you can't order a charmed pet to attack a
-				 * player - Oh..?  FRENZY */
+     // if (AFF_FLAGGED(ch, AFF_CHARM) && !IS_NPC(ch->master) && !IS_NPC(vict))
+     //	return;			/* you can't order a charmed pet to attack a
+     //				 * player - Oh */
     }
 
     /* start the fight */
@@ -405,7 +405,7 @@ ACMD(do_flee)
 	
 	send_to_char(ch, "You flee head over heels to the %s!\r\n", dirs[attempt]);
 	if (was_fighting && !IS_NPC(ch)) {
-          /* FRENZY - want it like this ? */
+          
 	  loss = GET_MAX_HIT(was_fighting) - GET_HIT(was_fighting);
 	  loss *= GET_LEVEL(was_fighting);
 	  gain_exp(ch, -loss);
@@ -511,7 +511,7 @@ ACMD(do_rescue)
     return;
   }
 
-  /* FRENZY - only fail 1 in 101 ... no matter what ? */
+  /* only fail 1 in 101 ... no matter what ? */
   percent = rand_number(1, 101);	/* 101% is a complete failure */
   prob = GET_SKILL(ch, SKILL_RESCUE);
 
@@ -589,7 +589,7 @@ if (IS_NPC(ch) || !GET_SKILL(ch, SKILL_FURY)) {
     return;
     }
     
-/* FRENZY - Needs to adjust on max abils */
+/* Needs to adjust on max abils */
 
    if (GET_CON(ch) <= 5) 				/* 0(1?)-5 Con */
       conadd = -20;

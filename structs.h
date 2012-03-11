@@ -76,7 +76,7 @@
 
 
 
-/* This is for the Class Branching stuff - Frenzy */
+/* This is for the Class Branching stuff  */
 struct char_data *guildmaster1;
 
 /* room-related defines *************************************************/
@@ -603,8 +603,8 @@ struct char_data *guildmaster1;
 #define CON_TRIGEDIT     24	/* OLC mode - trigger edit              */
 #define CON_QRACE        25     /* Race? 				*/
 #define CON_QSTATS       26 /* for choosing your starting stats   Anubis */
-#define CON_BRANCH1      27 /* First Class Branch - Frenzy */
-#define CON_BRANCH2      28 /* Second Class Branch - Frenzy */
+#define CON_BRANCH1      27 /* First Class Branch  */
+#define CON_BRANCH2      28 /* Second Class Branch */
 #define CON_CLANEDIT     29     /* OLC mode - clan editor               */
 
 /* Character equipment positions: used as index for char_data.equipment[] */

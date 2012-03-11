@@ -290,6 +290,13 @@ TO_ROOM);
     case SPELL_ARBOREAL_FORM:   MANUAL_SPELL(spell_arboreal_form); break;
     case SPELL_ARCANE_LORE:     MANUAL_SPELL(spell_arcane_lore); break;
     case SPELL_ASTRAL_PROJECTION:MANUAL_SPELL(spell_astral_projection); break;
+    case SPELL_ANIMAL_FRIENDSHIP:
+    case SPELL_CHARM_BEAST:
+    case SPELL_CHARM_MONSTER:
+    case SPELL_CHARM_PERSON:
+    case SPELL_CONTROL_PLANT:
+    case SPELL_CONTROL_UNDEAD:
+    case SPELL_VAMPIRIC_GAZE:
     case SPELL_CHARM:		MANUAL_SPELL(spell_charm); break;
     case SPELL_CREATE_WATER:	MANUAL_SPELL(spell_create_water); break;
     case SPELL_DETECT_POISON:	MANUAL_SPELL(spell_detect_poison); break;
@@ -864,6 +871,9 @@ void mag_assign_spells(void)
   spello(SPELL_AIRWALK, "airwalk", 50, 15, 3, POS_STANDING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
 	"You feet feel heavier and began to drag as you walk.");
+  spello(SPELL_ANIMAL_FRIENDSHIP, "animal friendship", 75, 35, 2, POS_STANDING,
+        TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, "You feel more self-confident.");
+
   spello(SPELL_ANIMATE_DEAD, "animate dead", 35, 10, 3, POS_STANDING,
 	TAR_OBJ_ROOM, FALSE, MAG_SUMMONS,
 	NULL);
@@ -935,9 +945,13 @@ spello(SPELL_BOLT_OF_STEEL, "bolt of steel", 35, 15, 2, POS_FIGHTING, TAR_CHAR_R
  spello(SPELL_CHAMPIONS_STRENGTH, "champions strength", 75, 50, 5, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "Your armor grows heavy as the strength of ancient heroes vacate your body.");
 
-  spello(SPELL_CHARM, "charm person", 75, 50, 2, POS_FIGHTING,
-	TAR_CHAR_ROOM | TAR_NOT_SELF, TRUE, MAG_MANUAL,
-	"You feel more self-confident.");
+  spello(SPELL_CHARM_BEAST, "charm beast", 75, 35, 2, POS_STANDING,
+        TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, "You feel more self-confident.");
+  spello(SPELL_CHARM_MONSTER, "charm monster", 75, 35, 2, POS_STANDING,
+        TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, "You feel more self-confident.");
+  spello(SPELL_CHARM_PERSON, "charm person", 75, 35, 2, POS_STANDING,
+        TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, "You feel more self-confident.");
+	
 
   spello(SPELL_CHILL_TOUCH, "chill touch", 30, 10, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE | MAG_AFFECTS,
@@ -968,6 +982,11 @@ spello(SPELL_BOLT_OF_STEEL, "bolt of steel", 35, 15, 2, POS_FIGHTING, TAR_CHAR_R
   spello(SPELL_COLOR_SPRAY, "color spray", 30, 15, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
 	NULL);
+  spello(SPELL_CONTROL_PLANT, "control plant", 75, 35, 2, POS_STANDING,
+        TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, "You feel more self-confident.");
+  spello(SPELL_CONTROL_UNDEAD, "control undead", 75, 35, 2, POS_STANDING,
+        TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, "You feel more self-confident.");
+
 
   spello(SPELL_CONTROL_WEATHER, "control weather", 75, 25, 5, POS_STANDING,
 	TAR_IGNORE, FALSE, MAG_MANUAL,
@@ -1334,7 +1353,7 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
             NULL);
             
   spello(SPELL_SPOOK, "spook", 40, 20, 5, POS_STANDING,
-        TAR_CHAR_ROOM, TRUE, MAG_MANUAL, NULL); /* FRENZY Violent TRUE will mean I cannot spook mobs out of a peace room */
+        TAR_CHAR_ROOM, FALSE, MAG_MANUAL, NULL);
 
   spello(SPELL_STRENGTH, "strength", 35, 30, 1, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
@@ -1372,42 +1391,50 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
   spello(SPELL_THUNDER_SWARM, "thunder swarm", 75, 15, 25, POS_FIGHTING,
             TAR_IGNORE, TRUE, MAG_AREAS,
             NULL);
-    spello(SPELL_UNHOLY_WORD, "unholy word", 100, 60, 8, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);  
-    spello(SPELL_VAMPIRIC_TOUCH, "vampiric touch", 35, 15, 2, POS_FIGHTING,
+   spello(SPELL_TOWER_OF_STRENGTH, "tower of strength", 70, 50, 4, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "You feel vulnerable as your tower of strength disappears.");
+
+   spello(SPELL_UNHOLY_WORD, "unholy word", 100, 60, 8, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);  
+
+   spello(SPELL_VAMPIRIC_GAZE, "vampiric gaze", 75, 35, 2, POS_STANDING,
+        TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, "You feel more self-confident.");
+
+
+   spello(SPELL_VAMPIRIC_TOUCH, "vampiric touch", 35, 15, 2, POS_FIGHTING,
             TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_POINTS, NULL);
 
-  spello(SPELL_VIGORIZE_CRITICAL, "vigorize critical", 40, 25, 5, POS_FIGHTING,
+   spello(SPELL_VIGORIZE_CRITICAL, "vigorize critical", 40, 25, 5, POS_FIGHTING,
             TAR_CHAR_ROOM, FALSE, MAG_POINTS,
             NULL);
-  spello(SPELL_VIGORIZE_GROUP, "vigorize group", 65, 50, 5, POS_STANDING, 
+   spello(SPELL_VIGORIZE_GROUP, "vigorize group", 65, 50, 5, POS_STANDING, 
             TAR_IGNORE, FALSE, MAG_GROUPS,
             NULL);
-  spello(SPELL_VIGORIZE_LIGHT, "vigorize light", 25, 10, 5, POS_FIGHTING,
+   spello(SPELL_VIGORIZE_LIGHT, "vigorize light", 25, 10, 5, POS_FIGHTING,
             TAR_CHAR_ROOM, FALSE, MAG_POINTS,
             NULL);
-  spello(SPELL_VIGORIZE_SERIOUS, "vigorize serious", 35, 20, 5, POS_FIGHTING,
+   spello(SPELL_VIGORIZE_SERIOUS, "vigorize serious", 35, 20, 5, POS_FIGHTING,
             TAR_CHAR_ROOM, FALSE, MAG_POINTS,
             NULL);
   
-  spello(SPELL_VITALIZE_MANA, "vitalize mana", 33, 33, 0, POS_STANDING,
+   spello(SPELL_VITALIZE_MANA, "vitalize mana", 33, 33, 0, POS_STANDING,
             TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_POINTS,
             NULL);
-  spello(SPELL_VITALITY, "vitality", 30, 10, 3, POS_STANDING,
+   spello(SPELL_VITALITY, "vitality", 30, 10, 3, POS_STANDING,
         TAR_CHAR_ROOM, FALSE, MAG_MANUAL, NULL);
 
-    spello(SPELL_WAIL_OF_THE_BANSHEE, "wail of the banshee", 150, 100, 10, POS_FIGHTING,
+   spello(SPELL_WAIL_OF_THE_BANSHEE, "wail of the banshee", 150, 100, 10, POS_FIGHTING,
 	TAR_IGNORE, TRUE, MAG_AREAS, NULL);          
-  spello(SPELL_WATERWALK, "waterwalk", 40, 20, 2, POS_STANDING,
+   spello(SPELL_WATERWALK, "waterwalk", 40, 20, 2, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
 	"Your feet seem less buoyant.");
- spello(SPELL_WINDWALK, "windwalk", 50, 25, 5, POS_STANDING,
+   spello(SPELL_WINDWALK, "windwalk", 50, 25, 5, POS_STANDING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "The wind stops swirling about your body.");
 
 
-  spello(SPELL_WITHER, "wither", 55, 25, 3, POS_FIGHTING,
+   spello(SPELL_WITHER, "wither", 55, 25, 3, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_FIGHT_VICT, FALSE, MAG_AFFECTSV, "Your shriveled arm grows back to normal.");
 
-  spello(SPELL_WORD_OF_RECALL, "word of recall", 20, 10, 2, POS_FIGHTING,
+   spello(SPELL_WORD_OF_RECALL, "word of recall", 20, 10, 2, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_MANUAL,
 	NULL);
   

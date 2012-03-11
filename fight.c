@@ -869,8 +869,6 @@ void backstab_message(int dam, struct char_data *ch, struct char_data *vict)
  * 2nd Message = TO_VICT | TO_SLEEP = To Victim
  * 3rd Message = TO_NOTVICT = To everyone in the from BUT Victim
  *
- * This is the VERY orderly backstab message routine.  Love it.
- * - Frenzy
  */
 
 
@@ -1392,15 +1390,15 @@ void hit(struct char_data *ch, struct char_data *victim, int type)
 
     dam = calc_weap_resists(ch, victim, dam);
 
-    /* FRENZY DO IT HERE -- commented out cause it spams us with bugs - mak */
+    /*  commented out cause it spams us with bugs - mak */
 
   /* This section was created to parse things that should only happen on a pc/npc's LAST attack of a round */
  /* if (type == TYPE_LASTATTACK) */
   {
-  /* FRENZY - Should there be a check to DISABLE crit strike if its a backstaber with 1 attack/round ?*/
+  /*  Should there be a check to DISABLE crit strike if its a backstaber with 1 attack/round ?*/
  /* if (GET_SKILL(ch, SKILL_CRIT_HIT)) */
   {
-  /* FRENZY - finish this CRIT HIT action */
+  /*  finish this CRIT HIT action */
   }
   }
 
@@ -1753,9 +1751,9 @@ int get_weapon_prof_dam(struct char_data *ch)
 int calc_weap_resists(struct char_data *ch, struct char_data *victim, int damage)
 {
   struct obj_data *wielded = GET_EQ(ch, WEAR_WIELD);
-  int w_type;  
+  int w_type;
 
-    if (wielded && GET_OBJ_TYPE(wielded) == ITEM_WEAPON)      
+    if (wielded && GET_OBJ_TYPE(wielded) == ITEM_WEAPON)
       w_type = GET_OBJ_VAL(wielded, 3) + TYPE_HIT;
     else {
      if (IS_NPC(ch) && ch->mob_specials.attack_type != 0)
@@ -1763,7 +1761,7 @@ int calc_weap_resists(struct char_data *ch, struct char_data *victim, int damage
     else
       w_type = TYPE_PUNCH; /* unarmed attack changed to punch by Anubis */
     }
-    
+
     switch (w_type) {
       case TYPE_STING:
       case TYPE_PIERCE:
@@ -1781,18 +1779,18 @@ int calc_weap_resists(struct char_data *ch, struct char_data *victim, int damage
          damage = damage - (damage / 3);
         if(victim->char_specials.vulnerable[ATTACK_WHIP] > 0 || victim->char_specials.vulnerable[ATTACK_PHYSICAL] > 0 )   
          damage = damage + (damage / 3);
-        if(victim->char_specials.immune[ATTACK_WHIP] > 0 || victim->char_specials.immune[ATTACK_PHYSICAL] > 0 )   
+        if(victim->char_specials.immune[ATTACK_WHIP] > 0 || victim->char_specials.immune[ATTACK_PHYSICAL] > 0 )
          damage = 0;
         return(damage);
          break;
-      case TYPE_BLUDGEON:  
+      case TYPE_BLUDGEON:
       case TYPE_POUND:
       case TYPE_CRUSH:
         if(victim->char_specials.resist[ATTACK_BLUDGEON] > 0 || victim->char_specials.resist[ATTACK_PHYSICAL] > 0 )
          damage = damage - (damage / 3);
         if(victim->char_specials.vulnerable[ATTACK_BLUDGEON] > 0 || victim->char_specials.vulnerable[ATTACK_PHYSICAL] > 0 )   
          damage = damage + (damage / 3);
-        if(victim->char_specials.immune[ATTACK_BLUDGEON] > 0 || victim->char_specials.immune[ATTACK_PHYSICAL] > 0 )   
+        if(victim->char_specials.immune[ATTACK_BLUDGEON] > 0 || victim->char_specials.immune[ATTACK_PHYSICAL] > 0 )
          damage = 0;
         return(damage);
          break;
@@ -1802,30 +1800,31 @@ int calc_weap_resists(struct char_data *ch, struct char_data *victim, int damage
          damage = damage - (damage / 3);
         if(victim->char_specials.vulnerable[ATTACK_SLASH] > 0 || victim->char_specials.vulnerable[ATTACK_PHYSICAL] > 0 )   
          damage = damage + (damage / 3);
-        if(victim->char_specials.immune[ATTACK_SLASH] > 0 || victim->char_specials.immune[ATTACK_PHYSICAL] > 0 )   
+        if(victim->char_specials.immune[ATTACK_SLASH] > 0 || victim->char_specials.immune[ATTACK_PHYSICAL] > 0 )
          damage = 0;
         return(damage);
-         break;   
+         break;
       case TYPE_HIT:
-      case TYPE_PUNCH:   
+      case TYPE_PUNCH:
       case TYPE_THRASH:
       case TYPE_BITE:
       case TYPE_MAUL:
       case TYPE_BLAST:
+      case TYPE_KICK:
         if(victim->char_specials.resist[ATTACK_PHYSICAL] > 0 )
          damage = damage - (damage / 3);
-        if(victim->char_specials.vulnerable[ATTACK_PHYSICAL] > 0 )   
+        if(victim->char_specials.vulnerable[ATTACK_PHYSICAL] > 0 )
          damage = damage + (damage / 3);
-        if(victim->char_specials.immune[ATTACK_PHYSICAL] > 0 )   
+        if(victim->char_specials.immune[ATTACK_PHYSICAL] > 0 )
          damage = 0;
         return(damage);
-         break;  
-      default:          
+         break;
+      default:
           return(damage);
-          break;  
-       }  
-              
-  return(damage);  
+          break;
+       }
+
+  return(damage);
 }
 
 /* dunno where to put this, so I'm going to try here can move it later - Seymour --gotta fix this */ 
@@ -1836,34 +1835,32 @@ struct descriptor_data *d;
 int pain_dam;
  for (d = descriptor_list; d; d = d->next) {
     if (d->connected) continue;
-    
+
    if (ROOM_FLAGGED(IN_ROOM(d->character), ROOM_PAIN)){
-     
-  
+
 //   for (ch = world[IN_ROOM(d->character)].people; ch != NULL; ch = ch->next_in_room)
-    if (!IS_NPC(d->character)) {
-      
+    if (!IS_NPC(d->character)) { 
        if (world[IN_ROOM(d->character)].pain_check >= world[IN_ROOM(d->character)].pain_rate){
           send_to_room(IN_ROOM(d->character), "%s\r\n", world[IN_ROOM(d->character)].pain_message);
-   
+
        pain_dam = world[IN_ROOM(d->character)].pain_damage;
           if(AFF_FLAGGED(d->character, AFF_SANCTUARY) && pain_dam >= 2 )
              pain_dam *= .5;
           if (AFF_FLAGGED(d->character, AFF_FORT) && pain_dam >= 3)
-             pain_dam *= .75; 
+             pain_dam *= .75;
           if (AFF_FLAGGED(d->character, AFF_DERVISH_SPIN) && pain_dam >= 2)
-             pain_dam *= .9;          
+             pain_dam *= .9;
           if (GET_LEVEL(d->character) >= LVL_SAINT)
              pain_dam = 0;
-          GET_HIT(d->character) = GET_HIT(d->character) - pain_dam;       
+          GET_HIT(d->character) = GET_HIT(d->character) - pain_dam;
           world[IN_ROOM(d->character)].pain_check = 0;
           update_pos(d->character);
-          if(GET_POS(d->character) == POS_DEAD)   
+          if(GET_POS(d->character) == POS_DEAD)
              die(d->character, d->character);
-          } else world[IN_ROOM(d->character)].pain_check++;          
+          } else world[IN_ROOM(d->character)].pain_check++;
     }
    }
-  
+
  }
 }
 

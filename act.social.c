@@ -22,7 +22,7 @@
 
 
 /* local globals */
-static int list_top = -1;
+static int list_top = 0;
 
 /* local functions */
 char *fread_action(FILE *fl, int nr);

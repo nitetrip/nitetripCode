@@ -77,7 +77,7 @@ ASPELL(spell_create_water)
   }
 }
 
-//dan clan system
+
 
 ASPELL(spell_clan_recall)
 {
@@ -450,8 +450,10 @@ ASPELL(spell_charm)
     affect_to_char(victim, &af);
 
     act("Isn't $n just such a nice fellow?", FALSE, ch, 0, victim, TO_VICT);
-    if (IS_NPC(victim))
+    if (IS_NPC(victim)){
       REMOVE_BIT(MOB_FLAGS(victim), MOB_SPEC);
+      SET_BIT(MOB_FLAGS(victim), MOB_SENTINEL);
+    }
   }
 }
 
@@ -634,7 +636,7 @@ ASPELL(spell_spook)
   * practiced spook but when spooking NPCs
   * it does.
   *
-  * FRENZY - Figure this mess out
+  * 
   */
 
  if (ch == NULL || victim == NULL)
@@ -647,7 +649,7 @@ ASPELL(spell_spook)
  if (!IS_NPC(ch)) { /* PCs and NPCs have different Savs */
 
 
-   /* FRENZY - Needs to adjust on max abils */
+   
    if (GET_INT(victim) <= 5) 				        /* 0(1?)-5 Int */
       intadd = -20;
    if ((GET_INT(victim) >= 6) && (GET_INT(victim) <= 10)) 	/* 6-10 Int */

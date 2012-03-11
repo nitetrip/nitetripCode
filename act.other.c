@@ -327,7 +327,7 @@ ACMD(do_steal)
         hit(vict, ch, TYPE_UNDEFINED);
 }
 
-/* For Class Branching - Frenzy */
+/* For Class Branching */
 ACMD(do_progress)
 {
   if (IS_NPC(ch))

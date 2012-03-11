@@ -2010,7 +2010,7 @@ void nanny(struct descriptor_data *d, char *arg)
     break;
 
 /*
- * NEW PART FOR CLASS BRANCHING(1) - Frenzy
+ * CLASS BRANCHING(1) 
  */
   case CON_BRANCH1:
   switch (d->character->player.chclass)
@@ -2147,7 +2147,7 @@ void nanny(struct descriptor_data *d, char *arg)
     break;
   
  /*
- * NEW PART FOR CLASS BRANCHING(2) - Frenzy
+ * FOR CLASS BRANCHING(2)
  */
   case CON_BRANCH2:
   switch (d->character->player.chclass)

@@ -1595,6 +1595,23 @@ void interpret_espec(const char *keyword, const char *value, int i, int nr)
     RANGE(0, 1);
     mob_proto[i].char_specials.resist[8] = num_arg;
   } 
+  CASE("Res9") {
+    RANGE(0, 1);
+    mob_proto[i].char_specials.resist[9] = num_arg;
+  }
+  CASE("Res10") {
+    RANGE(0, 1);
+    mob_proto[i].char_specials.resist[9] = num_arg;
+  }
+  CASE("Res11") {
+    RANGE(0, 1);
+    mob_proto[i].char_specials.resist[9] = num_arg;
+  }
+  CASE("Res12") {
+    RANGE(0, 1);
+    mob_proto[i].char_specials.resist[9] = num_arg;
+  }
+
   /* Vulnerabilities   Anubis */
   CASE("Vul0") {
     RANGE(0, 1);
@@ -1637,7 +1654,23 @@ void interpret_espec(const char *keyword, const char *value, int i, int nr)
   CASE("Vul8") {
     RANGE(0, 1);
     mob_proto[i].char_specials.vulnerable[8] = num_arg;
+  }
+  CASE("Vul9") {
+    RANGE(0, 1);
+    mob_proto[i].char_specials.vulnerable[9] = num_arg;
+  }
+  CASE("Vul10") {
+    RANGE(0, 1);
+    mob_proto[i].char_specials.vulnerable[9] = num_arg;
+  }
+   CASE("Vul11") {
+    RANGE(0, 1);
+    mob_proto[i].char_specials.vulnerable[9] = num_arg;
   } 
+   CASE("Vul12") {
+    RANGE(0, 1);
+    mob_proto[i].char_specials.vulnerable[9] = num_arg;
+  }
 
   /* Immunities   Anubis */
   CASE("Imm0") {
@@ -1671,17 +1704,34 @@ void interpret_espec(const char *keyword, const char *value, int i, int nr)
   CASE("Imm6") {
     RANGE(0, 1);
     mob_proto[i].char_specials.immune[6] = num_arg;
-  } 
+    } 
   
-  CASE("Imm7") {
+    CASE("Imm7") {
     RANGE(0, 1);
     mob_proto[i].char_specials.immune[7] = num_arg;
-  } 
+    } 
   
-  CASE("Imm8") {
+    CASE("Imm8") {
     RANGE(0, 1);
     mob_proto[i].char_specials.immune[8] = num_arg;
-  } 
+    } 
+
+   CASE("Imm9") {
+    RANGE(0, 1);
+    mob_proto[i].char_specials.immune[9] = num_arg;
+    }
+    CASE("Imm10") {
+    RANGE(0, 1);
+    mob_proto[i].char_specials.immune[9] = num_arg;
+    }
+    CASE("Imm11") {
+    RANGE(0, 1);
+    mob_proto[i].char_specials.immune[9] = num_arg;
+    }
+    CASE("Imm12") {
+    RANGE(0, 1);
+    mob_proto[i].char_specials.immune[9] = num_arg;
+    }
 
   if (!matched) {
     log("SYSERR: Warning: unrecognized espec keyword %s in mob #%d",

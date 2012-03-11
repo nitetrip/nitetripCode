@@ -560,8 +560,7 @@ void point_update(void)
    /* change alignment */
    
    /* Vampire sun damage */
-   /* This section should probably go in fight.c's damage() but I'm lazy right now.  Maybe I'll move it one day FRENZY */
-    if ((GET_RACE(i) == RACE_VAMPIRE)  && (GET_LEVEL(i) < LVL_SAINT) && OUTSIDE(i)  && (weather_info.sunlight == SUN_RISE || weather_info.sunlight == SUN_LIGHT) && !IS_NPC(i) && (i->char_specials.vulnerable[ATTACK_LIGHT] > 0))
+       if ((GET_RACE(i) == RACE_VAMPIRE)  && (GET_LEVEL(i) < LVL_SAINT) && OUTSIDE(i)  && (weather_info.sunlight == SUN_RISE || weather_info.sunlight == SUN_LIGHT) && !IS_NPC(i) && (i->char_specials.vulnerable[ATTACK_LIGHT] > 0))
 	damage(i, i, GET_LEVEL(i) * 20, TYPE_SUNDAM);
     else if ((GET_RACE(i) == RACE_VAMPIRE)  && (GET_LEVEL(i) < LVL_SAINT) && OUTSIDE(i)  && (weather_info.sunlight == SUN_RISE || weather_info.sunlight == SUN_LIGHT) && !IS_NPC(i) && !(i->char_specials.immune[ATTACK_LIGHT] > 0) && !(i->char_specials.resist[ATTACK_LIGHT] > 0))
 	damage(i, i, GET_LEVEL(i) * 10, TYPE_SUNDAM);
@@ -582,7 +581,6 @@ void point_update(void)
      
       }
  
-  /* This section should probably go in fight.c's damage() but I'm lazy right now.  Maybe I'll move it one day FRENZY */
    if (AFF_FLAGGED(i, AFF_POISON) && (i->char_specials.vulnerable[ATTACK_POISON] > 0))
       {
        if (damage(i, i, 4, SPELL_POISON) == -1)
@@ -603,8 +601,8 @@ void point_update(void)
       act("You feel burning poison in your blood, but you manage to ignore it.", TRUE, i, NULL, NULL, TO_CHAR | TO_SLEEP);
       act("$n looks really sick but resists $s sickness.", TRUE, i, NULL, NULL, TO_ROOM);
       }
-   /*   if (AFF_FLAGGED(i, AFF_POISON))       Original poison dam, will take this out when I'm sure
-      	if (damage(i, i, 2, SPELL_POISON) == -1)    the new stuff works perfectly. - FRENZY
+   /*   if (AFF_FLAGGED(i, AFF_POISON))       Original poison dam
+      	if (damage(i, i, 2, SPELL_POISON) == -1)    
 	  continue;   Oops, they died. -gg 6/24/98  */
 
 

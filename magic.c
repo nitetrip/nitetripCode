@@ -2296,10 +2296,10 @@ void mag_creations(int level, struct char_data *ch, int spellnum)
 int check_mag_resists(struct char_data *ch, struct char_data *victim, int damage, int type)
 {
  if (victim->char_specials.resist[type] > 0 || victim->char_specials.resist[ATTACK_MAGIC] > 0)
-  damage = damage - (damage / 3);
+  damage = damage - (damage / 2); // Resist Dam does 50% less
  if (victim->char_specials.vulnerable[type] > 0 || victim->char_specials.vulnerable[ATTACK_MAGIC] > 0)
-  damage = damage + (damage / 3);
- if (victim->char_specials.immune[type] > 0 || victim->char_specials.immune[ATTACK_MAGIC] > 0) 
+  damage = damage + (damage / 2);// Vuln to Dam does 50% more
+  if (victim->char_specials.immune[type] > 0 || victim->char_specials.immune[ATTACK_MAGIC] > 0) 
   damage = 0;  
  return(damage); 
 }
