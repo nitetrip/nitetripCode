@@ -291,6 +291,9 @@ TO_ROOM);
     case SPELL_ARCANE_LORE:     MANUAL_SPELL(spell_arcane_lore); break;
     case SPELL_ASTRAL_PROJECTION:MANUAL_SPELL(spell_astral_projection); break;
     case SPELL_ANIMAL_FRIENDSHIP:
+    case SPELL_BLOOD_QUENCH:          MANUAL_SPELL(spell_blood_quench); break;
+    case SPELL_CALM:                  MANUAL_SPELL(spell_calm); break;
+    case SPELL_CANNIBALIZE:           MANUAL_SPELL(spell_cannibalize); break;
     case SPELL_CHARM_BEAST:
     case SPELL_CHARM_MONSTER:
     case SPELL_CHARM_PERSON:
@@ -305,18 +308,28 @@ TO_ROOM);
     case SPELL_BIND_PORTAL_MINOR:
     case SPELL_LOCATE_SHADOW_PLANE:   MANUAL_SPELL(spell_bind_portal); break;
 
+   case SPELL_CONTROL_WEATHER:       MANUAL_SPELL(spell_control_weather); break;
+
     case SPELL_CREATE_WATER:	MANUAL_SPELL(spell_create_water); break;
     case SPELL_DETECT_POISON:	MANUAL_SPELL(spell_detect_poison); break;
     case SPELL_ENCHANT_WEAPON:  MANUAL_SPELL(spell_enchant_weapon); break;
+    case SPELL_FEIGN_DEATH:           MANUAL_SPELL(spell_feign_death); break;
+    case SPELL_FUMBLE:                MANUAL_SPELL(spell_fumble); break;
+
     case SPELL_ETHEREAL_PROJECTION: MANUAL_SPELL(spell_ethereal_projection);break;
     case SPELL_HANG:            MANUAL_SPELL(spell_hang); break;
     case SPELL_IDENTIFY:	MANUAL_SPELL(spell_identify); break;
+    case SPELL_KNOCK:                 MANUAL_SPELL(spell_knock); break;
+   case SPELL_RECHARGE:              MANUAL_SPELL(spell_recharge); break;
+    case SPELL_REST_IN_PEACE:         MANUAL_SPELL(spell_rest_in_peace); break;
+
     case SPELL_LOCATE_OBJECT:   MANUAL_SPELL(spell_locate_object); break;
     case SPELL_SUMMON:		MANUAL_SPELL(spell_summon); break;
     case SPELL_WORD_OF_RECALL:  MANUAL_SPELL(spell_recall); break;
     case SPELL_RECALL_TO_SORIN: MANUAL_SPELL(spell_sorin_recall); break;
     case SPELL_PHASE_DOOR:      MANUAL_SPELL(spell_phase_door); break;
     case SPELL_TELEPORT:	MANUAL_SPELL(spell_teleport); break;
+    case SPELL_SUCCOR:                MANUAL_SPELL(spell_succor); break;
  
     // Spells to travel through portals
     case SPELL_DIMENSION_SHIFT:
@@ -341,6 +354,7 @@ TO_ROOM);
     case SPELL_SPOOK:           MANUAL_SPELL(spell_spook); break;
     case SPELL_VITALITY:              MANUAL_SPELL(spell_vitality); break;
     }
+
 
   return (1);
 }
@@ -974,13 +988,14 @@ spello(SPELL_BEFRIEND_DRYAD, "befriend dryad", 30, 10, 2, POS_STANDING, TAR_IGNO
 	"You ache as the surge of power you once felt leaves your body.");
   spello(SPELL_BLOOD_REVEL, "blood revel", 50, 30, 5, POS_STANDING,
             TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_POINTS, NULL);
+ spello(SPELL_BLOOD_QUENCH, "blood quench", 30, 5, 4, POS_STANDING, TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE, MAG_MANUAL, NULL);
 
 spello(SPELL_BOLT_OF_STEEL, "bolt of steel", 35, 15, 2, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
 
    spello(SPELL_BOULDER, "boulder", 75, 30, 10, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
         NULL);
- 
+
   spello(SPELL_BURNING_HANDS, "burning hands", 30, 10, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
 	NULL);
@@ -993,10 +1008,11 @@ spello(SPELL_BOLT_OF_STEEL, "bolt of steel", 35, 15, 2, POS_FIGHTING, TAR_CHAR_R
         TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
   spello(SPELL_CAUSE_MINOR, "cause minor wounds", 30, 10, 2, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+  spello(SPELL_CALM, "calm", 150, 100, 5, POS_STANDING, TAR_IGNORE, FALSE, MAG_AREAS, NULL);
 
- spello(SPELL_CHAIN_LIGHTNING, "chain lightning", 140, 100, 10, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);
- 
- spello(SPELL_CHAMPIONS_STRENGTH, "champions strength", 75, 50, 5, POS_FIGHTING,
+  spello(SPELL_CHAIN_LIGHTNING, "chain lightning", 140, 100, 10, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);
+
+  spello(SPELL_CHAMPIONS_STRENGTH, "champions strength", 75, 50, 5, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "Your armor grows heavy as the strength of ancient heroes vacate your body.");
 
   spello(SPELL_CHARM_BEAST, "charm beast", 75, 35, 2, POS_STANDING,
@@ -1174,6 +1190,8 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
         NULL);
   spello(SPELL_FEATHER_FALL, "feather fall", 20, 5, 3, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel more substantial in the air.");
+ spello(SPELL_FEIGN_DEATH, "feign death", 50, 30, 2, POS_FIGHTING, TAR_IGNORE, FALSE, MAG_MANUAL, NULL);
+
   spello(SPELL_FLAMEWALK, "flamewalk", 40, 20, 4, POS_STANDING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "You no longer feel resistant to the element of fire.");
 
@@ -1186,6 +1204,8 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
               
   spello(SPELL_FREE_ACTION, "free action", 50, 20, 5, POS_FIGHTING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You find it slightly more difficult to move.");
+ spello(SPELL_FUMBLE, "fumble", 50, 20, 3, POS_STANDING, TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, NULL);
+
  spello(SPELL_GHOUL_GAUNTLET, "ghoul gauntlet", 80, 40, 4, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "Your hands no longer itch.");
 
@@ -1241,6 +1261,7 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
         "The aura of hatred surrounding your body fades.");
 
+ spello(SPELL_SCRY_GREATER, "greater scry", 70, 30, 4, POS_STANDING, TAR_PORTAL_CODE, FALSE, MAG_MANUAL, NULL);
 
   spello(SPELL_GROUP_HEAL, "group heal", 90, 75, 5, POS_STANDING,
 	TAR_IGNORE, FALSE, MAG_GROUPS,
@@ -1288,6 +1309,9 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
   spello(SPELL_INVISIBLE, "invisibility", 35, 25, 1, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE, MAG_AFFECTS | MAG_ALTER_OBJS,
 	"You feel yourself exposed.");
+
+ spello(SPELL_KNOCK, "knock", 40, 20, 2, POS_STANDING, TAR_OBJ_ROOM | TAR_OBJ_INV | TAR_DIRECTION, FALSE, MAG_MANUAL, NULL);
+  spello(SPELL_SCRY_LESSER, "lesser scry", 50, 20, 3, POS_STANDING, TAR_PORTAL_CODE | TAR_ROOM_IN_ZONE, FALSE, MAG_MANUAL, NULL);
 
   spello(SPELL_LIGHTNING_BOLT, "lightning bolt", 30, 15, 1, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
@@ -1352,7 +1376,7 @@ spello(SPELL_PROTECTION_FROM_EVIL, "protection from evil", 60, 20, 4, POS_STANDI
   spello(SPELL_RECALL_TO_SORIN, "recall to sorin", 20, 10, 2, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_MANUAL,
         NULL);      
-
+  spello(SPELL_RECHARGE, "recharge", 150, 100, 10, POS_STANDING, TAR_OBJ_INV, FALSE, MAG_MANUAL, NULL);
   spello(SPELL_REFLECT_DAMAGE, "reflect damage", 80, 50, 5, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "The reflecting shield protecting you dissipates.");
    spello(SPELL_REGENERATION, "regeneration", 50, 25, 5, POS_STANDING,
@@ -1371,8 +1395,8 @@ spello(SPELL_PROTECTION_FROM_EVIL, "protection from evil", 60, 20, 4, POS_STANDI
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel a cold chill creep back into your body.");
   spello(SPELL_RESISTANCE_TO_ELEC, "resistance to electricity", 50, 25, 5, POS_STANDING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You no longer feel insulated against electricity.");
-
-  spello(SPELL_ROAR, "roar", 30, 5, 5, POS_FIGHTING,
+ spello(SPELL_REST_IN_PEACE, "rest in peace", 80, 50, 3, POS_STANDING, TAR_IGNORE, FALSE, MAG_MANUAL, NULL);
+ spello(SPELL_ROAR, "roar", 30, 5, 5, POS_FIGHTING,
             TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
             NULL);
   spello(SPELL_SANCTUARY, "sanctuary", 110, 85, 5, POS_STANDING,
@@ -1435,7 +1459,7 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "Your armor grows heavy as the strength of ancient heroes vacate your body.");
   spello(SPELL_SYNOSTODWEOMER, "synostodweomer", 65, 35, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_POINTS, NULL);
 
-
+  spello(SPELL_SUCCOR, "succor", 25, 15, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, NULL);
   spello(SPELL_SUMMON, "summon", 75, 50, 3, POS_STANDING,
 	TAR_CHAR_WORLD | TAR_NOT_SELF, FALSE, MAG_MANUAL,
 	NULL);

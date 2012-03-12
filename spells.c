@@ -1016,6 +1016,7 @@ ASPELL(spell_stun)
 ASPELL(spell_succor)
 {
   if (victim == NULL || IS_NPC(victim))
+     send_to_char(ch, "You can only succor other players!\r\n");
     return;
   if (IS_FIGHTING(victim))
     send_to_char(ch, "You cannot succor %s while %s is engaged in combat!\r\n", GET_NAME(victim), HSSH(victim));
