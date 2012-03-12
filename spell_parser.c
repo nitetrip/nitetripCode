@@ -326,7 +326,9 @@ TO_ROOM);
     case SPELL_DIMENSION_DOOR:
     case SPELL_PLANAR_TRAVEL:
     case SPELL_SHADOW_DOOR:
-    case SPELL_TRAIL_OF_WOODLANDS:    MANUAL_SPELL(spell_portal); break;
+    case SPELL_TRAIL_OF_WOODLANDS:
+         MANUAL_SPELL(spell_portal);
+         break;
 
 
     case SPELL_CLAN_RECALL:	MANUAL_SPELL(spell_clan_recall); break;
@@ -558,7 +560,7 @@ int cast_spell(struct char_data *ch, struct char_data *tch, struct obj_data *tob
   
   say_spell(ch, spellnum, tch, tobj);
 
-  return (call_magic(ch, tch, tobj, NOWHERE, spellnum, GET_LEVEL(ch), CAST_SPELL));
+  return (call_magic(ch, tch, tobj, param1, spellnum, GET_LEVEL(ch), CAST_SPELL));
 }
 
 
@@ -1110,6 +1112,8 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
         TAR_PORTAL_CODE | TAR_ROOM_IN_ZONE, FALSE, MAG_MANUAL, NULL);
 spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
         TAR_PORTAL_CODE, FALSE, MAG_GROUPS, NULL);
+ spello(SPELL_DIMENSION_WALK, "dimension walk", 60, 30, 5, POS_STANDING,
+        TAR_PORTAL_CODE, FALSE, MAG_MANUAL, NULL);
 
   spello(SPELL_DISPEL_EVIL, "dispel evil", 40, 25, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,

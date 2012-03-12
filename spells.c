@@ -231,11 +231,10 @@ ASPELL(spell_hang)
   greet_memory_mtrigger(ch);
 }
 
+
 ASPELL(spell_phase_door)
-{return; }// just return  out for now}
-/*{
- if ((param1 != NOWHERE) && IS_VALID_EXIT(ch, param1) && EXIT_FLAGGED(EXIT(ch, param1), EX_CLOSED) && (EXIT(ch, param1)->to_room != NOWHERE)) {
-   send_to_char(ch, "PARAM1 IS NOT NOWHERE.\r\n");
+{
+  if ((param1 != NOWHERE) && IS_VALID_EXIT(ch, param1) && EXIT_FLAGGED(EXIT(ch, param1), EX_CLOSED) && (EXIT(ch, param1)->to_room != NOWHERE)) {
     int from_room = IN_ROOM(ch);
     int to_room = EXIT(ch, param1)->to_room;
     const char *doorname = EXIT(ch, param1)->keyword;
@@ -249,12 +248,9 @@ ASPELL(spell_phase_door)
     greet_mtrigger(ch, -1);
     greet_memory_mtrigger(ch);
   }
-  else if (EXIT_FLAGGED(EXIT(ch, param1), EX_CLOSED))
-     send_to_char(ch, "PARAM1 IS NOT NOWHERE.\r\n");
   else
     send_to_char(ch, "You can't phase through that.\r\n");
-}*/
-
+}
 
 
 ASPELL(spell_teleport)
@@ -759,10 +755,10 @@ ASPELL(spell_bind_portal)
 
 ASPELL(spell_portal)
 {
-  if (ROOM_FLAGGED(IN_ROOM(ch), ROOM_NOPORTAL) /*|| !CAN_USE_ROOM(ch, param1)  || (!is_on_same_plane(IN_ROOM(ch), param1)*/ && (spellnum != SPELL_PLANAR_TRAVEL))
+ if (ROOM_FLAGGED(IN_ROOM(ch), ROOM_NOPORTAL) /*|| !CAN_USE_ROOM(ch, param1)  || (!is_on_same_plane(IN_ROOM(ch), param1)*/ && (spellnum != SPELL_PLANAR_TRAVEL))
     send_to_char(ch, "Powerful magic prevents you from opening a portal.\r\n");
   else if (IN_ROOM(ch) == param1) send_to_char(ch, "You are already there!!!\r\n");
-  else if (param1 == NOWHERE) send_to_char(ch, "That is not a valid room.\r\n");
+  else if (param1 == NOWHERE) {send_to_char(ch, "That is not a valid room.\r\n"); } 
   else if (((spellnum == SPELL_SHADOW_WALK) || (spellnum == SPELL_SHADOW_DOOR)) && (!IS_GOOD_LIGHT_FOR_SHADOWS(IN_ROOM(ch)) || !IS_GOOD_LIGHT_FOR_SHADOWS(param1)))
     send_to_char(ch, "The plane of shadow doesn't touch that location from here.\r\n");
   else {
