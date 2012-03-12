@@ -47,6 +47,7 @@ int get_max_damage_per_hit(struct char_data *ch, bool use_held);
 int get_total_hitbonus(struct char_data *ch);
 int get_total_dambonus(struct char_data *ch);
 room_rnum portal_code_decrypt(struct char_data *ch, char *encrypted_string, int spellnum);
+void empty_container_to_room_then_destroy_it(struct obj_data *obj);
 
 #define core_dump()		core_dump_real(__FILE__, __LINE__)
 
@@ -238,6 +239,7 @@ void	update_pos(struct char_data *victim);
 #define GET_DAMBONUS(ch)         ((ch)->player.dambonus)
 #define IS_USING_SHIELD(ch)      (GET_EQ(ch, WEAR_SHIELD) && (GET_OBJ_TYPE(GET_EQ(ch, WEAR_SHIELD)) == ITEM_WEAR_SHIELD))
 #define GET_AP(ch)               ((ch)->points.armor)
+#define GET_OBJ_NAME(obj)       ((obj)->short_description)
 
 /*
  * See http://www.circlemud.org/~greerga/todo/todo.009 to eliminate MOB_ISNPC.
@@ -458,6 +460,8 @@ void	update_pos(struct char_data *victim);
                       (to_sleeping || AWAKE(ch)) && \
                       !PLR_FLAGGED((ch), PLR_WRITING))
 #define IS_MOBILE(ch) (GET_POS(ch)>POS_SLEEPING)
+
+#define CONFIG_SORCERERS_GUILD 10131 //for succor
 
 /* These three deprecated. */
 #define WAIT_STATE(ch, cycle) do { GET_WAIT_STATE(ch) = (cycle); } while(0)

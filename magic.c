@@ -38,10 +38,12 @@ int get_advance_hitpoints(struct char_data *ch);
 
 /* local functions */
 int mag_materials(struct char_data *ch, int item0, int item1, int item2, int extract, int verbose, int spellnum);
-void perform_mag_groups(int level, struct char_data *ch, struct char_data *tch, int spellnum, int savetype);
+void perform_mag_groups(int level, struct char_data *ch, struct char_data *tch, int param1, int spellnum, int savetype);
 int mag_savingthrow(struct char_data *ch, struct char_data *victim, int type, int modifier);
 void affect_update(void);
 int check_mag_resists(struct char_data *ch, struct char_data *victim, int damage, int type);
+void mag_manual(int level, struct char_data *caster, struct char_data *cvict, int param1, struct obj_data *ovict, int spellnum);
+void mag_affects(int level, struct char_data *ch, struct char_data *victim, int param1, int spellnum, int savetype);
 
 /*
  * Saving throws are now in class.c as of bpl13.
@@ -434,6 +436,23 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
     dam = dice(20, 5) + level;
     dam = check_mag_resists(ch, victim, dam, ATTACK_MAGIC);
     break;
+  case SPELL_SUNRAY:    /* sunray also has an affect */
+    /*if (IS_UNDEAD(victim))(no IS_FUNGUS yes) || IS_FUNGUS(victim)) 
+      {
+      dam = MIN(32, MAX(12, 12+4*(GET_LEVEL(ch)-8)));
+      dam = rand_number(dam, MIN(90, MAX(40, 40+10*(GET_LEVEL(ch)-8))));
+      if (OUTSIDE(IN_ROOM(victim)) && is_daytime())
+        dam *= 2;
+      if IS_FUNGUS(victim)
+        save_dam_reduction_factor = 1;
+    }
+    else*/
+      dam = 0;
+    act("$N is bathed in your sunlight.", FALSE, ch, 0, victim, TO_CHAR);
+    act("$N is bathed in a ray of sunlight cast by $n.", FALSE, ch, 0, victim, TO_ROOM);
+    break;
+
+
 
     /* Area attack spells, also in the mag_areas function below. */
   case SPELL_CHAIN_LIGHTNING:
@@ -482,7 +501,7 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
   case SPELL_SEARING_ORB:
     dam = MIN(36, MAX(20, 20+4*(GET_LEVEL(ch)-33)));
     dam = rand_number(dam, 2*dam);
-    
+
       if (GET_LEVEL(victim)<11) dam = GET_HIT(victim);  //100% damage
       else if (GET_LEVEL(victim)<16) dam = MAX(dam*2, (GET_HIT(victim)/2)); //50% damage
       else if (GET_LEVEL(victim)<21) dam = MAX(dam*2, (GET_HIT(victim)/4)); //25% damage
@@ -491,8 +510,21 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
       else if (GET_LEVEL(victim)<36) dam = MAX(dam*2, (GET_HIT(victim)/25)); //4% damage
       else dam = MAX(dam*2, (GET_HIT(victim)/50)); //2% damage
       check_mag_resists(ch, victim, dam, ATTACK_LIGHT);
-    
-    break;  
+    break;
+
+ case SPELL_SUNBURST:  /* sunburst also has an affect */
+/*    if (IS_UNDEAD(victim) || IS_FUNGUS(victim)) {
+      dam = MIN(25, MAX(10, 10+3*(GET_LEVEL(ch)-13)));
+      dam = rand_number(dam, MIN(70, MAX(30, 30+8*(GET_LEVEL(ch)-13))));
+      if (OUTSIDE(IN_ROOM(victim)) && is_daytime())
+        dam *= 2;
+      if IS_FUNGUS(victim)
+        save_dam_reduction_factor = 1;
+    }
+    else (this is the extra damage routine)*/ 
+      dam = 0;
+    break;
+
   case SPELL_THUNDER_SWARM:
     dam = dice(30, 10) + level;
     dam = check_mag_resists(ch, victim, dam, ATTACK_ELECTRIC);
@@ -532,7 +564,7 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
 #define MAX_SPELL_AFFECTS 5	/* change if more needed */
 
 void mag_affects(int level, struct char_data *ch, struct char_data *victim,
-		      int spellnum, int savetype)
+		      int param1, int spellnum, int savetype)
 {
   struct affected_type af[MAX_SPELL_AFFECTS];
   bool accum_affect = FALSE, accum_duration = FALSE;
@@ -565,7 +597,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     break;
 
   case SPELL_AID:
-    mag_affects(level, ch, victim, 0, SPELL_BLESS);
+    mag_affects(level, ch, victim, param1, 0, SPELL_BLESS);
     af[0].location = APPLY_HIT;
     af[0].modifier = get_advance_hitpoints(ch);
     af[0].duration = GET_LEVEL(ch);
@@ -642,6 +674,9 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     to_vict = "You feel righteous.";
     break;
 
+  case SPELL_COLOR_SPRAY:
+  case SPELL_SEARING_ORB:
+  case SPELL_SUNRAY:
   case SPELL_BLINDNESS:
     if (MOB_FLAGGED(victim,MOB_NOBLIND) || mag_savingthrow(ch, victim, savetype, 0)) {
       send_to_char(ch, "You fail.\r\n");
@@ -1516,18 +1551,18 @@ case SPELL_SHIELD_AGAINST_EVIL:
  * is the one you should change to add new group spells.
  */
 void perform_mag_groups(int level, struct char_data *ch,
-			struct char_data *tch, int spellnum, int savetype)
+			struct char_data *tch, int param1, int spellnum, int savetype)
 {
   const char *to_room = NULL;
   switch (spellnum) {
     case SPELL_GROUP_HEAL:
-    mag_points(level, ch, tch, SPELL_HEAL, savetype);
+    mag_points(level, ch, tch, param1, SPELL_HEAL, savetype);
     break;
   case SPELL_GROUP_ARMOR:
-    mag_affects(level, ch, tch, SPELL_ARMOR, savetype);
+    mag_affects(level, ch, tch, param1, SPELL_ARMOR, savetype);
     break;
   case SPELL_SUSTAIN_GROUP:
-    mag_affects(level, ch, tch, SPELL_SUSTAIN, savetype);
+    mag_affects(level, ch, tch, param1, SPELL_SUSTAIN, savetype);
   case SPELL_GROUP_RECALL:
     send_to_char(ch, "You open a shimmering portal and step through it along with your group.\r\n");
     to_room = "$n opens a shimmering portal that disappears when $s entire group enters.";
@@ -1541,7 +1576,7 @@ void perform_mag_groups(int level, struct char_data *ch,
     spell_recall(level, ch, tch, NULL, NOWHERE, SPELL_GROUP_SORIN_RECALL);
     break;
   case SPELL_VIGORIZE_GROUP:
-    mag_points(level, ch, tch, SPELL_VIGORIZE_CRITICAL, savetype);
+    mag_points(level, ch, tch, param1, SPELL_VIGORIZE_CRITICAL, savetype);
     break;
   case SPELL_TALES_OF_ARCANE_LORE:
     spell_arcane_lore(level, ch, tch, NULL,NOWHERE,SPELL_TALES_OF_ARCANE_LORE);
@@ -1573,7 +1608,7 @@ void perform_mag_groups(int level, struct char_data *ch,
  * To add new group spells, you shouldn't have to change anything in
  * mag_groups -- just add a new case to perform_mag_groups.
  */
-void mag_groups(int level, struct char_data *ch, int spellnum, int savetype)
+void mag_groups(int level, struct char_data *ch, int param1, int spellnum, int savetype)
 {
   struct char_data *tch, *k;
   struct follow_type *f, *f_next;
@@ -1596,12 +1631,12 @@ void mag_groups(int level, struct char_data *ch, int spellnum, int savetype)
       continue;
     if (ch == tch)
       continue;
-    perform_mag_groups(level, ch, tch, spellnum, savetype);
+    perform_mag_groups(level, ch, tch, param1, spellnum, savetype);
   }
 
   if ((k != ch) && AFF_FLAGGED(k, AFF_GROUP))
-    perform_mag_groups(level, ch, k, spellnum, savetype);
-  perform_mag_groups(level, ch, ch, spellnum, savetype);
+    perform_mag_groups(level, ch, k, param1, spellnum, savetype);
+  perform_mag_groups(level, ch, ch, param1, spellnum, savetype);
 }
 
 
@@ -1616,7 +1651,7 @@ void mag_masses(int level, struct char_data *ch, int spellnum, int savetype)
 {
     const char *to_char = NULL, *to_room = NULL, *to_vict = NULL, *to_notvict = NULL;
     struct char_data *tch, *tch_next;
-    
+    int param1 = NOWHERE;
     for (tch = world[IN_ROOM(ch)].people; tch; tch = tch_next) {
         tch_next = tch->next_in_room;
         if (tch == ch)
@@ -1625,12 +1660,12 @@ void mag_masses(int level, struct char_data *ch, int spellnum, int savetype)
       switch (spellnum) 
         {
         case SPELL_MASS_HEAL:
-        mag_points(level, ch, tch, SPELL_HEAL_CRITICAL, savetype);
+        mag_points(level, ch, tch, param1, SPELL_HEAL_CRITICAL, savetype);
         to_char = "You call a healing ray of sun from the heavens.\r\n";
         to_room = "$n calls a healing ray of sun from the heavens, which warms you.\r\n";
         break;
         case SPELL_HEALING_WIND:
-        mag_points(level, ch, tch, SPELL_HEAL_SERIOUS, savetype);
+        mag_points(level, ch, tch, param1, SPELL_HEAL_SERIOUS, savetype);
         to_char = "You summon a warm, balmy breeze, fragrant of healing herbs, which soothes your wounds. \r\n";
         to_room = "$n summons a warm, balmy breeze, fragrant of healing herbs, which soothes your wounds. \r\n";
         break;
@@ -1642,8 +1677,8 @@ void mag_masses(int level, struct char_data *ch, int spellnum, int savetype)
         act(to_room, FALSE, ch, 0, 0, TO_ROOM);
     if (to_vict != NULL)
         act(to_vict, FALSE, ch, 0, 0, TO_VICT);
-    if (to_notvict != NULL)              
-        act(to_notvict, FALSE, ch, 0, 0, TO_NOTVICT);               
+    if (to_notvict != NULL)
+        act(to_notvict, FALSE, ch, 0, 0, TO_NOTVICT);
 }
 
 
@@ -1735,6 +1770,10 @@ void mag_areas(int level, struct char_data *ch, int spellnum, int savetype)
     to_char = "You create an orb hotter than the sun and hurl it toward your enemies!";
     to_room = "$n creates an orb hotter than the sun and hurls it towards $s enemies.";
     break;
+  case SPELL_SUNBURST:
+    to_char = "You explode into a burst of bright light!";
+    to_room = "$n explodes into a burst of bright light.";
+    break;
   case SPELL_THUNDER_SWARM:
     to_char = "Every hair on your body stands on end as you focus an electral charge. With a thunderous flash, bolts of lightning arc from you in every direction!";
     to_room = "Every hair on your body stands on end. With a thunderous flash, bolts of lightning arc from $m in every direction!";
@@ -1774,6 +1813,31 @@ void mag_areas(int level, struct char_data *ch, int spellnum, int savetype)
       continue;
     if (!IS_NPC(ch) && IS_NPC(tch) && AFF_FLAGGED(tch, AFF_CHARM))
       continue;
+ if (spellnum != SPELL_CALM) mag_damage(level, ch, tch, spellnum, 1);
+    //add entries here for area spells that also cast specific spells on each victim
+    switch (spellnum) {
+      case SPELL_ASPHYXIATE:
+        mag_affects(level, ch, tch, 0, SPELL_ASPHYXIATE, savetype);
+        break;
+      case SPELL_CALM:
+        mag_affects(level, ch, tch, 0, SPELL_PACIFY, savetype);
+        break;
+      case SPELL_LIFE_LEECH:
+        mag_points(level, ch, tch, TRUE, SPELL_LIFE_LEECH, savetype);
+        break;
+      case SPELL_SEARING_ORB:
+        mag_affects(level, ch, tch, 0, SPELL_BLINDNESS, savetype);
+        mag_manual(level, ch, tch, 0, 0, SPELL_STUN);
+        break;
+      case SPELL_CHAIN_LIGHTNING:
+      case SPELL_SUNBURST:
+        mag_affects(level, ch, tch, 0, SPELL_BLINDNESS, savetype);
+        break;
+      case SPELL_WAIL_OF_THE_BANSHEE:
+        mag_manual(level, ch, tch, 0, 0, SPELL_SPOOK);
+        break;
+    }
+
 
     /* Doesn't matter if they die here so we don't check. -gg 6/24/98 */
     mag_damage(level, ch, tch, spellnum, 1);
@@ -1915,7 +1979,7 @@ void mag_summons(int level, struct char_data *ch, struct obj_data *obj,
 * which is also used in here for much the same thing. 		-mak 8.10.04
 */
 void mag_points(int level, struct char_data *ch, struct char_data *victim,
-		     int spellnum, int savetype)
+		     int param1, int spellnum, int savetype)
 {
 
   int healing = 0, move = 0, manaadd = 0;
@@ -1933,8 +1997,6 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
     break;
   case SPELL_CURE_LIGHT:
     healing = dice(1, 8) + 1 + (level / 4);
-  spello(SPELL_VAMPIRIC_TOUCH, "vampiric touch", 35, 15, 2, POS_FIGHTING,
-        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_POINTS, NULL);
     send_to_char(victim, "You feel better.\r\n");
     break;
   case SPELL_CURE_CRITIC:
@@ -2053,6 +2115,13 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
   case SPELL_SOVEREIGN_HEAL:
     healing = 240;
     send_to_char(victim, "You glow slightly as warmth floods through your veins.\r\n");
+    break;
+  case SPELL_SYNOSTODWEOMER:
+    victim_add_hits = GET_HIT(ch)/2;
+    caster_add_hits = -1 * victim_add_hits;
+    send_to_char(ch, "You feel weaker as you transfer your life force to %s.\r\n", GET_NAME(victim));
+    send_to_char(victim, "You feel revived as %s transfers %s life force to you.\r\n", GET_NAME(ch), HSHR(ch));
+    to_room = "$n grows pale as $e transfers $s life force to $N.";
     break;
 
   case SPELL_VAMPIRIC_TOUCH:
@@ -2305,9 +2374,81 @@ int check_mag_resists(struct char_data *ch, struct char_data *victim, int damage
 }
 
 // taken from cwe -  unsure if needed - seems to be done in spell_parser.c
-void mag_manual(int level, struct char_data *caster, struct char_data *cvict, struct obj_data *ovict, int param1, int spellnum) {
+
+void mag_manual(int level, struct char_data *caster, struct char_data *cvict, int param1, struct obj_data *ovict, int spellnum) {
   switch (spellnum) {
+    case SPELL_ANIMAL_FRIENDSHIP:
+      if (/* IS_TYPE_ANIMAL(cvict) && */ !IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
+      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
+    break;
+    case SPELL_CHARM_BEAST:
+      if (/*IS_TYPE_BEAST(cvict) && */ !IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
+      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
+    break;
+    case SPELL_CHARM_MONSTER:
+      if (/*IS_TYPE_MONSTER(cvict) &&*/ !IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
+
+      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
+    break;
+    case SPELL_CHARM_PERSON:
+      if (/*IS_TYPE_PERSON(cvict) && */!IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
+      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
+    break;
+    case SPELL_CONTROL_PLANT:
+      if (/*IS_TYPE_PLANT(cvict) && */!IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
+      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
+    break;
+    case SPELL_CONTROL_UNDEAD:
+      if (/*IS_UNDEAD(cvict) && */!IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
+      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
+    break;
+    case SPELL_VAMPIRIC_GAZE:
+      if (/*IS_TYPE_NECRO_VULN(cvict) && */!IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
+      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
+    break;
+    case SPELL_BLOOD_QUENCH:          MANUAL_SPELL(spell_blood_quench); break;
+    case SPELL_BEFRIEND_DRYAD:
+    case SPELL_BIND_PORTAL_MAJOR:
+    case SPELL_BIND_PORTAL_MINOR:
+    case SPELL_LOCATE_SHADOW_PLANE:   MANUAL_SPELL(spell_bind_portal); break;
+    case SPELL_CALM:                  MANUAL_SPELL(spell_calm); break;
+    case SPELL_CANNIBALIZE:           MANUAL_SPELL(spell_cannibalize); break;
+    case SPELL_CHARM:                 MANUAL_SPELL(spell_charm); break;
+    case SPELL_CONTROL_WEATHER:       MANUAL_SPELL(spell_control_weather); break;
+    case SPELL_CREATE_WATER:          MANUAL_SPELL(spell_create_water); break;
+    case SPELL_DETECT_POISON:         MANUAL_SPELL(spell_detect_poison); break;
+    case SPELL_DIMENSION_SHIFT:
+    case SPELL_DIMENSION_WALK:
+    case SPELL_SHADOW_WALK:
+    case SPELL_PASS_WITHOUT_TRACE:
+    case SPELL_DIMENSION_DOOR:
+    case SPELL_PLANAR_TRAVEL:
+    case SPELL_SHADOW_DOOR:
+    case SPELL_TRAIL_OF_WOODLANDS:    MANUAL_SPELL(spell_portal); break;
+    case SPELL_ENCHANT_WEAPON:        MANUAL_SPELL(spell_enchant_weapon); break;
+    case SPELL_FEIGN_DEATH:           MANUAL_SPELL(spell_feign_death); break;
+    case SPELL_FUMBLE:                MANUAL_SPELL(spell_fumble); break;
+    case SPELL_IDENTIFY:
+    case SPELL_LEGEND_LORE:           MANUAL_SPELL(spell_identify); break;
+    case SPELL_KNOCK:                 MANUAL_SPELL(spell_knock); break;
+    case SPELL_LOCATE_OBJECT:         MANUAL_SPELL(spell_locate_object); break;
     case SPELL_PHASE_DOOR:            MANUAL_SPELL(spell_phase_door); break;
+    case SPELL_PORTAL:                MANUAL_SPELL(spell_portal); break;
+    case SPELL_RECHARGE:              MANUAL_SPELL(spell_recharge); break;
+    case SPELL_REST_IN_PEACE:         MANUAL_SPELL(spell_rest_in_peace); break;
+    case SPELL_SCRY_LESSER:
+    case SPELL_SCRY_GREATER:          MANUAL_SPELL(spell_scry); break;
+    case SPELL_SPOOK:                 MANUAL_SPELL(spell_spook); break;
+    case SPELL_STUN:                  MANUAL_SPELL(spell_stun); break;
+    case SPELL_SUCCOR:                MANUAL_SPELL(spell_succor); break;
+    case SPELL_SUMMON_LESSER:
+    case SPELL_SUMMON_GREATER:        MANUAL_SPELL(spell_summon); break;
+    case SPELL_TELEPORT_MAJOR:
+    case SPELL_TELEPORT_MINOR:        MANUAL_SPELL(spell_teleport); break;
+    case SPELL_TELEVIEW_MAJOR:
+    case SPELL_TELEVIEW_MINOR:        MANUAL_SPELL(spell_teleview); break;
+    case SPELL_VITALITY:              MANUAL_SPELL(spell_vitality); break;
+    case SPELL_WORD_OF_RECALL:        MANUAL_SPELL(spell_recall); break;
   }
 }
 

@@ -1035,3 +1035,21 @@ room_rnum portal_code_decrypt(struct char_data *ch, char *encrypted_string, int 
   return return_room; // for troubleshooting
 }
 
+void empty_container_to_room_then_destroy_it(struct obj_data *obj) {
+  struct obj_data *i, *next_inv_object;
+
+  for (i = obj->contains; i; i = next_inv_object) {
+    next_inv_object = i->next_content; /* Next in inventory */
+    obj_from_obj(i);
+    if (obj->in_obj)
+      obj_to_obj(i, obj->in_obj);
+    else if (obj->carried_by)
+      obj_to_room(i, IN_ROOM(obj->carried_by));
+    else if (IN_ROOM(obj) != NOWHERE)
+      obj_to_room(i, IN_ROOM(obj));
+    else
+      core_dump();
+  }
+  extract_obj(obj);
+}
+

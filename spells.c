@@ -45,11 +45,70 @@ int mag_savingthrow(struct char_data *ch, struct char_data *victim, int type, in
 void name_to_drinkcon(struct obj_data *obj, int type);
 void name_from_drinkcon(struct obj_data *obj);
 int compute_armor_class(struct char_data *ch);
+void weather_change(void);
+
 ACMD(do_flee);
 
 /*
  * Special spells appear below.
  */
+
+
+ASPELL(spell_blood_quench)
+{
+  if (IS_NPC(ch) || (GET_LEVEL(ch) >= LVL_IMMORT))      /* Cannot use GET_COND() on mobs. */
+    return;
+  if (!IS_CORPSE(obj)) {
+    send_to_char(ch, "But %s is not a corpse!", GET_OBJ_NAME(obj));
+    return;
+  }
+  if ((GET_COND(ch, FULL) > 20) && (GET_COND(ch, THIRST) > 0)) {
+    send_to_char(ch, "Your stomach can't contain anymore!\r\n");
+    return;
+  }
+  act("You drain all the blood from $p, leaving only dust behind.", FALSE, ch, obj, 0, TO_CHAR);
+  act("$n drains all the blood from $p, leaving only dust behind.", TRUE, ch, obj, 0, TO_ROOM);
+  gain_condition(ch, THIRST, GET_OBJ_VAL(obj, 0));
+  empty_container_to_room_then_destroy_it(obj);
+}
+
+ASPELL(spell_calm)
+{
+  do_peace(ch, NULL, 0, 0);
+}
+
+
+ASPELL(spell_cannibalize)
+{
+  if (IS_NPC(ch) || (GET_LEVEL(ch) >= LVL_IMMORT))      /* Cannot use GET_COND() on mobs. */
+    return;
+  if (!IS_CORPSE(obj)) {
+    send_to_char(ch, "But %s is not a corpse!", GET_OBJ_NAME(obj));
+    return;
+  }
+  if (GET_COND(ch, FULL) > 20) {/* Stomach full */
+    send_to_char(ch, "You are too full to eat more!\r\n");
+    return;
+  }
+  act("You shred the corpse to pieces, devouring the meat.", FALSE, ch, obj, 0, TO_CHAR);
+  act("$n shreds a corpse to pieces, devouring its meat.", TRUE, ch, obj, 0, TO_ROOM);
+  gain_condition(ch, FULL, GET_OBJ_VAL(obj, 0));
+  empty_container_to_room_then_destroy_it(obj);
+}
+
+
+ASPELL(spell_control_weather)
+{
+  int change = 0;
+  //if param1 ==1 then make the weather worse, otherwise make it better
+  switch(weather_info.sky) {
+    case SKY_CLOUDLESS: change = param1 ? 1:0; break;
+    case SKY_CLOUDY: change = param1 ? 2:3; break;
+    case SKY_RAINING: change = param1 ? 4:5; break;
+    case SKY_LIGHTNING: change = param1 ? 0:6; break;
+  }
+  weather_change(change);
+}
 
 ASPELL(spell_create_water)
 {
@@ -149,6 +208,76 @@ ASPELL(spell_sorin_recall)
   greet_memory_mtrigger(ch);
 }
 
+ASPELL(spell_recharge)
+{
+  int restored_charges = 0, explode = 0;
+  char buf[256];
+
+  if (ch == NULL || obj == NULL)
+    return;
+  if IS_SET(GET_OBJ_EXTRA(obj), ITEM_NO_RECHARGE) {
+    send_to_char(ch, "This item cannot be recharged.\r\n");
+    return;
+  }
+  if (GET_OBJ_TYPE(obj) == ITEM_WAND) {
+    if (GET_OBJ_VAL(obj, 2) < GET_OBJ_VAL(obj, 1)) {
+      send_to_char(ch, "You attempt to recharge the wand.\r\n");
+      restored_charges = rand_number(1, 2);
+      GET_OBJ_VAL(obj, 2) += restored_charges;
+      if (GET_OBJ_VAL(obj, 2) > GET_OBJ_VAL(obj, 1)) {
+        send_to_char(ch, "The wand is overcharged and explodes!\r\n");
+        sprintf(buf, "%s overcharges %s and it explodes!\r\n", GET_NAME(ch), obj->name);
+        act(buf, TRUE, 0, 0, 0, TO_NOTVICT);
+        explode = dice(40, 5);
+        GET_HIT(ch) -= explode;
+        update_pos(ch);
+         extract_obj(obj);
+        return;
+      }
+      else {
+        sprintf(buf, "You restore %d charges to the wand.\r\n", restored_charges);
+        send_to_char(ch, buf);
+        return;
+      }
+    }
+    else {
+      send_to_char(ch, "That item is already at full charges!\r\n");
+      return;
+    }
+  }
+  else if (GET_OBJ_TYPE(obj) == ITEM_STAFF) {
+    if (GET_OBJ_VAL(obj, 2) < GET_OBJ_VAL(obj, 1)) {
+      send_to_char(ch, "You attempt to recharge the staff.\r\n");
+      restored_charges = rand_number(1, 3);
+      GET_OBJ_VAL(obj, 2) += restored_charges;
+      if (GET_OBJ_VAL(obj, 2) > GET_OBJ_VAL(obj, 1)) {
+        send_to_char(ch, "The staff is overcharged and explodes!\r\n");
+        sprintf(buf, "%s overcharges %s and it explodes!\r\n", GET_NAME(ch), obj->name);
+        act(buf, TRUE, 0, 0, 0, TO_NOTVICT);
+        explode = dice(40, 5);
+        GET_HIT(ch) -= explode;
+        update_pos(ch);
+        extract_obj(obj);
+        return;
+      }
+  else
+      {
+        sprintf(buf, "You restore %d charges to the staff.\r\n", restored_charges);
+        send_to_char(ch, buf);
+        return;
+      }
+    }
+    else {
+      send_to_char(ch, "That item is already at full charges!\r\n");
+      return;
+    }
+  }
+  else {
+    send_to_char(ch, "That item cannot be recharged.\r\n");
+    return;
+  }
+}
+
 ASPELL(spell_arcane_lore)
 {
 
@@ -197,6 +326,79 @@ ASPELL(spell_ethereal_projection)
   greet_mtrigger(ch, -1);
   greet_memory_mtrigger(ch);
 }
+
+ASPELL(spell_feign_death)
+{
+  struct char_data *vict, *next_v;
+  int mod_save = 0;
+
+  if (GET_POS(ch) == POS_FAKEDEAD) {
+    send_to_char(ch, "You are already feigning death!\r\n");
+    return;
+  }
+  if (AFF_FLAGGED(ch, AFF_HASTE)) {
+    send_to_char(ch, "You cannot feign death while you're affected by haste!\r\n");
+    return;
+  }
+  act("You let out a cry as you fall to the ground, apparently dead.", FALSE, ch, NULL, 0, TO_CHAR);
+  death_cry(ch);
+  for (vict = world[IN_ROOM(ch)].people; vict; vict = next_v) {
+    next_v = vict->next_in_room;
+    if (FIGHTING(vict) == ch) {
+      mod_save = -((GET_TOT_INT(vict)>>1) + (GET_TOT_WIS(vict)>>1));
+      if (mag_savingthrow(ch, vict, SAVING_PETRI, mod_save)) {
+        act("$N continues to pound at the dead body of $n!", FALSE, ch, 0, vict, TO_ROOM);
+        continue;
+      }
+      else stop_fighting(vict);
+    }
+  }
+  stop_fighting(ch);
+  GET_POS(ch) = POS_FAKEDEAD;
+}
+
+
+ASPELL(spell_fumble)
+{
+  struct obj_data *wielded_weapon = GET_EQ(victim, WEAR_WIELD);
+  struct obj_data *held_weapon = GET_EQ(victim, WEAR_HOLD);
+
+  if (victim == NULL)
+    return;
+  if (!pk_allowed) {
+    send_to_char(ch, "%s", NOEFFECT_PC);
+    return;
+  }
+  if ((GET_LEVEL(victim) >= (LVL_IMMORT - 1)) || mag_savingthrow(ch, victim, SAVING_SPELL, 0)) {
+    send_to_char(ch, "%s", NOEFFECT);
+    return;
+  }
+
+  if (held_weapon && GET_OBJ_TYPE(held_weapon) == ITEM_WEAPON) {
+    if (IS_SET(GET_OBJ_EXTRA(held_weapon), ITEM_NO_DISARM) || IS_SET(GET_OBJ_EXTRA(held_weapon), ITEM_NODROP))
+      send_to_char(ch, "%s", NOEFFECT);
+    else {
+      act("$N fumbles and drops $s $p!", FALSE, ch, held_weapon, victim, TO_CHAR);
+      act("$n causes you to fumble and drop your $p!", FALSE, ch, held_weapon, victim, TO_VICT);
+      act("$N fumbles and drops $s $p!", FALSE, ch, held_weapon, victim, TO_NOTVICT);
+      obj_to_room(unequip_char(victim, WEAR_HOLD), IN_ROOM(victim));
+    }
+  }
+  else if (wielded_weapon && GET_OBJ_TYPE(wielded_weapon) == ITEM_WEAPON) {
+    if (IS_SET(GET_OBJ_EXTRA(wielded_weapon), ITEM_NO_DISARM) || IS_SET_(GET_OBJ_EXTRA(wielded_weapon), ITEM_NODROP))
+      send_to_char(ch, "%s", NOEFFECT);
+    else {
+      act("$N fumbles and drops $s $p!", FALSE, ch, wielded_weapon, victim, TO_CHAR);
+      act("$n causes you to fumble and drop your $p!", FALSE, ch, wielded_weapon, victim, TO_VICT);
+      act("$N fumbles and drops $s $p!", FALSE, ch, wielded_weapon, victim, TO_NOTVICT);
+      obj_to_room(unequip_char(victim, WEAR_WIELD), IN_ROOM(victim));
+    }
+  }
+  else
+    send_to_char(ch, "%s is not using any weapons.\r\n", CAP(GET_NAME(victim)));
+}
+
+
 ASPELL(spell_astral_projection)
 {
 
@@ -275,6 +477,46 @@ ASPELL(spell_teleport)
   greet_memory_mtrigger(ch);
   
 }
+
+ASPELL(spell_teleportm)
+{
+  room_rnum to_room;
+
+  if (victim == NULL) victim = ch;
+  if ((IN_ROOM(victim) == IN_ROOM(ch)) && !IS_NPC(victim)) {
+    do {
+      to_room = rand_number(0, top_of_world);
+    } while (!CAN_USE_ROOM(victim, to_room));
+  }
+  else to_room = IN_ROOM(victim);
+  if (!CAN_USE_ROOM(ch, to_room) || !CAN_USE_ROOM(victim, to_room)) //(this is for plane support) || !is_on_same_plane(IN_ROOM(ch), to_room)) 
+  {
+    send_to_char(ch, "The room is protected by powerful magic.\r\n");
+    return;
+  }
+  if (IS_NPC(victim)) {
+    send_to_char(ch, "You cannot involve NPCs in teleportation.\r\n");
+    return;
+  }
+  if ((IN_ROOM(victim) == IN_ROOM(ch)) && !IS_NPC(victim)) {
+ // act("$n slowly fades into existence.", FALSE, victim, 0, 0, TO_ROOM);
+    if (FIGHTING(victim)) {
+      send_to_char(ch, "You cannot teleport %s while %s busy fighting!\r\n", GET_NAME(victim), HSSH(victim));
+      return;
+    }
+    else
+      ch = victim;
+  }
+  act("$n slowly fades out of existence and is gone.", FALSE, ch, 0, victim, TO_ROOM);
+  char_from_room(ch);
+  char_to_room(ch, to_room);
+  act("$n arrives suddenly accompanied by the smell of ozone.", FALSE, ch, 0, 0, TO_ROOM);
+  look_at_room(IN_ROOM(ch), ch, 0);
+  entry_memory_mtrigger(ch);
+  greet_mtrigger(ch, -1);
+  greet_memory_mtrigger(ch);
+}
+
 
 ASPELL(spell_teleview)
 {
@@ -618,6 +860,48 @@ ASPELL(spell_detect_poison)
   }
 }
 
+ASPELL(spell_knock)
+{
+  do_doorcmd(ch, obj, param1, SCMD_UNLOCK);
+}
+
+
+
+ASPELL(spell_rest_in_peace)
+{
+  if (AFF_FLAGGED(ch, AFF_HASTE)) {
+    send_to_char(ch, "You cannot rest in peace while you're affected by haste!\r\n");
+    return;
+  }
+  if (is_on_water(ch) && !AFF_FLAGGED(ch, AFF_WATERBREATH)) {
+    send_to_char(ch, "You cannot rest in peace underwater unless you can breath it!\r\n");
+    return;
+  }
+  act("You dig a shallow grave and lay down in it.", FALSE, ch, NULL, 0, TO_CHAR);
+  act("$n digs a shallow grave and lays down in it.", FALSE, ch, NULL, 0, TO_ROOM);
+  GET_POS(ch) = POS_BURIED;
+}
+
+ASPELL(spell_scry)
+{
+  switch (spellnum) {
+    case SPELL_SCRY_LESSER:
+      act("@BYou open up a shimmering blue portal and gaze into it...@n", FALSE, ch, 0, 0, TO_CHAR);
+      act("@BA shimmering blue portal appears out of nowhere briefly before your eyes.@n", FALSE, ch, 0, 0, TO_ROOM);
+      break;
+    case SPELL_SCRY_GREATER:
+      act("@RYou open up a shimmering red portal and gaze into it...@n", FALSE, ch, 0, 0, TO_CHAR);
+      act("@RA shimmering red portal appears out of nowhere briefly before your eyes.@n", FALSE, ch, 0, 0, TO_ROOM);
+      break;
+  }
+  if (ROOM_FLAGGED(IN_ROOM(ch), ROOM_NOSCRY) || ROOM_FLAGGED(param1, ROOM_NOSCRY) || !CAN_USE_ROOM(ch, param1) || !is_on_same_plane(IN_ROOM(ch), param1) || (param1 == NOWHERE))
+    send_to_char(ch, "Your eyes swim in images of color and light.  You try with all your\r\n"
+                     "intelligence to make something out of the images, but your mind screams\r\n"
+                     "out in agony as the portal disappears.\r\n");
+  else if (IN_ROOM(ch) == param1) send_to_char(ch, "You are already there!!!\r\n");
+  else look_at_room(param1, ch, 0);
+}
+
 ASPELL(spell_spook)
 {
 
@@ -700,6 +984,49 @@ ASPELL(spell_vitality)
     act("$n burps loudly.", TRUE, victim, 0, 0, TO_ROOM);
     act("You burp loudly.", TRUE, victim, 0, 0, TO_CHAR);
   }
+}
+
+ASPELL(spell_stun)
+{
+  if (GET_LEVEL(victim)>=LVL_IMMORT) {
+    send_to_char(ch, "You're trying to stun an immortal? Good luck!\r\n");
+    return;
+  }
+  if (pk_allowed) {
+    send_to_char(ch, "%s", NOEFFECT_PC);
+    return;
+  }
+  if (GET_POS(victim) <= POS_STUNNED) {
+    send_to_char(ch, "%s can't be stunned cause %s's already in bad shape!\r\n", CAP(GET_NAME(victim)), HSSH(victim));
+    return;
+  }
+  if ((!mag_savingthrow(ch, victim, SAVING_PARA, affected_by_spell(ch, SPELL_INTIMIDATE) ? 15 : 0)) || (GET_TOT_INT(victim) < 6)) {
+    send_to_char(ch, VICTIM_RESISTS);
+    return;
+  }
+  GET_STUN_RECOVER_CHANCE(victim) = 100;
+  GET_STUN_DURATION(victim) = 2;
+  GET_POS(victim) = POS_STUNNED;
+  act("You are stunned!", FALSE, victim, 0, ch, TO_CHAR);
+  act("$n seems to be frozen!", TRUE, victim, 0, ch, TO_ROOM);
+  // act("$N freezes in $S tracks due to your massive onslaught!", FALSE, ch, 0, victim, TO_CHAR);
+  // act("$N freezes in $S tracks due to $n's massive onslaught!", FALSE, ch, 0, victim, TO_ROOM);
+}
+
+ASPELL(spell_succor)
+{
+  if (victim == NULL || IS_NPC(victim))
+    return;
+  if (IS_FIGHTING(victim))
+    send_to_char(ch, "You cannot succor %s while %s is engaged in combat!\r\n", GET_NAME(victim), HSSH(victim));
+  act("$n vanishes in a puff of smoke.", FALSE, victim, 0, 0, TO_ROOM);
+  char_from_room(victim);
+  char_to_room(victim, real_room(CONFIG_SORCERERS_GUILD));
+  act("$n appears in a puff of smoke.", TRUE, victim, 0, 0, TO_ROOM);
+  look_at_room(IN_ROOM(victim), victim, 0);
+  entry_memory_mtrigger(victim);
+  greet_mtrigger(victim, -1);
+  greet_memory_mtrigger(victim);
 }
 
 

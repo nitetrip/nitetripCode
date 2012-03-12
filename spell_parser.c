@@ -259,19 +259,19 @@ TO_ROOM);
       return (-1);	/* Successful and target died, don't cast again. */
 
   if (IS_SET(SINFO.routines, MAG_AFFECTS))
-    mag_affects(level, caster, cvict, spellnum, savetype);
+    mag_affects(level, caster, cvict, param1, spellnum, savetype);
 
   if (IS_SET(SINFO.routines, MAG_UNAFFECTS))
     mag_unaffects(level, caster, cvict, spellnum, savetype);
 
   if (IS_SET(SINFO.routines, MAG_POINTS))
-    mag_points(level, caster, cvict, spellnum, savetype);
+    mag_points(level, caster, cvict, param1, spellnum, savetype);
 
   if (IS_SET(SINFO.routines, MAG_ALTER_OBJS))
     mag_alter_objs(level, caster, ovict, spellnum, savetype);
 
   if (IS_SET(SINFO.routines, MAG_GROUPS))
-    mag_groups(level, caster, spellnum, savetype);
+    mag_groups(level, caster, param1, spellnum, savetype);
 
   if (IS_SET(SINFO.routines, MAG_MASSES))
     mag_masses(level, caster, spellnum, savetype);
@@ -332,6 +332,9 @@ TO_ROOM);
 
 
     case SPELL_CLAN_RECALL:	MANUAL_SPELL(spell_clan_recall); break;
+
+    case SPELL_TELEPORT_MAJOR:
+    case SPELL_TELEPORT_MINOR:        MANUAL_SPELL(spell_teleportm); break;
 
     case SPELL_TELEVIEW_MAJOR:
     case SPELL_TELEVIEW_MINOR:	MANUAL_SPELL(spell_teleview); break;
@@ -1430,11 +1433,16 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
 	"You feel weaker.");
   spello(SPELL_STRENGTH_BURST, "strength burst", 75, 50, 5, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "Your armor grows heavy as the strength of ancient heroes vacate your body.");
+  spello(SPELL_SYNOSTODWEOMER, "synostodweomer", 65, 35, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_POINTS, NULL);
 
 
   spello(SPELL_SUMMON, "summon", 75, 50, 3, POS_STANDING,
 	TAR_CHAR_WORLD | TAR_NOT_SELF, FALSE, MAG_MANUAL,
 	NULL);
+ spello(SPELL_SUNBURST, "sunburst", 40, 20, 2, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, "You feel a cloak of blindness dissolve.");
+ spello(SPELL_SUNRAY, "sunray", 30, 10, 4, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE | MAG_AFFECTSV, "You feel a cloak of blindness dissolve.");
+
 
   spello(SPELL_SUSTAIN, "sustain", 60, 30, 5, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
@@ -1451,10 +1459,11 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
   spello(SPELL_TELEPORT, "teleport", 75, 50, 3, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_MANUAL,
 	NULL);
+  spello(SPELL_TELEPORT_MINOR, "teleport minor", 50, 25, 5, POS_STANDING, TAR_CHAR_ZONE, FALSE, MAG_MANUAL, NULL);
+spello(SPELL_TELEPORT_MAJOR, "teleport major", 70, 40, 3, POS_STANDING, TAR_CHAR_WORLD, FALSE, MAG_MANUAL, NULL);
 
   spello(SPELL_TELEVIEW_MAJOR, "teleview major", 60, 30, 3, POS_STANDING,
         TAR_CHAR_WORLD | TAR_NOT_SELF, FALSE, MAG_MANUAL, NULL);
-
   spello(SPELL_TELEVIEW_MINOR, "teleview minor", 35, 15, 2, POS_STANDING,
         TAR_CHAR_ZONE | TAR_NOT_SELF, FALSE, MAG_MANUAL, NULL);
 

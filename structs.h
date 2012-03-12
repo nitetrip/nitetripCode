@@ -659,7 +659,6 @@ struct char_data *guildmaster1;
 #define ITEM_BOAT      22		/* Item is a boat		*/
 #define ITEM_FOUNTAIN  23		/* Item is a fountain		*/
 
-
 /* Take/Wear flags: used by obj_data.obj_flags.wear_flags */
 #define ITEM_WEAR_TAKE		(1 << 0)  /* Item can be takes		*/
 #define ITEM_WEAR_FINGER	(1 << 1)  /* Can be worn on finger	*/
@@ -705,7 +704,7 @@ struct char_data *guildmaster1;
 #define ITEM_EVIL_FLAGGED   (1ULL << 25) /* item is evil flagged */
 #define ITEM_ANGELIC        (1ULL << 26) /* item is ang flagged, +100 align */
 #define ITEM_DEMONIC        (1ULL << 27) /* item is dem flagged -100 align */
-
+#define ITEM_NO_RECHARGE    (1ULL << 27) 
 #define ITEM_GREATER_HIDDEN (1ULL << 51) /* Item will not lose hidden if picked up */
 #define ITEM_RESERVED       (1ULL << 52) /* Reserved bit thats auto-set when no flags are selected */
 #define ITEM_LESSER_HIDDEN  (1ULL << 53) /* Item will lose hidden if picked up */

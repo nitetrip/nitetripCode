@@ -211,7 +211,7 @@
 #define SPELL_DISPEL_SILENCE		172
 #define SPELL_DRAW_UPON_HOLY_MIGHT	173
 #define SPELL_ELEMENTAL_AURA		174 // partially done
-//#define SPELL_ELEMENTAL_BLAST		175 **********USE THIS FIRST, WAS DEFINED TWICE
+#define SPELL_RECHARGE    		175
 #define SPELL_EMBALM			176
 #define SPELL_ENFEEBLEMENT		177
 #define SPELL_ENLARGE			178
@@ -265,12 +265,12 @@
 #define SPELL_SUNBURST			226
 #define SPELL_SUNRAY			227
 #define SPELL_SYNOSTODWEOMER		228
-#define SPELL_TELEPORT_MAJOR		229
-#define SPELL_TELEPORT_MINOR		230
-#define SPELL_TOWER_OF_STRENGTH		231
-#define SPELL_TRAIL_OF_WOODLANDS	232
-#define SPELL_VAMPIRIC_GAZE		233
-#define SPELL_VAMPIRIC_TOUCH		234
+#define SPELL_TELEPORT_MAJOR		229 //
+#define SPELL_TELEPORT_MINOR		230 //
+#define SPELL_TOWER_OF_STRENGTH		231 //
+#define SPELL_TRAIL_OF_WOODLANDS	232 //
+#define SPELL_VAMPIRIC_GAZE		233 //
+#define SPELL_VAMPIRIC_TOUCH		234 //
 #define SPELL_VITALITY			235 //
 #define SPELL_WINDWALK			236 //
 #define SPELL_WITHER			237 // part done
@@ -278,7 +278,10 @@
 #define SPELL_MAGICAL_VESTMANTS         239 //
 #define SPELL_ELEMENTAL_SHIELD          240 // partially implemented
 #define SPELL_ASPHYXIATE		241 //
-#define SPELL_PROTECTION_FROM_EVIL    	241 //
+#define SPELL_PROTECTION_FROM_EVIL    	242 //
+#define SPELL_KNOCK			243 
+#define SPELL_BLOOD_QUENCH		244
+
 /* Insert new spells here, up to MAX_SPELLS */
 
 
@@ -481,6 +484,19 @@ ASPELL(spell_phase_door);
 ASPELL(spell_vitality);
 ASPELL(spell_bind_portal);
 ASPELL(spell_portal);
+ASPELL(spell_teleportm);
+ASPELL(spell_succor);
+ASPELL(spell_stun);
+ASPELL(spell_scry);
+ASPELL(spell_rest_in_peace);
+ASPELL(spell_knock);
+ASPELL(spell_fumble);
+ASPELL(spell_feign_death);
+ASPELL(spell_control_weather);
+ASPELL(spell_cannibalize);
+ASPELL(spell_calm);
+ASPELL(spell_blood_quench);
+ASPELL(spell_recharge);
 
 /* basic magic calling functions */
 
@@ -490,9 +506,9 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
   int spellnum, int savetype);
 
 void mag_affects(int level, struct char_data *ch, struct char_data *victim,
-  int spellnum, int savetype);
+  int param1, int spellnum, int savetype);
 
-void mag_groups(int level, struct char_data *ch, int spellnum, int savetype);
+void mag_groups(int level, struct char_data *ch, int param1, int spellnum, int savetype);
 
 void mag_masses(int level, struct char_data *ch, int spellnum, int savetype);
 
@@ -502,7 +518,7 @@ void mag_summons(int level, struct char_data *ch, struct obj_data *obj,
  int spellnum, int savetype);
 
 void mag_points(int level, struct char_data *ch, struct char_data *victim,
- int spellnum, int savetype);
+ int param1, int spellnum, int savetype);
 
 void mag_unaffects(int level, struct char_data *ch, struct char_data *victim,
   int spellnum, int type);
