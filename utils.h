@@ -48,6 +48,7 @@ int get_total_hitbonus(struct char_data *ch);
 int get_total_dambonus(struct char_data *ch);
 room_rnum portal_code_decrypt(struct char_data *ch, char *encrypted_string, int spellnum);
 void empty_container_to_room_then_destroy_it(struct obj_data *obj);
+int is_on_water(struct char_data *ch);
 
 #define core_dump()		core_dump_real(__FILE__, __LINE__)
 

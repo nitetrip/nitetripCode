@@ -1053,3 +1053,7 @@ void empty_container_to_room_then_destroy_it(struct obj_data *obj) {
   extract_obj(obj);
 }
 
+int is_on_water(struct char_data *ch)
+{
+  return ((SECT(IN_ROOM(ch)) == SECT_WATER_SWIM) || (SECT(IN_ROOM(ch)) == SECT_UNDERWATER) || (SECT(IN_ROOM(ch)) == SECT_WATER_NOSWIM)/* || (SECT(IN_ROOM(ch)) == SECT_EXTRAPLANAR_WATER)*/);
+}

@@ -45,8 +45,8 @@ int mag_savingthrow(struct char_data *ch, struct char_data *victim, int type, in
 void name_to_drinkcon(struct obj_data *obj, int type);
 void name_from_drinkcon(struct obj_data *obj);
 int compute_armor_class(struct char_data *ch);
-void weather_change(void);
-
+void weather_change(int change);
+void death_cry(struct char_data *ch);
 ACMD(do_flee);
 
 /*
@@ -385,7 +385,7 @@ ASPELL(spell_fumble)
     }
   }
   else if (wielded_weapon && GET_OBJ_TYPE(wielded_weapon) == ITEM_WEAPON) {
-    if (IS_SET(GET_OBJ_EXTRA(wielded_weapon), ITEM_NO_DISARM) || IS_SET_(GET_OBJ_EXTRA(wielded_weapon), ITEM_NODROP))
+    if (IS_SET(GET_OBJ_EXTRA(wielded_weapon), ITEM_NO_DISARM) || IS_SET(GET_OBJ_EXTRA(wielded_weapon), ITEM_NODROP))
       send_to_char(ch, "%s", NOEFFECT);
     else {
       act("$N fumbles and drops $s $p!", FALSE, ch, wielded_weapon, victim, TO_CHAR);
@@ -894,7 +894,7 @@ ASPELL(spell_scry)
       act("@RA shimmering red portal appears out of nowhere briefly before your eyes.@n", FALSE, ch, 0, 0, TO_ROOM);
       break;
   }
-  if (ROOM_FLAGGED(IN_ROOM(ch), ROOM_NOSCRY) || ROOM_FLAGGED(param1, ROOM_NOSCRY) || !CAN_USE_ROOM(ch, param1) || !is_on_same_plane(IN_ROOM(ch), param1) || (param1 == NOWHERE))
+  if (ROOM_FLAGGED(IN_ROOM(ch), ROOM_NOSCRY) || ROOM_FLAGGED(param1, ROOM_NOSCRY) || !CAN_USE_ROOM(ch, param1) /*|| !is_on_same_plane(IN_ROOM(ch), param1)*/ || (param1 == NOWHERE))
     send_to_char(ch, "Your eyes swim in images of color and light.  You try with all your\r\n"
                      "intelligence to make something out of the images, but your mind screams\r\n"
                      "out in agony as the portal disappears.\r\n");

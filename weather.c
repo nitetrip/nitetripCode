@@ -23,14 +23,14 @@ extern struct time_info_data time_info;
 
 void weather_and_time(int mode);
 void another_hour(int mode);
-void weather_change(void);
+void weather_change(int change);
 
 
 void weather_and_time(int mode)
 {
   another_hour(mode);
   if (mode)
-    weather_change();
+    weather_change(-1);
 }
 
 
@@ -77,9 +77,10 @@ void another_hour(int mode)
 }
 
 
-void weather_change(void)
+void weather_change(int change)
 {
-  int diff, change;
+  int diff;
+  if (change==-1) {
   if ((time_info.month >= 9) && (time_info.month <= 16))
     diff = (weather_info.pressure > 985 ? -2 : 2);
   else
@@ -144,6 +145,7 @@ void weather_change(void)
     weather_info.sky = SKY_CLOUDLESS;
     break;
   }
+}
 
   switch (change) {
   case 0:
