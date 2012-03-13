@@ -1003,6 +1003,7 @@ spello(SPELL_BOLT_OF_STEEL, "bolt of steel", 35, 15, 2, POS_FIGHTING, TAR_CHAR_R
   spello(SPELL_CALL_LIGHTNING, "call lightning", 40, 25, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
 	NULL);
+ spello(SPELL_CANNIBALIZE, "cannibalize", 30, 5, 4, POS_STANDING, TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE, MAG_MANUAL, NULL);
 
   spello(SPELL_CAUSE_MAJOR, "cause major wounds", 40, 15, 2, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
@@ -1052,12 +1053,13 @@ spello(SPELL_BOLT_OF_STEEL, "bolt of steel", 35, 15, 2, POS_FIGHTING, TAR_CHAR_R
   spello(SPELL_COLOR_SPRAY, "color spray", 30, 15, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
 	NULL);
+ spello(SPELL_CONJURE_ELEMENTAL, "conjure elemental", 80, 50, 3, POS_STANDING, TAR_IGNORE, FALSE, MAG_SUMMONS, NULL);
+  spello(SPELL_CONJURE_UNDEAD, "conjure undead", 100, 70, 3, POS_STANDING, TAR_IGNORE, FALSE, MAG_SUMMONS, NULL);
+
   spello(SPELL_CONTROL_PLANT, "control plant", 75, 35, 2, POS_STANDING,
         TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, "You feel more self-confident.");
   spello(SPELL_CONTROL_UNDEAD, "control undead", 75, 35, 2, POS_STANDING,
         TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, "You feel more self-confident.");
-
-
   spello(SPELL_CONTROL_WEATHER, "control weather", 75, 25, 5, POS_STANDING,
 	TAR_IGNORE, FALSE, MAG_MANUAL,
 	NULL);
@@ -1081,14 +1083,19 @@ spello(SPELL_BOLT_OF_STEEL, "bolt of steel", 35, 15, 2, POS_FIGHTING, TAR_CHAR_R
   spello(SPELL_CURE_LIGHT, "cure light", 30, 10, 2, POS_FIGHTING,
 	TAR_CHAR_ROOM, FALSE, MAG_POINTS,
 	NULL);
+ spello(SPELL_CURE_SERIOUS, "cure serious", 50, 20, 5, POS_FIGHTING,
+        TAR_CHAR_ROOM, FALSE, MAG_POINTS, NULL);
 
   spello(SPELL_CURSE, "curse", 80, 50, 2, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_OBJ_INV, TRUE, MAG_AFFECTS | MAG_ALTER_OBJS,
 	"You feel more optimistic.");
 
+ spello(SPELL_DEATH_STRIKE, "death strike", 200, 150, 10, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "You are tired after exerting yourself so much.");
+
   spello(SPELL_DEATHS_DOOR, "deaths door", 40, 20, 4, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel death closer at hand.");
-   
+ 
   spello(SPELL_DECREPIFY, "decrepify", 60, 40, 5, POS_STANDING,
         TAR_CHAR_ROOM | TAR_NOT_SELF, TRUE, MAG_AFFECTS | MAG_MATERIALS,
         "You feel less decrepid");
@@ -1150,23 +1157,22 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
         NULL);
  spello(SPELL_DRAW_UPON_HOLY_MIGHT, "draw upon holy might", 30, 10, 2, POS_FIGHTING,
         TAR_ATTRIBUTE, FALSE, MAG_AFFECTS, "You feel physically weak as the energy of your god drains from your body.");
+ spello(SPELL_DREAMSIGHT, "dreamsight", 30, 10, 2, POS_STANDING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "Your heightened awareness dissipates.");
 
-  spello(SPELL_EARTHQUAKE, "earthquake", 40, 25, 3, POS_FIGHTING,
-	TAR_IGNORE, TRUE, MAG_AREAS,
-	NULL);
-
-  spello(SPELL_ELEMENTAL_BLAST, "elemental blast", 75, 50, 5, POS_FIGHTING,
-	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+  spello(SPELL_EARTHQUAKE, "earthquake",40, 25, 3, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);
+  spello(SPELL_ELEMENTAL_AURA, "elemental aura", 80, 50, 5, POS_FIGHTING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "The aura of elemental power surrounding you fades away.");
+  spello(SPELL_ELEMENTAL_BLAST, "elemental blast", 75, 50, 5, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
   spello(SPELL_ELEMENTAL_BURST, "elemental burst", 100, 60, 8, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);
-  spello(SPELL_ELEMENTAL_HANDS, "elemental hands", 25, 10, 3, POS_FIGHTING,
-	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
-  spello(SPELL_ELEMENTAL_AURA, "elemental aura", 80, 50, 5, POS_FIGHTING,
-        TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "The aura of elemental power surrounding you fades away.");
+  spello(SPELL_ELEMENTAL_HANDS, "elemental hands", 25, 10, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+  spello(SPELL_ELEMENTAL_SHARD, "elemental shard", 60, 20, 4, POS_STANDING, TAR_IGNORE, FALSE, MAG_CREATIONS, NULL);
 
  spello(SPELL_ELEMENTAL_SHIELD, "elemental shield", 50, 20, 5, POS_FIGHTING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "The shield of elemental power dissipates into nothingness.");
 
   spello(SPELL_ELEMENTAL_STRIKE, "elemental strike", 50, 30, 2, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+
+  spello(SPELL_EMBALM, "embalm", 50, 20, 3, POS_STANDING, TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE, MAG_ALTER_OBJS, NULL);
+
   spello(SPELL_ENCHANT_WEAPON, "enchant weapon", 150, 100, 10, POS_STANDING,
 	TAR_OBJ_INV, FALSE, MAG_MANUAL,
 	NULL);
@@ -1174,6 +1180,8 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
   spello(SPELL_ENERGY_DRAIN, "energy drain", 40, 25, 1, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE | MAG_MANUAL,
 	NULL);
+  spello(SPELL_ENFEEBLEMENT, "enfeeblement", 50, 20, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, FALSE, MAG_AFFECTSV, "You feel your strength return.");
+
  spello(SPELL_ENLARGE, "enlarge", 50, 20, 3, POS_STANDING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You shrink back to your natural size.");
 
@@ -1205,12 +1213,16 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
   spello(SPELL_FREE_ACTION, "free action", 50, 20, 5, POS_FIGHTING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You find it slightly more difficult to move.");
  spello(SPELL_FUMBLE, "fumble", 50, 20, 3, POS_STANDING, TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, NULL);
+  spello(SPELL_GATE, "gate", 80, 50, 3, POS_STANDING, TAR_IGNORE, FALSE, MAG_SUMMONS, NULL);
 
  spello(SPELL_GHOUL_GAUNTLET, "ghoul gauntlet", 80, 40, 4, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "Your hands no longer itch.");
+ spello(SPELL_GHOUL_TOUCH, "ghoul touch", 25, 10, 1, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTSV, "Your feel that your limbs will move again.");
 
   spello(SPELL_GRANT_BAT_SONAR, "grant bat sonar", 60, 20, 4, POS_STANDING,
         TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_AFFECTS, "You notice that sound is no longer as sharp.");
+
 
   spello(SPELL_GROUP_ARMOR, "group armor", 50, 30, 2, POS_STANDING,
 	TAR_IGNORE, FALSE, MAG_GROUPS,
@@ -1263,6 +1275,7 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
 
  spello(SPELL_SCRY_GREATER, "greater scry", 70, 30, 4, POS_STANDING, TAR_PORTAL_CODE, FALSE, MAG_MANUAL, NULL);
 
+
   spello(SPELL_GROUP_HEAL, "group heal", 90, 75, 5, POS_STANDING,
 	TAR_IGNORE, FALSE, MAG_GROUPS,
 	NULL);
@@ -1272,7 +1285,7 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
     spello(SPELL_HANG, "hang", 200, 150, 10, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_MANUAL,
 	NULL);
-        
+
     spello(SPELL_HARM, "harm", 75, 45, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
 	NULL);
@@ -1280,6 +1293,11 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
   spello(SPELL_HEAL, "heal", 45, 30, 5, POS_FIGHTING,
 	TAR_CHAR_ROOM, FALSE, MAG_POINTS,
 	NULL);
+
+  spello(SPELL_HEAL_LIGHT, "heal light", 45, 30, 5, POS_FIGHTING,
+        TAR_CHAR_ROOM, FALSE, MAG_POINTS,
+        NULL);
+
 
   spello(SPELL_HEAL_CRITICAL, "heal critical", 75, 60, 5, POS_FIGHTING,
         TAR_CHAR_ROOM, FALSE, MAG_POINTS,
@@ -1292,6 +1310,19 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
   spello(SPELL_HEAL_SERIOUS, "heal serious", 65, 50, 5, POS_FIGHTING,
         TAR_CHAR_ROOM, FALSE, MAG_POINTS,
         NULL);
+
+  spello(SPELL_HEROES_FEAST, "heroes feast", 60, 40, 4, POS_STANDING, TAR_IGNORE, FALSE, MAG_GROUPS, NULL);
+ spello(SPELL_HOLD_BEAST, "hold beast", 25, 10, 1, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTSV, "Your feel that your limbs will move again.");
+  spello(SPELL_HOLD_MONSTER, "hold monster", 25, 10, 1, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTSV, "Your feel that your limbs will move again.");
+  spello(SPELL_HOLD_PERSON, "hold person", 25, 10, 1, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTSV, "Your feel that your limbs will move again.");
+  spello(SPELL_HOLD_PLANT, "hold plant", 25, 10, 1, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTSV, "Your feel that your limbs will move again.");
+  spello(SPELL_HOLD_UNDEAD, "hold undead", 25, 10, 1, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTSV, "Your feel that your limbs will move again.");
+
  spello(SPELL_HOLY_WORD, "holy word", 100, 60, 8, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);
   spello(SPELL_HORNETS_DART, "hornets dart", 75, 45, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
 
@@ -1305,6 +1336,7 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
    spello(SPELL_INFRAVISION, "infravision", 25, 10, 1, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
 	"Your night vision seems to fade.");
+  spello(SPELL_INTIMIDATE, "intimidate", 45, 25, 2, POS_FIGHTING, TAR_FIGHT_VICT, FALSE, MAG_AFFECTSV, "You feel more confident.");
 
   spello(SPELL_INVISIBLE, "invisibility", 35, 25, 1, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE, MAG_AFFECTS | MAG_ALTER_OBJS,
@@ -1312,6 +1344,12 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
 
  spello(SPELL_KNOCK, "knock", 40, 20, 2, POS_STANDING, TAR_OBJ_ROOM | TAR_OBJ_INV | TAR_DIRECTION, FALSE, MAG_MANUAL, NULL);
   spello(SPELL_SCRY_LESSER, "lesser scry", 50, 20, 3, POS_STANDING, TAR_PORTAL_CODE | TAR_ROOM_IN_ZONE, FALSE, MAG_MANUAL, NULL);
+
+
+ spello(SPELL_LEGEND_LORE, "legend lore", 100, 50, 5, POS_STANDING,
+        TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE, MAG_MANUAL, NULL);
+
+  spello(SPELL_LIFE_LEECH, "life leech", 50, 20, 3, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);
 
   spello(SPELL_LIGHTNING_BOLT, "lightning bolt", 30, 15, 1, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
@@ -1345,6 +1383,8 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
    spello(SPELL_METEOR_SHOWER, "meteor shower", 150, 50, 50, POS_FIGHTING,
             TAR_IGNORE, TRUE, MAG_AREAS,
             NULL);
+  spello(SPELL_MOON_MOTE, "moon mote", 50, 30, 2, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
+  spello(SPELL_PACIFY, "pacify", 30, 10, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_AFFECTSV, "You feel more aggresive.");
 
   spello(SPELL_PARALYZE, "paralyze", 25, 10, 1, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTS, "Your feel that your limbs will move again.");
@@ -1362,13 +1402,17 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_NOT_SELF | TAR_OBJ_INV, TRUE,
 	MAG_AFFECTS | MAG_ALTER_OBJS,
 	"You feel less sick.");
-        
+  spello(SPELL_PORTAL, "portal", 75, 75, 0, POS_STANDING,
+        TAR_CHAR_WORLD | TAR_NOT_SELF, FALSE, MAG_MANUAL, NULL);
+ spello(SPELL_POWER_STRIKE, "power strike", 150, 100, 5, POS_FIGHTING,
+        TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "You are tired after exerting yourself so much.");
+
   spello(SPELL_PRISMATIC_SPRAY, "prismatic spray", 120, 80, 8, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
 
-  spello(SPELL_PROT_FROM_EVIL, "protection from evil", 40, 10, 3, POS_STANDING,
+  spello(SPELL_PROT_FROM_EVIL, "protection from evil", 40, 10, 3, POS_STANDING, // one of these has to go
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
 	"You feel less protected.");
-spello(SPELL_PROTECTION_FROM_EVIL, "protection from evil", 60, 20, 4, POS_STANDING,
+spello(SPELL_PROTECTION_FROM_EVIL, "protection from evil", 60, 20, 4, POS_STANDING, // one of these has to go
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel less protected.");
    spello(SPELL_PROTECTION_FROM_GOOD, "protection from good", 60, 20, 4, POS_STANDING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel less protected.");
@@ -1387,6 +1431,9 @@ spello(SPELL_PROTECTION_FROM_EVIL, "protection from evil", 60, 20, 4, POS_STANDI
 	TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_EQUIP, FALSE,
 	MAG_UNAFFECTS | MAG_ALTER_OBJS,
 	NULL);
+ spello(SPELL_REMOVE_PARALYSIS, "remove paralysis", 40, 10, 3, POS_STANDING,
+        TAR_CHAR_ROOM, FALSE, MAG_UNAFFECTS, NULL);
+
 
   spello(SPELL_REMOVE_POISON, "remove poison", 40, 8, 4, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE, MAG_UNAFFECTS | MAG_ALTER_OBJS,
@@ -1440,7 +1487,7 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
 
   spello(SPELL_SMITE_EVIL, "smite evil", 50, 35, 5, POS_FIGHTING, TAR_CHAR_ROOM, TRUE, MAG_DAMAGE, NULL);
   spello(SPELL_SMITE_GOOD, "smite good", 50, 35, 5, POS_FIGHTING, TAR_CHAR_ROOM, TRUE, MAG_DAMAGE, NULL);
-      
+  spello(SPELL_SOMNOLENT_GAZE, "somnolent gaze", 50, 30, 2, POS_FIGHTING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTSV, "You feel less lethargic.");
   spello(SPELL_SONIC_BLAST, "sonic blast", 60, 20, 20, POS_FIGHTING,
             TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
             NULL);
@@ -1458,11 +1505,20 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
   spello(SPELL_STRENGTH_BURST, "strength burst", 75, 50, 5, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "Your armor grows heavy as the strength of ancient heroes vacate your body.");
   spello(SPELL_SYNOSTODWEOMER, "synostodweomer", 65, 35, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_POINTS, NULL);
+  spello(SPELL_STUN, "stun", 80, 50, 3, POS_FIGHTING, TAR_FIGHT_VICT, TRUE, MAG_MANUAL, NULL);
+
 
   spello(SPELL_SUCCOR, "succor", 25, 15, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, NULL);
   spello(SPELL_SUMMON, "summon", 75, 50, 3, POS_STANDING,
 	TAR_CHAR_WORLD | TAR_NOT_SELF, FALSE, MAG_MANUAL,
 	NULL);
+ spello(SPELL_SUMMON_GREATER, "greater summon", 100, 75, 5, POS_STANDING,
+        TAR_CHAR_WORLD | TAR_NOT_SELF, FALSE, MAG_MANUAL, NULL);
+ spello(SPELL_SUMMON_LESSER, "lesser summon", 80, 50, 3, POS_STANDING,
+        TAR_CHAR_WORLD | TAR_NOT_SELF, FALSE, MAG_MANUAL, NULL);
+ spello(SPELL_SUMMON_AVENGER, "summon avenger", 100, 70, 3, POS_STANDING, TAR_IGNORE, FALSE, MAG_SUMMONS, NULL);
+  spello(SPELL_SUMMON_BEAST, "summon beast", 100, 70, 3, POS_STANDING, TAR_IGNORE, FALSE, MAG_SUMMONS, NULL);
+
  spello(SPELL_SUNBURST, "sunburst", 40, 20, 2, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, "You feel a cloak of blindness dissolve.");
  spello(SPELL_SUNRAY, "sunray", 30, 10, 4, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE | MAG_AFFECTSV, "You feel a cloak of blindness dissolve.");
@@ -1589,28 +1645,71 @@ spello(SPELL_TELEPORT_MAJOR, "teleport major", 70, 40, 3, POS_STANDING, TAR_CHAR
    */
 
 
+  skillo(SKILL_ARMOR_SPEC, "armor specialization");
   skillo(SKILL_BACKSTAB, "backstab");
   skillo(SKILL_BASH, "bash");
+
   skillo(SKILL_CIRCLE, "circle");
-  skillo(SKILL_CRIT_HIT, "crit hit");
+  skillo(SKILL_CRIT_HIT, "critical hit");
+
+  skillo(SKILL_DETECT_TRAPS, "detect traps");
+  skillo(SKILL_DISABLE_TRAP, "disable trap");
   skillo(SKILL_DISARM, "disarm");
+  skillo(SKILL_DIST_SIGHT,"distant sight");
+
+  skillo(SKILL_ENDURANCE, "endurance");
+  skillo(SKILL_ENVENOM, "envenom");
+  skillo(SKILL_ESTATES, "estates");
+
   skillo(SKILL_FURY, "fury");
+
   skillo(SKILL_HIDE, "hide");
+
+  skillo(SKILL_IAIJUTSU, "iaijutsu");
+
   skillo(SKILL_KICK, "kick");
+
+  skillo(SKILL_LAYHANDS, "layhands");
+
+  skillo(SKILL_MEDITATE, "meditate");
+
+  skillo(SKILL_PARRY, "parry");
   skillo(SKILL_PICK_LOCK, "pick lock");
-  skillo(SKILL_DIST_SIGHT,"distant sight")
+
+  skillo(SKILL_RAGE, "rage");
   skillo(SKILL_RESCUE, "rescue");
+  skillo(SKILL_RETREAT, "retreat");
+
   skillo(SKILL_SNEAK, "sneak");
   skillo(SKILL_STEAL, "steal");
+  skillo(SKILL_SHIELD_SPEC, "shield specialization");
+  skillo(SKILL_SHIELDPUNCH, "shield punch");
+  skillo(SKILL_SHIELDRUSH, "shield rush");
+  skillo(SKILL_SEARCH, "search");
+
+
   skillo(SKILL_TRACK, "track");
-  skillo(SKILL_DETECT_TRAPS, "detect traps");
-  skillo(SKILL_PROF_PIERCE, "weap type pierce");
+  skillo(SKILL_TURNING, "turning");
+
+
+  skillo(SKILL_WHIRLWIND, "whirlwind");
+
+//Languages
+  skillo(SKILL_LANG_COMMON, "common");
+  skillo(SKILL_LANG_ELVEN, "elven");
+  skillo(SKILL_LANG_GNOME, "gnomish");
+  skillo(SKILL_LANG_DWARVEN, "dwarven");
+
+
+//Attack Types
+
+ skillo(SKILL_PROF_PIERCE, "weap type pierce");
   skillo(SKILL_PROF_BLUDGEON, "weap type bludgeon");
   skillo(SKILL_PROF_SLASH, "weap type slash");
   skillo(SKILL_PROF_WHIP, "weap type whip");
-  skillo(SKILL_SHIELD_SPEC, "shield specialization");
-  skillo(SKILL_PARRY, "parry");
-  skillo(SKILL_RAGE, "rage");
-  skillo(SKILL_WHIRLWIND, "whirlwind");
+  skillo(SKILL_PROF_UNARMED, "unarmed attack");
+  skillo(SKILL_PROF_SPECIAL, "special attack");
+
+
 }
 

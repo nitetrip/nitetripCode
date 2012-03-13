@@ -455,6 +455,7 @@ struct char_data *guildmaster1;
 #define MOB_NOBLIND	     (1 << 17) /* Mob can't be blinded		*/
 #define MOB_NOTDEADYET   (1 << 18) /* (R) Mob being extracted.		*/
 #define MOB_NOPARALYZE		(1 << 19) // unable t be paralyze -- need to finish up in db.c
+#define MOB_NOSILENCE		(1 << 20) // unable to sil
 
 /* Preference flags: used by char_data.player_specials.pref */
 #define PRF_BRIEF       (1 << 0)  /* Room descs won't normally be shown	*/

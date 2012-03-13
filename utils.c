@@ -856,17 +856,17 @@ int convert_damage_type_to_resistance(int attacktype)
      case SPELL_FLAILING_FISTS:
      case SKILL_BASH:
      case SKILL_KICK:
-     //case SKILL_SHIELDPUNCH:
-//     case SKILL_SHIELDRUSH:
+     case SKILL_SHIELDPUNCH:
+     case SKILL_SHIELDRUSH:
      case SKILL_WP_UNARMED:
-     case SKILL_WP_BLUDGEON:
+     case SKILL_PROF_BLUDGEON:
        return RESIST_TYPE_BLDG;
      case TYPE_SLASH:
      case TYPE_WHIP:
      case TYPE_CLAW:
      case TYPE_MAUL:
      case TYPE_THRASH:
-     case SKILL_WP_SLASH:
+     case SKILL_PROF_SLASH:
        return RESIST_TYPE_SLSH;
      case TYPE_PIERCE:
      case TYPE_BITE:
@@ -876,7 +876,7 @@ int convert_damage_type_to_resistance(int attacktype)
      case SPELL_HAIL_OF_ARROWS:
      case SPELL_HORNETS_DART:
      case SPELL_MAGIC_MISSILE:
-     case SKILL_WP_PIERCE:
+     case SKILL_PROF_PIERCE:
        return RESIST_TYPE_PIER;
 
      // case TYPE_FIRE:
@@ -922,7 +922,7 @@ int convert_damage_type_to_resistance(int attacktype)
        return RESIST_TYPE_GAS;
      //case TYPE_LGHT:
      case SPELL_COLOR_SPRAY:
-     //case SPELL_MOON_MOTE:
+     case SPELL_MOON_MOTE:
      case SPELL_PRISMATIC_SPRAY:
      case SPELL_SUNRAY:
      case SPELL_SUNBURST:
@@ -940,7 +940,7 @@ int convert_damage_type_to_resistance(int attacktype)
      case SPELL_CAUSE_MAJOR:
      case SPELL_SHIELD_AGAINST_EVIL:
      case SPELL_SHIELD_AGAINST_GOOD:
-     //case SKILL_TURNING:
+     case SKILL_TURNING:
        return RESIST_TYPE_DIVN;
      case SPELL_SUMMON_LESSER:
      case SPELL_SUMMON_GREATER:

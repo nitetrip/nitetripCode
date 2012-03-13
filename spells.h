@@ -281,7 +281,8 @@
 #define SPELL_PROTECTION_FROM_EVIL    	242 //
 #define SPELL_KNOCK			243 
 #define SPELL_BLOOD_QUENCH		244
-
+#define SPELL_ELEMENTAL_SHARD		245
+#define SPELL_MOON_MOTE			246
 /* Insert new spells here, up to MAX_SPELLS */
 
 
@@ -321,11 +322,29 @@
 #define SKILL_RAGE		    1053 //
 #define SKILL_WHIRLWIND             1054 //
 #define SKILL_ARMOR_SPEC        	1055 //
+#define SKILL_DISABLE_TRAP		1056
+#define SKILL_ENDURANCE			1057
+#define SKILL_ENVENOM			1058
+#define SKILL_ESTATES			1059
+#define SKILL_IAIJUTSU			1060
+#define SKILL_LAYHANDS			1061
+#define SKILL_MEDITATE			1062
+#define SKILL_RETREAT			1063
+#define SKILL_SHIELDPUNCH		1064
+#define SKILL_SHIELDRUSH		1065
+#define SKILL_SEARCH			1066
+#define SKILL_TURNING			1067
+#define SKILL_LANG_COMMON		1068
+#define SKILL_LANG_ELVEN		1069
+#define SKILL_LANG_GNOME		1070
+#define SKILL_LANG_DWARVEN		1071
+#define SKILL_PROF_UNARMED		1072
+#define SKILL_PROF_SPECIAL		1073
 
 
-#define SKILL_WP_PIERCE             1300 /* Weapon prof - form CWE March 7, 2012*/
-#define SKILL_WP_SLASH              1301
-#define SKILL_WP_BLUDGEON           1302
+// #define SKILL_WP_PIERCE             1300 /* Weapon prof - form CWE March 7, 2012*/
+//#define SKILL_WP_SLASH              1301
+//#define SKILL_WP_BLUDGEON           1302
 #define SKILL_WP_SPECIAL            1303
 #define SKILL_WP_UNARMED            1304 /* Barehanded weapon group        */
 

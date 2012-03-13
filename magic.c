@@ -1,5 +1,5 @@
 /* ************************************************************************
-*   File: magic.c                                       Part of CircleMUD *
+*  File: magic.c                                       Part of CircleMUD *
 *  Usage: low-level functions for magic; spell template code              *
 *                                                                         *
 *  All rights reserved.  See license.doc for complete information.        *
@@ -28,6 +28,7 @@ extern int mini_mud;
 extern int pk_allowed;
 extern struct spell_info_type spell_info[];
 struct config_data config_info;
+extern struct time_info_data time_info;
 
 /* external functions */
 byte saving_throws_nat(int class_num, int type, int level); /* class.c */
@@ -205,6 +206,7 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
 		     int spellnum, int savetype)
 {
   int dam = 0;
+int save_dam_reduction_factor = 2;
 
   if (victim == NULL || ch == NULL)
     return (0);
@@ -235,10 +237,21 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
       dam = dice((GET_LEVEL(ch)), 6) + 3;
     dam = check_mag_resists(ch, victim, dam, ATTACK_FIRE);
     break;
-  case SPELL_CALL_LIGHTNING:
-    dam = dice(7, 8) + 7;
+  /*case SPELL_CALL_LIGHTNING:
+  OLD SPELL dam = dice(7, 8) + 7;
       dam = check_mag_resists(ch, victim, dam, ATTACK_ELECTRIC);
+    break; */
+  case SPELL_CALL_LIGHTNING:
+    if (OUTSIDE(ch) && IS_RAINING()) {
+      dam = MIN(53,MAX(25,25+(GET_LEVEL(ch)-11)*7));
+      dam = rand_number(dam, 2*dam);
+    }
+    else {
+      send_to_char(ch, "You fail to call lightning from the sky.\r\n");
+      return (0);
+    }
     break;
+
   case SPELL_CAUSE_MINOR:
   case SPELL_CAUSE_MAJOR:
     dam =  ((spellnum == SPELL_CAUSE_MINOR)?dice(3,4):dice(5,4)+1);
@@ -347,13 +360,14 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
         dam = dice(20, 10) + 30;	
     dam = check_mag_resists(ch, victim, dam, ATTACK_MAGIC);
     break;
-  case SPELL_FIREBALL:
+ /* OLD SPELL _ THIS ENTRY IS NOT AN AREA SPELL
+     case SPELL_FIREBALL:
     if (IS_MAGIC_USER(ch))
       dam = dice(11, 8) + 11;
     else
       dam = dice(11, 6) + 11;
     dam = check_mag_resists(ch, victim, dam, ATTACK_FIRE);
-    break;
+    break;*/
     case SPELL_FIREBOLT:
     dam = MIN(100,MAX(52, 52+(GET_LEVEL(ch)-18)*12));
     dam = rand_number(dam, 2*dam);
@@ -389,6 +403,17 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
   case SPELL_METEOR: 
     dam = dice(20, 40) + 100;
     dam = check_mag_resists(ch, victim, dam, ATTACK_BLUDGEON);
+    break;
+  case SPELL_MOON_MOTE:
+    if (OUTSIDE(ch) && !IS_DAYTIME) {
+      dam = MIN(76,MAX(40,40+(GET_LEVEL(ch)-15)*9));
+      dam = rand_number(dam, 2*dam);
+      dam = (int)((double)dam*MOONLIGHT_SCALOR);
+    }
+    else {
+      send_to_char(ch, "You fail to focus light from the moon.\r\n");
+      return (0);
+    }
     break;
   case SPELL_PILLAR_OF_FLAME:
     dam = dice(400, 2) + level;
@@ -432,21 +457,22 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
       return (0);
     }
     break;
+/* OLD SPELL I put this under the area spells below
   case SPELL_SONIC_BLAST:
     dam = dice(20, 5) + level;
     dam = check_mag_resists(ch, victim, dam, ATTACK_MAGIC);
-    break;
+    break; */
   case SPELL_SUNRAY:    /* sunray also has an affect */
-    /*if (IS_UNDEAD(victim))(no IS_FUNGUS yes) || IS_FUNGUS(victim)) 
-      {
+    //if (IS_UNDEAD(victim))(no IS_FUNGUS yes) || IS_FUNGUS(victim)) 
+    //  {
       dam = MIN(32, MAX(12, 12+4*(GET_LEVEL(ch)-8)));
       dam = rand_number(dam, MIN(90, MAX(40, 40+10*(GET_LEVEL(ch)-8))));
-      if (OUTSIDE(IN_ROOM(victim)) && is_daytime())
+      if (OUTSIDE(victim) && IS_DAYTIME)
         dam *= 2;
-      if IS_FUNGUS(victim)
+      //if IS_FUNGUS(victim)
         save_dam_reduction_factor = 1;
-    }
-    else*/
+    //}
+    //else
       dam = 0;
     act("$N is bathed in your sunlight.", FALSE, ch, 0, victim, TO_CHAR);
     act("$N is bathed in a ray of sunlight cast by $n.", FALSE, ch, 0, victim, TO_ROOM);
@@ -455,6 +481,14 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
 
 
     /* Area attack spells, also in the mag_areas function below. */
+  case SPELL_BREATH_FIRE:
+  case SPELL_BREATH_GAS:
+  case SPELL_BREATH_FROST:
+  case SPELL_BREATH_ACID:
+  case SPELL_BREATH_LIGHTNING:
+    dam = MIN(MAX_DAMAGE_PER_HIT, MAX(25, 25+5*(GET_LEVEL(ch)/2)));
+    dam = rand_number(dam, 3*dam);
+    break;
   case SPELL_CHAIN_LIGHTNING:
     dam = MIN(95, MAX(60, 60+15*(GET_LEVEL(ch)-37)));
     dam = rand_number(2*dam, 3*dam);
@@ -476,6 +510,12 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
     dam = rand_number(dam, 2*dam);
     act("You are hit by $N's elemental burst.", FALSE, victim, 0, ch, TO_CHAR);
     break;
+
+ case SPELL_FIREBALL: 
+    dam = MIN(79,(MAX(GET_LEVEL(ch)-27, 0)*8+47));
+    dam = rand_number(dam, 2*dam);
+    break;
+
   case SPELL_FLAILING_FISTS:
     dam = MIN(70,MAX(46, 46+(GET_LEVEL(ch)-30)*8));
     dam = rand_number(2*dam, 3*dam);
@@ -511,17 +551,21 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
       else dam = MAX(dam*2, (GET_HIT(victim)/50)); //2% damage
       check_mag_resists(ch, victim, dam, ATTACK_LIGHT);
     break;
+  case SPELL_SONIC_BLAST:
+    dam = MIN(45,(MAX(GET_LEVEL(ch)-18, 0)*5+25));
+    dam = rand_number(dam, 2*dam);
+    break;
 
  case SPELL_SUNBURST:  /* sunburst also has an affect */
-/*    if (IS_UNDEAD(victim) || IS_FUNGUS(victim)) {
+  //    if (IS_UNDEAD(victim) || IS_FUNGUS(victim)) {
       dam = MIN(25, MAX(10, 10+3*(GET_LEVEL(ch)-13)));
       dam = rand_number(dam, MIN(70, MAX(30, 30+8*(GET_LEVEL(ch)-13))));
-      if (OUTSIDE(IN_ROOM(victim)) && is_daytime())
+      if (OUTSIDE(victim) && IS_DAYTIME)
         dam *= 2;
-      if IS_FUNGUS(victim)
-        save_dam_reduction_factor = 1;
-    }
-    else (this is the extra damage routine)*/ 
+     // if IS_FUNGUS(victim)
+      //  save_dam_reduction_factor = 1;
+    // }
+    else //(this is the extra damage routine) 
       dam = 0;
     break;
 
@@ -561,7 +605,7 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
  * affect_join(vict, aff, add_dur, avg_dur, add_mod, avg_mod)
  */
 
-#define MAX_SPELL_AFFECTS 5	/* change if more needed */
+#define MAX_SPELL_AFFECTS 10	/* change if more needed */
 
 void mag_affects(int level, struct char_data *ch, struct char_data *victim,
 		      int param1, int spellnum, int savetype)
@@ -1000,11 +1044,31 @@ case SPELL_DECREPIFY:
     }
     accum_duration = FALSE;
     break;
-  case SPELL_ENLARGE:
-/*    if (affected_by_spell(victim, SPELL_SHRINK)) {
+
+  case SPELL_ENFEEBLEMENT:
+    if (mag_savingthrow(ch, victim, savetype, 0)) {
       send_to_char(ch, "%s", CONFIG_NOEFFECT);
       return;
-    } This isn't necesary for now. */
+    }
+    if (GET_TOT_STR(victim) < 6) {
+      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      return;
+    }
+    af[0].location = APPLY_STR;
+    af[0].duration = 3+GET_LEVEL(ch)/3;
+    af[0].round_duration = FALSE;
+    af[0].modifier = 5-(GET_NAT_STR(victim)+((GET_NAT_STR(victim)>18)?10:(GET_NAT_ADD(victim)/10)));
+    accum_duration = FALSE;
+    accum_affect = FALSE;
+    to_room = "$n suddenly looks very weak!";
+    to_vict = "You muscles suddenly feel exhausted.";
+    break;
+
+  case SPELL_ENLARGE:
+    if (affected_by_spell(victim, SPELL_SHRINK)) {
+      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      return;
+    } 
     duration = 4+(GET_LEVEL(ch)>>1);
     af[0].duration = duration;
     af[0].location = APPLY_SIZE;
@@ -1032,6 +1096,49 @@ case SPELL_DECREPIFY:
     to_vict = "You suddenly feel resistant to fire.";
     accum_duration = FALSE;
     break;
+
+ case SPELL_GHOUL_TOUCH:
+  case SPELL_HOLD_ANIMAL:
+  case SPELL_HOLD_BEAST:
+  case SPELL_HOLD_MONSTER:
+  case SPELL_HOLD_PERSON:
+  case SPELL_HOLD_PLANT:
+  case SPELL_HOLD_UNDEAD:
+  case SPELL_PARALYZE:
+    if ((affected_by_spell(victim, SPELL_PARALYZE)) || AFF_FLAGGED(victim, AFF_PARALYZE)) {
+      send_to_char(ch, "Your victim is already paralyzed!\r\n");
+      return;
+    }
+    else if (MOB_FLAGGED(victim, MOB_NOPARALYZE) || AFF_FLAGGED(victim, AFF_FREE_ACTION) || (mag_savingthrow(ch, victim, SAVING_PARA, 0)) || IS_NECROMANCER(victim))
+    {
+      send_to_char(ch, VICTIM_RESISTS);
+      act("You feel tense for a moment.", FALSE, victim, 0, ch, TO_CHAR);
+      set_fighting(victim, ch);
+      return;
+    }
+    else if (((spellnum == SPELL_HOLD_BEAST)/* && IS_TYPE_BEAST(ch)*/) ||
+    ((spellnum == SPELL_GHOUL_TOUCH)/* && IS_TYPE_NECRO_VULN(ch)*/) ||
+    ((spellnum == SPELL_HOLD_ANIMAL)/* && IS_TYPE_ANIMAL(ch)*/) ||
+    ((spellnum == SPELL_HOLD_MONSTER)/* && IS_TYPE_MONSTER(ch)*/) ||
+    ((spellnum == SPELL_HOLD_PERSON)/* && IS_TYPE_PERSON(ch)*/) ||
+    ((spellnum == SPELL_HOLD_PLANT)/* && IS_TYPE_PLANT(victim)*/) ||
+    ((spellnum == SPELL_HOLD_UNDEAD)/* && IS_UNDEAD(victim)*/) ||
+    (spellnum == SPELL_PARALYZE))
+    {
+      af[0].duration = GET_LEVEL(ch)/10+3;
+      af[0].bitvector = AFF_PARALYZE;
+      af[0].round_duration = FALSE;
+      new_position = POS_PARALYZED;
+      accum_duration = FALSE;
+      to_vict = "You feel your limbs freeze!";
+      to_room = "$n seems paralyzed!";
+      spellnum = SPELL_PARALYZE;
+      break;
+    }
+    else {
+      send_to_char(ch, "%s", NOEFFECT_RACE);
+      return;
+    }
 
 
 
@@ -1101,6 +1208,24 @@ case SPELL_DECREPIFY:
     send_to_char(ch, "Peaceful dreams of joy and happiness fill %s's sleep.\r\n", GET_NAME(victim));
     to_vict = "Peaceful dreams of joy and happiness fill your sleep.";
     break;
+  case SPELL_HORNETS_DART:
+    if (mag_savingthrow(ch, victim, savetype, 0)) {
+      send_to_char(ch, "%s resists the deadly toxin injected by your hornet dart.\r\n", CAP(GET_NAME(victim)));
+      send_to_char(victim, PS_RESISTS_POISON);
+      return;
+    }
+    af[0].duration = 10;
+    af[0].location = APPLY_STR;
+    af[0].round_duration = TRUE;
+    af[0].modifier = MIN(-1, GET_LEVEL(ch)/-4);
+    af[0].bitvector = AFF_POISON;
+    af[0].type = SPELL_POISON;
+    accum_duration = TRUE;
+    accum_affect = TRUE;
+    to_room = "$n looks sickened by $N's hornet dart.";
+    to_vict = "Burning pain courses through your blood as $N's hornet dart stings you.";
+    break;
+
 
   case SPELL_IMMUNITY_TO_COLD:
     duration = GET_LEVEL(ch);
@@ -1128,6 +1253,26 @@ case SPELL_DECREPIFY:
     to_vict = "Your eyes glow red.";
     to_room = "$n's eyes glow red.";
     break;
+
+  case SPELL_INTIMIDATE:
+    if (mag_savingthrow(ch, victim, SAVING_SPELL, 0) || (GET_TOT_INT(victim) < 6)) {
+      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      return;
+    }
+    af[0].duration = 32000; //close as we can get to infinity. no worries, spell wears off immediatly after battle ends
+    af[0].round_duration = FALSE;
+    af[0].location = APPLY_HITROLL;
+    af[0].modifier = MIN(-1, GET_LEVEL(ch)/-4);
+    af[1].duration = 32000;
+    af[1].round_duration = FALSE;
+    af[1].location = APPLY_DAMROLL;
+    af[1].modifier = MIN(-1, GET_LEVEL(ch)/-4);
+    accum_duration = FALSE;
+    to_room = "$n is intimidated by $N's ferocious attacks.";
+    to_vict = "$N intimidates you with $S fierceness in battle!";
+    // to_char = "$N glances around nervously as $E is intimidated by you!";
+    break;
+
 
   case SPELL_IMPROVED_INVISIBILITY:
     if (IS_INVIS(victim) || AFF_FLAGGED(victim, AFF_IMPROVED_INVIS)) {
@@ -1179,6 +1324,45 @@ case SPELL_DECREPIFY:
     to_vict = "You draw upon your faith to protect you against the dangers of the world.";
     to_room = "$n grasps $s holy symbol and makes a few strange gestures.";
     break;
+ case SPELL_PACIFY:
+    if (mag_savingthrow(ch, victim, SAVING_SPELL, 0)) {
+      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      return;
+    }
+    duration = -(25+((GET_LEVEL(ch)*5)/8)); //used here as a temp variable for modifier NOT duration...
+    af[0].location = APPLY_AGGR_GENERAL;
+    af[0].modifier = duration;
+    af[0].duration = 24;
+    af[0].round_duration = FALSE;
+    af[1].location = APPLY_AGGR_EVIL;
+    af[1].modifier = duration;
+    af[1].duration = 24;
+    af[1].round_duration = FALSE;
+    af[2].location = APPLY_AGGR_GOOD;
+    af[2].modifier = duration;
+    af[2].duration = 24;
+    af[2].round_duration = FALSE;
+    af[3].location = APPLY_AGGR_NEUTRAL;
+    af[3].modifier = duration;
+    af[3].duration = 24;
+    af[3].round_duration = FALSE;
+    af[4].location = APPLY_AGGR_WIMPY;
+    af[4].modifier = duration;
+    af[4].duration = 24;
+    af[4].round_duration = FALSE;
+    af[5].location = APPLY_AGGR_COWARD;
+    af[5].modifier = duration;
+    af[5].duration = 24;
+    af[5].round_duration = FALSE;
+    af[6].location = APPLY_AGGR_MEMORY;
+    af[6].modifier = duration;
+    af[6].duration = 24;
+   af[6].round_duration = FALSE;
+    accum_duration = FALSE;
+    to_vict = "You feel more at ease.";
+    to_room = "$n seems to be more at ease.";
+    break;
+
 
   case SPELL_POISON:
     if (mag_savingthrow(ch, victim, savetype, 0) || victim->char_specials.immune[ATTACK_POISON] > 0 || (victim->char_specials.resist[ATTACK_POISON] > 0 && rand_number(1,100) > 50))
@@ -1372,6 +1556,23 @@ case SPELL_SHIELD_AGAINST_EVIL:
     break;
 
 
+  case SPELL_SILENCE:
+    if MOB_FLAGGED(victim, MOB_NOSILENCE) {
+      send_to_char(ch, "%s absorbs some of the energy from that spell.\r\n", CAP(GET_NAME(victim)));
+      return;
+    }
+    if (mag_savingthrow(ch, victim, SAVING_SPELL, 0)) {
+      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      return;
+    }
+    af[0].duration = MAX(0,(GET_LEVEL(ch)-1)/10)+3;
+    af[0].round_duration = FALSE;
+    af[0].bitvector = AFF_SILENCE;
+    accum_duration = FALSE;
+    to_vict = "You have been silenced!";
+    to_room = "$n seems to be silenced!";
+    break;
+
 
   case SPELL_SLEEP:
     if (!pk_allowed && !IS_NPC(ch) && !IS_NPC(victim))
@@ -1397,6 +1598,36 @@ case SPELL_SHIELD_AGAINST_EVIL:
     // to_vict = "You feel like you can walk in your sleep.";
     to_vict = "You feel your body lift off the ground.";
     to_room = "$n slowly stands up as if in a dazed state of mind.";    
+    break;
+ case SPELL_SOMNOLENT_GAZE:
+    if (AFF_FLAGGED(ch, AFF_BLIND)) {
+      send_to_char(ch, "You can't gaze at anything while you're blinded!");
+      return;
+    }
+    act("You stare into $N's eyes...", FALSE, ch, 0, victim, TO_NOTVICT);
+    act("$N stares into your eyes...", FALSE, victim, 0, ch, TO_CHAR);
+    if (mag_savingthrow(ch, victim, SAVING_SPELL, 20) || AFF_FLAGGED(victim, AFF_HASTE)) {
+      act("$N blinks.", FALSE, ch, 0, victim, TO_NOTVICT);
+      act("$N's gaze makes you blink.", FALSE, victim, 0, ch, TO_CHAR);
+      return;
+    }
+    duration = (GET_LEVEL(ch)/30)+1;
+    af[0].duration = duration; //close as we can get to infinity. no worries, spell wears off immediatly after battle ends
+    af[0].round_duration = FALSE;
+    af[0].location = APPLY_AP;
+    af[0].modifier = 40;
+    af[1].duration = duration;
+    af[1].round_duration = FALSE;
+    af[1].location = APPLY_HITROLL;
+    af[1].modifier = -4;
+    af[2].location = APPLY_ATTACKS;
+    af[2].duration = duration;
+    af[2].round_duration = FALSE;
+    af[2].modifier = -2;
+    accum_duration = FALSE;
+    to_room = "$n's eyes glaze over as $S actions slow down!";
+    /* $n yawns. */
+    to_vict = "$N's gaze makes you feel very lethargic!";
     break;
   
 
@@ -1560,6 +1791,12 @@ void perform_mag_groups(int level, struct char_data *ch,
     break;
   case SPELL_GROUP_ARMOR:
     mag_affects(level, ch, tch, param1, SPELL_ARMOR, savetype);
+    break;
+  case SPELL_HEROES_FEAST:
+    send_to_char(ch, "You conjure up a great feast for your group members to gorge themselves on.\r\n");
+    to_room = "$n conjures up a great feast for $s group members to gorge themselves on.";
+    act(to_room, TRUE, ch, 0, ch, TO_ROOM);
+    mag_manual(level, ch, tch, NOWHERE,NULL, SPELL_VITALITY);
     break;
   case SPELL_SUSTAIN_GROUP:
     mag_affects(level, ch, tch, param1, SPELL_SUSTAIN, savetype);
@@ -2100,7 +2337,7 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
         send_to_char(ch, "Your god is not the source of %s's power!", GET_NAME(victim));
         }
     break;
-  case SPELL_HEAL:
+  case SPELL_HEAL || SPELL_HEAL_LIGHT:
     healing = 60;
     send_to_char(victim, "A warm feeling briefly overtakes you.\r\n");
     break;

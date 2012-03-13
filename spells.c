@@ -145,16 +145,12 @@ ASPELL(spell_clan_recall)
   struct clan_type *cptr;
   if (victim == NULL)
     return;
-                                                                                   
   if (IS_NPC(victim))
     if (!(victim->master == ch))
       return;
-                                                                                   
   for (cptr = clan_info; cptr->number != GET_CLAN(victim); cptr = cptr->next);
-                                                                                   
   act("$n disappears.", TRUE, victim, 0, 0, TO_ROOM);
   char_from_room(victim);
-                                                                                   
   if(!IS_NPC(victim)) {
     if(GET_CLAN(victim) > 0)
       char_to_room(victim, real_room(cptr->clan_recall));
@@ -918,7 +914,7 @@ ASPELL(spell_spook)
   * practiced spook but when spooking NPCs
   * it does.
   *
-  * 
+  *  this is very different from cwe, will compar at a later date - march 12, 2012
   */
 
  if (ch == NULL || victim == NULL)

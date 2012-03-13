@@ -757,6 +757,7 @@ void	update_pos(struct char_data *victim);
 
 #define OUTSIDER(room)   ((SECT(room) != SECT_INSIDE) && !ROOM_FLAGGED(room, ROOM_INDOORS))
 #define OUTSIDE(ch) (!ROOM_FLAGGED(IN_ROOM(ch), ROOM_INDOORS))
+#define IS_RAINING()  ((weather_info.sky == SKY_RAINING) || (weather_info.sky == SKY_LIGHTNING))
 
 /* OS compatibility ******************************************************/
 
