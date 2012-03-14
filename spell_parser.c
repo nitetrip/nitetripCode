@@ -1561,7 +1561,7 @@ spello(SPELL_TELEPORT_MAJOR, "teleport major", 70, 40, 3, POS_STANDING, TAR_CHAR
         TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, "You feel more self-confident.");
 
    spello(SPELL_VAMPIRIC_TOUCH, "vampiric touch", 35, 15, 2, POS_FIGHTING,
-            TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_POINTS, NULL);
+            TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
 
    spello(SPELL_VIGORIZE_CRITICAL, "vigorize critical", 40, 25, 5, POS_FIGHTING,
             TAR_CHAR_ROOM, FALSE, MAG_POINTS,

@@ -601,7 +601,7 @@ int save_dam_reduction_factor = 2;
       GET_HIT(ch) = MIN(GET_MAX_HIT(ch), (GET_HIT(ch) + dam)); // Can only fill to the maximum
       act("$n drains $N - what a waste of energy!", FALSE, ch, 0, victim, TO_NOTVICT);
       act("$n drains some of your energy!", FALSE, ch, 0, victim, TO_VICT);
-      act("You drain $N of some of $S energy.\r\nYou feel better as life force flows into you.", FALSE, ch, 0, victim, TO_VICT);
+      act("You drain $N of some of $S energy.\r\nYou feel better as life force flows into you.", FALSE, ch, 0, victim, TO_CHAR);
      } else {
       act("$n reaches out to touch you but misses!", FALSE, ch, 0, victim, TO_VICT);
       act("You need more draining lessons.", FALSE, ch, 0, victim, TO_CHAR);
@@ -611,7 +611,7 @@ int save_dam_reduction_factor = 2;
 
 
 
-    /*
+/*    
       to_room = "$N drains $n - what a waste of energy!";
       to_vict = "$N drains some of your energy!";
       to_char = "You drain $N of some of $S energy.\r\nYou feel better as life force flows into you.";
@@ -620,8 +620,8 @@ int save_dam_reduction_factor = 2;
       to_vict = "$N reaches out to touch you but misses!";
       to_char = "You need more draining lessons.";
       to_room = "$N fails to drain $s - what a waste of energy.";
-    }
-    break; */
+    }*/
+    break; 
 
 
 
@@ -2408,46 +2408,6 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
     send_to_char(victim, "You feel revived as %s transfers %s life force to you.\r\n", GET_NAME(ch), HSHR(ch));
     to_room = "$n grows pale as $e transfers $s life force to $N.";
     break;
-
-  /* case VAMPIRIC_GAZE:
- if (rand_number(1,10) >= 7) { // 70 % chance of Success!
-        dam = GET_LEVEL(ch);
-      switch (GET_LEVEL(victim)) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-          dam += rand_number(5,15);
-          break;
-        case 6:
-          dam += rand_number(6,18);
-          break;
-        case 7:
-          dam += rand_number(7,21);
-          break;
-        case 8:
-          dam += rand_number(8,24);
-          break;
-        case 9:
-          dam += rand_number(9,27);
-          break;
-        default:
-          dam += rand_number(10,30);
-          break;
-      }
-      dam = MIN(GET_HIT(victim), dam); // Can not gain more than the victim's total HP
-      GET_HIT(ch) = MIN(GET_MAX_HIT(ch), (GET_HIT(ch) + dam)); // Can only fill to the maximum
-      damage(ch, victim, dam, spellnum);
-      act("$n drains $N - what a waste of energy!", FALSE, ch, 0, victim, TO_NOTVICT);
-      act("$n drains some of your energy!", FALSE, ch, 0, victim, TO_VICT);
-      act("You drain $N of some of $S energy.\r\nYou feel better as life force flows into you.", FALSE, ch, 0, victim, TO_VICT);
-     } else {
-      act("$n reaches out to touch you but misses!", FALSE, ch, 0, victim, TO_VICT);
-      act("You need more draining lessons.", FALSE, ch, 0, victim, TO_CHAR);
-      act("$N fails to drain $s - what a waste of energy.", FALSE, ch, 0, victim, TO_NOTVICT);
-    }  WILL REMOVE FIXME */
-
   case SPELL_VIGORIZE_CRITICAL:
     move = 45 + (level / 4);
     send_to_char(victim, "You feel very well-rested. \r\n");
