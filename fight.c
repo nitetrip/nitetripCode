@@ -122,7 +122,7 @@ int compute_armor_class(struct char_data *ch)
   if (AWAKE(ch))
     armorclass -= dex_app[GET_DEX(ch)].defensive;
 
-  return (MIN(armorclass, 10));      /* 10 is the highest we can go*/
+  return (MIN(armorclass, 100));      /* 10 is the highest we can go*/
 }
 
 
@@ -1294,7 +1294,7 @@ void hit(struct char_data *ch, struct char_data *victim, int type)
   victim_ac = compute_armor_class(victim);
 
   /* roll the die and take your chances... */
-  diceroll = rand_number(1, 20);
+  diceroll = rand_number(1, 200);
 
   /*
    * Decide whether this is a hit or a miss.

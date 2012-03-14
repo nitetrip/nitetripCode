@@ -195,7 +195,7 @@ struct char_data *guildmaster1;
 #define BASE_MANA_LAYHANDS      10
 #define BASE_MANA_WHIRLWIND     100
 #define MAX_AP                  100
-#define MIN_AP                 -1000
+#define MIN_AP                 -200
 #define MAX_AGGRESSION          100
 #define MIN_AGGRESSION          0
 #define MAX_RESIST              100
@@ -1433,7 +1433,7 @@ struct player_special_data_saved {
    ubyte spare5;
    int spells_to_learn;		/* How many can you learn yet this level*/
    int olc_zone;
-   int clan;         //dan clan system
+   int clan; 
  //  int clan_id; REMOVE
  //  int clan_rank; REMOVE       /*                  */
    int spare10;
@@ -1479,7 +1479,7 @@ struct mob_special_data {
    byte damnodice;          /* The number of damage dice's	       */
    byte damsizedice;        /* The size of the damage dice's           */
    int num_attacks;
-// From CWE - 03-07-12
+
    /** NOTICE THESE TWO ARRAYS BELOW MAKE A HUGE DIFFERENCE IN MEMORY USAGE OF CIRCLE!!! **/
    byte nat_mskills[MAX_SKILLS+1];  /* array of natural skills plus skill 0 */
    byte mod_mskills[MAX_SKILLS+1];  /* modified skills plus skill 0--should be type sh_int */

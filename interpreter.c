@@ -303,7 +303,7 @@ cpp_extern const struct command_info cmd_info[] = {
   { "assist"   , POS_FIGHTING, do_assist   , 1, 0 },
   { "ask"      , POS_RESTING , do_spec_comm, 0, SCMD_ASK },
   { "auction"  , POS_SLEEPING, do_gen_comm , 0, SCMD_AUCTION },
-  { "autoexit" , POS_DEAD    , do_gen_tog  , 0, SCMD_AUTOEXIT },
+  { "autoexits" , POS_DEAD    , do_gen_tog  , 0, SCMD_AUTOEXIT },
   { "autosplit", POS_DEAD    , do_gen_tog  , 0, SCMD_AUTOSPLIT },
   { "ack"      , POS_RESTING , do_action   , 0, 0 },
   { "admire"   , POS_RESTING , do_action   , 0, 0 },

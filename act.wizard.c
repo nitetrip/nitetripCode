@@ -1050,7 +1050,7 @@ void do_stat_character(struct char_data *ch, struct char_data *k)
   send_to_char(ch, "%sL-Des:%s %s", CCCYN(ch, C_NRM), CCGRN(ch, C_NRM), k->player.long_descr ? 
 k->player.long_descr : "<None>\r\n");
 
-//dan clan system
+
   send_to_char(ch, "%sClan:%s %s %sClan Rank:%s %s\r\n",
     CCCYN(ch, C_NRM), CCGRN(ch, C_NRM),  
     get_clan_name(GET_CLAN(k)), CCCYN(ch, C_NRM), CCGRN(ch, C_NRM), 
@@ -1120,9 +1120,6 @@ k->player.long_descr : "<None>\r\n");
   send_to_char(ch, "%sPos:%s %s %sFighting:%s %s", CCCYN(ch, C_NRM), CCGRN(ch, C_NRM), buf, 
        CCCYN(ch, C_NRM), CCGRN(ch, C_NRM), FIGHTING(k) ? GET_NAME(FIGHTING(k)) : "Nobody");
 
-  if (IS_NPC(k))
-    send_to_char(ch, " %sAttack type:%s %s", CCCYN(ch, C_NRM), CCGRN(ch, C_NRM), attack_hit_text[(int) 
-k->mob_specials.attack_type].singular);
 
   if (k->desc) {
     sprinttype(STATE(k->desc), connected_types, buf, sizeof(buf));
@@ -1132,7 +1129,9 @@ k->mob_specials.attack_type].singular);
   if (IS_NPC(k)) {
     sprinttype(k->mob_specials.default_pos, position_types, buf, sizeof(buf));
     send_to_char(ch, ", %sDefault position:%s %s\r\n", CCCYN(ch, C_NRM), CCGRN(ch, C_NRM), buf);
-    sprintbit(MOB_FLAGS(k), action_bits, buf, sizeof(buf));
+    send_to_char(ch, "%sAttack type:%s %s", CCCYN(ch, C_NRM), CCGRN(ch, C_NRM), attack_hit_text[(int)
+      k->mob_specials.attack_type].singular);
+    send_to_char(ch, " %s# of Attacks:%s %d\r\n", CCCYN(ch, C_NRM), CCGRN(ch, C_NRM), k->mob_specials.num_attacks);
     send_to_char(ch, "%sNPC flags:%s %s\r\n", CCCYN(ch, C_NRM), CCGRN(ch, C_NRM),  buf);
   } else {
     send_to_char(ch, " %sIdle Timer%s %d tics\r\n", CCCYN(ch, C_NRM), CCGRN(ch, C_NRM), k->char_specials.timer);

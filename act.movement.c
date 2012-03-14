@@ -65,7 +65,7 @@ int has_boat(struct char_data *ch)
   if (GET_LEVEL(ch) > 40)
     return (1);
 
-  if (AFF_FLAGGED(ch, AFF_WATERWALK) ||AFF_FLAGGED(ch, AFF_AIRWALK))
+  if (AFF_FLAGGED(ch, AFF_WATERWALK) || AFF_FLAGGED(ch, AFF_AIRWALK))
     return (1);
 
   /* non-wearable boats in inventory will do it */
@@ -181,12 +181,14 @@ int do_simple_move(struct char_data *ch, int dir, int need_specials_check)
 
   /* Mortals and low level gods cannot enter greater god rooms. */
 /* irrelevant because of min/max level -mak 8.21.05 -reinstated 2.9.06 
+
   if (ROOM_FLAGGED(EXIT(ch, dir)->to_room, ROOM_GODROOM) &&
 	GET_LEVEL(ch) < LVL_GOD) { 
     send_to_char(ch, "You aren't godly enough to use that room!\r\n");
     return (0);
   }
 uncomment to fix GODROOM */
+
 /* No access for non-IMPs */
   if (ROOM_FLAGGED(EXIT(ch, dir)->to_room, ROOM_IMPROOM) &&
 	GET_LEVEL(ch) < LVL_IMPL) {
@@ -213,7 +215,12 @@ uncomment to fix GODROOM */
 
     return 0;
   }
+  if (AFF_FLAGGED(ch, AFF_FLEET_FEET)) {
+      need_movement = need_movement / 2;
+      if (need_movement < 2) need_movement = 1;}
 
+  if (AFF_FLAGGED(ch, AFF_AIRWALK)) need_movement = 1;
+  
   /* Now we know we're allowed to go into the room. */
   if (GET_LEVEL(ch) < LVL_SAINT && !IS_NPC(ch))
     GET_MOVE(ch) -= need_movement;
@@ -251,10 +258,10 @@ uncomment to fix GODROOM */
     fix_size(ch);
 
     extract_char(ch);
-    
+
     for (k = world[was_in].contents; k; k = world[was_in].contents)
         extract_obj(k);
-      
+
     return (0);
   }
 
@@ -269,7 +276,7 @@ uncomment to fix GODROOM */
   if ( GET_MOVE(ch) < (GET_MAX_MOVE(ch) / 10) )
   {
     send_to_char(ch, "You cannot go much further.\r\n");
-  }  
+  }
 
   return (1);
 }

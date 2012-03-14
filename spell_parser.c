@@ -1180,7 +1180,7 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
   spello(SPELL_ENERGY_DRAIN, "energy drain", 40, 25, 1, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE | MAG_MANUAL,
 	NULL);
-  spello(SPELL_ENFEEBLEMENT, "enfeeblement", 50, 20, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, FALSE, MAG_AFFECTSV, "You feel your strength return.");
+  spello(SPELL_ENFEEBLEMENT, "enfeeblement", 50, 20, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, FALSE, MAG_AFFECTS, "You feel your strength return.");
 
  spello(SPELL_ENLARGE, "enlarge", 50, 20, 3, POS_STANDING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You shrink back to your natural size.");
@@ -1218,7 +1218,7 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
  spello(SPELL_GHOUL_GAUNTLET, "ghoul gauntlet", 80, 40, 4, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "Your hands no longer itch.");
  spello(SPELL_GHOUL_TOUCH, "ghoul touch", 25, 10, 1, POS_FIGHTING,
-        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTSV, "Your feel that your limbs will move again.");
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTS, "Your feel that your limbs will move again.");
 
   spello(SPELL_GRANT_BAT_SONAR, "grant bat sonar", 60, 20, 4, POS_STANDING,
         TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_AFFECTS, "You notice that sound is no longer as sharp.");
@@ -1313,15 +1313,15 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
 
   spello(SPELL_HEROES_FEAST, "heroes feast", 60, 40, 4, POS_STANDING, TAR_IGNORE, FALSE, MAG_GROUPS, NULL);
  spello(SPELL_HOLD_BEAST, "hold beast", 25, 10, 1, POS_FIGHTING,
-        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTSV, "Your feel that your limbs will move again.");
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTS, "Your feel that your limbs will move again.");
   spello(SPELL_HOLD_MONSTER, "hold monster", 25, 10, 1, POS_FIGHTING,
-        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTSV, "Your feel that your limbs will move again.");
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTS, "Your feel that your limbs will move again.");
   spello(SPELL_HOLD_PERSON, "hold person", 25, 10, 1, POS_FIGHTING,
-        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTSV, "Your feel that your limbs will move again.");
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTS, "Your feel that your limbs will move again.");
   spello(SPELL_HOLD_PLANT, "hold plant", 25, 10, 1, POS_FIGHTING,
-        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTSV, "Your feel that your limbs will move again.");
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTS, "Your feel that your limbs will move again.");
   spello(SPELL_HOLD_UNDEAD, "hold undead", 25, 10, 1, POS_FIGHTING,
-        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTSV, "Your feel that your limbs will move again.");
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTS, "Your feel that your limbs will move again.");
 
  spello(SPELL_HOLY_WORD, "holy word", 100, 60, 8, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);
   spello(SPELL_HORNETS_DART, "hornets dart", 75, 45, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
@@ -1336,7 +1336,7 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
    spello(SPELL_INFRAVISION, "infravision", 25, 10, 1, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
 	"Your night vision seems to fade.");
-  spello(SPELL_INTIMIDATE, "intimidate", 45, 25, 2, POS_FIGHTING, TAR_FIGHT_VICT, FALSE, MAG_AFFECTSV, "You feel more confident.");
+  spello(SPELL_INTIMIDATE, "intimidate", 45, 25, 2, POS_FIGHTING, TAR_FIGHT_VICT, FALSE, MAG_AFFECTS, "You feel more confident.");
 
   spello(SPELL_INVISIBLE, "invisibility", 35, 25, 1, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE, MAG_AFFECTS | MAG_ALTER_OBJS,
@@ -1384,7 +1384,7 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
             TAR_IGNORE, TRUE, MAG_AREAS,
             NULL);
   spello(SPELL_MOON_MOTE, "moon mote", 50, 30, 2, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
-  spello(SPELL_PACIFY, "pacify", 30, 10, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_AFFECTSV, "You feel more aggresive.");
+  spello(SPELL_PACIFY, "pacify", 30, 10, 2, POS_STANDING, TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_AFFECTS, "You feel more aggresive.");
 
   spello(SPELL_PARALYZE, "paralyze", 25, 10, 1, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_AFFECTS, "Your feel that your limbs will move again.");
@@ -1487,7 +1487,7 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
 
   spello(SPELL_SMITE_EVIL, "smite evil", 50, 35, 5, POS_FIGHTING, TAR_CHAR_ROOM, TRUE, MAG_DAMAGE, NULL);
   spello(SPELL_SMITE_GOOD, "smite good", 50, 35, 5, POS_FIGHTING, TAR_CHAR_ROOM, TRUE, MAG_DAMAGE, NULL);
-  spello(SPELL_SOMNOLENT_GAZE, "somnolent gaze", 50, 30, 2, POS_FIGHTING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTSV, "You feel less lethargic.");
+  spello(SPELL_SOMNOLENT_GAZE, "somnolent gaze", 50, 30, 2, POS_FIGHTING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel less lethargic.");
   spello(SPELL_SONIC_BLAST, "sonic blast", 60, 20, 20, POS_FIGHTING,
             TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
             NULL);
@@ -1521,7 +1521,7 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
 
  spello(SPELL_SUNBURST, "sunburst", 40, 20, 2, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, "You feel a cloak of blindness dissolve.");
  spello(SPELL_SUNRAY, "sunray", 30, 10, 4, POS_FIGHTING,
-        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE | MAG_AFFECTSV, "You feel a cloak of blindness dissolve.");
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE | MAG_AFFECTS, "You feel a cloak of blindness dissolve.");
 
 
   spello(SPELL_SUSTAIN, "sustain", 60, 30, 5, POS_STANDING,
@@ -1592,7 +1592,7 @@ spello(SPELL_TELEPORT_MAJOR, "teleport major", 70, 40, 3, POS_STANDING, TAR_CHAR
 
 
    spello(SPELL_WITHER, "wither", 55, 25, 3, POS_FIGHTING,
-        TAR_CHAR_ROOM | TAR_FIGHT_VICT, FALSE, MAG_AFFECTSV, "Your shriveled arm grows back to normal.");
+        TAR_CHAR_ROOM | TAR_FIGHT_VICT, FALSE, MAG_AFFECTS, "Your shriveled arm grows back to normal.");
 
    spello(SPELL_WORD_OF_RECALL, "word of recall", 20, 10, 2, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_MANUAL,

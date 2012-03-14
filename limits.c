@@ -353,22 +353,7 @@ void gain_exp(struct char_data *ch, int gain)
     if (is_altered) {
       mudlog(BRF, MAX(LVL_SAINT, GET_INVIS_LEV(ch)), TRUE, "%s advanced %d level%s to level %d.",
 		GET_NAME(ch), num_levels, num_levels == 1 ? "" : "s", GET_LEVEL(ch));
- /*        if (GET_LEVEL(ch) == 10)
-                        {
-                   send_to_char(ch, "\r\n");
-                   send_to_char(ch, "With the sound of the death cry\nringing in your ears you are suddenly\nstruck by a vision of your future. You\nappear stronger, more experienced, and\nmore powerful.  It is time to make an\nimpportant decision, you must meet with\nyour guildmaster before continuing on\nyour quest...\r\n\r\n");
 
-           SET_BIT(PLR_FLAGS(ch), PLR_NOEXPGAIN);
-                   SET_BIT(PLR_FLAGS(ch), PLR_PROGRESS);
-                        }
-           if (GET_LEVEL(ch) == 25)
-                        {
-                   send_to_char(ch, "\r\n");
-                   send_to_char(ch, "With the sound of the death cry\nringing in your ears you are suddenly\nstruck by a vision of your future. You\nappear stronger, more experienced, and\nmore powerful.  It is time to make an\nimpportant decision, you must meet with\nyour guildmaster before continuing on\nyour quest...\r\n\r\n");
-
-           SET_BIT(PLR_FLAGS(ch), PLR_NOEXPGAIN);
-                   SET_BIT(PLR_FLAGS(ch), PLR_PROGRESS);
-                        }*/ // will delete this soon, made new function for it, check_progression(ch)
              check_progression(ch);
 
  	 perform_cinfo(GET_CLAN(ch), "%s advanced to level %d!", GET_NAME(ch), GET_LEVEL(ch)); 

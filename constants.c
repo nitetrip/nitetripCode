@@ -260,6 +260,9 @@ const char *action_bits[] = {
   "NO_SLEEP",
   "NO_BASH",
   "NO_BLIND",
+  "NOTDEADYET",
+  "NO_PARALYZE",
+  "NO_SILENCE",
   "DEAD",    /* You should never see this. */
   "\n"
 };
@@ -293,9 +296,9 @@ const char *preference_bits[] = {
   "BLDWLK",
   "AFK",
   "D_TAR",
-  "UNUSED2",
-  "UNUSED3",
-  "UNUSED4",
+  "CLANTALK",
+  "ALLCTELL",
+  "DISPEXP",
   "AUTOSPLIT",
   "\n"
 };
@@ -514,6 +517,7 @@ const char *affected_bits[] =
   "DETECT_EVIL",
   "DETECT_GOOD",
   "DETECT_NEUTRAL",
+  "RAGE",
   "\n"
 };
 

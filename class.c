@@ -1894,6 +1894,10 @@ void do_start(struct char_data *ch)
 {
   GET_LEVEL(ch) = 1;
   GET_EXP(ch) = 1;
+  SET_BIT(PRF_FLAGS(ch), PRF_AUTOEXIT); // New players get autoexit by default
+  SET_BIT(PRF_FLAGS(ch), PRF_DISPHP | PRF_DISPMANA | PRF_DISPMOVE | PRF_DISPEXP | PRF_DISPTARGET); // DISPLAY ALL default for new players
+  SET_BIT(PRF_FLAGS(ch), PRF_COLOR_2); // New Players - color complete
+
 
   set_title(ch, NULL);
   roll_real_abils(ch);

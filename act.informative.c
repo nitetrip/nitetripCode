@@ -1514,8 +1514,8 @@ ACMD(do_users)
 
     if (d->host && *d->host)
        {
-        if((d->original ? GET_LEVEL(d->original) : d->character ? GET_LEVEL(d->character) : 1) >= LVL_GOD)
-        strcat(line, "[Hostname Protected]\r\n");
+        if( (d->original ? GET_LEVEL(d->original) : d->character ? GET_LEVEL(d->character) : 1) >= LVL_GOD && GET_LEVEL(ch) != LVL_IMPL)
+   	 strcat(line, "[Hostname Protected]\r\n");
 	else
         sprintf(line + strlen(line), "[%s]\r\n", d->host);
        }

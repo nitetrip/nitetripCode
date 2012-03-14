@@ -285,7 +285,7 @@
 #define SPELL_MOON_MOTE			246
 /* Insert new spells here, up to MAX_SPELLS */
 
-
+// NEXT SPELL SHOULD BE ASSIGNED TO 0 TO STOP PROF FROM GIVING THE FIRST SPELL !UNUSED!
 
 #define SPELL_BREATH_FIRE            324
 #define SPELL_BREATH_GAS             325

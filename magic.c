@@ -208,6 +208,7 @@ int mag_damage(int level, struct char_data *ch, struct char_data *victim,
   int dam = 0;
 int save_dam_reduction_factor = 2;
 
+
   if (victim == NULL || ch == NULL)
     return (0);
 
@@ -583,6 +584,45 @@ int save_dam_reduction_factor = 2;
       else dam = GET_HIT(victim)/50; //2% damage
       act("$N's shriek chills you to the very bone.", FALSE, victim, 0, ch, TO_CHAR);
     break;
+  case SPELL_VAMPIRIC_TOUCH:
+     //  Actual success is "the caster needs to make a hit roll versus armor class 100 minus the victim's dexterity bonus."
+     //  FIXME - when armor class and thaco is working.
+     //  Variables used -caster_add_hits
+
+	if (rand_number(1,10) >= 7) { // 70 % chance of Success!
+          dam = GET_LEVEL(ch);
+      		if (GET_LEVEL(victim) < 6) dam += rand_number(5,15);
+      		if (GET_LEVEL(victim) == 6) dam += rand_number(6,18);
+      		if (GET_LEVEL(victim) == 7) dam += rand_number(7,21);
+      		if (GET_LEVEL(victim) == 8) dam += rand_number(8,24);
+	  	if (GET_LEVEL(victim) == 9) dam += rand_number(9,27);
+	  	if (GET_LEVEL(victim) > 10) dam += rand_number(10,30);
+      dam = MIN(GET_HIT(victim), dam); // Can not gain more than the victim's total HP
+      GET_HIT(ch) = MIN(GET_MAX_HIT(ch), (GET_HIT(ch) + dam)); // Can only fill to the maximum
+      act("$n drains $N - what a waste of energy!", FALSE, ch, 0, victim, TO_NOTVICT);
+      act("$n drains some of your energy!", FALSE, ch, 0, victim, TO_VICT);
+      act("You drain $N of some of $S energy.\r\nYou feel better as life force flows into you.", FALSE, ch, 0, victim, TO_VICT);
+     } else {
+      act("$n reaches out to touch you but misses!", FALSE, ch, 0, victim, TO_VICT);
+      act("You need more draining lessons.", FALSE, ch, 0, victim, TO_CHAR);
+      act("$N fails to drain $s - what a waste of energy.", FALSE, ch, 0, victim, TO_NOTVICT);
+    }
+
+
+
+
+    /*
+      to_room = "$N drains $n - what a waste of energy!";
+      to_vict = "$N drains some of your energy!";
+      to_char = "You drain $N of some of $S energy.\r\nYou feel better as life force flows into you.";
+    }
+    else {
+      to_vict = "$N reaches out to touch you but misses!";
+      to_char = "You need more draining lessons.";
+      to_room = "$N fails to drain $s - what a waste of energy.";
+    }
+    break; */
+
 
 
   } /* switch(spellnum) */
@@ -651,12 +691,13 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     break;
 
   case SPELL_AIRWALK:
-    if (AFF_FLAGGED(ch, AFF_AIRWALK)) {
+    if (AFF_FLAGGED(victim, AFF_AIRWALK)) {
        send_to_char(ch, "%s", NOEFFECT);
        return;
        }
     af[0].duration = GET_LEVEL(ch) * 2;
     af[0].bitvector = AFF_AIRWALK;
+    to_room = "$n begins to hover inches off the ground!";
     to_vict = "Your begin to hover inches off the ground!";
     break;
 
@@ -679,6 +720,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     af[1].modifier = -1;
     af[1].duration = 24;
     accum_duration = FALSE;
+    to_room = "$n's skin is replaced by bark.";
     to_vict = "You feel your skin replaced by bark.";
     break;
 
@@ -761,7 +803,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     af[0].modifier = -1;
     accum_duration = TRUE;
     to_vict = "You feel your strength wither!";
-    break;
+       break;
 
   case SPELL_CLOAK_OF_DARKNESS:
     if (AFF_FLAGGED(victim, AFF_CLOAK_OF_THE_NIGHT) || AFF_FLAGGED(victim, AFF_CLOAK_OF_SHADOWS)) {
@@ -837,7 +879,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     break;
   case SPELL_DEATHS_DOOR:
     if AFF_FLAGGED(victim, AFF_REGENERATION) {
-      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      send_to_char(ch, "%s", NOEFFECT);
       return;
     }
     duration = GET_LEVEL(ch)*3;
@@ -879,6 +921,7 @@ case SPELL_DECREPIFY:
     af[0].bitvector = AFF_DETECT_ALIGN;
     accum_duration = TRUE;
     to_vict = "Your eyes tingle as you become aware of the soul of man.";
+    to_room = "$n's eyes glow briefly.";
     break;
     
   case SPELL_DETECT_EVIL:
@@ -886,6 +929,7 @@ case SPELL_DECREPIFY:
     af[0].bitvector = AFF_DETECT_EVIL;
     accum_duration = TRUE;
     to_vict = "Your eyes tingle as you become aware of the evil of the world.";
+    to_room = "$n's eyes glow briefly.";
     break; 
     
   case SPELL_DETECT_GOOD:
@@ -893,6 +937,7 @@ case SPELL_DECREPIFY:
     af[0].bitvector = AFF_DETECT_GOOD;
     accum_duration = TRUE;
     to_vict = "Your eyes tingle as you become aware of the goodness of the world.";
+    to_room = "$n's eyes glow briefly.";
     break;    
 
   case SPELL_DETECT_INVIS:
@@ -900,6 +945,7 @@ case SPELL_DECREPIFY:
     af[0].bitvector = AFF_DETECT_INVIS;
     accum_duration = TRUE;
     to_vict = "Your eyes tingle.";
+    to_room = "$n's eyes glow briefly.";
     break;
 
   case SPELL_DETECT_MAGIC:
@@ -907,6 +953,7 @@ case SPELL_DECREPIFY:
     af[0].bitvector = AFF_DETECT_MAGIC;
     accum_duration = TRUE;
     to_vict = "Your eyes tingle.";
+    to_room = "$n's eyes glow briefly.";
     break;
 
   case SPELL_DETECT_NEUTRAL:
@@ -914,6 +961,7 @@ case SPELL_DECREPIFY:
     af[0].bitvector = AFF_DETECT_NEUTRAL;
     accum_duration = TRUE;
     to_vict = "Your eyes tingle as you become aware of the balance of the world.";
+    to_room = "$n's eyes glow briefly.";
     break;
 
   case SPELL_DREAMSIGHT:
@@ -1047,11 +1095,11 @@ case SPELL_DECREPIFY:
 
   case SPELL_ENFEEBLEMENT:
     if (mag_savingthrow(ch, victim, savetype, 0)) {
-      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      send_to_char(ch, "%s", NOEFFECT);
       return;
     }
     if (GET_TOT_STR(victim) < 6) {
-      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      send_to_char(ch, "%s", NOEFFECT);
       return;
     }
     af[0].location = APPLY_STR;
@@ -1066,7 +1114,7 @@ case SPELL_DECREPIFY:
 
   case SPELL_ENLARGE:
     if (affected_by_spell(victim, SPELL_SHRINK)) {
-      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      send_to_char(ch, "%s", NOEFFECT);
       return;
     } 
     duration = 4+(GET_LEVEL(ch)>>1);
@@ -1164,7 +1212,7 @@ case SPELL_DECREPIFY:
 
 
   case SPELL_FORT:
-   if (!AFF_FLAGGED(ch, AFF_SANCTUARY)) {
+   if (!AFF_FLAGGED(victim, AFF_SANCTUARY)) {
    af[0].duration = 4;
    af[0].bitvector = AFF_FORT;
 
@@ -1242,7 +1290,7 @@ case SPELL_DECREPIFY:
     af[0].duration = duration;
     af[0].modifier = MAX_RESIST;
     to_vict = "You feel insulated against electricity!";
-    accum_duration = FALSE;
+       accum_duration = FALSE;
     break;
 
   
@@ -1256,7 +1304,7 @@ case SPELL_DECREPIFY:
 
   case SPELL_INTIMIDATE:
     if (mag_savingthrow(ch, victim, SAVING_SPELL, 0) || (GET_TOT_INT(victim) < 6)) {
-      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      send_to_char(ch, "%s", NOEFFECT);
       return;
     }
     af[0].duration = 32000; //close as we can get to infinity. no worries, spell wears off immediatly after battle ends
@@ -1326,7 +1374,7 @@ case SPELL_DECREPIFY:
     break;
  case SPELL_PACIFY:
     if (mag_savingthrow(ch, victim, SAVING_SPELL, 0)) {
-      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      send_to_char(ch, "%s", NOEFFECT);
       return;
     }
     duration = -(25+((GET_LEVEL(ch)*5)/8)); //used here as a temp variable for modifier NOT duration...
@@ -1520,7 +1568,7 @@ case SPELL_SHIELD_AGAINST_EVIL:
 
   case SPELL_SHRINK:
     if (affected_by_spell(victim, SPELL_ENLARGE)) {
-      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      send_to_char(ch, "%s", NOEFFECT);
       return;
     }
     duration = 4+(GET_LEVEL(ch)>>1);
@@ -1562,7 +1610,7 @@ case SPELL_SHIELD_AGAINST_EVIL:
       return;
     }
     if (mag_savingthrow(ch, victim, SAVING_SPELL, 0)) {
-      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      send_to_char(ch, "%s", NOEFFECT);
       return;
     }
     af[0].duration = MAX(0,(GET_LEVEL(ch)-1)/10)+3;
@@ -1646,7 +1694,7 @@ case SPELL_SHIELD_AGAINST_EVIL:
   case SPELL_STRENGTH_BURST:
   case SPELL_CHAMPIONS_STRENGTH:
     if (GET_TOT_STR(victim) >= MAX_STAT_ATTRIBUTE) {
-      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      send_to_char(ch, "%s", NOEFFECT);
       return;
     }
     af[0].location = APPLY_STR;
@@ -1674,7 +1722,7 @@ case SPELL_SHIELD_AGAINST_EVIL:
     break;
   case SPELL_TOWER_OF_STRENGTH:
     if AFF_FLAGGED(victim, AFF_SANCTUARY) {
-      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      send_to_char(ch, "%s", NOEFFECT);
       return;
     }
     af[0].duration = MAX(1,(GET_LEVEL(ch)/5));
@@ -1688,6 +1736,7 @@ case SPELL_SHIELD_AGAINST_EVIL:
     af[0].duration = 24;
     af[0].bitvector = AFF_WATERWALK;
     accum_duration = TRUE;
+    to_room = "$n grows webbing between $s toes";
     to_vict = "You feel webbing between your toes.";
     break;
   case SPELL_WINDWALK:
@@ -1706,27 +1755,26 @@ case SPELL_SHIELD_AGAINST_EVIL:
 
   case SPELL_WITHER:
     if (mag_savingthrow(ch, victim, SAVING_PETRI, 0)) {
-      send_to_char(ch, "%s", CONFIG_NOEFFECT);
+      send_to_char(ch, "%s", NOEFFECT);
       return;
     }
     af[0].location = APPLY_ATTACKS;
     af[0].duration = MAX(1, GET_LEVEL(ch)/10);
     af[0].round_duration = FALSE;
-    af[0].modifier = -2;
+    af[0].modifier = -1;
     to_vict = "Your wielding arm shrivels to that of an old man.";
     to_room = "$n's wielding arms shrivels up to the bone!";
     break;
 
     default:
-      break;
+    break;
 
   }
 
   /* TO USE THE AFF2 flags just add affect2 = TRUE; to the spell case */
 
   if(affect2 == FALSE) {
-  /*
-   * If this is a mob that has this affect set in its mob file, do not
+  /*   * If this is a mob that has this affect set in its mob file, do not
    * perform the affect.  This prevents people from un-sancting mobs
    * by sancting them and waiting for it to fade, for example.
    */
@@ -1796,7 +1844,7 @@ void perform_mag_groups(int level, struct char_data *ch,
     send_to_char(ch, "You conjure up a great feast for your group members to gorge themselves on.\r\n");
     to_room = "$n conjures up a great feast for $s group members to gorge themselves on.";
     act(to_room, TRUE, ch, 0, ch, TO_ROOM);
-    mag_manual(level, ch, tch, NOWHERE,NULL, SPELL_VITALITY);
+    mag_manual(level, ch, tch, param1, NULL, SPELL_VITALITY);
     break;
   case SPELL_SUSTAIN_GROUP:
     mag_affects(level, ch, tch, param1, SPELL_SUSTAIN, savetype);
@@ -2064,14 +2112,15 @@ void mag_areas(int level, struct char_data *ch, int spellnum, int savetype)
         break;
       case SPELL_SEARING_ORB:
         mag_affects(level, ch, tch, 0, SPELL_BLINDNESS, savetype);
-        mag_manual(level, ch, tch, 0, 0, SPELL_STUN);
+         mag_manual(level, ch, tch, NOWHERE, NULL, SPELL_STUN);
         break;
       case SPELL_CHAIN_LIGHTNING:
       case SPELL_SUNBURST:
         mag_affects(level, ch, tch, 0, SPELL_BLINDNESS, savetype);
         break;
       case SPELL_WAIL_OF_THE_BANSHEE:
-        mag_manual(level, ch, tch, 0, 0, SPELL_SPOOK);
+      mag_manual(level, ch, tch, NOWHERE, NULL, SPELL_SPOOK);
+
         break;
     }
 
@@ -2220,8 +2269,7 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
 {
 
   int healing = 0, move = 0, manaadd = 0;
-  int victim_add_hits = 0, caster_add_hits = 0, victim_add_move = 0, caster_add_move = 0, victim_add_mana = 0, caster_add_mana = 0;
-
+  int caster_add_hits =0, victim_add_hits =0;
   const char *to_vict = NULL, *to_room = NULL, *to_notvict = NULL, *to_char = NULL;
   if (victim == NULL)
     return;
@@ -2361,34 +2409,44 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
     to_room = "$n grows pale as $e transfers $s life force to $N.";
     break;
 
-  case SPELL_VAMPIRIC_TOUCH:
-    if (spellnum == SPELL_VAMPIRIC_TOUCH) {
-     // FIXME  caster_add_hits = attacker_successfully_hit_victim(ch, victim, TRUE, TRUE) ? MIN(10,MAX(0,GET_LEVEL(ch)-5)+5):0;
-      //dont allow caster to suck more life from the victim than the victim has
-      caster_add_hits = MIN(GET_HIT(victim)-MIN_HIT_POINTS, rand_number(caster_add_hits, 3*caster_add_hits));
-    }
-    else {
-     // FIXME caster_add_hits = attacker_successfully_hit_victim(ch, victim, TRUE, TRUE) ? MIN(10,MAX(0,GET_LEVEL(ch)-13)+10):0;
-      //dont allow caster to suck more life from the victim than the victim has
-      caster_add_hits = MIN(GET_HIT(victim)-MIN_HIT_POINTS, rand_number(caster_add_hits, 2*caster_add_hits));
-      caster_add_move = MIN(GET_MOVE(victim), rand_number(caster_add_hits, 2*caster_add_hits));
-      caster_add_mana = MIN(GET_MANA(victim), rand_number(caster_add_hits, 2*caster_add_hits));
-      victim_add_move = -1*caster_add_move;
-      victim_add_mana = -1*caster_add_mana;
-    }
-    if (caster_add_hits) {
-      damage(ch, victim, caster_add_hits, spellnum);
-      to_room = "$n drains $N - what a waste of energy!";
-      to_vict = "$N drains some of your energy!";
-      to_char = "You drain $N of some of $S energy.\r\nYou feel better as life force flows into you.";
-    }
-    else {
-      to_vict = "$N reaches out to touch you but misses!";
-      to_char = "You need more draining lessons.";
-      to_room = "$n fails to drain $N - what a waste of energy.";
-    }
-    break;
-
+  /* case VAMPIRIC_GAZE:
+ if (rand_number(1,10) >= 7) { // 70 % chance of Success!
+        dam = GET_LEVEL(ch);
+      switch (GET_LEVEL(victim)) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+          dam += rand_number(5,15);
+          break;
+        case 6:
+          dam += rand_number(6,18);
+          break;
+        case 7:
+          dam += rand_number(7,21);
+          break;
+        case 8:
+          dam += rand_number(8,24);
+          break;
+        case 9:
+          dam += rand_number(9,27);
+          break;
+        default:
+          dam += rand_number(10,30);
+          break;
+      }
+      dam = MIN(GET_HIT(victim), dam); // Can not gain more than the victim's total HP
+      GET_HIT(ch) = MIN(GET_MAX_HIT(ch), (GET_HIT(ch) + dam)); // Can only fill to the maximum
+      damage(ch, victim, dam, spellnum);
+      act("$n drains $N - what a waste of energy!", FALSE, ch, 0, victim, TO_NOTVICT);
+      act("$n drains some of your energy!", FALSE, ch, 0, victim, TO_VICT);
+      act("You drain $N of some of $S energy.\r\nYou feel better as life force flows into you.", FALSE, ch, 0, victim, TO_VICT);
+     } else {
+      act("$n reaches out to touch you but misses!", FALSE, ch, 0, victim, TO_VICT);
+      act("You need more draining lessons.", FALSE, ch, 0, victim, TO_CHAR);
+      act("$N fails to drain $s - what a waste of energy.", FALSE, ch, 0, victim, TO_NOTVICT);
+    }  WILL REMOVE FIXME */
 
   case SPELL_VIGORIZE_CRITICAL:
     move = 45 + (level / 4);

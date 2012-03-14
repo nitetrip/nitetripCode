@@ -48,6 +48,8 @@ int compute_armor_class(struct char_data *ch);
 void weather_change(int change);
 void death_cry(struct char_data *ch);
 ACMD(do_flee);
+ACMD(do_peace);
+void do_doorcmd(struct char_data *ch, struct obj_data *obj, int door, int scmd);
 
 /*
  * Special spells appear below.
@@ -1175,6 +1177,50 @@ ASPELL(spell_portal)
     greet_memory_mtrigger(ch);
   }
 }
+/*
+ASPELL(vampiric_touch)
+{
+    int dam = 0;
+     //  Actual success is "the caster needs to make a hit roll versus armor class 100 minus the victim's dexterity bonus."
+     //  FIXME - when armor class and thaco is working.
+     //  Variables used -caster_add_hits
 
-
-
+    if (rand_number(1,10) >= 7) { // 70 % chance of Success!
+        dam = GET_LEVEL(ch);
+      switch (GET_LEVEL(victim)) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+          dam += rand_number(5,15);
+          break;
+        case 6:
+          dam += rand_number(6,18);
+          break;
+        case 7:
+          dam += rand_number(7,21);
+          break;
+        case 8:
+          dam += rand_number(8,24);
+          break;
+        case 9:
+          dam += rand_number(9,27);
+          break;
+        default:
+          dam += rand_number(10,30);
+          break;
+      }
+      dam = MIN(GET_HIT(victim), dam); // Can not gain more than the victim's total HP
+      GET_HIT(ch) = MIN(GET_MAX_HIT(ch), (GET_HIT(ch) + dam)); // Can only fill to the maximum
+      damage(ch, victim, dam, spellnum); 
+      act("$n drains $N - what a waste of energy!", FALSE, ch, 0, victim, TO_NOTVICT);
+      act("$n drains some of your energy!", FALSE, ch, 0, victim, TO_VICT);
+      act("You drain $N of some of $S energy.\r\nYou feel better as life force flows into you.", FALSE, ch, 0, victim, TO_VICT);
+     } else {
+      act("$n reaches out to touch you but misses!", FALSE, ch, 0, victim, TO_VICT);
+      act("You need more draining lessons.", FALSE, ch, 0, victim, TO_CHAR);
+      act("$N fails to drain $s - what a waste of energy.", FALSE, ch, 0, victim, TO_NOTVICT);
+    }
+}
+*/
