@@ -471,7 +471,7 @@ int save_dam_reduction_factor = 2;
       if (OUTSIDE(victim) && IS_DAYTIME)
         dam *= 2;
       //if IS_FUNGUS(victim)
-        save_dam_reduction_factor = 1;
+       // save_dam_reduction_factor = 1;
     //}
     //else
       dam = 0;
@@ -1715,6 +1715,10 @@ case SPELL_SHIELD_AGAINST_EVIL:
     break;
 
   case SPELL_SUSTAIN:
+    if ( (GET_COND(victim, FULL) < 20) || (GET_COND(victim, THIRST) <20) ){
+     send_to_char(victim, "You are not full enough for sustain to work!\r\n");
+     if (ch != victim) send_to_char(ch, "%s is not full enough for sustain to work!\r\n", GET_NAME(victim));
+     return; }
     af[0].duration = (GET_LEVEL(ch) / 2);
     af[0].bitvector = AFF_SUSTAIN;
     accum_duration = FALSE;
@@ -1848,6 +1852,7 @@ void perform_mag_groups(int level, struct char_data *ch,
     break;
   case SPELL_SUSTAIN_GROUP:
     mag_affects(level, ch, tch, param1, SPELL_SUSTAIN, savetype);
+    break;
   case SPELL_GROUP_RECALL:
     send_to_char(ch, "You open a shimmering portal and step through it along with your group.\r\n");
     to_room = "$n opens a shimmering portal that disappears when $s entire group enters.";
@@ -2215,7 +2220,7 @@ void mag_summons(int level, struct char_data *ch, struct obj_data *obj,
     msg = 10;
     fmsg = rand_number(2, 6);	/* Random fail message. */
     mob_num = MOB_CLONE;
-    pfail = 50;	/* 50% failure, should be based on something later. */
+    pfail = 50;	/* FIXME 50% failure, should be based on something later. */
     break;
 
   case SPELL_ANIMATE_DEAD:
@@ -2228,7 +2233,7 @@ void mag_summons(int level, struct char_data *ch, struct obj_data *obj,
     msg = 11;
     fmsg = rand_number(2, 6);	/* Random fail message. */
     mob_num = MOB_ZOMBIE;
-    pfail = 10;	/* 10% failure, should vary in the future. */
+    pfail = 10;	/* FIXME 10% failure, should vary in the future. */
     break;
 
   default:
@@ -2279,7 +2284,6 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
 {
 
   int healing = 0, move = 0, manaadd = 0;
-  int caster_add_hits =0, victim_add_hits =0;
   const char *to_vict = NULL, *to_room = NULL, *to_notvict = NULL, *to_char = NULL;
   if (victim == NULL)
     return;
@@ -2412,11 +2416,11 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
     send_to_char(victim, "You glow slightly as warmth floods through your veins.\r\n");
     break;
   case SPELL_SYNOSTODWEOMER:
-    victim_add_hits = GET_HIT(ch)/2;
-    caster_add_hits = -1 * victim_add_hits;
-    send_to_char(ch, "You feel weaker as you transfer your life force to %s.\r\n", GET_NAME(victim));
+    healing = GET_HIT(ch)/2;
+       send_to_char(ch, "You feel weaker as you transfer your life force to %s.\r\n", GET_NAME(victim));
     send_to_char(victim, "You feel revived as %s transfers %s life force to you.\r\n", GET_NAME(ch), HSHR(ch));
     to_room = "$n grows pale as $e transfers $s life force to $N.";
+    GET_HIT(ch) = MAX(1, GET_HIT(ch) - healing);
     break;
   case SPELL_VIGORIZE_CRITICAL:
     move = 45 + (level / 4);
@@ -2443,10 +2447,12 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
     log("SYSERR: unknown spellnum %d passed to mag_points.", spellnum);
     return;
   }
+
   GET_HIT(victim) = MIN(GET_MAX_HIT(victim), GET_HIT(victim) + healing);
   GET_MOVE(victim) = MIN(GET_MAX_MOVE(victim), GET_MOVE(victim) + move);
   GET_MANA(victim) = MIN(GET_MAX_MANA(victim), GET_MANA(victim) + manaadd);
   update_pos(victim);
+  
   if (to_vict != NULL)
     act(to_vict, FALSE, victim, 0, ch, TO_CHAR);
   if (to_room != NULL)

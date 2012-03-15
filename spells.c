@@ -973,12 +973,14 @@ if ( percent > prob ) {
 
 ASPELL(spell_vitality)
 {
-  int nutrient_amount = 10+(GET_LEVEL(ch)/4);
-  gain_condition(victim, FULL, nutrient_amount);
-  gain_condition(victim, THIRST, nutrient_amount);
+  int nutrient_amount = 4+(GET_LEVEL(ch)/4);
+ //  gain_condition(victim, FULL, nutrient_amount);
+ // gain_condition(victim, THIRST, nutrient_amount);
   if (victim != ch) send_to_char(ch, "%s has been revitalized.\r\n", CAP(GET_NAME(victim)));
   act("You feel your hunger suddenly disappear.", TRUE, victim, 0, 0, TO_CHAR);
-  if ((GET_COND(victim, THIRST)>20) && (GET_COND(victim, FULL)>20)) {
+  GET_COND(victim, THIRST) = MIN(24, GET_COND(victim, THIRST) + nutrient_amount);
+  GET_COND(victim, FULL) = MIN(24, GET_COND(victim, FULL)+ nutrient_amount);
+   if ((GET_COND(victim, THIRST)>20) && (GET_COND(victim, FULL)>20)) {
     act("$n burps loudly.", TRUE, victim, 0, 0, TO_ROOM);
     act("You burp loudly.", TRUE, victim, 0, 0, TO_CHAR);
   }

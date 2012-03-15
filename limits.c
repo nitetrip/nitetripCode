@@ -432,7 +432,7 @@ void gain_condition(struct char_data *ch, int condition, int value)
   if (IS_NPC(ch) || GET_COND(ch, condition) == -1)	/* No change */
     return;
 
-  if (IS_AFFECTED2(ch, AFF_SUSTAIN)) /* also no change  Anubis */
+  if (IS_AFFECTED(ch, AFF_SUSTAIN)) /* also no change  Anubis */
     return;
 
   intoxicated = (GET_COND(ch, DRUNK) > 0);
