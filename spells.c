@@ -884,12 +884,12 @@ ASPELL(spell_scry)
 {
   switch (spellnum) {
     case SPELL_SCRY_LESSER:
-      act("@BYou open up a shimmering blue portal and gaze into it...@n", FALSE, ch, 0, 0, TO_CHAR);
-      act("@BA shimmering blue portal appears out of nowhere briefly before your eyes.@n", FALSE, ch, 0, 0, TO_ROOM);
+      act("\\c0lBYou open up a shimmering blue portal and gaze into it...\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
+      act("\\c0lBA shimmering blue portal appears out of nowhere briefly before your eyes.\\c0ln", FALSE, ch, 0, 0, TO_ROOM);
       break;
     case SPELL_SCRY_GREATER:
-      act("@RYou open up a shimmering red portal and gaze into it...@n", FALSE, ch, 0, 0, TO_CHAR);
-      act("@RA shimmering red portal appears out of nowhere briefly before your eyes.@n", FALSE, ch, 0, 0, TO_ROOM);
+      act("\\c0lRYou open up a shimmering red portal and gaze into it...\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
+      act("\\c0lRA shimmering red portal appears out of nowhere briefly before your eyes.\\c0ln", FALSE, ch, 0, 0, TO_ROOM);
       break;
   }
   if (ROOM_FLAGGED(IN_ROOM(ch), ROOM_NOSCRY) || ROOM_FLAGGED(param1, ROOM_NOSCRY) || !CAN_USE_ROOM(ch, param1) /*|| !is_on_same_plane(IN_ROOM(ch), param1)*/ || (param1 == NOWHERE))
@@ -1043,7 +1043,7 @@ ASPELL(spell_bind_portal)
         send_to_char(ch, "There are no dryads in this area to be befriended.\r\n");
         return;
       }*/ //Check for room type
-      send_to_char(ch, "A dryad shyly appears before you and whispers '%s' into your ear.\r\n", encrypted_string);
+      send_to_char(ch, "A dryad shyly appears before you and whispers '\\c0lG%s\\c0ln' into your ear.\r\n", encrypted_string);
       act("A dryad suddenly appears and whispers something in $n's ear.", TRUE, ch, 0, 0, TO_ROOM);
       break;
     case SPELL_BIND_PORTAL_MINOR:
@@ -1052,8 +1052,8 @@ ASPELL(spell_bind_portal)
      //   return;
      // }
      // act("You open up a shimmering blue portal and gaze into it...", FALSE, ch, 0, 0, TO_CHAR);
-      send_to_char(ch, "You open up a %sshimmering blue portal%s and gaze into it...\r\n", CCBLU(ch, C_CMP), CCNRM(ch, C_CMP)); 
-      send_to_char(ch, "'%s' briefly appears as a portal shimmers into view and then disappears.\r\n", encrypted_string);
+      send_to_char(ch, "You open up a shimmering blue portal and gaze into it...\r\n");
+      send_to_char(ch, "'\\c0lB%s\\c0ln' briefly appears as a portal shimmers into view and then disappears.\r\n", encrypted_string);
       act("Undecipherable characters briefly shimmer before your eyes.", FALSE, ch, 0, 0, TO_ROOM);
       break;
     case SPELL_BIND_PORTAL_MAJOR:
@@ -1063,7 +1063,7 @@ ASPELL(spell_bind_portal)
      // }
       //act("You open up a shimmering red portal and gaze into it...", FALSE, ch, 0, 0, TO_CHAR);
       send_to_char(ch, "You open up a %sshimmering red portal%s and gaze into it...\r\n", CCRED(ch, C_CMP), CCNRM(ch, C_CMP));
-      send_to_char(ch, "'%s%s%s' briefly appears as a portal shimmers into view and then disappears.\r\n", CCRED(ch, C_CMP),encrypted_string, CCNRM(ch, C_CMP));
+      send_to_char(ch, "'\\c0lR%s\\c0ln' briefly appears as a portal shimmers into view and then disappears.\r\n", encrypted_string);
       act("Undecipherable characters briefly shimmer before your eyes.", FALSE, ch, 0, 0, TO_ROOM);
       break;
     case SPELL_LOCATE_SHADOW_PLANE:
@@ -1071,7 +1071,7 @@ ASPELL(spell_bind_portal)
       //  send_to_char(ch, "The plane of shadow doesn't touch this location.\r\n");
       //  return;
      // }
-      send_to_char(ch, "'%s' briefly appears as you see shadows twirl into a portal out of the corner of your eyes.\r\n", encrypted_string);
+      send_to_char(ch, "'\\c0lc%s\\c0ln' briefly appears as you see shadows twirl into a portal out of the corner of your eyes.\r\n", encrypted_string);
       act("Out of the corner of your eye, you see shadows swirl.", TRUE, ch, 0, 0, TO_ROOM);
       break;
     default:
@@ -1091,39 +1091,39 @@ ASPELL(spell_portal)
     switch (spellnum) {
       case SPELL_PLANAR_TRAVEL:
       case SPELL_DIMENSION_DOOR:
-        act("@RA shimmering red portal briefly appears out of nowhere before your eyes.@n", FALSE, ch, 0, 0, TO_ROOM);
-        act("@RYou open up a shimmering red portal.@n", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lRA shimmering red portal briefly appears out of nowhere before your eyes.\\c0ln", FALSE, ch, 0, 0, TO_ROOM);
+        act("\\c0lRYou open up a shimmering red portal.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
         act("$n steps into the shimmering red portal before it closes behind $m.", FALSE, ch, 0, 0, TO_ROOM);
-        act("@WYou step through the shimmering red portal before it closes behind you.@n", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lWYou step through the shimmering red portal before it closes behind you.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
         break;
       case SPELL_DIMENSION_SHIFT:
-        act("@BA shimmering blue portal appears out of nowhere before your eyes.@n", FALSE, ch, 0, 0, TO_ROOM);
-        act("@BYou open up a shimmering blue portal.@n", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lBA shimmering blue portal appears out of nowhere before your eyes.\\c0ln", FALSE, ch, 0, 0, TO_ROOM);
+        act("\\c0lBYou open up a shimmering blue portal.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
         act("$n steps into the shimmering blue portal as it closes behind $m.", FALSE, ch, 0, 0, TO_ROOM);
-        act("@WYou step through the shimmering blue portal as it closes behind you.@n", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lWYou step through the shimmering blue portal as it closes behind you.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
         break;
       case SPELL_DIMENSION_WALK:
-        act("@GA shimmering green portal appears out of nowhere before your eyes.@n", FALSE, ch, 0, 0, TO_ROOM);
-        act("@GYou open up a shimmering green portal.@n", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lgA shimmering green portal appears out of nowhere before your eyes.\\c0ln", FALSE, ch, 0, 0, TO_ROOM);
+        act("\\c0lgYou open up a shimmering green portal.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
         act("$n steps into the shimmering green portal as it closes behind $m.", FALSE, ch, 0, 0, TO_ROOM);
-        act("@WYou step through the shimmering green portal as it closes behind you.@n", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lWYou step through the shimmering green portal as it closes behind you.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
         break;
       case SPELL_PASS_WITHOUT_TRACE:
-        act("@GA pretty, young girl appears as if out of nowhere and leads $n off into the wilderness.@n", FALSE, ch, 0, 0, TO_ROOM);
-        act("@GA young dryad appears as if out of nowhere and leads you off into the wilderness by your hand.@n", FALSE, ch, 0, 0, TO_CHAR);
+        act("A pretty, young girl appears as if out of nowhere and leads $n off into the wilderness.", FALSE, ch, 0, 0, TO_ROOM);
+        act("\\c0lGA young dryad appears as if out of nowhere and leads you off into the wilderness by your hand.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
         break;
       case SPELL_SHADOW_DOOR:
       case SPELL_SHADOW_WALK:
-        act("@cA shimmering dark portal appears out of the shadows before your eyes.@n", FALSE, ch, 0, 0, TO_ROOM);
-        act("@cYou open up a shimmering dark portal in the shadows.@n", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lcA shimmering dark portal appears out of the shadows before your eyes.\\c0ln", FALSE, ch, 0, 0, TO_ROOM);
+        act("\\c0lcYou open up a shimmering dark portal in the shadows.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
         act("$n steps into the shimmering dark portal before it closes behind $m.", FALSE, ch, 0, 0, TO_ROOM);
-        act("@WYou step through the shimmering dark portal before it closes behind you.@n", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lWYou step through the shimmering dark portal before it closes behind you.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
         break;
       case SPELL_TRAIL_OF_WOODLANDS:
-        act("@gThe shimmering green of the dryads's portal is revealed to you.@n", FALSE, ch, 0, 0, TO_CHAR);
-        act("@gA shimmering green portal briefly appears out of nowhere before your eyes.@n", FALSE, ch, 0, 0, TO_ROOM);
+        act("\\c0lGThe shimmering green of the dryads's portal is revealed to you.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lGA shimmering green portal briefly appears out of nowhere before your eyes.\\c0ln", FALSE, ch, 0, 0, TO_ROOM);
         act("$n steps into the shimmering green portal before it closes behind $m.", FALSE, ch, 0, 0, TO_ROOM);
-        act("@WYou step through the shimmering green portal before it closes behind you.@n", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lWYou step through the shimmering green portal before it closes behind you.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
         break;
       default:
         act("$n opens a portal in thin air and steps through.", TRUE, ch, 0, 0, TO_ROOM);
@@ -1136,36 +1136,34 @@ ASPELL(spell_portal)
       case SPELL_PLANAR_TRAVEL:
       case SPELL_DIMENSION_DOOR:
         /* A ripple in the extra-dimensional space throws you out of the passage. <-- misteleport (yellow) */
-        act("@WYou journey through a shimmering red passage.@n", FALSE, ch, 0, 0, TO_CHAR);
-        act("@RYou step out of a red portal and look about.@n", FALSE, ch, 0, 0, TO_CHAR);
-        act("@RA red portal briefly shimmers open as $n emerges from it.@n", FALSE, ch, 0, 0, TO_ROOM);
+        act("\\c0lWYou journey through a shimmering red passage.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lRYou step out of a red portal and look about.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lRA red portal briefly shimmers open as $n emerges from it.\\c0ln", FALSE, ch, 0, 0, TO_ROOM);
         break;
       case SPELL_DIMENSION_SHIFT:
-        act("@WYou journey through a shimmering blue passage.@n", FALSE, ch, 0, 0, TO_CHAR);
-        act("@BYou step out of a blue portal and look about.@n", FALSE, ch, 0, 0, TO_CHAR);
-        act("@BA blue portal briefly shimmers open as $n emerges from it.@n", FALSE, ch, 0, 0, TO_ROOM);
+        act("\\c0lWYou journey through a shimmering blue passage.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lRYou step out of a blue portal and look about.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lRA blue portal briefly shimmers open as $n emerges from it.\\c0ln", FALSE, ch, 0, 0, TO_ROOM);
         break;
       case SPELL_DIMENSION_WALK:
-        act("@WYou journey through a shimmering green passage.@n", FALSE, ch, 0, 0, TO_CHAR);
-        act("@GYou step out of a green portal and look about.@n", FALSE, ch, 0, 0, TO_CHAR);
-        act("@GA green portal briefly shimmers open as $n emerges from it.@n", FALSE, ch, 0, 0, TO_ROOM);
+        act("\\c0lWYou journey through a shimmering green passage.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lgYou step out of a green portal and look about.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lgA green portal briefly shimmers open as $n emerges from it.\\c0ln", FALSE, ch, 0, 0, TO_ROOM);
         break;
       case SPELL_PASS_WITHOUT_TRACE:
-        act("@WYou follow the dryad through the wilderness back to her tree.@n", FALSE, ch, 0, 0, TO_CHAR);
-        act("@GThe dryad gives you a kiss on the cheek and disappears as you look about.@n", FALSE, ch, 0, 0, TO_CHAR);
+        act("You follow the dryad through the wilderness back to her tree.", FALSE, ch, 0, 0, TO_CHAR);
+        act("The dryad gives you a kiss on the cheek and disappears as you look about.", FALSE, ch, 0, 0, TO_CHAR);
         break;
       case SPELL_SHADOW_DOOR:
       case SPELL_SHADOW_WALK:
-        act("You journey through the plane of shadows.", FALSE, ch, 0, 0, TO_CHAR); //colorize?
-        act("@cYou step out of the plane of shadows and look about.@n", FALSE, ch, 0, 0, TO_CHAR); // Colorize?
-        act("A dark portal briefly shimmers open as $n emerges from it.", FALSE, ch, 0, 0, TO_ROOM); // Colorize?
+        act("\\c0lWYou journey through the plane of shadows.\\c0ln", FALSE, ch, 0, 0, TO_CHAR); 
+        act("\\c0lcYou step out of the plane of shadows and look about.\\c0ln", FALSE, ch, 0, 0, TO_CHAR); 
+        act("\\c0lcA dark portal briefly shimmers open as $n emerges from it.\\c0ln", FALSE, ch, 0, 0, TO_ROOM);
         break;
       case SPELL_TRAIL_OF_WOODLANDS:
-        // act("@WYou journey through a shimmering green tunnel through the earth past the massive roots of trees.@n", FALSE, ch, 0, 0, TO_CHAR);
-        send_to_char(ch, "You journey through a %sshimmering green tunnel%s through the earth past the massive roots of trees.\r\n",CCGRN(ch, C_CMP), CCNRM(ch, C_CMP));
-	//act("@gYou step out of a green tunnel and look about.@n", FALSE, ch, 0, 0, TO_CHAR);
-        send_to_char(ch, "You step out of a %sgreen tunnel%s and look about.", CCGRN(ch, C_CMP), CCNRM(ch, C_CMP)); 
-        act("@gA green portal briefly shimmers open as $n emerges from it.@n", FALSE, ch, 0, 0, TO_ROOM);
+         act("\\c0lWYou journey through a shimmering green tunnel through the earth past the massive roots of trees.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
+	act("\\c0lGYou step out of a green tunnel and look about.\\c0ln", FALSE, ch, 0, 0, TO_CHAR);
+        act("\\c0lGA green portal briefly shimmers open as $n emerges from it.\\c0ln", FALSE, ch, 0, 0, TO_ROOM);
         break;
       default:
         send_to_room(param1, "A shimmering portal appears out of thin air and %s steps out.\r\n", GET_NAME(ch));
@@ -1177,50 +1175,3 @@ ASPELL(spell_portal)
     greet_memory_mtrigger(ch);
   }
 }
-/*
-ASPELL(vampiric_touch)
-{
-    int dam = 0;
-     //  Actual success is "the caster needs to make a hit roll versus armor class 100 minus the victim's dexterity bonus."
-     //  FIXME - when armor class and thaco is working.
-     //  Variables used -caster_add_hits
-
-    if (rand_number(1,10) >= 7) { // 70 % chance of Success!
-        dam = GET_LEVEL(ch);
-      switch (GET_LEVEL(victim)) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-          dam += rand_number(5,15);
-          break;
-        case 6:
-          dam += rand_number(6,18);
-          break;
-        case 7:
-          dam += rand_number(7,21);
-          break;
-        case 8:
-          dam += rand_number(8,24);
-          break;
-        case 9:
-          dam += rand_number(9,27);
-          break;
-        default:
-          dam += rand_number(10,30);
-          break;
-      }
-      dam = MIN(GET_HIT(victim), dam); // Can not gain more than the victim's total HP
-      GET_HIT(ch) = MIN(GET_MAX_HIT(ch), (GET_HIT(ch) + dam)); // Can only fill to the maximum
-      damage(ch, victim, dam, spellnum); 
-      act("$n drains $N - what a waste of energy!", FALSE, ch, 0, victim, TO_NOTVICT);
-      act("$n drains some of your energy!", FALSE, ch, 0, victim, TO_VICT);
-      act("You drain $N of some of $S energy.\r\nYou feel better as life force flows into you.", FALSE, ch, 0, victim, TO_VICT);
-     } else {
-      act("$n reaches out to touch you but misses!", FALSE, ch, 0, victim, TO_VICT);
-      act("You need more draining lessons.", FALSE, ch, 0, victim, TO_CHAR);
-      act("$N fails to drain $s - what a waste of energy.", FALSE, ch, 0, victim, TO_NOTVICT);
-    }
-}
-*/

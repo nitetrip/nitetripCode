@@ -232,7 +232,7 @@ void list_skills(struct char_data *ch)
   
   for (sortpos = 1; sortpos <= MAX_SKILLS; sortpos++) {
     i = spell_sort_info[sortpos];
-    if (GET_LEVEL(ch) >= spell_info[i].min_level[(int) GET_CLASS(ch)]) {
+    if ((GET_LEVEL(ch) >= spell_info[i].min_level[(int) GET_CLASS(ch)]) || ( GET_LEVEL(ch) < LVL_SAINT && GET_SKILL(ch, i) > 0)) {
       nlen = snprintf(buf2 + len, sizeof(buf2) - len, "%-20s %s\r\n", spell_info[i].name, how_good(GET_SKILL(ch, i)));
       if (len + nlen >= sizeof(buf2) || nlen < 0)
         break;

@@ -1878,6 +1878,16 @@ void perform_mag_groups(int level, struct char_data *ch,
   case SPELL_MASS_SUICIDE:
     spell_hang(level, ch, tch, NULL, NOWHERE, SPELL_MASS_SUICIDE);
     break;
+  case SPELL_DIMENSION_DOOR:
+  case SPELL_PLANAR_TRAVEL:
+  case SPELL_SHADOW_DOOR:
+  case SPELL_TRAIL_OF_WOODLANDS:
+    spell_portal(level, tch, ch, NULL, param1, spellnum);
+    break;
+  default:
+    send_to_char(ch, "Need to add case to perform_mag_groups (magic.c).\r\n");
+    break; 
+
   }
 }
 
@@ -1920,7 +1930,7 @@ void mag_groups(int level, struct char_data *ch, int param1, int spellnum, int s
   }
 
   if ((k != ch) && AFF_FLAGGED(k, AFF_GROUP))
-    perform_mag_groups(level, ch, k, param1, spellnum, savetype);
+  perform_mag_groups(level, ch, k, param1, spellnum, savetype);
   perform_mag_groups(level, ch, ch, param1, spellnum, savetype);
 }
 
@@ -2675,8 +2685,8 @@ void mag_manual(int level, struct char_data *caster, struct char_data *cvict, in
     case SPELL_DIMENSION_SHIFT:
     case SPELL_DIMENSION_WALK:
     case SPELL_SHADOW_WALK:
-    case SPELL_PASS_WITHOUT_TRACE:
-    case SPELL_DIMENSION_DOOR:
+    case SPELL_PASS_WITHOUT_TRACE:     MANUAL_SPELL(spell_portal); break;
+    case SPELL_DIMENSION_DOOR:  
     case SPELL_PLANAR_TRAVEL:
     case SPELL_SHADOW_DOOR:
     case SPELL_TRAIL_OF_WOODLANDS:    MANUAL_SPELL(spell_portal); break;

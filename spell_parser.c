@@ -336,11 +336,12 @@ TO_ROOM);
     case SPELL_DIMENSION_WALK:
     case SPELL_SHADOW_WALK:
     case SPELL_PASS_WITHOUT_TRACE:
-    case SPELL_DIMENSION_DOOR:
+         MANUAL_SPELL(spell_portal);
+/*    case SPELL_DIMENSION_DOOR:
     case SPELL_PLANAR_TRAVEL:
     case SPELL_SHADOW_DOOR:
     case SPELL_TRAIL_OF_WOODLANDS:
-         MANUAL_SPELL(spell_portal);
+         MAG_GROUPS(spell_portal);*/
          break;
 
 
@@ -618,14 +619,14 @@ ACMD(do_cast)
     send_to_char(ch, "Cast what?!?\r\n");           
     return;
   }
-  if (GET_LEVEL(ch) < SINFO.min_level[(int) GET_CLASS(ch)]) {
+  if ((GET_LEVEL(ch) < SINFO.min_level[(int) GET_CLASS(ch)]) && (GET_SKILL(ch, spellnum) == 0)) {
     send_to_char(ch, "You do not know that spell!\r\n");
     return;
   }
-  if (GET_SKILL(ch, spellnum) == 0) {
-    send_to_char(ch, "You are unfamiliar with that spell.\r\n");
-    return;
-  }
+//  if (GET_SKILL(ch, spellnum) == 0) {
+//    send_to_char(ch, "You are unfamiliar with that spell.\r\n");
+//    return;
+//  }
   /* Find the target */
   if (t != NULL) {
     char arg[MAX_INPUT_LENGTH];
@@ -834,7 +835,7 @@ void spello(int spl, const char *name, int max_mana, int min_mana,
   int i;
 
   for (i = 0; i < NUM_CLASSES; i++)
-    spell_info[spl].min_level[i] = LVL_SAINT;
+  spell_info[spl].min_level[i] = LVL_SAINT;
   spell_info[spl].mana_max = max_mana;
   spell_info[spl].mana_min = min_mana;
   spell_info[spl].mana_change = mana_change;

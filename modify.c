@@ -340,8 +340,9 @@ ACMD(do_skillset)
    * checked for the -1 above so we are safe here.
    */
   SET_SKILL(vict, skill, value);
-  mudlog(BRF, LVL_SAINT, TRUE, "%s changed %s's %s to %d.", GET_NAME(ch), GET_NAME(vict), spell_info[skill].name, value);
-  send_to_char(ch, "You change %s's %s to %d.\r\n", GET_NAME(vict), spell_info[skill].name, value);
+  mudlog(BRF, LVL_DEITY, TRUE, "%s changed %s's '%s' to %d.", GET_NAME(ch), GET_NAME(vict), spell_info[skill].name, value);
+  send_to_char(ch, "You change %s's '%s' to %d.\r\n", GET_NAME(vict), spell_info[skill].name, value);
+  send_to_char(vict, "%s teaches you about '%s'.\r\n", GET_NAME(ch), spell_info[skill].name);
 }
 
 
