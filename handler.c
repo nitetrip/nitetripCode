@@ -910,7 +910,7 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos)
     log("SYSERR: EQUIP: Obj is in_room when equip.");
     return;
   }
-    if (invalid_align(ch, obj)) {
+    if (invalid_align(ch, obj)) { // Higher imms don't get zapped.
     act("You are zapped by $p and instantly let go of it.", FALSE, ch, obj, 0, TO_CHAR);
     act("$n is zapped by $p and instantly lets go of it.", FALSE, ch, obj, 0, TO_ROOM);
       obj_to_char(obj, ch);
@@ -947,15 +947,15 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos)
     log("SYSERR: IN_ROOM(ch) = NOWHERE when equipping char %s.", GET_NAME(ch));
 
   /* add item resists etc to player when worn   Anubis */
-  for (i = 0; i < MAX_ATTACK_TYPES; i++) {   
+  for (i = 0; i < MAX_ATTACK_TYPES; i++) {
     if(obj->immune[i] == 1)
       ch->char_specials.immune[i]++;
   }
-  for (i = 0; i < MAX_ATTACK_TYPES; i++) {   
+  for (i = 0; i < MAX_ATTACK_TYPES; i++) {
     if(obj->resist[i] == 1)
       ch->char_specials.resist[i]++;
   }
-  for (i = 0; i < MAX_ATTACK_TYPES; i++) {   
+  for (i = 0; i < MAX_ATTACK_TYPES; i++) {
     if(obj->vulnerable[i] == 1)
       ch->char_specials.vulnerable[i]++;
   }
