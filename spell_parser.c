@@ -139,7 +139,7 @@ void say_spell(struct char_data *ch, int spellnum, struct char_data *tch,
   for (i = world[IN_ROOM(ch)].people; i; i = i->next_in_room) {
     if (i == ch || i == tch || !i->desc || !AWAKE(i))
       continue;
-    if (GET_CLASS(ch) == GET_CLASS(i))
+    if (GET_CLASS(ch) == GET_CLASS(i) || GET_LEVEL(i) >= LVL_IMMORT)
       perform_act(buf1, ch, tobj, tch, i);
     else
       perform_act(buf2, ch, tobj, tch, i);
@@ -147,7 +147,7 @@ void say_spell(struct char_data *ch, int spellnum, struct char_data *tch,
 
   if (tch != NULL && tch != ch && IN_ROOM(tch) == IN_ROOM(ch)) {
     snprintf(buf1, sizeof(buf1), "$n stares at you and utters the words, '%s'.",
-	    GET_CLASS(ch) == GET_CLASS(tch) ? skill_name(spellnum) : buf);
+	    (GET_CLASS(ch) == GET_CLASS(tch) || GET_LEVEL(tch) >= LVL_IMMORT) ? skill_name(spellnum) : buf);
     act(buf1, FALSE, ch, NULL, tch, TO_VICT);
   }
 }
@@ -167,7 +167,7 @@ const char *skill_name(int num)
     return ("UNDEFINED");
 }
 
-	 
+
 int find_skill_num(char *name)
 {
   int skindex, ok;
@@ -645,7 +645,7 @@ ACMD(do_cast)
     tobj->name = (t && *t ? strdup(t) : NULL);
     /* could get fancy here and support multiple arguments, but the code in
      * spells.c would have to be updated too.  Anyone want to write it? :-)
-     */                       
+     */
     target = TRUE;
   }
 
@@ -764,9 +764,11 @@ ACMD(do_cast)
   }
 
   /* You throws the dice and you takes your chances.. 101% is total failure */
-  if (rand_number(0, 101) > GET_SKILL(ch, spellnum)) {
+
+ 
+  if ( (rand_number(0, 101) > GET_SKILL(ch, spellnum)) && GET_LEVEL(ch) < LVL_IMMORT) { //IMM's never lose concentration
     WAIT_STATE(ch, PULSE_VIOLENCE);
-    if (!tch || !skill_message(0, ch, tch, spellnum))
+    if (!tch || !skill_message(0, ch, tch, spellnum) )
       send_to_char(ch, "You lost your concentration!\r\n");
     if (mana > 0)
       GET_MANA(ch) = MAX(0, MIN(GET_MAX_MANA(ch), GET_MANA(ch) - (mana / 2)));
@@ -778,7 +780,7 @@ ACMD(do_cast)
       if (mana > 0)
 	GET_MANA(ch) = MAX(0, MIN(GET_MAX_MANA(ch), GET_MANA(ch) - mana));
     }
-  }                            
+  }
 
   /* send a warning message when mana is getting low */
   if ( GET_MANA(ch) < (GET_MAX_MANA(ch) / 10) )

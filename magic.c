@@ -43,7 +43,6 @@ void perform_mag_groups(int level, struct char_data *ch, struct char_data *tch, 
 int mag_savingthrow(struct char_data *ch, struct char_data *victim, int type, int modifier);
 void affect_update(void);
 int check_mag_resists(struct char_data *ch, struct char_data *victim, int damage, int type);
-void mag_manual(int level, struct char_data *caster, struct char_data *cvict, int param1, struct obj_data *ovict, int spellnum);
 void mag_affects(int level, struct char_data *ch, struct char_data *victim, int param1, int spellnum, int savetype);
 
 /*
@@ -361,14 +360,6 @@ int save_dam_reduction_factor = 2;
         dam = dice(20, 10) + 30;	
     dam = check_mag_resists(ch, victim, dam, ATTACK_MAGIC);
     break;
- /* OLD SPELL _ THIS ENTRY IS NOT AN AREA SPELL
-     case SPELL_FIREBALL:
-    if (IS_MAGIC_USER(ch))
-      dam = dice(11, 8) + 11;
-    else
-      dam = dice(11, 6) + 11;
-    dam = check_mag_resists(ch, victim, dam, ATTACK_FIRE);
-    break;*/
     case SPELL_FIREBOLT:
     dam = MIN(100,MAX(52, 52+(GET_LEVEL(ch)-18)*12));
     dam = rand_number(dam, 2*dam);
@@ -424,7 +415,7 @@ int save_dam_reduction_factor = 2;
     dam = MIN(165, MAX(90, 90+25*(GET_LEVEL(ch)-33)));
     dam = rand_number(2*dam, 3*dam);
     break;  
-  case SPELL_ROAR : 
+  case SPELL_ROAR: 
     dam = dice(300, 2) + level;
     dam = check_mag_resists(ch, victim, dam, ATTACK_MAGIC);
     break;
@@ -458,11 +449,6 @@ int save_dam_reduction_factor = 2;
       return (0);
     }
     break;
-/* OLD SPELL I put this under the area spells below
-  case SPELL_SONIC_BLAST:
-    dam = dice(20, 5) + level;
-    dam = check_mag_resists(ch, victim, dam, ATTACK_MAGIC);
-    break; */
   case SPELL_SUNRAY:    /* sunray also has an affect */
     //if (IS_UNDEAD(victim))(no IS_FUNGUS yes) || IS_FUNGUS(victim)) 
     //  {
@@ -512,7 +498,7 @@ int save_dam_reduction_factor = 2;
     act("You are hit by $N's elemental burst.", FALSE, victim, 0, ch, TO_CHAR);
     break;
 
- case SPELL_FIREBALL: 
+ case SPELL_FIREBALL:
     dam = MIN(79,(MAX(GET_LEVEL(ch)-27, 0)*8+47));
     dam = rand_number(dam, 2*dam);
     break;
@@ -526,7 +512,7 @@ int save_dam_reduction_factor = 2;
     if (dam) {
       dam = rand_number(2*dam, 3*dam);
     }
-    break;    
+    break;
   case SPELL_HORNET_SWARM:
     dam = dice(30, 5) + level;
     dam = check_mag_resists(ch, victim, dam, ATTACK_PIERCE);
@@ -607,22 +593,10 @@ int save_dam_reduction_factor = 2;
       act("You need more draining lessons.", FALSE, ch, 0, victim, TO_CHAR);
       act("$N fails to drain $s - what a waste of energy.", FALSE, ch, 0, victim, TO_NOTVICT);
     }
-
-
-
-
-/*    
-      to_room = "$N drains $n - what a waste of energy!";
-      to_vict = "$N drains some of your energy!";
-      to_char = "You drain $N of some of $S energy.\r\nYou feel better as life force flows into you.";
-    }
-    else {
-      to_vict = "$N reaches out to touch you but misses!";
-      to_char = "You need more draining lessons.";
-      to_room = "$N fails to drain $s - what a waste of energy.";
-    }*/
-    break; 
-
+    break;
+    default:
+    log("SYSERR: unknown spellnum %d passed to mag_damage in magic.c.", spellnum);
+    break;
 
 
   } /* switch(spellnum) */
@@ -1643,7 +1617,6 @@ case SPELL_SHIELD_AGAINST_EVIL:
     af[0].duration = GET_LEVEL(ch);
     af[0].bitvector = AFF_SLEEPWALK;
     accum_duration = TRUE;
-    // to_vict = "You feel like you can walk in your sleep.";
     to_vict = "You feel your body lift off the ground.";
     to_room = "$n slowly stands up as if in a dazed state of mind.";    
     break;
@@ -1771,6 +1744,7 @@ case SPELL_SHIELD_AGAINST_EVIL:
     break;
 
     default:
+     log("SYSERR: unknown spellnum %d passed to mag_affects magic.c.", spellnum);
     break;
 
   }
@@ -1848,7 +1822,8 @@ void perform_mag_groups(int level, struct char_data *ch,
     send_to_char(ch, "You conjure up a great feast for your group members to gorge themselves on.\r\n");
     to_room = "$n conjures up a great feast for $s group members to gorge themselves on.";
     act(to_room, TRUE, ch, 0, ch, TO_ROOM);
-    mag_manual(level, ch, tch, param1, NULL, SPELL_VITALITY);
+    //mag_manual(level, ch, tch, param1, NULL, SPELL_VITALITY);
+    spell_vitality(level, ch, tch, param1, NULL, SPELL_HEROES_FEAST);
     break;
   case SPELL_SUSTAIN_GROUP:
     mag_affects(level, ch, tch, param1, SPELL_SUSTAIN, savetype);
@@ -1890,7 +1865,7 @@ void perform_mag_groups(int level, struct char_data *ch,
     spell_portal(level, tch, ch, NULL, param1, spellnum);
     break;
   default:
-    send_to_char(ch, "Need to add case to perform_mag_groups (magic.c).\r\n");
+     log("SYSERR: unknown spellnum %d passed to mag_groups (magic.c).", spellnum);
     break; 
 
   }
@@ -2086,7 +2061,9 @@ void mag_areas(int level, struct char_data *ch, int spellnum, int savetype)
   case SPELL_WAIL_OF_THE_BANSHEE:
     to_char = "You belt out an ear-piercing shriek that chills your enemies to the bone.";
     to_room = "$n belts out a chilling ear-piercing shriek!";
-    break;  
+    break;
+  default:
+     log("SYSERR: unknown spellnum %d passed to mag_areas in magic.c.", spellnum);
         }
 
   if (to_char != NULL)
@@ -2127,16 +2104,17 @@ void mag_areas(int level, struct char_data *ch, int spellnum, int savetype)
         break;
       case SPELL_SEARING_ORB:
         mag_affects(level, ch, tch, 0, SPELL_BLINDNESS, savetype);
-         mag_manual(level, ch, tch, NOWHERE, NULL, SPELL_STUN);
-        break;
+        // mag_manual(level, ch, tch, NOWHERE, NULL, SPELL_STUN);
+        spell_stun(level, ch, tch, NOWHERE, NULL, SPELL_SEARING_ORB);
+       break;
       case SPELL_CHAIN_LIGHTNING:
       case SPELL_SUNBURST:
         mag_affects(level, ch, tch, 0, SPELL_BLINDNESS, savetype);
-        break;
+      break;
       case SPELL_WAIL_OF_THE_BANSHEE:
-      mag_manual(level, ch, tch, NOWHERE, NULL, SPELL_SPOOK);
-
-        break;
+      //mag_manual(level, ch, tch, NOWHERE, NULL, SPELL_SPOOK);
+      spell_spook(level, ch, tch, NOWHERE, NULL, SPELL_WAIL_OF_THE_BANSHEE);
+       break;
     }
 
 
@@ -2237,6 +2215,7 @@ void mag_summons(int level, struct char_data *ch, struct obj_data *obj,
     break;
 
   default:
+     log("SYSERR: unknown spellnum %d passed to mag_summons in magic.c.", spellnum);
     return;
   }
 
@@ -2439,12 +2418,8 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
     move = -(GET_MOVE(victim));
     send_to_char(victim, "Your mind feels refreshed, though you collapse from the effort.\r\n");
     break;
-
-
-
-
      default:
-    log("SYSERR: unknown spellnum %d passed to mag_points.", spellnum);
+    log("SYSERR: unknown spellnum %d passed to mag_points in magic.c.", spellnum);
     return;
   }
 
@@ -2452,7 +2427,7 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
   GET_MOVE(victim) = MIN(GET_MAX_MOVE(victim), GET_MOVE(victim) + move);
   GET_MANA(victim) = MIN(GET_MAX_MANA(victim), GET_MANA(victim) + manaadd);
   update_pos(victim);
-  
+
   if (to_vict != NULL)
     act(to_vict, FALSE, victim, 0, ch, TO_CHAR);
   if (to_room != NULL)
@@ -2503,12 +2478,8 @@ void mag_unaffects(int level, struct char_data *ch, struct char_data *victim,
     to_vict = "Your voice returns to you.";
     to_room = "Sound once again emits from $n.";
     break;
-
-
-
-
   default:
-    log("SYSERR: unknown spellnum %d passed to mag_unaffects.", spellnum);
+    log("SYSERR: unknown spellnum %d passed to mag_unaffects in magic.c.", spellnum);
     return;
   }
 
@@ -2587,6 +2558,8 @@ void mag_alter_objs(int level, struct char_data *ch, struct obj_data *obj,
         to_char = "$p steams briefly.";
       }
       break;
+    default:
+      log("SYSERR: unknown spellnum %d passed to mag_alter_objs in magic.c.", spellnum);
   }
 
   if (to_char == NULL)
@@ -2643,83 +2616,3 @@ int check_mag_resists(struct char_data *ch, struct char_data *victim, int damage
   damage = 0;  
  return(damage); 
 }
-
-// taken from cwe -  unsure if needed - seems to be done in spell_parser.c
-
-void mag_manual(int level, struct char_data *caster, struct char_data *cvict, int param1, struct obj_data *ovict, int spellnum) {
-  switch (spellnum) {
-    case SPELL_ANIMAL_FRIENDSHIP:
-      if (/* IS_TYPE_ANIMAL(cvict) && */ !IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
-      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
-    break;
-    case SPELL_CHARM_BEAST:
-      if (/*IS_TYPE_BEAST(cvict) && */ !IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
-      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
-    break;
-    case SPELL_CHARM_MONSTER:
-      if (/*IS_TYPE_MONSTER(cvict) &&*/ !IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
-
-      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
-    break;
-    case SPELL_CHARM_PERSON:
-      if (/*IS_TYPE_PERSON(cvict) && */!IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
-      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
-    break;
-    case SPELL_CONTROL_PLANT:
-      if (/*IS_TYPE_PLANT(cvict) && */!IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
-      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
-    break;
-    case SPELL_CONTROL_UNDEAD:
-      if (/*IS_UNDEAD(cvict) && */!IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
-      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
-    break;
-    case SPELL_VAMPIRIC_GAZE:
-      if (/*IS_TYPE_NECRO_VULN(cvict) && */!IS_NECROMANCER(cvict)) { MANUAL_SPELL(spell_charm); }
-      else { send_to_char(caster, "%s", NOEFFECT_RACE); }
-    break;
-    case SPELL_BLOOD_QUENCH:          MANUAL_SPELL(spell_blood_quench); break;
-    case SPELL_BEFRIEND_DRYAD:
-    case SPELL_BIND_PORTAL_MAJOR:
-    case SPELL_BIND_PORTAL_MINOR:
-    case SPELL_LOCATE_SHADOW_PLANE:   MANUAL_SPELL(spell_bind_portal); break;
-    case SPELL_CALM:                  MANUAL_SPELL(spell_calm); break;
-    case SPELL_CANNIBALIZE:           MANUAL_SPELL(spell_cannibalize); break;
-    case SPELL_CHARM:                 MANUAL_SPELL(spell_charm); break;
-    case SPELL_CONTROL_WEATHER:       MANUAL_SPELL(spell_control_weather); break;
-    case SPELL_CREATE_WATER:          MANUAL_SPELL(spell_create_water); break;
-    case SPELL_DETECT_POISON:         MANUAL_SPELL(spell_detect_poison); break;
-    case SPELL_DIMENSION_SHIFT:
-    case SPELL_DIMENSION_WALK:
-    case SPELL_SHADOW_WALK:
-    case SPELL_PASS_WITHOUT_TRACE:     MANUAL_SPELL(spell_portal); break;
-    case SPELL_DIMENSION_DOOR:  
-    case SPELL_PLANAR_TRAVEL:
-    case SPELL_SHADOW_DOOR:
-    case SPELL_TRAIL_OF_WOODLANDS:    MANUAL_SPELL(spell_portal); break;
-    case SPELL_ENCHANT_WEAPON:        MANUAL_SPELL(spell_enchant_weapon); break;
-    case SPELL_FEIGN_DEATH:           MANUAL_SPELL(spell_feign_death); break;
-    case SPELL_FUMBLE:                MANUAL_SPELL(spell_fumble); break;
-    case SPELL_IDENTIFY:
-    case SPELL_LEGEND_LORE:           MANUAL_SPELL(spell_identify); break;
-    case SPELL_KNOCK:                 MANUAL_SPELL(spell_knock); break;
-    case SPELL_LOCATE_OBJECT:         MANUAL_SPELL(spell_locate_object); break;
-    case SPELL_PHASE_DOOR:            MANUAL_SPELL(spell_phase_door); break;
-    case SPELL_PORTAL:                MANUAL_SPELL(spell_portal); break;
-    case SPELL_RECHARGE:              MANUAL_SPELL(spell_recharge); break;
-    case SPELL_REST_IN_PEACE:         MANUAL_SPELL(spell_rest_in_peace); break;
-    case SPELL_SCRY_LESSER:
-    case SPELL_SCRY_GREATER:          MANUAL_SPELL(spell_scry); break;
-    case SPELL_SPOOK:                 MANUAL_SPELL(spell_spook); break;
-    case SPELL_STUN:                  MANUAL_SPELL(spell_stun); break;
-    case SPELL_SUCCOR:                MANUAL_SPELL(spell_succor); break;
-    case SPELL_SUMMON_LESSER:
-    case SPELL_SUMMON_GREATER:        MANUAL_SPELL(spell_summon); break;
-    case SPELL_TELEPORT_MAJOR:
-    case SPELL_TELEPORT_MINOR:        MANUAL_SPELL(spell_teleport); break;
-    case SPELL_TELEVIEW_MAJOR:
-    case SPELL_TELEVIEW_MINOR:        MANUAL_SPELL(spell_teleview); break;
-    case SPELL_VITALITY:              MANUAL_SPELL(spell_vitality); break;
-    case SPELL_WORD_OF_RECALL:        MANUAL_SPELL(spell_recall); break;
-  }
-}
-

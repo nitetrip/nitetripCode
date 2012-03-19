@@ -27,6 +27,7 @@ char buf[MAX_INPUT_LENGTH];
 extern struct time_info_data time_info;
 extern struct spell_info_type spell_info[];
 extern struct guild_info_type guild_info[];
+extern const char *unused_spellname;   /* spell_parser.c */
 
 /* extern functions */
 ACMD(do_drop);
@@ -216,7 +217,7 @@ extern int prac_params[4][NUM_CLASSES];
 
 void list_skills(struct char_data *ch)
 {
-  const char *overflow = "\r\n**OVERFLOW**\r\n";
+  const char *overflow = "\r\n**OVERFLOW**\r\n", *spell_prof;
   int i, sortpos, nlen;
   size_t len = 0;
   char buf2[MAX_STRING_LENGTH];
@@ -232,8 +233,12 @@ void list_skills(struct char_data *ch)
   
   for (sortpos = 1; sortpos <= MAX_SKILLS; sortpos++) {
     i = spell_sort_info[sortpos];
+    spell_prof = " (superb)";
+    if (GET_LEVEL(ch) < LVL_IMMORT) // this shows IMMs prof as superb, instead of "not learned"
+      spell_prof = how_good(GET_SKILL(ch, i));
+    if (spell_info[i].name != unused_spellname) // This stops UNUSED SPELL from showing in prof - cheap,easy hack
     if ((GET_LEVEL(ch) >= spell_info[i].min_level[(int) GET_CLASS(ch)]) || ( GET_LEVEL(ch) < LVL_SAINT && GET_SKILL(ch, i) > 0)) {
-      nlen = snprintf(buf2 + len, sizeof(buf2) - len, "%-20s %s\r\n", spell_info[i].name, how_good(GET_SKILL(ch, i)));
+      nlen = snprintf(buf2 + len, sizeof(buf2) - len, "%-20s %s\r\n", spell_info[i].name, spell_prof);
       if (len + nlen >= sizeof(buf2) || nlen < 0)
         break;
       len += nlen;
