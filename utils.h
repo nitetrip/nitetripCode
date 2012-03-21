@@ -458,8 +458,8 @@ void	update_pos(struct char_data *victim);
 #define IS_NEUTRAL(ch) (!IS_GOOD(ch) && !IS_EVIL(ch))
 #define IS_INVIS(ch)                     (AFF_FLAGGED(ch, AFF_IMPROVED_INVIS) || AFF_FLAGGED(ch, AFF_INVISIBLE))
 #define SENDOK(ch)    (((ch)->desc || SCRIPT_CHECK((ch), MTRIG_ACT)) && \
-                      (to_sleeping || AWAKE(ch)) && \
-                      !PLR_FLAGGED((ch), PLR_WRITING))
+                      (to_sleeping || AWAKE(ch) || CAN_SEE_ASLEEP(ch)) && \
+                      !PLR_FLAGGED((ch), PLR_WRITING) || (GET_POS(ch) == POS_SLEEPING && CAN_SEE_ASLEEP(ch)))
 #define IS_MOBILE(ch) (GET_POS(ch)>POS_SLEEPING)
 
 #define CONFIG_SORCERERS_GUILD 10131 //for succor

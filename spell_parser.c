@@ -1698,10 +1698,10 @@ spello(SPELL_TELEPORT_MAJOR, "teleport major", 70, 40, 3, POS_STANDING, TAR_CHAR
   skillo(SKILL_WHIRLWIND, "whirlwind");
 
 //Languages
-  skillo(SKILL_LANG_COMMON, "common");
-  skillo(SKILL_LANG_ELVEN, "elven");
-  skillo(SKILL_LANG_GNOME, "gnomish");
-  skillo(SKILL_LANG_DWARVEN, "dwarven");
+  skillo(SKILL_LANG_COMMON, "speak common");
+  skillo(SKILL_LANG_ELVEN, "speak elven");
+  skillo(SKILL_LANG_GNOME, "speak gnomish");
+  skillo(SKILL_LANG_DWARVEN, "speak dwarven");
 
 
 //Attack Types

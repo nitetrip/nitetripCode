@@ -1606,12 +1606,15 @@ case SPELL_SHIELD_AGAINST_EVIL:
 
     af[0].duration = 4 + (GET_LEVEL(ch) / 4);
     af[0].bitvector = AFF_SLEEP;
+    accum_duration = TRUE;
 
     if (GET_POS(victim) > POS_SLEEPING) {
       send_to_char(victim, "You feel very sleepy...  Zzzz......\r\n");
       act("$n goes to sleep.", TRUE, victim, 0, 0, TO_ROOM);
       GET_POS(victim) = POS_SLEEPING;
-    }
+    } else {
+      send_to_char(ch, "Zzzzz...\r\n");
+      act("$n snores loudly... Zzzz...", TRUE, victim, 0, 0, TO_ROOM); }
     break;
   case SPELL_SLEEPWALK:
     af[0].duration = GET_LEVEL(ch);
@@ -1823,7 +1826,7 @@ void perform_mag_groups(int level, struct char_data *ch,
     to_room = "$n conjures up a great feast for $s group members to gorge themselves on.";
     act(to_room, TRUE, ch, 0, ch, TO_ROOM);
     //mag_manual(level, ch, tch, param1, NULL, SPELL_VITALITY);
-    spell_vitality(level, ch, tch, param1, NULL, SPELL_HEROES_FEAST);
+    spell_vitality(level, ch, tch, NULL, param1, SPELL_HEROES_FEAST);
     break;
   case SPELL_SUSTAIN_GROUP:
     mag_affects(level, ch, tch, param1, SPELL_SUSTAIN, savetype);
@@ -2105,7 +2108,7 @@ void mag_areas(int level, struct char_data *ch, int spellnum, int savetype)
       case SPELL_SEARING_ORB:
         mag_affects(level, ch, tch, 0, SPELL_BLINDNESS, savetype);
         // mag_manual(level, ch, tch, NOWHERE, NULL, SPELL_STUN);
-        spell_stun(level, ch, tch, NOWHERE, NULL, SPELL_SEARING_ORB);
+        spell_stun(level, ch, tch, NULL, NOWHERE, SPELL_SEARING_ORB);
        break;
       case SPELL_CHAIN_LIGHTNING:
       case SPELL_SUNBURST:
@@ -2113,7 +2116,7 @@ void mag_areas(int level, struct char_data *ch, int spellnum, int savetype)
       break;
       case SPELL_WAIL_OF_THE_BANSHEE:
       //mag_manual(level, ch, tch, NOWHERE, NULL, SPELL_SPOOK);
-      spell_spook(level, ch, tch, NOWHERE, NULL, SPELL_WAIL_OF_THE_BANSHEE);
+      spell_spook(level, ch, tch, NULL, NOWHERE, SPELL_WAIL_OF_THE_BANSHEE);
        break;
     }
 
@@ -2472,6 +2475,15 @@ void mag_unaffects(int level, struct char_data *ch, struct char_data *victim,
       to_vict = "You can move again!";
       to_room = "$n can move again.";
     }
+    if (affected_by_spell(victim, SPELL_SLEEP)) {
+      spell = SPELL_SLEEP;
+      msg_not_affected = TRUE;
+      new_position = POS_RESTING;
+      to_vict = "You are awoken by $N";
+      to_room = "$n wakes up";
+    }
+    break;
+
   case SPELL_DISPEL_SILENCE:
     spell = SPELL_SILENCE;
     msg_not_affected = TRUE;
@@ -2485,13 +2497,15 @@ void mag_unaffects(int level, struct char_data *ch, struct char_data *victim,
 
   if (!affected_by_spell(victim, spell)) {
     if (msg_not_affected)
-      send_to_char(ch, "%s", NOEFFECT);
+      send_to_char(ch, "%s - unaffected", NOEFFECT);
     return;
   }
 
   affect_from_char(victim, spell);
-  if (to_vict != NULL)
+  if (to_vict != NULL) {
+    GET_POS(victim) = new_position;
     act(to_vict, FALSE, victim, 0, ch, TO_CHAR);
+    }
   if (to_room != NULL)
     act(to_room, TRUE, victim, 0, ch, TO_ROOM);
 
@@ -2531,9 +2545,8 @@ void mag_alter_objs(int level, struct char_data *ch, struct obj_data *obj,
     case SPELL_INVISIBLE:
       if (!OBJ_FLAGGED(obj, ITEM_NOINVIS | ITEM_INVISIBLE)) {
         SET_BIT(GET_OBJ_EXTRA(obj), ITEM_INVISIBLE);
-        to_char = "$p vanishes.";
-      }
-      break;
+        to_char = "$p vanishes."; }
+     break;
     case SPELL_POISON:
       if (((GET_OBJ_TYPE(obj) == ITEM_DRINKCON) ||
          (GET_OBJ_TYPE(obj) == ITEM_FOUNTAIN) ||

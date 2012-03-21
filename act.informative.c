@@ -782,9 +782,10 @@ ACMD(do_look)
 
   if (!ch->desc)
     return;
-
   if (GET_POS(ch) < POS_SLEEPING)
     send_to_char(ch, "You can't see anything but stars!\r\n");
+  else  if (GET_POS(ch) == POS_SLEEPING && !CAN_SEE_ASLEEP(ch))
+    send_to_char(ch, "In your dreams, or what?\r\n");
   else if (AFF_FLAGGED(ch, AFF_BLIND))
     send_to_char(ch, "You can't see a damned thing, you're blind!\r\n");
   else if (IS_DARK(IN_ROOM(ch)) && !CAN_SEE_IN_DARK(ch)) {

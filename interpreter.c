@@ -477,7 +477,7 @@ cpp_extern const struct command_info cmd_info[] = {
   { "kill"     , POS_FIGHTING, do_kill     , 0, 0 },
   { "kick"     , POS_FIGHTING, do_kick     , 1, 0 },
   { "kiss"     , POS_RESTING , do_action   , 0, 0 },
-  { "look"     , POS_RESTING , do_look     , 0, SCMD_LOOK },
+  { "look"     , POS_SLEEPING , do_look     , 0, SCMD_LOOK },
   { "laugh"    , POS_RESTING , do_action   , 0, 0 },
   { "last"     , POS_DEAD    , do_last     , LVL_DEITY, 0 },
   { "leave"    , POS_STANDING, do_leave    , 0, 0 },
@@ -557,7 +557,7 @@ cpp_extern const struct command_info cmd_info[] = {
   { "qsay"     , POS_RESTING , do_qcomm    , 0, SCMD_QSAY },
   { "reply"    , POS_SLEEPING, do_reply    , 0, 0 },
   { "rest"     , POS_RESTING , do_rest     , 0, 0 },
-  { "read"     , POS_RESTING , do_look     , 0, SCMD_READ },
+  { "read"     , POS_SLEEPING , do_look     , 0, SCMD_READ },
   { "reload"   , POS_DEAD    , do_reboot   , LVL_DEITY, 0 },
   { "recite"   , POS_RESTING , do_use      , 0, SCMD_RECITE },
 /*{ "receive"  , POS_STANDING, do_not_here , 1, 0 }, Removed Mail System */

@@ -62,7 +62,7 @@ int has_boat(struct char_data *ch)
     return (1);
 */
 
-  if (GET_LEVEL(ch) > 40)
+  if (GET_LEVEL(ch) >= LVL_IMMORT)
     return (1);
 
   if (AFF_FLAGGED(ch, AFF_WATERWALK) || AFF_FLAGGED(ch, AFF_AIRWALK))
@@ -315,7 +315,7 @@ int perform_move(struct char_data *ch, int dir, int need_specials_check)
     for (k = ch->followers; k; k = next) {
       next = k->next;
       if ((IN_ROOM(k->follower) == was_in) &&
-	  (GET_POS(k->follower) >= POS_STANDING)) {
+	  (GET_POS(k->follower) >= POS_STANDING || IS_SLEEPWALKING(k->follower))) {
 	act("You follow $N.\r\n", FALSE, k->follower, 0, ch, TO_CHAR);
 	perform_move(k->follower, dir, 1);
       }

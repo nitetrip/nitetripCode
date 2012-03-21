@@ -1015,15 +1015,22 @@ ASPELL(spell_stun)
 
 ASPELL(spell_succor)
 {
-  if (victim == NULL || IS_NPC(victim))
+  if ((GET_LEVEL(victim) >= LVL_IMMORT) && (GET_LEVEL(ch) <= GET_LEVEL(victim)) ){
+     send_to_char(ch, "%sFoolish mortal, you shouldn't mess with the Gods!%s\r\n", CCWHT(ch, C_CMP), CCNRM(ch, CMP));
+     victim = ch;}
+  if (victim == NULL || IS_NPC(victim)){
      send_to_char(ch, "You can only succor other players!\r\n");
-    return;
-  if (IS_FIGHTING(victim))
+    return;}
+
+  if (IS_FIGHTING(victim)){
     send_to_char(ch, "You cannot succor %s while %s is engaged in combat!\r\n", GET_NAME(victim), HSSH(victim));
-  act("$n vanishes in a puff of smoke.", FALSE, victim, 0, 0, TO_ROOM);
-  char_from_room(victim);
-  char_to_room(victim, real_room(CONFIG_SORCERERS_GUILD));
-  act("$n appears in a puff of smoke.", TRUE, victim, 0, 0, TO_ROOM);
+    return;}
+
+   act("$n vanishes in a puff of smoke.", FALSE, victim, 0, 0, TO_ROOM);
+   char_from_room(victim);
+   char_to_room(victim, real_room(CONFIG_SORCERERS_GUILD));
+   act("$n appears in a puff of smoke.", TRUE, victim, 0, 0, TO_ROOM);
+
   look_at_room(IN_ROOM(victim), victim, 0);
   entry_memory_mtrigger(victim);
   greet_mtrigger(victim, -1);

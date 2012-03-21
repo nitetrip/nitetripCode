@@ -92,7 +92,7 @@ ACMD(do_say)
 
   for (i = world[IN_ROOM(ch)].people; i; i = i->next_in_room)
   {
-    if (!PLR_FLAGGED(i, PLR_WRITING) && AWAKE(i)) {
+    if (!PLR_FLAGGED(i, PLR_WRITING) && (AWAKE(i) || CAN_SEE_ASLEEP(i))) {
 	  if (IN_ROOM(i) == IN_ROOM(ch))
 		  {
 	  if (CAN_SEE(i, ch) && (ch != i))
@@ -615,7 +615,7 @@ ACMD(do_gen_comm)
 	!PRF_FLAGGED(i->character, channels[subcmd]) &&
 	!ROOM_FLAGGED(IN_ROOM(i->character), ROOM_SOUNDPROOF)) {
 
-      if (subcmd == SCMD_YELL && (GET_LEVEL(i->character) < 43 && ((world[IN_ROOM(ch)].zone != world[IN_ROOM(i->character)].zone) || !AWAKE(i->character))))
+      if (subcmd == SCMD_YELL && (GET_LEVEL(i->character) < 43 && ((world[IN_ROOM(ch)].zone != world[IN_ROOM(i->character)].zone) || (!AWAKE(i->character) && !CAN_SEE_ASLEEP(i->character)))))
       	continue;
 	  if (CAN_SEE(i->character, ch))
 		{
