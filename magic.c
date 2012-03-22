@@ -619,7 +619,7 @@ int save_dam_reduction_factor = 2;
  * affect_join(vict, aff, add_dur, avg_dur, add_mod, avg_mod)
  */
 
-#define MAX_SPELL_AFFECTS 10	/* change if more needed */
+#define MAX_SPELL_AFFECTS 63	/* change if more needed */
 
 void mag_affects(int level, struct char_data *ch, struct char_data *victim,
 		      int param1, int spellnum, int savetype)
@@ -1400,13 +1400,6 @@ case SPELL_DECREPIFY:
     to_room = "$n gets violently ill!";
     break;
 
-  case SPELL_PROT_FROM_EVIL:
-    af[0].duration = 24;
-    af[0].bitvector = AFF_PROTECT_EVIL;
-    accum_duration = TRUE;
-    to_vict = "You feel invulnerable!";
-    break;
-
   case SPELL_REFLECT_DAMAGE:
     af[0].duration = MAX(0,(GET_LEVEL(ch)-1)/10)+2;
     af[0].bitvector = AFF_REFLECT_DAMAGE;
@@ -1569,6 +1562,8 @@ case SPELL_SHIELD_AGAINST_EVIL:
     af[1].location = APPLY_PIER_RESIST;
     af[1].duration = duration;
     af[1].modifier = 50;
+    //GET_RESIST(victim, ATTACK_SLASH) += 50;
+    //GET_RESIST(victim, ATTACK_PIERCE) += 50;
     af[2].location = APPLY_CHA;
     af[2].duration = duration;
     af[2].modifier = -3;
@@ -1776,6 +1771,7 @@ case SPELL_SHIELD_AGAINST_EVIL:
   }
 
   for (i = 0; i < MAX_SPELL_AFFECTS; i++)
+
     if (af[i].bitvector || (af[i].location != APPLY_NONE))
       affect_join(victim, af+i, accum_duration, FALSE, accum_affect, FALSE);
   }

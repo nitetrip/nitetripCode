@@ -283,7 +283,6 @@ void affect_modify(struct char_data *ch, byte loc, sbyte mod,
    if (GET_SIZE(ch) >= SIZE_BEHEMOTH)
      GET_SIZE(ch) = SIZE_GIANT;
      break;
-// Mass imported from CWE March  9, 2012 V
  case APPLY_AGGR_GENERAL:
     GET_AGGRESSION(ch, AGGR_TYPE_GENERAL) += mod;
     break;
@@ -305,54 +304,53 @@ void affect_modify(struct char_data *ch, byte loc, sbyte mod,
     GET_AGGRESSION(ch, AGGR_TYPE_MEMORY) += mod;
     break;
   case APPLY_FIRE_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_FIRE) += mod;
+    GET_RESIST(ch, ATTACK_FIRE) += mod;
     break;
  case APPLY_ELEC_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_ELEC) += mod;
+    GET_RESIST(ch, ATTACK_ELECTRIC) += mod;
     break;
   case APPLY_COLD_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_COLD) += mod;
+    GET_RESIST(ch, ATTACK_COLD) += mod;
     break;
   case APPLY_POIS_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_POIS) += mod;
+    GET_RESIST(ch, ATTACK_POISON) += mod;
     break;
   case APPLY_SONC_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_SONC) += mod;
+    GET_RESIST(ch, ATTACK_SONIC) += mod;
     break;
   case APPLY_ACID_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_ACID) += mod;
+    GET_RESIST(ch, ATTACK_ACID) += mod;
     break;
   case APPLY_GAS_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_GAS) += mod;
+    GET_RESIST(ch, ATTACK_GAS) += mod;
     break;
  case APPLY_LGHT_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_LGHT) += mod;
+    GET_RESIST(ch, ATTACK_LIGHT) += mod;
     break;
   case APPLY_DIVN_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_DIVN) += mod;
+    GET_RESIST(ch, ATTACK_DIVINE) += mod;
     break;
   case APPLY_SUMN_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_SUMN) += mod;
+    GET_RESIST(ch, ATTACK_SUMMON) += mod;
     break;
   case APPLY_LIFE_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_LIFE) += mod;
+    GET_RESIST(ch, ATTACK_LIFE) += mod;
     break;
   case APPLY_FEAR_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_FEAR) += mod;
+    GET_RESIST(ch, ATTACK_FEAR) += mod;
     break;
   case APPLY_MISC_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_MISC) += mod;
+    GET_RESIST(ch, ATTACK_MISC) += mod;
     break;
   case APPLY_SLSH_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_SLSH) += mod;
+    GET_RESIST(ch, ATTACK_SLASH) += mod;
     break;
   case APPLY_PIER_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_PIER) += mod;
+    GET_RESIST(ch, ATTACK_PIERCE) += mod;
     break;
   case APPLY_BLDG_RESIST:
-    GET_RESIST(ch, RESIST_TYPE_BLDG) += mod;
+    GET_RESIST(ch, ATTACK_BLUDGEON) += mod;
     break;
-// ^^ imported from CWE
   default:
     log("SYSERR: Unknown apply adjust %d attempt (%s, affect_modify).", loc, __FILE__);
     break;

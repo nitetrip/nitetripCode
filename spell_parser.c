@@ -595,8 +595,12 @@ ACMD(do_cast)
   char *s, *t;
   int mana, spellnum, i, param1=NOTHING, target = 0;
 
-  if (IS_NPC(ch))
+  if (IS_NPC(ch)) // FIXME NPCs will need to be able to cast spells!
     return;
+  if (AFF_FLAGGED(ch, AFF_SILENCE)){
+     send_to_char(ch, "Your vocal chords are too tight to move!!\r\n");
+     return;
+     }
 
   /* get: blank, spell name, target name */
   s = strtok(argument, "'");
@@ -1412,9 +1416,6 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
 
   spello(SPELL_PRISMATIC_SPRAY, "prismatic spray", 120, 80, 8, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
 
-  spello(SPELL_PROT_FROM_EVIL, "protection from evil", 40, 10, 3, POS_STANDING, // one of these has to go
-	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
-	"You feel less protected.");
 spello(SPELL_PROTECTION_FROM_EVIL, "protection from evil", 60, 20, 4, POS_STANDING, // one of these has to go
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel less protected.");
    spello(SPELL_PROTECTION_FROM_GOOD, "protection from good", 60, 20, 4, POS_STANDING,

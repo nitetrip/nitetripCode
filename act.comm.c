@@ -85,6 +85,10 @@ ACMD(do_say)
   struct char_data *i;
   struct descriptor_data *j;
   skip_spaces(&argument);
+  if (AFF_FLAGGED(ch, AFF_SILENCE)){
+     send_to_char(ch, "Your vocal chords are too tight to move!!\r\n");
+     return;
+     }
 
   if (!*argument)
     send_to_char(ch, "Yes, but WHAT do you want to say?\r\n");
@@ -247,9 +251,11 @@ ACMD(do_tell)
 {
   struct char_data *vict = NULL;
   char buf[MAX_INPUT_LENGTH], buf2[MAX_INPUT_LENGTH];
-
   half_chop(argument, buf, buf2);
-
+  if (AFF_FLAGGED(ch, AFF_SILENCE)){
+    send_to_char(ch, "Your vocal chords are too tight to move!!\r\n");
+    return;
+    }
   if (!*buf || !*buf2)
     send_to_char(ch, "Who do you wish to tell what??\r\n");
   else if (GET_LEVEL(ch) < LVL_SAINT && !(vict = get_player_vis(ch, buf, NULL, FIND_CHAR_WORLD)))
@@ -267,7 +273,10 @@ ACMD(do_reply)
 
   if (IS_NPC(ch))
     return;
-
+  if (AFF_FLAGGED(ch, AFF_SILENCE)) {
+    send_to_char(ch, "Your vocal chords are too tight to move!!\r\n");
+    return;
+    }
   skip_spaces(&argument);
 
   if (GET_LAST_TELL(ch) == NOBODY)
@@ -281,7 +290,6 @@ ACMD(do_reply)
      * a pointer, which is much better because it's safer, plus will still
      * work if someone logs out and back in again.
      *
-				     
     *
      * XXX: A descriptor list based search would be faster although
      *      we could not find link dead people.  Not that they can

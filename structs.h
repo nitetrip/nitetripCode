@@ -167,8 +167,22 @@ struct char_data *guildmaster1;
 #define ATTACK_SONIC   		11
 #define ATTACK_ACID		12
 #define ATTACK_GAS   		13
-
-#define MAX_ATTACK_TYPES  	13
+#define ATTACK_DIVINE		14
+#define ATTACK_SUMMON		15
+#define ATTACK_LIFE		16
+#define ATTACK_FEAR		17
+#define ATTACK_MISC		18
+#define ATTACK_MENTAL		19
+#define ATTACK_BOW		20
+#define ATTACK_ASTRAL		21
+#define ATTACK_ETHEREAL		22
+#define ATTACK_DISEASE		23
+#define ATTACK_BOTANICAL	24
+#define ATTACK_CHI		25
+#define ATTACK_DEATH		26
+#define ATTACK_CHEMICAL		27
+#define ATTACK_DROWN		28
+#define MAX_ATTACK_TYPES  	29
 
 /* Room/mob/obj/pc sizes */
 #define SIZE_SPECIAL    0
@@ -248,24 +262,6 @@ struct char_data *guildmaster1;
 #define PAIN_ROOM_RATE           1
 #define MAX_BAG_ROWS             5
 
-
-// CWE's version of resistance - will probably take this out - march 2012
-#define RESIST_TYPE_FIRE       0
-#define RESIST_TYPE_ELEC       1
-#define RESIST_TYPE_COLD       2
-#define RESIST_TYPE_POIS       3
-#define RESIST_TYPE_SONC       4
-#define RESIST_TYPE_ACID       5
-#define RESIST_TYPE_GAS        6
-#define RESIST_TYPE_LGHT       7
-#define RESIST_TYPE_DIVN       8
-#define RESIST_TYPE_SUMN       9
-#define RESIST_TYPE_LIFE       10
-#define RESIST_TYPE_FEAR       11
-#define RESIST_TYPE_MISC       12
-#define RESIST_TYPE_SLSH       13
-#define RESIST_TYPE_PIER       14
-#define RESIST_TYPE_BLDG       15
 
 /* PC classes */
 #define CLASS_UNDEFINED	  (-1)
@@ -826,23 +822,34 @@ struct char_data *guildmaster1;
 #define APPLY_AGGR_WIMPY       38       /* Apply to mobile's wimpy aggression */
 #define APPLY_AGGR_COWARD      39       /* Apply to mobile's coward aggression */
 #define APPLY_AGGR_MEMORY      40       /* Apply to mobile's memory aggression */
-#define APPLY_POIS_RESIST      44       /* Apply to poison resistance   */
-#define APPLY_DIVN_RESIST      49       /* Apply to divine resistance   */
-#define APPLY_SUMN_RESIST      50       /* Apply to bludgeon resistance */
-#define APPLY_LIFE_RESIST      51       /* Apply to bludgeon resistance */
-#define APPLY_FEAR_RESIST      52       /* Apply to bludgeon resistance */
-#define APPLY_MISC_RESIST      53       /* Apply to misc resistance     */
-#define APPLY_SLSH_RESIST      54       /* Apply to slash resistance    */
-#define APPLY_PIER_RESIST      55       /* Apply to pierce resistance   */
-#define APPLY_BLDG_RESIST      56       /* Apply to bludgeon resistance */
-#define APPLY_FIRE_RESIST      57       /* Apply to fire resistance     */
-#define APPLY_LGHT_RESIST      58       /* Apply to light resistance    */
-#define APPLY_COLD_RESIST      59       /* Apply to cold resistance     */
-#define APPLY_ACID_RESIST      60       /* Apply to acid resistance     */
-#define APPLY_ELEC_RESIST      61       /* Apply to electrical resistance */
-#define APPLY_GAS_RESIST       62       /* Apply to gas resistance      */
-#define APPLY_PHYS_RESIST      63       /* resist to physical  */
-#define NUM_RESISTANCES         16       // This could change
+#define APPLY_POIS_RESIST      41       /* Apply to poison resistance   */
+#define APPLY_DIVN_RESIST      42       /* Apply to divine resistance   */
+#define APPLY_SUMN_RESIST      43       /* Apply to bludgeon resistance */
+#define APPLY_LIFE_RESIST      44       /* Apply to bludgeon resistance */
+#define APPLY_FEAR_RESIST      45       /* Apply to bludgeon resistance */
+#define APPLY_MISC_RESIST      46       /* Apply to misc resistance     */
+#define APPLY_SLSH_RESIST      47       /* Apply to slash resistance    */
+#define APPLY_PIER_RESIST      48       /* Apply to pierce resistance   */
+#define APPLY_BLDG_RESIST      49       /* Apply to bludgeon resistance */
+#define APPLY_FIRE_RESIST      50       /* Apply to fire resistance     */
+#define APPLY_LGHT_RESIST      51       /* Apply to light resistance    */
+#define APPLY_COLD_RESIST      52       /* Apply to cold resistance     */
+#define APPLY_ACID_RESIST      53      /* Apply to acid resistance     */
+#define APPLY_ELEC_RESIST      54       /* Apply to electrical resistance */
+#define APPLY_GAS_RESIST       55       /* Apply to gas resistance      */
+#define APPLY_PHYS_RESIST      56       /* resist to physical  */
+
+#define APPLY_MENTAL_RESIST    57
+#define APPLY_BOW_RESIST       58
+#define APPLY_ASTRAL_RESIST    59
+#define APPLY_ETHEREAL_RESIST  60
+#define APPLY_DISEASE_RESIST   61
+#define APPLY_BOTANICAL_RESIST 62
+#define APPLY_CHI_RESIST       63
+#define APPLY_DEATH_RESIST     64
+#define APPLY_CHEMICAL_RESIST  65
+#define APPLY_DROWN_RESIST     66
+#define NUM_RESISTANCES        26       // This could change
 
 // ******************** ^^ have to relocate these
 
@@ -1218,7 +1225,7 @@ struct room_data {
    int pain_rate;                  /* whats the pain room rate?       */
    int pain_check;                 /* saves the heartbeats passed     */
    byte light;                     /* Number of lightsources in room  */
-   SPECIAL(*func);                 
+   SPECIAL(*func);
    char *nomagic_message_caster;   /* message used in no magic rooms to caster */
    char *nomagic_message_room;     /* message used in no magic rooms to room   */
    struct obj_data *contents;   /* List of items in room              */
@@ -1337,9 +1344,9 @@ struct char_point_data {
    int gold_gain;
    int exp_gain;
    sbyte bonus_pracs;
-   sh_int resistance[NUM_RESISTANCES];  /* -100 to 100 scale  */
+   sh_int resistance[NUM_RESISTANCES];  /* -100 to 100 scale - this is in char_special_data uneeded here? FIXME */
    sh_int nat_armor;    /* Natural armor points - does not include dex applies or eq applies */
-   sh_int armor;        /* Internal -100..100, external -10..10 AC */
+   sh_int armor;        /* Internal -100..100, external -10..10 AC FIXME */
    int	gold;           /* Money carried                           */
    int	bank_gold;	/* Gold the char has in a bank account	   */
    int	exp;            /* The experience of the player            */

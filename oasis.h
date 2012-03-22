@@ -67,7 +67,7 @@
 #define NUM_MOB_CLASSES         29
 #define NUM_MOB_RACES           34
 #define NUM_MOB_SIZES           7
-#define NUM_AFF_FLAGS		61
+#define NUM_AFF_FLAGS		63
 #define NUM_AFF2_FLAGS		1
 #define NUM_ATTACK_TYPES	15
 

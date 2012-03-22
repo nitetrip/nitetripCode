@@ -2636,7 +2636,7 @@ int stats_assign_stat(int abil, char *arg, struct descriptor_data *d)
   else
     temp = atoi(arg);
   
-  /* WILL HAVE TO CHANGE THIS WHEN RACES HAVE DIFFEREING ABILS */
+  /* FIXME WILL HAVE TO CHANGE THIS WHEN RACES HAVE DIFFEREING ABILS */
   if (temp > 18) {
     if (OLC_VAL(d) < 18)
       temp = OLC_VAL(d);
