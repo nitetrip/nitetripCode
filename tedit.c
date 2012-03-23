@@ -3,7 +3,7 @@
  * Last known e-mail address: scottm@workcomm.net
  *
  * XXX: This needs Oasis-ifying.
- */
+ *///
 
 #include "conf.h"
 #include "sysdep.h"
