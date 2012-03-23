@@ -1028,7 +1028,8 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 {
   float wimp, maxhit, wimpval;
   char wimpbuf[MAX_INPUT_LENGTH];
-  int wimpval2 = 0;
+  int wimpval2 = 0, total_duration = 0;
+  struct affected_type *aff;
 
   if (GET_POS(victim) <= POS_DEAD) {
     /* This is "normal"-ish now with delayed extraction. -gg 3/15/2001 */
@@ -1073,6 +1074,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
   if (victim->master == ch)
     stop_follower(victim);
 
+ 
   /* Cut damage in half if victim has sanct, to a minimum 1 */
   if (AFF_FLAGGED(victim, AFF_SANCTUARY) && dam >=2)
     dam /= 2;
@@ -1087,6 +1089,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
   /* Cut Damage by 10% if victim has dervish spin - Mak */
   if (AFF_FLAGGED(victim, AFF_DERVISH_SPIN) && dam >=2)
     dam *= .9;
+  
 
   /* Check for PK if this is not a PK MUD */
   if (!pk_allowed) {

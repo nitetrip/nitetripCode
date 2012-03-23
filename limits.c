@@ -562,10 +562,10 @@ void point_update(void)
 /* need wake messages */
       GET_POS(i) = POS_SITTING;
       affect_from_char(i, SPELL_HEALING_DREAM);
-      
-     
+
+
       }
- 
+
    if (AFF_FLAGGED(i, AFF_POISON) && (i->char_specials.vulnerable[ATTACK_POISON] > 0))
       {
        if (damage(i, i, 4, SPELL_POISON) == -1)

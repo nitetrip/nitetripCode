@@ -628,7 +628,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
   bool accum_affect = FALSE, accum_duration = FALSE;
   bool affect2 = FALSE;
   const char *to_vict = NULL, *to_room = NULL;
-  int i, duration, new_position = -1;
+  int i, duration, new_position = GET_POS(victim);// set this to current position to avoid bugs when the position is not set
 
 
   if (victim == NULL || ch == NULL)
@@ -1396,6 +1396,7 @@ case SPELL_DECREPIFY:
     af[0].duration = GET_LEVEL(ch);
     af[0].modifier = -2;
     af[0].bitvector = AFF_POISON;
+    accum_duration = TRUE;
     to_vict = "You feel very sick.";
     to_room = "$n gets violently ill!";
     break;
@@ -2441,7 +2442,7 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
 void mag_unaffects(int level, struct char_data *ch, struct char_data *victim,
 		        int spellnum, int type)
 {
-  int spell = 0, msg_not_affected = TRUE, new_position = -1;
+  int spell = 0, msg_not_affected = TRUE, new_position = GET_POS(victim);
   const char *to_vict = NULL, *to_room = NULL;
 
   if (victim == NULL)
@@ -2493,7 +2494,7 @@ void mag_unaffects(int level, struct char_data *ch, struct char_data *victim,
 
   if (!affected_by_spell(victim, spell)) {
     if (msg_not_affected)
-      send_to_char(ch, "%s - unaffected", NOEFFECT);
+      send_to_char(ch, "%s", NOEFFECT);
     return;
   }
 

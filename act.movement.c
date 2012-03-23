@@ -173,7 +173,7 @@ int do_simple_move(struct char_data *ch, int dir, int need_specials_check)
 
 
  /* Room big enough for you? */
-   if ((SIZE(EXIT(ch, dir)->to_room) < GET_SIZE(ch)) && (SIZE(EXIT(ch, dir)->to_room) != SIZE_SPECIAL) && (GET_LEVEL(ch) < LVL_IMPL)) {
+   if ((SIZE(EXIT(ch, dir)->to_room) < GET_SIZE(ch)) && (SIZE(EXIT(ch, dir)->to_room) != SIZE_SPECIAL) && (GET_LEVEL(ch) < LVL_GOD)) { //GOD+ can enter any room
     send_to_char(ch, "You are too big to fit in there!\r\n");
     return (0);
   }
@@ -488,7 +488,7 @@ void do_doorcmd(struct char_data *ch, struct obj_data *obj, int door, int scmd)
  */
 if (!has_key(ch, DOOR_KEY(ch, obj, door)))
 	  {
-if (GET_LEVEL(ch) == LVL_IMPL)
+if (GET_LEVEL(ch) >= LVL_GOD) // LEVEL GOD + can unlock all doors
 		  {
 	  UNLOCK_DOOR(IN_ROOM(ch), obj, door);
 	if (back)
