@@ -402,10 +402,7 @@ if (IS_NPC(i) && i->player.long_descr && GET_POS(i) == GET_DEFAULT_POS(i)) {
     if (AFF_FLAGGED(ch, AFF_DETECT_NEUTRAL)) {
         if (IS_NEUTRAL(i))
             send_to_char(ch, "(Gray Aura) ");}
-        
-        
-   
-  
+
   if (IS_INVIS(i)) send_to_char(ch, " (invisible)");
   if (AFF_FLAGGED(i, AFF_HIDE)) send_to_char(ch, " (hidden)");
   if (!IS_NPC(i) && !i->desc) send_to_char(ch, " (linkless)");
@@ -425,6 +422,9 @@ if (IS_NPC(i) && i->player.long_descr && GET_POS(i) == GET_DEFAULT_POS(i)) {
       
     if (AFF_FLAGGED(i, AFF_BLIND))
       act("...$e is groping around blindly!", FALSE, i, 0, ch, TO_VICT);
+
+ if (AFF_FLAGGED(i, AFF_REFLECT_DAMAGE))
+      act("...$e is inside a reflective sphrere!!", FALSE, i, 0, ch, TO_VICT);
 
     return;
   }
@@ -481,6 +481,10 @@ if (IS_NPC(i) && i->player.long_descr && GET_POS(i) == GET_DEFAULT_POS(i)) {
 
   if (AFF_FLAGGED(i, AFF_FORT))
     act("...$e is surrounded by a pitch black aura!", FALSE, i, 0, ch, TO_VICT);
+
+  if (AFF_FLAGGED(i, AFF_REFLECT_DAMAGE))
+    act("...$e is inside a reflective sphere!", FALSE, i, 0, ch, TO_VICT);
+
 }
 
 
@@ -912,6 +916,9 @@ ACMD(do_score)
 	   GET_TITLE(ch), GET_LEVEL(ch));
 
   switch (GET_POS(ch)) {
+  case POS_PARALYZED:
+    send_to_char(ch, "You are paralayzed, unable to do anything!\r\n");
+    break;
   case POS_DEAD:
     send_to_char(ch, "You are DEAD!\r\n");
     break;

@@ -1162,6 +1162,8 @@ ASPELL(spell_portal)
       case SPELL_PASS_WITHOUT_TRACE:
         act("You follow the dryad through the wilderness back to her tree.", FALSE, ch, 0, 0, TO_CHAR);
         act("The dryad gives you a kiss on the cheek and disappears as you look about.", FALSE, ch, 0, 0, TO_CHAR);
+       act("\\c0lGA green portal briefly shimmers open as $n emerges from it.\\c0ln", FALSE, ch, 0, 0, TO_ROOM);
+
         break;
       case SPELL_SHADOW_DOOR:
       case SPELL_SHADOW_WALK:

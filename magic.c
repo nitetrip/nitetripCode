@@ -1155,13 +1155,13 @@ case SPELL_DECREPIFY:
       to_vict = "You feel your limbs freeze!";
       to_room = "$n seems paralyzed!";
       spellnum = SPELL_PARALYZE;
-      break;
+ //     break;
     }
     else {
       send_to_char(ch, "%s", NOEFFECT_RACE);
       return;
     }
-
+  break;
 
 
   case SPELL_FLEET_FEET:
@@ -1186,7 +1186,7 @@ case SPELL_DECREPIFY:
 
 
   case SPELL_FORT:
-   if (!AFF_FLAGGED(victim, AFF_SANCTUARY)) {
+   if (!AFF_FLAGGED(victim, AFF_SANCTUARY) && !AFF_FLAGGED(victim, AFF_REFLECT_DAMAGE)) {
    af[0].duration = 4;
    af[0].bitvector = AFF_FORT;
 
@@ -1450,7 +1450,7 @@ case SPELL_DECREPIFY:
 
 
   case SPELL_SANCTUARY:
-    if (!AFF_FLAGGED(ch, AFF_FORT)) {
+    if (!AFF_FLAGGED(ch, AFF_FORT) && !AFF_FLAGGED(ch, AFF_REFLECT_DAMAGE)) {
     af[0].duration = 4;
     af[0].bitvector = AFF_SANCTUARY;
     accum_duration = FALSE;
@@ -1563,8 +1563,6 @@ case SPELL_SHIELD_AGAINST_EVIL:
     af[1].location = APPLY_PIER_RESIST;
     af[1].duration = duration;
     af[1].modifier = 50;
-    //GET_RESIST(victim, ATTACK_SLASH) += 50;
-    //GET_RESIST(victim, ATTACK_PIERCE) += 50;
     af[2].location = APPLY_CHA;
     af[2].duration = duration;
     af[2].modifier = -3;
@@ -1607,7 +1605,7 @@ case SPELL_SHIELD_AGAINST_EVIL:
     if (GET_POS(victim) > POS_SLEEPING) {
       send_to_char(victim, "You feel very sleepy...  Zzzz......\r\n");
       act("$n goes to sleep.", TRUE, victim, 0, 0, TO_ROOM);
-      GET_POS(victim) = POS_SLEEPING;
+      new_position = POS_SLEEPING;
     } else {
       send_to_char(ch, "Zzzzz...\r\n");
       act("$n snores loudly... Zzzz...", TRUE, victim, 0, 0, TO_ROOM); }
@@ -1771,6 +1769,12 @@ case SPELL_SHIELD_AGAINST_EVIL:
     return;
   }
 
+
+  if (to_vict != NULL)
+    act(to_vict, FALSE, victim, 0, ch, TO_CHAR);
+  if (to_room != NULL)
+    act(to_room, TRUE, victim, 0, ch, TO_ROOM);
+
   for (i = 0; i < MAX_SPELL_AFFECTS; i++)
 
     if (af[i].bitvector || (af[i].location != APPLY_NONE))
@@ -1791,15 +1795,14 @@ case SPELL_SHIELD_AGAINST_EVIL:
     return;
   }
 
+
+
   for (i = 0; i < MAX_SPELL_AFFECTS; i++)
     if (af[i].bitvector || (af[i].location != APPLY_NONE))
       affect2_join(victim, af+i, accum_duration, FALSE, accum_affect, FALSE);
   }
 
-  if (to_vict != NULL)
-    act(to_vict, FALSE, victim, 0, ch, TO_CHAR);
-  if (to_room != NULL)
-    act(to_room, TRUE, victim, 0, ch, TO_ROOM);
+  GET_POS(victim) = new_position;
 }
 
 
@@ -2426,7 +2429,8 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
   GET_HIT(victim) = MIN(GET_MAX_HIT(victim), GET_HIT(victim) + healing);
   GET_MOVE(victim) = MIN(GET_MAX_MOVE(victim), GET_MOVE(victim) + move);
   GET_MANA(victim) = MIN(GET_MAX_MANA(victim), GET_MANA(victim) + manaadd);
-  update_pos(victim);
+ 
+ update_pos(victim);
 
   if (to_vict != NULL)
     act(to_vict, FALSE, victim, 0, ch, TO_CHAR);
@@ -2465,7 +2469,7 @@ void mag_unaffects(int level, struct char_data *ch, struct char_data *victim,
     break;
 
   case SPELL_DISPEL_MAGIC:
-    if (affected_by_spell(victim, SPELL_PARALYZE)) {
+    if (affected_by_spell(victim, SPELL_PARALYZE) || GET_POS(victim) == POS_PARALYZED) {
       spell = SPELL_PARALYZE;
       msg_not_affected = TRUE;
       new_position = POS_STANDING;

@@ -964,11 +964,10 @@ void mag_assign_spells(void)
   spello(SPELL_ASTRAL_ASCENSION, "astral ascension", 300, 300, 0, POS_STANDING,
 	TAR_IGNORE, FALSE, MAG_GROUPS,
 	NULL);
-                    
   spello(SPELL_ASTRAL_PROJECTION, "astral projection", 200, 150, 10, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_MANUAL,
 	NULL);
-        
+
 spello(SPELL_BALL_LIGHTNING, "ball lightning", 100, 70, 3, POS_FIGHTING, TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE, NULL);
  spello(SPELL_BARKSKIN, "barkskin", 25, 5, 2, POS_STANDING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel your skin revert back to flesh.");
@@ -1131,7 +1130,7 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_DETECT_MAGIC, "detect magic", 20, 10, 2, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
 	"The detect magic wears off.");
-  
+
   spello(SPELL_DETECT_NEUTRAL, "detect neutral", 20, 10, 2, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
 	"You feel less aware of the balance of the world.");      
@@ -1195,11 +1194,10 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
   spello(SPELL_ETHEREAL_PROJECTION, "ethereal projection", 200, 150, 10, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_MANUAL,
 	NULL);
-        
+
   spello(SPELL_ETHEREAL_SPHERE, "ethereal sphere", 300, 300, 0, POS_STANDING,
 	TAR_IGNORE, FALSE, MAG_GROUPS,
 	NULL);
-        
   spello(SPELL_EXCOMMUNICATE, "excommunicate", 100, 75, 25, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_NOT_SELF, TRUE, MAG_POINTS,
         NULL);
@@ -1341,7 +1339,7 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
 	TAR_IGNORE, TRUE, MAG_AREAS,
 	NULL);
    spello(SPELL_INFRAVISION, "infravision", 25, 10, 1, POS_STANDING,
-	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
+	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS,
 	"Your night vision seems to fade.");
   spello(SPELL_INTIMIDATE, "intimidate", 45, 25, 2, POS_FIGHTING, TAR_FIGHT_VICT, FALSE, MAG_AFFECTS, "You feel more confident.");
 

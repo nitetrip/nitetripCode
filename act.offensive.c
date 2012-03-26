@@ -705,7 +705,8 @@ ACMD(do_rage)
   int percent, prob;
 
   if (!GET_TOT_SKILL(ch, SKILL_RAGE)) {
-    send_to_char(ch, "%s", NOPROFICIENCY);
+   send_to_char(ch, "in act.off.c do_rage skill is %d\r\n", GET_TOT_SKILL(ch, SKILL_RAGE));
+   send_to_char(ch, "%s", NOPROFICIENCY);
     return;
   }
   else if (AFF_FLAGGED(ch, AFF_RAGE) || IS_SET(MSC_FLAGS(ch), MSC_ACTIVE_SKILL_RAGE)) {

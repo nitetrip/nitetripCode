@@ -196,7 +196,7 @@ const char *position_types[] = {
   "Dead",
   "Mortally wounded",
   "Incapacitated",
-  "Paralysed",
+  "Paralyzed",
   "Stunned",
   "Buried",
   "Feigning Death",

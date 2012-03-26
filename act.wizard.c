@@ -2570,6 +2570,7 @@ ACMD(do_wizutil)
 	send_to_char(ch, "Your victim does not have any affections!\r\n");
 	return;
       }
+      GET_POS(vict) = POS_STANDING;
       break;
     default:
       log("SYSERR: Unknown subcmd %d passed to do_wizutil (%s)", subcmd, __FILE__);

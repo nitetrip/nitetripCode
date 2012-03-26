@@ -162,6 +162,7 @@ ACMD(do_purge);
 ACMD(do_put);
 ACMD(do_qcomm);
 ACMD(do_quit);
+ACMD(do_rage);
 ACMD(do_reboot);
 ACMD(do_release);
 ACMD(do_remove);
@@ -555,6 +556,7 @@ cpp_extern const struct command_info cmd_info[] = {
   { "qui"      , POS_DEAD    , do_quit     , 0, 0 },
   { "quit"     , POS_DEAD    , do_quit     , 0, SCMD_QUIT },
   { "qsay"     , POS_RESTING , do_qcomm    , 0, SCMD_QSAY },
+  { "rage"     , POS_FIGHTING, do_rage     , 1, 0},
   { "reply"    , POS_SLEEPING, do_reply    , 0, 0 },
   { "rest"     , POS_RESTING , do_rest     , 0, 0 },
   { "read"     , POS_SLEEPING , do_look     , 0, SCMD_READ },
@@ -835,6 +837,9 @@ void command_interpreter(struct char_data *ch, char *argument)
       break;
     case POS_SITTING:
       send_to_char(ch, "Maybe you should get on your feet first?\r\n");
+      break;
+    case POS_PARALYZED:
+      send_to_char(ch, "You are too stiff to do anything!\r\n");
       break;
     case POS_FIGHTING:
       send_to_char(ch, "No way!  You're fighting for your life!\r\n");

@@ -186,6 +186,10 @@ int hit_gain(struct char_data *ch)
   if (AFF_FLAGGED(ch, AFF_HEALING_DREAM))
     gain *= 3;
 
+  if (AFF_FLAGGED(ch, AFF_REGENERATION))
+    gain = gain + GET_CON(ch); // regen gives a bonus hit gain of the player's con points
+
+
   gain = gain + ch->char_specials.hitgain;
 
   return (gain);

@@ -289,7 +289,7 @@ void stop_fighting(struct char_data *ch)
   FIGHTING(ch) = NULL;
   GET_POS(ch) = POS_STANDING;
   update_pos(ch);
-  FORTDAM(ch) = 0;
+  DAMBACK(ch) = 0;
 }
 
 
@@ -835,7 +835,7 @@ int skill_message(int dam, struct char_data *ch, struct char_data *vict,
 	  act(msg->hit_msg.victim_msg, FALSE, ch, weap, vict, TO_VICT | TO_SLEEP);
 	  send_to_char(vict, CCNRM(vict, C_CMP));
 				}
-				
+
 	  act(msg->hit_msg.room_msg, FALSE, ch, weap, vict, TO_NOTVICT);
 	}
       } else if (ch != vict) {	/* Dam == 0 */
@@ -862,7 +862,7 @@ void backstab_message(int dam, struct char_data *ch, struct char_data *vict)
 {
 
 /* 
- * Wanted to put in multiple BS messages and this is a lot easier than fucking with /mud/lib/misc/messages
+ * Wanted to put in multiple BS messages and this is a lot easier than with /mud/lib/misc/messages
  * Changed Backstab mults in class.c as well.  1-10x
  *
  * 1st Message = TO_CHAR = To Backstabber
@@ -1082,14 +1082,19 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
   if (AFF_FLAGGED(ch, AFF_FURY))
    dam += ( dam / 3 ); /* Fury adds an additional 1/3 dam */
 
-  /* Cut Damage by 25% if victim has fort added by Seymour */
-  if (AFF_FLAGGED(victim, AFF_FORT) && (attacktype != TYPE_SUNDAM)){
-    FORTDAM(victim) = FORTDAM(victim) + ((dam * .75) / 4);
+  /* Cut Damage by 25% if victim has fort */
+  if ((AFF_FLAGGED(victim, AFF_FORT) || AFF_FLAGGED(victim, AFF_REFLECT_DAMAGE)) && (attacktype != TYPE_SUNDAM)){
+    DAMBACK(victim) = DAMBACK(victim) + ((dam * .75) / 4);
     dam *= .75; }
+
+
   /* Cut Damage by 10% if victim has dervish spin - Mak */
   if (AFF_FLAGGED(victim, AFF_DERVISH_SPIN) && dam >=2)
     dam *= .9;
-  
+
+ // If victim is paralyzed damage will triple
+  if (AFF_FLAGGED(victim, AFF_PARALYZE))
+   dam *= 3;  
 
   /* Check for PK if this is not a PK MUD */
   if (!pk_allowed) {
@@ -1463,7 +1468,9 @@ void perform_violence(void)
     }
 
   if (AFF_FLAGGED(ch, AFF_FORT))
-     damage(ch, FIGHTING(ch), FORTDAM(ch), SPELL_FORT);
+     damage(ch, FIGHTING(ch), DAMBACK(ch), SPELL_FORT);
+ if (AFF_FLAGGED(ch, AFF_REFLECT_DAMAGE))
+     damage(ch, FIGHTING(ch), DAMBACK(ch), SPELL_REFLECT_DAMAGE);
 
    
     /* combat class and race checks here   Anubis  
@@ -1851,6 +1858,9 @@ int pain_dam;
              pain_dam *= .5;
           if (AFF_FLAGGED(d->character, AFF_FORT) && pain_dam >= 3)
              pain_dam *= .75;
+          if (AFF_FLAGGED(d->character, AFF_REFLECT_DAMAGE) && pain_dam >= 3)
+             pain_dam *= .75;
+
           if (AFF_FLAGGED(d->character, AFF_DERVISH_SPIN) && pain_dam >= 2)
              pain_dam *= .9;
           if (GET_LEVEL(d->character) >= LVL_SAINT)

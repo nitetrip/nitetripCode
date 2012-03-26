@@ -533,9 +533,9 @@ ACMD(do_gen_comm)
     KBBL}
   };
 
-  /* to keep pets, etc from being ordered to shout */
+  /* to keep pets, etc from being ordered to shout
   if (!ch->desc)
-    return;
+    return;                                       */
 
   if (PLR_FLAGGED(ch, PLR_NOSHOUT)) {
     send_to_char(ch, "%s", com_msgs[subcmd][0]);

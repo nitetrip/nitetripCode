@@ -304,7 +304,7 @@ SPECIAL(guild)
 	            return 1;
 	    }
     }
- }      
+ }
 
   send_to_char(ch, "You practice for a while...\r\n");
   GET_PRACTICES(ch)--;

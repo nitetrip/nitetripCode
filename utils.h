@@ -382,7 +382,7 @@ void	update_pos(struct char_data *victim);
 #define GET_SAVE(ch, i)	  ((ch)->char_specials.saved.apply_saving_throw[i])
 #define GET_ALIGNMENT(ch) ((ch)->char_specials.saved.alignment)
 #define GET_ATTACKS(ch)   ((ch)->char_specials.extra_attack)
-#define FORTDAM(ch)       ((ch)->char_specials.damback)
+#define DAMBACK(ch)       ((ch)->char_specials.damback)
 #define GET_STUN_RECOVER_CHANCE(ch) ((ch)->char_specials.stun_recovery_chance)
 #define GET_STUN_DURATION(ch)    ((ch)->char_specials.stun_min_duration)
 
