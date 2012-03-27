@@ -303,6 +303,7 @@ void affect_modify(struct char_data *ch, byte loc, sbyte mod,
   case APPLY_AGGR_MEMORY:
     GET_AGGRESSION(ch, AGGR_TYPE_MEMORY) += mod;
     break;
+// Resistances
   case APPLY_FIRE_RESIST:
     GET_RESIST(ch, ATTACK_FIRE) += mod;
     break;
@@ -351,10 +352,216 @@ void affect_modify(struct char_data *ch, byte loc, sbyte mod,
   case APPLY_BLDG_RESIST:
     GET_RESIST(ch, ATTACK_BLUDGEON) += mod;
     break;
+ case APPLY_PHYS_RESIST:
+    GET_RESIST(ch, ATTACK_PHYSICAL) += mod;
+    break;
+ case APPLY_MENTAL_RESIST:
+    GET_RESIST(ch, ATTACK_MENTAL) += mod;
+    break;
+ case APPLY_BOW_RESIST:
+    GET_RESIST(ch, ATTACK_BOW) += mod;
+    break;
+ case APPLY_ASTRAL_RESIST:
+    GET_RESIST(ch, ATTACK_ASTRAL) += mod;
+    break;
+ case APPLY_ETHEREAL_RESIST:
+    GET_RESIST(ch, ATTACK_ETHEREAL) += mod;
+	break;
+ case APPLY_DISEASE_RESIST:
+    GET_RESIST(ch, ATTACK_DISEASE) += mod;
+	break;
+ case APPLY_BOTANICAL_RESIST:
+    GET_RESIST(ch, ATTACK_BOTANICAL) += mod;
+	break;
+ case APPLY_CHI_RESIST:
+    GET_RESIST(ch, ATTACK_CHI) += mod;
+	break;
+ case APPLY_DEATH_RESIST:
+    GET_RESIST(ch, ATTACK_DEATH) += mod;
+	break;
+ case APPLY_CHEMICAL_RESIST:
+    GET_RESIST(ch, ATTACK_CHEMICAL) += mod;
+	break;
+ case APPLY_DROWN_RESIST:
+    GET_RESIST(ch, ATTACK_DROWN) += mod;
+	break;
+ case APPLY_MAGIC_RESIST:
+    GET_RESIST(ch, ATTACK_MAGIC) += mod;
+	break;
+// Immunities
+ case APPLY_FIRE_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_FIRE) += mod;
+    break;
+ case APPLY_ELEC_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_ELECTRIC) += mod;
+    break;
+ case APPLY_COLD_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_COLD) += mod;
+    break;
+ case APPLY_POIS_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_POISON) += mod;
+    break;
+ case APPLY_SONC_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_SONIC) += mod;
+    break;
+ case APPLY_ACID_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_ACID) += mod;
+    break;
+ case APPLY_GAS_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_GAS) += mod;
+    break;
+ case APPLY_LGHT_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_LIGHT) += mod;
+    break;
+ case APPLY_DIVN_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_DIVINE) += mod;
+    break;
+ case APPLY_SUMN_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_SUMMON) += mod;
+    break;
+ case APPLY_LIFE_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_LIFE) += mod;
+    break;
+ case APPLY_FEAR_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_FEAR) += mod;
+    break;
+ case APPLY_MISC_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_MISC) += mod;
+    break;
+ case APPLY_SLSH_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_SLASH) += mod;
+    break;
+ case APPLY_PIER_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_PIERCE) += mod;
+    break;
+ case APPLY_BLDG_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_BLUDGEON) += mod;
+    break; 
+ case APPLY_PHYS_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_PHYSICAL) += mod;
+    break;	
+ case APPLY_MENTAL_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_MENTAL) += mod;
+	break;
+ case APPLY_BOW_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_BOW) += mod;
+	break;
+ case APPLY_ASTRAL_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_ASTRAL) += mod;
+	break;
+ case APPLY_ETHEREAL_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_ETHEREAL) += mod;
+	break;
+ case APPLY_DISEASE_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_DISEASE) += mod;
+	break;
+ case APPLY_BOTANICAL_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_BOTANICAL) += mod;
+	break;
+ case APPLY_CHI_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_CHI) += mod;
+	break;
+ case APPLY_DEATH_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_DEATH) += mod;
+	break;
+ case APPLY_CHEMICAL_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_CHEMICAL) += mod;
+	break;
+ case APPLY_DROWN_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_DROWN) += mod;
+	break;
+ case APPLY_MAGIC_IMMUNE:
+    GET_IMMUNE(ch, ATTACK_MAGIC) += mod;
+	break;
+
+// Vulnerabilities
+ case APPLY_FIRE_VULN:
+    GET_VULN(ch, ATTACK_FIRE) += mod;
+    break;
+ case APPLY_ELEC_VULN:
+    GET_VULN(ch, ATTACK_ELECTRIC) += mod;
+    break;
+ case APPLY_COLD_VULN:
+    GET_VULN(ch, ATTACK_COLD) += mod;
+    break;
+ case APPLY_POIS_VULN:
+    GET_VULN(ch, ATTACK_POISON) += mod;
+    break;
+ case APPLY_SONC_VULN:
+    GET_VULN(ch, ATTACK_SONIC) += mod;
+    break;
+ case APPLY_ACID_VULN:
+    GET_VULN(ch, ATTACK_ACID) += mod;
+    break;
+ case APPLY_GAS_VULN:
+    GET_VULN(ch, ATTACK_GAS) += mod;
+    break;
+ case APPLY_LGHT_VULN:
+    GET_VULN(ch, ATTACK_LIGHT) += mod;
+    break;
+ case APPLY_DIVN_VULN:
+    GET_VULN(ch, ATTACK_DIVINE) += mod;
+    break;
+ case APPLY_SUMN_VULN:
+    GET_VULN(ch, ATTACK_SUMMON) += mod;
+    break;
+ case APPLY_LIFE_VULN:
+    GET_VULN(ch, ATTACK_LIFE) += mod;
+    break;
+ case APPLY_FEAR_VULN:
+    GET_VULN(ch, ATTACK_FEAR) += mod;
+    break;
+ case APPLY_MISC_VULN:
+    GET_VULN(ch, ATTACK_MISC) += mod;
+    break;
+ case APPLY_SLSH_VULN:
+    GET_VULN(ch, ATTACK_SLASH) += mod;
+    break;
+ case APPLY_PIER_VULN:
+    GET_VULN(ch, ATTACK_PIERCE) += mod;
+    break;
+ case APPLY_BLDG_VULN:
+    GET_VULN(ch, ATTACK_BLUDGEON) += mod;
+    break; 
+ case APPLY_PHYS_VULN:
+    GET_VULN(ch, ATTACK_PHYSICAL) += mod;
+    break;	
+ case APPLY_MENTAL_VULN:
+    GET_VULN(ch, ATTACK_MENTAL) += mod;
+	break;
+ case APPLY_BOW_VULN:
+    GET_VULN(ch, ATTACK_BOW) += mod;
+	break;
+ case APPLY_ASTRAL_VULN:
+    GET_VULN(ch, ATTACK_ASTRAL) += mod;
+	break;
+ case APPLY_ETHEREAL_VULN:
+    GET_VULN(ch, ATTACK_ETHEREAL) += mod;
+	break;
+ case APPLY_DISEASE_VULN:
+    GET_VULN(ch, ATTACK_DISEASE) += mod;
+	break;
+ case APPLY_BOTANICAL_VULN:
+    GET_VULN(ch, ATTACK_BOTANICAL) += mod;
+	break;
+ case APPLY_CHI_VULN:
+    GET_VULN(ch, ATTACK_CHI) += mod;
+	break;
+ case APPLY_DEATH_VULN:
+    GET_VULN(ch, ATTACK_DEATH) += mod;
+	break;
+ case APPLY_CHEMICAL_VULN:
+    GET_VULN(ch, ATTACK_CHEMICAL) += mod;
+	break;
+ case APPLY_DROWN_VULN:
+    GET_VULN(ch, ATTACK_DROWN) += mod;
+	break;
+ case APPLY_MAGIC_VULN:
+    GET_VULN(ch, ATTACK_MAGIC) += mod;
+	break;
   default:
     log("SYSERR: Unknown apply adjust %d attempt (%s, affect_modify).", loc, __FILE__);
     break;
-
   } /* switch */
 }
 
@@ -369,6 +576,7 @@ void affect2_modify(struct char_data *ch, byte loc, sbyte mod,
   }
 
   switch (loc) {
+
   case APPLY_NONE:
     break;
 
@@ -944,7 +1152,7 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos)
   } else
     log("SYSERR: IN_ROOM(ch) = NOWHERE when equipping char %s.", GET_NAME(ch));
 
-  /* add item resists etc to player when worn   Anubis */
+  /* add item resists etc to player when worn    */
   for (i = 0; i < MAX_ATTACK_TYPES; i++) {
     if(obj->immune[i] == 1)
       ch->char_specials.immune[i]++;
@@ -1009,17 +1217,17 @@ struct obj_data *unequip_char(struct char_data *ch, int pos)
     log("SYSERR: IN_ROOM(ch) = NOWHERE when unequipping char %s.", GET_NAME(ch));
 
   GET_EQ(ch, pos) = NULL;
-  
-  /* add item resists etc to player when worn   Anubis */
-  for (i = 0; i < MAX_ATTACK_TYPES; i++) {   
+
+  /* add item resists etc to player when worn*/
+  for (i = 0; i < MAX_ATTACK_TYPES; i++) {
     if(obj->immune[i] == 1)
       ch->char_specials.immune[i]--;
   }
-  for (i = 0; i < MAX_ATTACK_TYPES; i++) {   
+  for (i = 0; i < MAX_ATTACK_TYPES; i++) {
     if(obj->resist[i] == 1)
       ch->char_specials.resist[i]--;
   }
-  for (i = 0; i < MAX_ATTACK_TYPES; i++) {   
+  for (i = 0; i < MAX_ATTACK_TYPES; i++) {
     if(obj->vulnerable[i] == 1)
       ch->char_specials.vulnerable[i]--;
   }

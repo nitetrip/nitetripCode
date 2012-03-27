@@ -813,7 +813,7 @@ struct char_data *guildmaster1;
 #define APPLY_MANA_GAIN        29       /* Apply to mana gain           */
 #define APPLY_MOVE_GAIN        30       /* Apply to move gain           */
 #define APPLY_PRACTICE         31       /* Apply to practices           */
-#define APPLY_SONC_RESIST      32      /* Apply to sonic resistance    */
+#define APPLY_SONC_RESIST      32       // Sonic resist
 #define APPLY_AP               33       /* Apply to Armor Points        */
 #define APPLY_AGGR_GENERAL      34       /* Apply to mobile's general aggression */
 #define APPLY_AGGR_EVIL        35       /* Apply to mobile's evil aggression */
@@ -822,23 +822,22 @@ struct char_data *guildmaster1;
 #define APPLY_AGGR_WIMPY       38       /* Apply to mobile's wimpy aggression */
 #define APPLY_AGGR_COWARD      39       /* Apply to mobile's coward aggression */
 #define APPLY_AGGR_MEMORY      40       /* Apply to mobile's memory aggression */
-#define APPLY_POIS_RESIST      41       /* Apply to poison resistance   */
-#define APPLY_DIVN_RESIST      42       /* Apply to divine resistance   */
-#define APPLY_SUMN_RESIST      43       /* Apply to bludgeon resistance */
-#define APPLY_LIFE_RESIST      44       /* Apply to bludgeon resistance */
-#define APPLY_FEAR_RESIST      45       /* Apply to bludgeon resistance */
-#define APPLY_MISC_RESIST      46       /* Apply to misc resistance     */
-#define APPLY_SLSH_RESIST      47       /* Apply to slash resistance    */
-#define APPLY_PIER_RESIST      48       /* Apply to pierce resistance   */
-#define APPLY_BLDG_RESIST      49       /* Apply to bludgeon resistance */
-#define APPLY_FIRE_RESIST      50       /* Apply to fire resistance     */
-#define APPLY_LGHT_RESIST      51       /* Apply to light resistance    */
-#define APPLY_COLD_RESIST      52       /* Apply to cold resistance     */
-#define APPLY_ACID_RESIST      53      /* Apply to acid resistance     */
-#define APPLY_ELEC_RESIST      54       /* Apply to electrical resistance */
-#define APPLY_GAS_RESIST       55       /* Apply to gas resistance      */
-#define APPLY_PHYS_RESIST      56       /* resist to physical  */
-
+#define APPLY_POIS_RESIST      41
+#define APPLY_DIVN_RESIST      42
+#define APPLY_SUMN_RESIST      43
+#define APPLY_LIFE_RESIST      44
+#define APPLY_FEAR_RESIST      45
+#define APPLY_MISC_RESIST      46
+#define APPLY_SLSH_RESIST      47
+#define APPLY_PIER_RESIST      48
+#define APPLY_BLDG_RESIST      49
+#define APPLY_FIRE_RESIST      50
+#define APPLY_LGHT_RESIST      51
+#define APPLY_COLD_RESIST      52
+#define APPLY_ACID_RESIST      53
+#define APPLY_ELEC_RESIST      54
+#define APPLY_GAS_RESIST       55
+#define APPLY_PHYS_RESIST      56
 #define APPLY_MENTAL_RESIST    57
 #define APPLY_BOW_RESIST       58
 #define APPLY_ASTRAL_RESIST    59
@@ -849,9 +848,70 @@ struct char_data *guildmaster1;
 #define APPLY_DEATH_RESIST     64
 #define APPLY_CHEMICAL_RESIST  65
 #define APPLY_DROWN_RESIST     66
-#define NUM_RESISTANCES        26       // This could change
+#define APPLY_MAGIC_RESIST     67
 
-// ******************** ^^ have to relocate these
+#define APPLY_SONC_IMMUNE      70
+#define APPLY_POIS_IMMUNE      71
+#define APPLY_DIVN_IMMUNE      72
+#define APPLY_SUMN_IMMUNE      73
+#define APPLY_LIFE_IMMUNE      74
+#define APPLY_FEAR_IMMUNE      75
+#define APPLY_MISC_IMMUNE      76
+#define APPLY_SLSH_IMMUNE      77
+#define APPLY_PIER_IMMUNE      78
+#define APPLY_BLDG_IMMUNE      79
+#define APPLY_FIRE_IMMUNE      80
+#define APPLY_LGHT_IMMUNE      81
+#define APPLY_COLD_IMMUNE      82
+#define APPLY_ACID_IMMUNE      83
+#define APPLY_ELEC_IMMUNE      84
+#define APPLY_GAS_IMMUNE       85
+#define APPLY_PHYS_IMMUNE      86
+#define APPLY_MENTAL_IMMUNE    87
+#define APPLY_BOW_IMMUNE       88
+#define APPLY_ASTRAL_IMMUNE    89
+#define APPLY_ETHEREAL_IMMUNE  90
+#define APPLY_DISEASE_IMMUNE   91
+#define APPLY_BOTANICAL_IMMUNE 92
+#define APPLY_CHI_IMMUNE       93
+#define APPLY_DEATH_IMMUNE     94
+#define APPLY_CHEMICAL_IMMUNE  95
+#define APPLY_DROWN_IMMUNE     96
+#define APPLY_MAGIC_IMMUNE     97
+
+#define APPLY_SONC_VULN      100
+#define APPLY_POIS_VULN      101
+#define APPLY_DIVN_VULN      102
+#define APPLY_SUMN_VULN      103
+#define APPLY_LIFE_VULN      104
+#define APPLY_FEAR_VULN      105
+#define APPLY_MISC_VULN      106
+#define APPLY_SLSH_VULN      107
+#define APPLY_PIER_VULN      108
+#define APPLY_BLDG_VULN      109
+#define APPLY_FIRE_VULN      110
+#define APPLY_LGHT_VULN      111
+#define APPLY_COLD_VULN      112
+#define APPLY_ACID_VULN      113
+#define APPLY_ELEC_VULN      114
+#define APPLY_GAS_VULN       115
+#define APPLY_PHYS_VULN      116
+#define APPLY_MENTAL_VULN    117
+#define APPLY_BOW_VULN       118
+#define APPLY_ASTRAL_VULN    119
+#define APPLY_ETHEREAL_VULN  120
+#define APPLY_DISEASE_VULN   121
+#define APPLY_BOTANICAL_VULN 122
+#define APPLY_CHI_VULN       123
+#define APPLY_DEATH_VULN     124
+#define APPLY_CHEMICAL_VULN  125
+#define APPLY_DROWN_VULN     126
+#define APPLY_MAGIC_VULN     127
+
+
+#define IMMUNE			1
+#define NUM_RESISTANCES        	28
+
 
 
 /* Container flags - value[1] */

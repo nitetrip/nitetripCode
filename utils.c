@@ -1057,3 +1057,19 @@ int is_on_water(struct char_data *ch)
 {
   return ((SECT(IN_ROOM(ch)) == SECT_WATER_SWIM) || (SECT(IN_ROOM(ch)) == SECT_UNDERWATER) || (SECT(IN_ROOM(ch)) == SECT_WATER_NOSWIM)/* || (SECT(IN_ROOM(ch)) == SECT_EXTRAPLANAR_WATER)*/);
 }
+
+
+char *verbal_align(int char_align)
+{
+
+  if (char_align > 500)
+   return "Good and Holy";
+  if (char_align > 250)
+   return "Good with Neutral Tendancies";
+  if (char_align > -250)
+   return  "Neutral";
+  if (char_align > -500)
+   return "Evil with Neutral Tendancies";
+
+return "Pure Evil";
+}

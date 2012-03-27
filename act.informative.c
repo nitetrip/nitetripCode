@@ -67,6 +67,7 @@ byte saving_throws_nat(int class_num, int type, int level); /* class.c */
 int get_num_attacks(struct char_data *ch);
 int parse_class(char arg);
 void get_one_line(FILE *fl, char *buf);
+char *verbal_align(int char_align);
 
 /* local functions */
 void load_zonelist(FILE *fl);
@@ -2194,67 +2195,71 @@ char buf[MAX_INPUT_LENGTH];
 	chclass = parse_class(*argument);
 
 if ((skill_num = find_skill_num(argument))!=TYPE_UNDEFINED){
-    chclass = GET_CLASS(ch);    
-    sprintf(buf, "Pre-requisites for %s :-\r\n", 
+    chclass = GET_CLASS(ch);
+    sprintf(buf, "Pre-requisites for %s :-\r\n",
 	    	spell_info[skill_num].name);
 	send_to_char(ch, buf);
-	    
     if (spell_info[skill_num].first_prereq[chclass]!= TYPE_UNDEFINED){
-	    sprintf(buf, "    %s", 
+	    sprintf(buf, "    %s",
 	    	spell_info[spell_info[skill_num].first_prereq[chclass]].name);
 	    if (spell_info[skill_num].second_prereq[chclass]!= TYPE_UNDEFINED){
-		    sprintf(buf+strlen(buf), "   %s", 
+		    sprintf(buf+strlen(buf), "   %s",
 	    		spell_info[spell_info[skill_num].second_prereq[chclass]].name);
 	    	}
 	    send_to_char(ch, buf);
     }else{
         send_to_char(ch, "     None.");
-    }   
+    }
 	send_to_char(ch, "\r\n");
     }else{
   		/* if they get here not a skill or a class*/
   		send_to_char(ch, "Syntax: prereq <skillname>\r\n");
   }
-}    
+}
 
 ACMD(do_attributes)
 {
   struct affected_type *aff;
-  char buf[MAX_INPUT_LENGTH]; 
+  char buf[MAX_INPUT_LENGTH];
   char buf2[MAX_INPUT_LENGTH];
   char buf3[MAX_INPUT_LENGTH];
-  int found = FALSE;
+  char buf4[MAX_INPUT_LENGTH];
+  int found = FALSE, i =0;
   struct follow_type *fol;
-
+  struct obj_data *j;
   if (IS_NPC(ch))
     return;
 
-
+  send_to_char(ch, "%s\r\n", ch->player.title);
   sprinttype(GET_SEX(ch), genders, buf, sizeof(buf));
   snprintf(buf3, sizeof(buf3), "%c%s", UPPER(*buf), buf + 1);
   sprinttype(GET_RACE(ch), pc_race_types, buf2, sizeof(buf2));
   sprinttype(GET_SIZE(ch), sizes, buf3, sizeof(buf3));
-  send_to_char(ch, "Sex: %s, Age: %d, Race: %s, Size: %s\r\n",
-   buf, GET_AGE(ch), buf2, buf3);
-  sprinttype(ch->player.chclass, IS_NPC(ch) ? mob_race_types : pc_class_types, buf, sizeof(buf));
-  send_to_char(ch, "Class: %s, Level: [%2d], XP: [%7d], Align: [%4d]\r\n",
-    buf, GET_LEVEL(ch), GET_EXP(ch), GET_ALIGNMENT(ch) );
-  send_to_char(ch, "Hunger: [%2d]  Thirst: [%2d]  Drunk: [%2d]\r\n", GET_COND(ch, FULL), GET_COND(ch, THIRST), GET_COND(ch, DRUNK));
-  send_to_char(ch, "AC: [%d(%+d)], Hitroll: [%2d], Damroll: [%2d]\r\n",
+   sprinttype(ch->player.chclass, IS_NPC(ch) ? mob_race_types : pc_class_types, buf4, sizeof(buf4));
+  send_to_char(ch, "Class: %s   Race: %s   Sex: %s   Size: %s\r\n", buf4, buf2, buf, buf3);
+ // send_to_char(ch, "Sex: %s, Age: %d, Race: %s, Size: %s\r\n",buf, GET_AGE(ch), buf2, buf3);
+  send_to_char(ch, "  Age: %d Years\r\n", GET_AGE(ch));
+   sprintbit(PRF_FLAGS(ch), preference_bits, buf, sizeof(buf));
+    send_to_char(ch, "Your Flags %s\r\n", buf);
+   for (i = 0, j = ch->carrying; j; j = j->next_content, i++);
+    send_to_char(ch, "Weight carried: %dlbs    Items Carried: %d\r\n", IS_CARRYING_W(ch), (IS_CARRYING_N(ch) +i));
+    send_to_char(ch, "Hunger: [%2d]  Thirst: [%2d]  Drunk: [%2d]\r\n", GET_COND(ch, FULL), GET_COND(ch, THIRST), GET_COND(ch, DRUNK));
+    send_to_char(ch, "Your Alignment is %s - %d on a (-1000 to 1000 scale)\r\n", verbal_align(GET_ALIGNMENT(ch)), GET_ALIGNMENT(ch));
+    send_to_char(ch, " AC: [%d(%+d)], Hitroll: [%2d], Damroll: [%2d]\r\n",
 	  GET_AC(ch), dex_app[GET_DEX(ch)].defensive, ch->points.hitroll + str_app[STRENGTH_APPLY_INDEX(ch)].tohit,
 	  ch->points.damroll + str_app[STRENGTH_APPLY_INDEX(ch)].todam);
-  send_to_char(ch, "Attacks: %d\r\n", get_num_attacks(ch));
-  send_to_char(ch, "Abilities: Str[%d/%d]  Int[%d]  Wis[%d]  "
+     send_to_char(ch, "Attacks: %d\r\n", get_num_attacks(ch));
+     send_to_char(ch, "Abilities: Str[%d/%d]  Int[%d]  Wis[%d]  "
 	  "Dex[%d]  Con[%d]  Cha[%d]\r\n",
-	   GET_STR(ch), GET_ADD(ch), GET_INT(ch), GET_WIS(ch), GET_DEX(ch), 
+	   GET_STR(ch), GET_ADD(ch), GET_INT(ch), GET_WIS(ch), GET_DEX(ch),
 	   GET_CON(ch), GET_CHA(ch) );
 	send_to_char(ch, "Saving Throws: Para[%d]  Rod[%d]  Petri[%d]  Breath[%d]  Spell[%d]\r\n",
 	   saving_throws_nat(GET_CLASS(ch), SAVING_PARA, GET_LEVEL(ch)) + GET_SAVE(ch, 0),
-	   saving_throws_nat(GET_CLASS(ch), SAVING_ROD, GET_LEVEL(ch))+ GET_SAVE(ch, 1), 
+	   saving_throws_nat(GET_CLASS(ch), SAVING_ROD, GET_LEVEL(ch))+ GET_SAVE(ch, 1),
 	   saving_throws_nat(GET_CLASS(ch), SAVING_PETRI, GET_LEVEL(ch)) + GET_SAVE(ch, 2),
-	   saving_throws_nat(GET_CLASS(ch), SAVING_BREATH, GET_LEVEL(ch)) + GET_SAVE(ch, 3), 
+	   saving_throws_nat(GET_CLASS(ch), SAVING_BREATH, GET_LEVEL(ch)) + GET_SAVE(ch, 3),
 	   saving_throws_nat(GET_CLASS(ch), SAVING_SPELL, GET_LEVEL(ch)) + GET_SAVE(ch, 4));
-    
+
     if (ch->master)
     send_to_char(ch, "You are following:  %s.\r\n", GET_NAME(ch->master));
 
@@ -2267,10 +2272,8 @@ ACMD(do_attributes)
       found = FALSE;
       }
     }
-		
-	send_to_char(ch, "\r\n----------------------------------------------------------------------\r\n");
-	send_to_char(ch, "                             Affects\r\n");
-	send_to_char(ch, "----------------------------------------------------------------------\r\n");
+
+	send_to_char(ch, "Spells affected by:\r\n");
 	/*for spells and affects*/
 	if (ch->affected) {
     for (aff = ch->affected; aff; aff = aff->next) {
@@ -2278,14 +2281,9 @@ ACMD(do_attributes)
 		snprintf(buf, sizeof(buf), "%-21s ", skill_name(aff->type));
         act(buf, TRUE, ch, 0, 0, TO_CHAR);
 		}
-      if (aff->modifier)
-		{
-        snprintf(buf, sizeof(buf), "%+d to %s", aff->modifier, apply_types[(int) aff->location]);
-	    act(buf, TRUE, ch, 0, 0, TO_CHAR);
-		}
 	}
   }
-  
+
   if (ch->affected2) {
     for (aff = ch->affected2; aff; aff = aff->next) {
 		{
@@ -2302,10 +2300,10 @@ ACMD(do_attributes)
 }
 
 ACMD(do_scan)
-{  
+{
     struct char_data *i;
     int is_in, dir, dis, maxdis = 3, found = 0;
-    char arg[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];   
+    char arg[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];
     char buf[MAX_STRING_LENGTH];
 
     const char *distance[] = {

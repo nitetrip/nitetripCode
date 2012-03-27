@@ -1251,18 +1251,19 @@ case SPELL_DECREPIFY:
 
   case SPELL_IMMUNITY_TO_COLD:
     duration = GET_LEVEL(ch);
-    af[0].location = APPLY_COLD_RESIST;
+    af[0].location = APPLY_COLD_IMMUNE;
     af[0].duration = duration;
-    af[0].modifier = MAX_RESIST;
+    af[0].modifier = 100;
     to_vict = "You feel a chill leave your body!";
+    to_room = "$n shivers for a moment.";
     accum_duration = FALSE;
     break;
 
   case SPELL_IMMUNITY_TO_ELEC:
     duration = GET_LEVEL(ch);
-    af[0].location = APPLY_ELEC_RESIST;
+    af[0].location = APPLY_ELEC_IMMUNE;
     af[0].duration = duration;
-    af[0].modifier = MAX_RESIST;
+    af[0].modifier = 100;
     to_vict = "You feel insulated against electricity!";
        accum_duration = FALSE;
     break;
@@ -2627,6 +2628,6 @@ int check_mag_resists(struct char_data *ch, struct char_data *victim, int damage
  if (victim->char_specials.vulnerable[type] > 0 || victim->char_specials.vulnerable[ATTACK_MAGIC] > 0)
   damage = damage + (damage / 2);// Vuln to Dam does 50% more
   if (victim->char_specials.immune[type] > 0 || victim->char_specials.immune[ATTACK_MAGIC] > 0) 
-  damage = 0;  
- return(damage); 
+  damage = 0;
+ return(damage);
 }
