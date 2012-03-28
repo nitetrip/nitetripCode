@@ -284,6 +284,19 @@ void stop_fighting(struct char_data *ch)
   if (ch == next_combat_list)
     next_combat_list = ch->next_fighting;
 
+  if (AFF_FLAGGED(ch,AFF_FURY)) {
+    REMOVE_BIT(AFF_FLAGS(ch), AFF_FURY); //Fury stops when fighting stops
+    act("$N relaxes as $s fury disappears", TRUE, ch, 0, ch, TO_ROOM);
+    act("You relax as your fury disappears", TRUE, ch, 0, ch, TO_CHAR);
+  }
+
+
+  if (AFF_FLAGGED(ch, AFF_RAGE)) {
+   act("$N relaxes as $s battlerage disappears", TRUE, ch, 0, ch, TO_ROOM);
+   act("You relax as your battlerage disappears", TRUE, ch, 0, ch, TO_CHAR);
+   REMOVE_BIT(AFF_FLAGS(ch), AFF_RAGE); //Rage stops when fighting stops
+  }
+
   REMOVE_FROM_LIST(ch, combat_list, next_fighting);
   ch->next_fighting = NULL;
   FIGHTING(ch) = NULL;
@@ -1074,13 +1087,13 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
   if (victim->master == ch)
     stop_follower(victim);
 
- 
+
   /* Cut damage in half if victim has sanct, to a minimum 1 */
   if (AFF_FLAGGED(victim, AFF_SANCTUARY) && dam >=2)
     dam /= 2;
 
-  if (AFF_FLAGGED(ch, AFF_FURY))
-   dam += ( dam / 3 ); /* Fury adds an additional 1/3 dam */
+  if (AFF_FLAGGED(ch, AFF_FURY) || AFF_FLAGGED(ch, AFF_RAGE))
+   dam += ( dam / 3 ); /* Fury & Rage adds an additional 1/3 dam */
 
   /* Cut Damage by 25% if victim has fort */
   if ((AFF_FLAGGED(victim, AFF_FORT) || AFF_FLAGGED(victim, AFF_REFLECT_DAMAGE)) && (attacktype != TYPE_SUNDAM)){
@@ -1094,7 +1107,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 
  // If victim is paralyzed damage will triple
   if (AFF_FLAGGED(victim, AFF_PARALYZE))
-   dam *= 3;  
+   dam *= 3;
 
   /* Check for PK if this is not a PK MUD */
   if (!pk_allowed) {

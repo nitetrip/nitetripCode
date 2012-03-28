@@ -1062,14 +1062,22 @@ int is_on_water(struct char_data *ch)
 char *verbal_align(int char_align)
 {
 
-  if (char_align > 500)
+  if (char_align > 750)
    return "Good and Holy";
+  if (char_align > 500)
+   return "Good";
   if (char_align > 250)
    return "Good with Neutral Tendancies";
-  if (char_align > -250)
+  if (char_align > 100)
+   return "Neutral with Good Tendancies";
+  if (char_align > - 100)
    return  "Neutral";
+  if (char_align > -250)
+   return "Neutral with Evil Tendancies";
   if (char_align > -500)
    return "Evil with Neutral Tendancies";
+  if (char_align > -750)
+  return "Evil";
 
 return "Pure Evil";
 }

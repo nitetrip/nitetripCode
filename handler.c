@@ -58,7 +58,7 @@ char *fname(const char *namelist)
 }
 
 #define WHITESPACE " \t"
-                               
+
 
 int isname(const char *str, const char *namelist)
 {

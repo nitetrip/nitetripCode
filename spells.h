@@ -123,7 +123,7 @@
 #define SPELL_TELEVIEW_MINOR         84
 #define SPELL_TELEVIEW_MAJOR         85
 #define SPELL_CLAN_RECALL            86
-#define SPELL_ACID_ARROW	     87 /* ported from Odin's base */
+#define SPELL_ACID_ARROW	     87
 #define SPELL_BALL_LIGHTNING         88
 #define SPELL_BOLT_OF_STEEL          89
 #define SPELL_CAUSE_MINOR            90
@@ -146,7 +146,7 @@
 #define SPELL_SEARING_ORB            107
 #define SPELL_HOLY_WORD              108
 #define SPELL_UNHOLY_WORD            109
-#define SPELL_WAIL_OF_THE_BANSHEE    110 /* from odin -- mak */
+#define SPELL_WAIL_OF_THE_BANSHEE    110
 #define SPELL_BAT_SONAR              111
 #define SPELL_BENEFICENCE            112
 #define SPELL_CLOAK_OF_DARKNESS      113
@@ -207,10 +207,10 @@
 #define SPELL_DIMENSION_SHIFT		168
 #define SPELL_DIMENSION_WALK		169
 #define SPELL_DIMENSION_DOOR		170
-#define SPELL_DISPEL_MAGIC		171 //
+#define SPELL_DISPEL_MAGIC		171
 #define SPELL_DISPEL_SILENCE		172
 #define SPELL_DRAW_UPON_HOLY_MIGHT	173
-#define SPELL_ELEMENTAL_AURA		174 // partially done
+#define SPELL_ELEMENTAL_AURA		174
 #define SPELL_RECHARGE    		175
 #define SPELL_EMBALM			176
 #define SPELL_ENFEEBLEMENT		177
@@ -256,30 +256,30 @@
 #define SPELL_SKELETAL_GUISE		217
 #define SPELL_SOMNOLENT_GAZE		218
 #define SPELL_STRENGTH_BURST		219
-#define SPELL_STUN			220 
-#define SPELL_SUCCOR			221 // needs work
+#define SPELL_STUN			220
+#define SPELL_SUCCOR			221
 #define SPELL_SUMMON_AVENGER		222
 #define SPELL_SUMMON_BEAST		223
 #define SPELL_SUMMON_LESSER		224
 #define SPELL_SUMMON_GREATER		225
-#define SPELL_SUNBURST			226 //
-#define SPELL_SUNRAY			227 //
-#define SPELL_SYNOSTODWEOMER		228 // not fully working
-#define SPELL_TELEPORT_MAJOR		229 //
-#define SPELL_TELEPORT_MINOR		230 //
-#define SPELL_TOWER_OF_STRENGTH		231 //
-#define SPELL_TRAIL_OF_WOODLANDS	232 //
-#define SPELL_VAMPIRIC_GAZE		233 //
-#define SPELL_VAMPIRIC_TOUCH		234 //
-#define SPELL_VITALITY			235 //
-#define SPELL_WINDWALK			236 //
-#define SPELL_WITHER			237 // part done
-#define SPELL_DEATH_STRIKE              238 // from cwe
-#define SPELL_MAGICAL_VESTMANTS         239 //
-#define SPELL_ELEMENTAL_SHIELD          240 // partially implemented
-#define SPELL_ASPHYXIATE		241 //
-#define SPELL_PROTECTION_FROM_EVIL    	242 //
-#define SPELL_KNOCK			243 
+#define SPELL_SUNBURST			226
+#define SPELL_SUNRAY			227
+#define SPELL_SYNOSTODWEOMER		228
+#define SPELL_TELEPORT_MAJOR		229
+#define SPELL_TELEPORT_MINOR		230
+#define SPELL_TOWER_OF_STRENGTH		231
+#define SPELL_TRAIL_OF_WOODLANDS	232
+#define SPELL_VAMPIRIC_GAZE		233
+#define SPELL_VAMPIRIC_TOUCH		234
+#define SPELL_VITALITY			235
+#define SPELL_WINDWALK			236
+#define SPELL_WITHER			237
+#define SPELL_DEATH_STRIKE              238
+#define SPELL_MAGICAL_VESTMANTS         239
+#define SPELL_ELEMENTAL_SHIELD          240
+#define SPELL_ASPHYXIATE		241
+#define SPELL_PROTECTION_FROM_EVIL    	242
+#define SPELL_KNOCK			243
 #define SPELL_BLOOD_QUENCH		244
 #define SPELL_ELEMENTAL_SHARD		245
 #define SPELL_MOON_MOTE			246
@@ -316,12 +316,12 @@
 #define SKILL_DISARM                1047 /* Reserved Skill[] DO NOT CHANGE */
 #define SKILL_DIST_SIGHT            1048 /* Reserved Skill[] DO NOT CHANGE */
 #define SKILL_CRIT_HIT              1049 /* Reserved Skill[] DO NOT CHANGE */
-#define SKILL_CIRCLE                1050 /* from odin's cwe */
-#define SKILL_SHIELD_SPEC           1051 //
-#define SKILL_PARRY		    1052 //
-#define SKILL_RAGE		    1053 //
-#define SKILL_WHIRLWIND             1054 //
-#define SKILL_ARMOR_SPEC        	1055 //
+#define SKILL_CIRCLE                1050
+#define SKILL_SHIELD_SPEC           1051
+#define SKILL_PARRY		    1052
+#define SKILL_RAGE		    1053
+#define SKILL_WHIRLWIND             1054
+#define SKILL_ARMOR_SPEC        	1055
 #define SKILL_DISABLE_TRAP		1056
 #define SKILL_ENDURANCE			1057
 #define SKILL_ENVENOM			1058

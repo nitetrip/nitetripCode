@@ -80,10 +80,11 @@ void affect_update(void)
 {
   struct affected_type *af, *next, *af2, *next2;
   struct char_data *i;
-  int iteration = 0;
+  int iteration = 1, j=0;
 
   for (i = character_list; i; i = i->next) {
-   startofloop:
+   if (AFF_FLAGGED(i, AFF_HASTE)) iteration = 2;
+   for (j = 0; j < iteration; j++) { // this will do the loop twice if AFF_HASTED - leaves room for easy future expansion (if we need spells to wear off quicker)
     for (af = i->affected; af; af = next) {
       next = af->next;
       if (af->duration >= 1)
@@ -100,8 +101,8 @@ void affect_update(void)
       }
     }
     /* for AFF2   Anubis */
-    for (af2 = i->affected2; af2; af2 = next2) {      
-      next2 = af2->next;      
+    for (af2 = i->affected2; af2; af2 = next2) {
+      next2 = af2->next;
       if (af2->duration >= 1)
 	af2->duration--;
       else if (af2->duration == -1)	/* No action */
@@ -111,15 +112,11 @@ void affect_update(void)
 	  if (!af2->next || (af2->next->type != af2->type) ||
 	      (af2->next->duration > 0))
 	    if (spell_info[af2->type].wear_off_msg)
-	      send_to_char(i, "%s\r\n", spell_info[af2->type].wear_off_msg);	
-	affect2_remove(i, af2);
+	      send_to_char(i, "%s\r\n", spell_info[af2->type].wear_off_msg);
+       affect2_remove(i, af2);
       }
+     }
     }
-    iteration++;
-  if ((AFF_FLAGGED(i, AFF_HASTE)) && (iteration < 2))
-   goto startofloop;
-
-    iteration = 0;
  }
 }
 
@@ -981,30 +978,31 @@ case SPELL_DECREPIFY:
         to_room = "You see a dull grey aura of elemental power surround $n.";
         break;
      case ELEMENTAL_TYPE_RED:
-        af[0].location = APPLY_FIRE_RESIST;
+        af[0].location = APPLY_FIRE_IMMUNE;
         af[0].duration = duration;
         af[0].modifier = MAX_RESIST;
-        af[1].location = APPLY_LGHT_RESIST;
+        af[1].location = APPLY_LGHT_IMMUNE;
         af[1].duration = duration;
         af[1].modifier = MAX_RESIST;
+
         to_vict = "You see a flickering red aura of elemental power surround you.";
         to_room = "You see a flickering red aura of elemental power surround $n.";
         break;
       case ELEMENTAL_TYPE_BLUE:
-        af[0].location = APPLY_COLD_RESIST;
+        af[0].location = APPLY_COLD_IMMUNE;
         af[0].duration = duration;
         af[0].modifier = MAX_RESIST;
-        af[1].location = APPLY_ACID_RESIST;
+        af[1].location = APPLY_ACID_IMMUNE;
         af[1].duration = duration;
         af[1].modifier = MAX_RESIST;
         to_vict = "You see a shimmering blue aura of elemental power surround you.";
         to_room = "You see a shimmering blue aura of elemental power surround $n.";
         break;
       case ELEMENTAL_TYPE_WHITE:
-        af[0].location = APPLY_ELEC_RESIST;
+        af[0].location = APPLY_ELEC_IMMUNE;
         af[0].duration = duration;
         af[0].modifier = MAX_RESIST;
-        af[1].location = APPLY_GAS_RESIST;
+        af[1].location = APPLY_GAS_IMMUNE;
         af[1].duration = duration;
         af[1].modifier = MAX_RESIST;
         to_vict = "You see a hazy white aura of elemental power surround you.";
@@ -1127,6 +1125,10 @@ case SPELL_DECREPIFY:
   case SPELL_HOLD_PLANT:
   case SPELL_HOLD_UNDEAD:
   case SPELL_PARALYZE:
+    if (AFF_FLAGGED(victim, AFF_FREE_ACTION)) {
+      send_to_char(ch, "%s", NOEFFECT);
+      return;
+    }
     if ((affected_by_spell(victim, SPELL_PARALYZE)) || AFF_FLAGGED(victim, AFF_PARALYZE)) {
       send_to_char(ch, "Your victim is already paralyzed!\r\n");
       return;
@@ -1199,6 +1201,11 @@ case SPELL_DECREPIFY:
    break;
 
   case SPELL_GHOUL_GAUNTLET:
+      if (AFF_FLAGGED(victim, AFF_FREE_ACTION)) {
+      send_to_char(ch, "%s", NOEFFECT);
+      return;
+    }
+
     af[0].duration = (GET_LEVEL(ch)/10)+1;
     af[0].bitvector = AFF_PARALYZING_TOUCH;
     accum_duration = FALSE;
@@ -1616,7 +1623,7 @@ case SPELL_SHIELD_AGAINST_EVIL:
     af[0].bitvector = AFF_SLEEPWALK;
     accum_duration = TRUE;
     to_vict = "You feel your body lift off the ground.";
-    to_room = "$n slowly stands up as if in a dazed state of mind.";    
+    to_room = "$n slowly stands up as if in a dazed state of mind.";
     break;
  case SPELL_SOMNOLENT_GAZE:
     if (AFF_FLAGGED(ch, AFF_BLIND)) {
@@ -1777,7 +1784,6 @@ case SPELL_SHIELD_AGAINST_EVIL:
     act(to_room, TRUE, victim, 0, ch, TO_ROOM);
 
   for (i = 0; i < MAX_SPELL_AFFECTS; i++)
-
     if (af[i].bitvector || (af[i].location != APPLY_NONE))
       affect_join(victim, af+i, accum_duration, FALSE, accum_affect, FALSE);
   }
@@ -1940,13 +1946,13 @@ void mag_masses(int level, struct char_data *ch, int spellnum, int savetype)
         {
         case SPELL_MASS_HEAL:
         mag_points(level, ch, tch, param1, SPELL_HEAL_CRITICAL, savetype);
-        to_char = "You call a healing ray of sun from the heavens.\r\n";
-        to_room = "$n calls a healing ray of sun from the heavens, which warms you.\r\n";
+        to_char = "You call a healing ray of sun from the heavens.";
+        to_room = "$n calls a healing ray of sun from the heavens, which warms you.";
         break;
         case SPELL_HEALING_WIND:
         mag_points(level, ch, tch, param1, SPELL_HEAL_SERIOUS, savetype);
-        to_char = "You summon a warm, balmy breeze, fragrant of healing herbs, which soothes your wounds. \r\n";
-        to_room = "$n summons a warm, balmy breeze, fragrant of healing herbs, which soothes your wounds. \r\n";
+        to_char = "You summon a warm, balmy breeze, fragrant of healing herbs, which soothes your wounds.";
+        to_room = "$n summons a warm, balmy breeze, fragrant of healing herbs, which soothes your wounds.";
         break;
         }
     }
@@ -2288,7 +2294,9 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
   case SPELL_DIVINE_HEAL:
     healing = 500;
     send_to_char(victim, "You are filled with warmth and a sense of reverence.\r\n");
-    break;
+
+ break;
+
  case SPELL_EXCOMMUNICATE:
       if (GET_CLASS(victim) == CLASS_DISCIPLE || GET_CLASS(victim) == CLASS_CRUSADER || GET_CLASS(victim) == CLASS_CLERIC || GET_CLASS(victim) == MOB_CLASS_CLERIC || GET_CLASS(victim) == MOB_CLASS_DISCIPLE || GET_CLASS(victim) == MOB_CLASS_CRUSADER)
           {
@@ -2382,25 +2390,35 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
         send_to_char(ch, "Your god is not the source of %s's power!", GET_NAME(victim));
         }
     break;
-  case SPELL_HEAL || SPELL_HEAL_LIGHT:
+
+  case SPELL_HEAL:
+  case SPELL_HEAL_LIGHT:
     healing = 60;
-    send_to_char(victim, "A warm feeling briefly overtakes you.\r\n");
+    to_vict = "A warm feeling briefly overtakes you.";
+    to_notvict = "$N heals $n.";
+    to_char = "You heal $N.";
     break;
-  case SPELL_HEAL_CRITICAL:
+ 
+ case SPELL_HEAL_CRITICAL:
     healing = 180;
     send_to_char(victim, "A warm feeling floods your body.\r\n");
+    to_notvict = "$N heals $n.";
+    to_char = "You heal $N.";
     break;
   case SPELL_HEAL_SERIOUS:
     healing = 120;
     send_to_char(victim, "A warm feeling floods your body.\r\n");
+    to_notvict = "$N heals $n.";
+    to_char = "You heal $N.";
     break;
   case SPELL_SOVEREIGN_HEAL:
     healing = 240;
     send_to_char(victim, "You glow slightly as warmth floods through your veins.\r\n");
+    to_room = "A golden glow surrounds $n.";
     break;
   case SPELL_SYNOSTODWEOMER:
     healing = GET_HIT(ch)/2;
-       send_to_char(ch, "You feel weaker as you transfer your life force to %s.\r\n", GET_NAME(victim));
+    send_to_char(ch, "You feel weaker as you transfer your life force to %s.\r\n", GET_NAME(victim));
     send_to_char(victim, "You feel revived as %s transfers %s life force to you.\r\n", GET_NAME(ch), HSHR(ch));
     to_room = "$n grows pale as $e transfers $s life force to $N.";
     GET_HIT(ch) = MAX(1, GET_HIT(ch) - healing);
@@ -2430,11 +2448,13 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
   GET_HIT(victim) = MIN(GET_MAX_HIT(victim), GET_HIT(victim) + healing);
   GET_MOVE(victim) = MIN(GET_MAX_MOVE(victim), GET_MOVE(victim) + move);
   GET_MANA(victim) = MIN(GET_MAX_MANA(victim), GET_MANA(victim) + manaadd);
- 
+
  update_pos(victim);
 
+  if (to_char != NULL)
+    act(to_char, FALSE, ch, 0, victim, TO_CHAR);
   if (to_vict != NULL)
-    act(to_vict, FALSE, victim, 0, ch, TO_CHAR);
+    act(to_vict, FALSE, ch, 0, victim, TO_VICT);
   if (to_room != NULL)
     act(to_room, TRUE, victim, 0, ch, TO_ROOM);
   if (to_notvict != NULL)
@@ -2452,7 +2472,7 @@ void mag_unaffects(int level, struct char_data *ch, struct char_data *victim,
 
   if (victim == NULL)
     return;
-
+   
   switch (spellnum) {
   case SPELL_CURE_BLIND:
     spell = SPELL_BLINDNESS;

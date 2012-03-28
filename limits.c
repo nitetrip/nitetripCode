@@ -439,6 +439,9 @@ void gain_condition(struct char_data *ch, int condition, int value)
   if (IS_AFFECTED(ch, AFF_SUSTAIN)) /* also no change  Anubis */
     return;
 
+  if (AFF_FLAGGED(ch, AFF_HASTE))
+   value *= 2; // the amount gained is doubled for haste
+
   intoxicated = (GET_COND(ch, DRUNK) > 0);
 
   GET_COND(ch, condition) += value;
@@ -511,7 +514,6 @@ void point_update(void)
 {
   struct char_data *i, *next_char;
   struct obj_data *j, *next_thing, *jj, *next_thing2;
-  int iteration = 0;
 
    /* rooms */
      room_rnum nr;
@@ -523,18 +525,11 @@ void point_update(void)
   for (i = character_list; i; i = next_char) {
     next_char = i->next;
 
- startofloop: /* Haste functionality */
 
     gain_condition(i, FULL, -1);
     gain_condition(i, DRUNK, -1);
     gain_condition(i, THIRST, -1);
 
- iteration++; /* Haste functionality */
-
-  if ((AFF_FLAGGED(i, AFF_HASTE)) && (iteration < 2)) /* Haste functionality */
-    goto startofloop;
-
-   iteration = 0; /* Haste functionality */
 
 /*
  *  Check to see if eq should pop off

@@ -1237,9 +1237,9 @@ k->player.long_descr : "<None>\r\n");
   /* Routine to show what spells a char is affected by */
   if (k->affected) {
     for (aff = k->affected; aff; aff = aff->next) {
-      /*                                             What's with this + 1?                                                        */
-      /*send_to_char(ch, "SPL: (%3dhr) %s%-21s%s ", aff->duration + 1, CCCYN(ch, C_NRM), skill_name(aff->type), CCNRM(ch, C_NRM));*/
-        send_to_char(ch, "SPL: (%3dhr) %s%-21s%s ", aff->duration, CCCYN(ch, C_NRM), skill_name(aff->type), CCNRM(ch, C_NRM));
+      // Add +1 so that the spell does not show 0 ticks remaining
+      send_to_char(ch, "SPL: (%3dhr) %s%-21s%s ", aff->duration + 1, CCCYN(ch, C_NRM), skill_name(aff->type), CCNRM(ch, C_NRM));
+      //  send_to_char(ch, "SPL: (%3dhr) %s%-21s%s ", aff->duration, CCCYN(ch, C_NRM), skill_name(aff->type), CCNRM(ch, C_NRM));
       if (aff->modifier)
 	send_to_char(ch, "%+d to %s", aff->modifier, apply_types[(int) aff->location]);
 
