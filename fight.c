@@ -286,14 +286,14 @@ void stop_fighting(struct char_data *ch)
 
   if (AFF_FLAGGED(ch,AFF_FURY)) {
     REMOVE_BIT(AFF_FLAGS(ch), AFF_FURY); //Fury stops when fighting stops
-    act("$N relaxes as $s fury disappears", TRUE, ch, 0, ch, TO_ROOM);
-    act("You relax as your fury disappears", TRUE, ch, 0, ch, TO_CHAR);
+    act("$N relaxes as $s fury disappears.", TRUE, ch, 0, ch, TO_ROOM);
+    act("You relax as your fury disappears.", TRUE, ch, 0, ch, TO_CHAR);
   }
 
 
   if (AFF_FLAGGED(ch, AFF_RAGE)) {
-   act("$N relaxes as $s battlerage disappears", TRUE, ch, 0, ch, TO_ROOM);
-   act("You relax as your battlerage disappears", TRUE, ch, 0, ch, TO_CHAR);
+   act("$N relaxes as $s battlerage disappears.", TRUE, ch, 0, ch, TO_ROOM);
+   act("You relax as your battlerage disappears.", TRUE, ch, 0, ch, TO_CHAR);
    REMOVE_BIT(AFF_FLAGS(ch), AFF_RAGE); //Rage stops when fighting stops
   }
 

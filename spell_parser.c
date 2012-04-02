@@ -1,3 +1,4 @@
+
 /* ************************************************************************
 *   File: spell_parser.c                                Part of CircleMUD *
 *  Usage: top-level magic routines; outside points of entry to magic sys. *
@@ -354,6 +355,9 @@ TO_ROOM);
     case SPELL_TELEVIEW_MINOR:	MANUAL_SPELL(spell_teleview); break;
     case SPELL_SPOOK:           MANUAL_SPELL(spell_spook); break;
     case SPELL_VITALITY:              MANUAL_SPELL(spell_vitality); break;
+    default:
+      log("Undefined case(value is %d) in function call_magic file spell_parser.c\r\n", spellnum);
+    break;
     }
 
 
@@ -1162,7 +1166,7 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
         TAR_CHAR_ROOM, FALSE, MAG_POINTS,
         NULL);
  spello(SPELL_DRAW_UPON_HOLY_MIGHT, "draw upon holy might", 30, 10, 2, POS_FIGHTING,
-        TAR_ATTRIBUTE, FALSE, MAG_AFFECTS, "You feel physically weak as the energy of your god drains from your body.");
+        TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You feel physically weak as the energy of your god drains from your body.");
  spello(SPELL_DREAMSIGHT, "dreamsight", 30, 10, 2, POS_STANDING, TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "Your heightened awareness dissipates.");
 
   spello(SPELL_EARTHQUAKE, "earthquake",40, 25, 3, POS_FIGHTING, TAR_IGNORE, TRUE, MAG_AREAS, NULL);
@@ -1210,11 +1214,10 @@ spello(SPELL_DIMENSION_DOOR, "dimension door", 120, 75, 5, POS_STANDING,
 
   spello(SPELL_FLEET_FEET, "fleet feet", 40, 10, 2, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "Your feet and legs feel their normal weight again.");
-        
+
   spello(SPELL_FORESTATION, "forestation", 300, 300, 0, POS_STANDING,
 	TAR_IGNORE, FALSE, MAG_GROUPS,
 	NULL);
-              
   spello(SPELL_FREE_ACTION, "free action", 50, 20, 5, POS_FIGHTING,
         TAR_CHAR_ROOM, FALSE, MAG_AFFECTS, "You find it slightly more difficult to move.");
  spello(SPELL_FUMBLE, "fumble", 50, 20, 3, POS_STANDING, TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, NULL);

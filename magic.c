@@ -97,7 +97,9 @@ void affect_update(void)
 	      (af->next->duration > 0))
 	    if (spell_info[af->type].wear_off_msg)
 	      send_to_char(i, "%s\r\n", spell_info[af->type].wear_off_msg);
-	affect_remove(i, af);
+        if (af->type == SPELL_PARALYZE) GET_POS(i) = POS_STANDING;
+        affect_remove(i, af);
+
       }
     }
     /* for AFF2   Anubis */
@@ -856,10 +858,11 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     duration = GET_LEVEL(ch)*3;
     af[0].duration = duration;
     af[0].bitvector = AFF_DEATHS_DOOR;
-    af[1].location = APPLY_CON;
-    af[1].duration = duration;
+    af[0].location = APPLY_CON;
+    af[0].modifier = 1;
+   /* af[1].duration = duration;
     af[1].modifier = 1;
-    af[1].bitvector = AFF_DEATHS_DOOR;
+    af[1].bitvector = AFF_DEATHS_DOOR; */
     accum_duration = FALSE;
     send_to_char(ch, "%s looks more hardy.\r\n", CAP(GET_NAME(victim)));
     to_vict = "You feel more hardy.";
@@ -945,7 +948,7 @@ case SPELL_DECREPIFY:
 
   case SPELL_DRAW_UPON_HOLY_MIGHT:
     af[0].duration = GET_LEVEL(ch);
-    af[0].location = APPLY_STR+10;// +param1; needs to be fixed
+    af[0].location = APPLY_STR;
     af[0].modifier = 1+(GET_LEVEL(ch)/10);
     accum_duration = FALSE;
     to_vict = "Your body shudders violently as the power of your god is channeled into you.";
@@ -1174,6 +1177,10 @@ case SPELL_DECREPIFY:
     break;
 
   case SPELL_FREE_ACTION:
+    if (affected_by_spell(victim, SPELL_PARALYZE) || GET_POS(victim) == POS_PARALYZED) {
+      affect_from_char(victim, SPELL_PARALYZE);
+      new_position = POS_STANDING;
+    }
     duration = GET_LEVEL(ch)/4+3;
     af[0].duration = duration;
     af[0].bitvector = AFF_FREE_ACTION;
@@ -1832,7 +1839,6 @@ void perform_mag_groups(int level, struct char_data *ch,
     send_to_char(ch, "You conjure up a great feast for your group members to gorge themselves on.\r\n");
     to_room = "$n conjures up a great feast for $s group members to gorge themselves on.";
     act(to_room, TRUE, ch, 0, ch, TO_ROOM);
-    //mag_manual(level, ch, tch, param1, NULL, SPELL_VITALITY);
     spell_vitality(level, ch, tch, NULL, param1, SPELL_HEROES_FEAST);
     break;
   case SPELL_SUSTAIN_GROUP:
@@ -2114,7 +2120,6 @@ void mag_areas(int level, struct char_data *ch, int spellnum, int savetype)
         break;
       case SPELL_SEARING_ORB:
         mag_affects(level, ch, tch, 0, SPELL_BLINDNESS, savetype);
-        // mag_manual(level, ch, tch, NOWHERE, NULL, SPELL_STUN);
         spell_stun(level, ch, tch, NULL, NOWHERE, SPELL_SEARING_ORB);
        break;
       case SPELL_CHAIN_LIGHTNING:
@@ -2122,7 +2127,6 @@ void mag_areas(int level, struct char_data *ch, int spellnum, int savetype)
         mag_affects(level, ch, tch, 0, SPELL_BLINDNESS, savetype);
       break;
       case SPELL_WAIL_OF_THE_BANSHEE:
-      //mag_manual(level, ch, tch, NOWHERE, NULL, SPELL_SPOOK);
       spell_spook(level, ch, tch, NULL, NOWHERE, SPELL_WAIL_OF_THE_BANSHEE);
        break;
     }

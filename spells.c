@@ -791,20 +791,25 @@ ASPELL(spell_identify)
  * wielding character's hit/dam totals.
  */
 ASPELL(spell_enchant_weapon)
-{
+{ // FIXME - let's make a wow - type enchanting system, possibly need reagents
   int i;
-
-  if (ch == NULL || obj == NULL)
-    return;
+  if (ch == NULL || obj == NULL) {
+     return;}
 
   /* Either already enchanted or not a weapon. */
-  if (GET_OBJ_TYPE(obj) != ITEM_WEAPON || OBJ_FLAGGED(obj, ITEM_MAGIC))
-    return;
+  if (GET_OBJ_TYPE(obj) != ITEM_WEAPON) {
+     send_to_char(ch, "You can only enchant weapons!\r\n");
+     return; } 
 
-  /* Make sure no other affections. */
+  if (OBJ_FLAGGED(obj, ITEM_MAGIC)) {
+     send_to_char(ch, "Magic already flows through this weapon.\r\n");
+     return; }
+
+   // Make sure there are no other affections.
   for (i = 0; i < MAX_OBJ_AFFECT; i++)
-    if (obj->affected[i].location != APPLY_NONE)
-      return;
+    if (obj->affected[i].location != APPLY_NONE){
+     send_to_char(ch, "This weapon has been enchanted by other magic!\r\n");
+     return;}
 
   SET_BIT(GET_OBJ_EXTRA(obj), ITEM_MAGIC);
 

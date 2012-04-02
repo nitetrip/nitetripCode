@@ -202,18 +202,18 @@ uncomment to fix GODROOM */
     }
     else
     send_to_char(ch, "You are not experienced enough to enter that room.\r\n");
-
     return 0;
   }
-  if (GET_LEVEL(ch) > ROOM_MAX_LEVEL(EXIT(ch, dir)->to_room) && GET_LEVEL(ch) < LVL_SAINT ) {
+  if (ROOM_MAX_LEVEL(EXIT(ch, dir)->to_room) > 0) {
+   if (GET_LEVEL(ch) > ROOM_MAX_LEVEL(EXIT(ch, dir)->to_room)  && GET_LEVEL(ch) < LVL_SAINT ) {
     if (world[EXIT(ch, dir)->to_room].max_level_message ){
        send_to_char(ch, world[EXIT(ch, dir)->to_room].max_level_message);
        send_to_char(ch, "\r\n");
     }
     else
     send_to_char(ch, "You are too experienced to enter that room.\r\n");
-
     return 0;
+   }
   }
   if (AFF_FLAGGED(ch, AFF_FLEET_FEET)) {
       need_movement = need_movement / 2;

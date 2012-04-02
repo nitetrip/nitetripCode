@@ -2321,24 +2321,24 @@ ACMD(do_scan)
     {
         act("You can't see anything, you're blind!", TRUE, ch, 0, 0, TO_CHAR);
         return;
-    }  
+    }
 
-    /*  
+    /*
      * By level is dumb, but we'll keep it here just in case we change our
      * minds.
      *
     maxdis = ((GET_LEVEL(ch)/30)+3);
     if (GET_LEVEL(ch) >= LVL_SAINT)*/
- 
+
     if (!GET_SKILL(ch, SKILL_DIST_SIGHT))
     {
         if (AFF_FLAGGED(ch, AFF_DIST_SIGHT))
-            maxdis = 4; /* Wearing a DIST_SIGHT obj/having a DIST_SIGHT spell only gives you 1 extra room to see */
+            maxdis = 3; /* Wearing a DIST_SIGHT obj/having a DIST_SIGHT spell only gives you 1 extra room to see */
         else
-            maxdis = 3; /* Default scan dist for people without the skill */
+            maxdis = 2; /* Default scan dist for people without the skill */
     }
 
-    if (GET_SKILL(ch, SKILL_DIST_SIGHT))
+    if (GET_SKILL(ch, SKILL_DIST_SIGHT) && AFF_FLAGGED(ch, AFF_DIST_SIGHT))
     {
         if (GET_SKILL(ch, SKILL_DIST_SIGHT) <= 33)
             maxdis = 5;
@@ -2348,10 +2348,13 @@ ACMD(do_scan)
             maxdis = 7;
     }
 
+   if (GET_LEVEL(ch) >= LVL_IMMORT) 
+      maxdis = 7;
+
     half_chop(argument, arg, arg2);
 
     if (!*arg)			/* "scan" alone, without an argument at all */
-    {     
+    {
         act("You quickly scan the area and see:", TRUE, ch, 0, 0, TO_CHAR);
         act("$n quickly scans the area.", FALSE, ch, 0, 0, TO_ROOM);
         is_in = ch->in_room;

@@ -1222,7 +1222,7 @@ void oedit_parse(struct descriptor_data *d, char *arg)
   case OEDIT_VALUE_1:
     /*
      * Lucky, I don't need to check any of these for out of range values.
-     * Hmm, I'm not so sure - Rv  
+     * Hmm, I'm not so sure - Rv
      */
 
     if (GET_OBJ_TYPE(OLC_OBJ(d)) == ITEM_MONEY || GET_OBJ_TYPE(OLC_OBJ(d)) == ITEM_KEY || GET_OBJ_TYPE(OLC_OBJ(d)) == ITEM_LIGHT)

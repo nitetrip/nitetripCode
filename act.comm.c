@@ -536,6 +536,9 @@ ACMD(do_gen_comm)
   /* to keep pets, etc from being ordered to shout
   if (!ch->desc)
     return;                                       */
+ if (AFF_FLAGGED(ch, AFF_SILENCE)) {
+    send_to_char(ch, "Your vocal chords are too tight to move!!\r\n");
+    return; }
 
   if (PLR_FLAGGED(ch, PLR_NOSHOUT)) {
     send_to_char(ch, "%s", com_msgs[subcmd][0]);

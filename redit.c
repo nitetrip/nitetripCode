@@ -172,8 +172,7 @@ ACMD(do_room_copy)
 
 ACMD(do_dig)
 {
-  
-  
+
   int direction, opposite, to_room, buf_num;
   room_data *room_src, *room_dst;
   struct room_direction_data *exit, *exit2;
@@ -183,21 +182,24 @@ ACMD(do_dig)
   two_arguments(argument, buf, buf2);
 
   if (!*buf || !*buf2) {
-    send_to_char(ch, "Usage: dig <direction> <room> - to create an exit\r\n"
+    send_to_char(ch, "Usage: dig <direction> <room vnum> - to create an exit\r\n"
                      "       dig <direction> -1     - to delete an exit\r\n");
     return;
   }
 
   buf_num = atoi(buf2);
-  
+  if (buf_num == 0) {
+     send_to_char(ch, "Invalid room vnum!\r\n");
+     return;}
+
   /* May the char alter this room ?*/
-  if ( !can_edit_zone(ch, 
+  if ( !can_edit_zone(ch,
                       zone_table[real_zone_by_thing(GET_ROOM_VNUM(IN_ROOM(ch)))].number,
                       SCMD_OASIS_REDIT )) {
     send_to_char(ch, "You may only dig within your designated zone!\r\n");
     return;
   }
-        
+
   /* skip target room check if is this a 'remove exit' call */
   if (buf_num >= 0) {
     /* May the char alter the target room ?*/
@@ -238,10 +240,10 @@ ACMD(do_dig)
   if ((to_room = real_room(buf_num)) == NOWHERE) {
     send_to_char(ch, "Target room not found - aborting.\r\n");
     return;
-  }  
+  }
 
   room_dst = &world[to_room];
-  
+
   if (room_src->dir_option[direction]) {
     send_to_char(ch, "An exit already exist in that direction!\r\n");
     return;
@@ -258,7 +260,7 @@ ACMD(do_dig)
     room_dst->dir_option[opposite] = exit2;
     exit2->to_room = IN_ROOM(ch);
     send_to_char(ch, "and opposite exit, leading back here.\r\n");
-    
+
     real_zone = real_zone_by_thing(world[IN_ROOM(ch)].number);
     add_to_save_list(zone_table[real_zone].number, SL_WLD);
     redit_save_to_disk(real_zone);
@@ -297,16 +299,16 @@ int buildwalk(struct char_data *ch, int dir) {
   room_vnum vnum;
   room_rnum rnum;
   char buf[MAX_STRING_LENGTH];
-  
+
   if (IS_NPC(ch) || !PRF_FLAGGED(ch, PRF_BUILDWALK) ||
       !can_edit_zone(ch, zone_table[world[ch->in_room].zone].number, SCMD_OASIS_REDIT)) 
     return (0);
-  
+
   if ((vnum = redit_find_new_vnum(world[ch->in_room].zone)) == NOWHERE) {
     send_to_char(ch, "No free vnums are available in this zone!\r\n");
     return (0);
   }
-  
+
   /* Set up data for add_room function */
   CREATE(room, struct room_data, 1);
   room->name = strdup("New BuildWalk Room");
@@ -314,7 +316,7 @@ int buildwalk(struct char_data *ch, int dir) {
   room->description = strdup(buf);
   room->number = vnum;
   room->zone = world[ch->in_room].zone;
-      
+
   /* Add the room */
   add_room(room);
 
@@ -342,8 +344,8 @@ void redit_setup_new(struct descriptor_data *d)
   OLC_ROOM(d)->name = strdup("An unfinished room");
   OLC_ROOM(d)->description = strdup("You are in an unfinished room.\r\n");
   OLC_ROOM(d)->number = NOWHERE;
-  OLC_ROOM(d)->min_level = 1;
-  OLC_ROOM(d)->max_level = LVL_SAINT - 1;
+  OLC_ROOM(d)->min_level = 0; // 0 means there is no min/max level
+  OLC_ROOM(d)->max_level = 0;
   OLC_ITEM_TYPE(d) = WLD_TRIGGER;
   OLC_ROOM(d)->size = 0;
   redit_disp_menu(d);
@@ -981,7 +983,7 @@ void redit_parse(struct descriptor_data *d, char *arg)
    break;
   case REDIT_ROOM_MIN_LEVEL:
     number = atoi(arg);
-    if (number < 1 || number >= LVL_SAINT) {
+    if (number < 0 || number >= LVL_SAINT) {
        write_to_output(d, "That is not a valid minimum level!\r\n");
        }
     else {
@@ -1008,7 +1010,7 @@ void redit_parse(struct descriptor_data *d, char *arg)
        return;
   case REDIT_ROOM_MAX_LEVEL:
     number = atoi(arg);
-    if (number < 1 || number >= LVL_SAINT) {
+    if (number < 0 || number >= LVL_SAINT) {
        write_to_output(d, "That is not a valid maximum level!\r\n");
        }
     else {
