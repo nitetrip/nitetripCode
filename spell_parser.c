@@ -221,11 +221,10 @@ int call_magic(struct char_data *caster, struct char_data *cvict, struct obj_dat
     return 0;
 
   if (ROOM_FLAGGED(IN_ROOM(caster), ROOM_NOMAGIC) && (GET_LEVEL(caster) < LVL_SAINT) ) {
-    if (world[IN_ROOM(caster)].nomagic_message_caster != NULL && 
+    if (world[IN_ROOM(caster)].nomagic_message_caster != NULL &&
         world[IN_ROOM(caster)].nomagic_message_room != NULL){
        send_to_char(caster, "%s\r\n", world[IN_ROOM(caster)].nomagic_message_caster);
-       act(world[IN_ROOM(caster)].nomagic_message_room, FALSE, caster, 0, 0, 
-TO_ROOM);
+       act(world[IN_ROOM(caster)].nomagic_message_room, FALSE, caster, 0, 0, TO_ROOM);
     } else {
     send_to_char(caster, "Your magic fizzles out and dies.\r\n");
     act("$n's magic fizzles out and dies.", FALSE, caster, 0, 0, TO_ROOM);
@@ -577,9 +576,9 @@ int cast_spell(struct char_data *ch, struct char_data *tch, struct obj_data *tob
     send_to_char(ch, "You can't cast this spell if you're not in a group!\r\n");
     return (0);
   }
-  
-   /* send_to_char(ch, "%s", OK); <-- that's just dumb */
-  
+
+   send_to_char(ch, "%s", OK);
+
   say_spell(ch, spellnum, tch, tobj);
 
   return (call_magic(ch, tch, tobj, param1, spellnum, GET_LEVEL(ch), CAST_SPELL));
@@ -624,7 +623,7 @@ ACMD(do_cast)
   spellnum = find_skill_num(s);
 
   if ((spellnum < 1) || (spellnum > MAX_SPELLS)) {
-    send_to_char(ch, "Cast what?!?\r\n");           
+    send_to_char(ch, "Cast what?!?\r\n");
     return;
   }
   if ((GET_LEVEL(ch) < SINFO.min_level[(int) GET_CLASS(ch)]) && (GET_SKILL(ch, spellnum) == 0)) {
@@ -1050,15 +1049,15 @@ spello(SPELL_BOLT_OF_STEEL, "bolt of steel", 35, 15, 2, POS_FIGHTING, TAR_CHAR_R
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "The shadows leave, leaving you exposed.");
   spello(SPELL_CLOAK_OF_THE_NIGHT, "cloak of the night", 60, 25, 5, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "The darkness dissipates letting the light shine in.");
-  
+
 
   spello(SPELL_CHI_FIST, "chi fist", 30, 15, 5, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
         NULL);
 
-  spello(SPELL_CLONE, "clone", 80, 65, 5, POS_STANDING,
-	TAR_SELF_ONLY, FALSE, MAG_SUMMONS,
-	NULL);
+   spello(SPELL_CLONE, "clone", 80, 50, 3, POS_STANDING, TAR_IGNORE, FALSE, MAG_SUMMONS, NULL);
+
+ //  spello(SPELL_CLONE, "clone", 80, 65, 5, POS_STANDING, TAR_SELF_ONLY, FALSE, MAG_SUMMONS, NULL);
 
   spello(SPELL_COLOR_SPRAY, "color spray", 30, 15, 3, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
@@ -1496,11 +1495,11 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
   spello(SPELL_SONIC_BLAST, "sonic blast", 60, 20, 20, POS_FIGHTING,
             TAR_CHAR_ROOM | TAR_FIGHT_VICT, TRUE, MAG_DAMAGE,
             NULL);
-            
+ 
   spello(SPELL_SOVEREIGN_HEAL, "sovereign heal", 90, 75, 5, POS_FIGHTING,
             TAR_CHAR_ROOM, FALSE, MAG_POINTS,
             NULL);
-            
+
   spello(SPELL_SPOOK, "spook", 40, 20, 5, POS_STANDING,
         TAR_CHAR_ROOM, FALSE, MAG_MANUAL, NULL);
 
@@ -1535,11 +1534,10 @@ spello(SPELL_SHIELD_AGAINST_EVIL, "shield against evil", 40, 10, 3, POS_STANDING
 
   spello(SPELL_SUSTAIN_GROUP, "sustain group", 120, 60, 10, POS_STANDING,
 	TAR_IGNORE, FALSE, MAG_GROUPS,
-	"You start to feel hungry again.");      
-        
+	"You start to feel hungry again.");
   spello(SPELL_TALES_OF_ARCANE_LORE, "tales of arcane lore", 300, 300, 0, POS_STANDING,
 	TAR_IGNORE, FALSE, MAG_GROUPS,
-	NULL);      
+	NULL);
 
   spello(SPELL_TELEPORT, "teleport", 75, 50, 3, POS_STANDING,
 	TAR_CHAR_ROOM, FALSE, MAG_MANUAL,

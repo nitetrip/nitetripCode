@@ -30,6 +30,8 @@ const char *FEIGNING_DEATH = "You cannot do that while you're feigning death! (t
 const char *PC_IS_BURIED = "You cannot do that while you're resting underground! (type 'wake' to get up)\r\n";
 const char *PS_RESISTS_POISON = "You resist the deadly toxin... this time.\r\n";
 
+//use instead of the actual string undefined, for consistancy sake
+const char *STRING_UNDEFINED = "undefined";
 
 
 /* (Note: strings for class definitions in class.c instead of here) */
@@ -94,7 +96,7 @@ const char *room_bits[] = {
   "DUMP",
   "REWARDDUMP",
   "DUMPONTICK",
-  "LIT",  
+  "LIT",
   "PAIN",
   "NOMAGIC_MSG",
   "NO_SUMMON",

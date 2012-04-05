@@ -28,7 +28,7 @@
 #include "pfdefaults.h"
 #include "dg_scripts.h"
 #include "diskio.h"
-#include "clan.h" //dan clan system
+#include "clan.h" 
 /**************************************************************************
 *  declarations of most of the 'global' variables                         *
 **************************************************************************/

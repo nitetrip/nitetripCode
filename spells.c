@@ -36,6 +36,8 @@ extern room_rnum r_mortal_start_room;
 extern int mini_mud;
 extern int pk_allowed;
 extern struct clan_type *clan_info; //dan clan system
+// local functions
+int adjust_charm_duration(struct char_data *ch, struct char_data *victim, int duration);
 
 /* external functions */
 byte saving_throws_nat(int class_num, int type, int level);
@@ -54,6 +56,13 @@ void do_doorcmd(struct char_data *ch, struct obj_data *obj, int door, int scmd);
 /*
  * Special spells appear below.
  */
+int adjust_charm_duration(struct char_data *ch, struct char_data *victim, int duration)
+{
+  if (IS_NECROMANCER(ch)) duration *= (MAX(1, MAX_STAT_ATTRIBUTE - GET_TOT_CHA(ch)));
+  else duration *= (MAX(1, GET_TOT_CHA(ch)));
+  duration /= MAX(1, (GET_TOT_INT(victim)));
+  return duration;
+}
 
 
 ASPELL(spell_blood_quench)
@@ -115,12 +124,14 @@ ASPELL(spell_control_weather)
 ASPELL(spell_create_water)
 {
   int water;
-
-  if (ch == NULL || obj == NULL)
-    return;
+  send_to_char(ch, "In spells.c create_water..\r\n");
+  if (ch == NULL || obj == NULL){
+     send_to_char(ch, "No argument detected...\r\n");
+    return;}
   /* level = MAX(MIN(level, LVL_IMPL), 1);	 - not used */
 
   if (GET_OBJ_TYPE(obj) == ITEM_DRINKCON) {
+         send_to_char(ch, "Item is a drink container!!\r\n");
     if ((GET_OBJ_VAL(obj, 2) != LIQ_WATER) && (GET_OBJ_VAL(obj, 1) != 0)) {
       name_from_drinkcon(obj);
       GET_OBJ_VAL(obj, 2) = LIQ_SLIME;

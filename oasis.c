@@ -110,7 +110,7 @@ ACMD(do_oasis)
     case SCMD_OASIS_SEDIT:
       send_to_char(ch, "Specify a %s VNUM to edit.\r\n", olc_scmd_info[subcmd].text);
       return;
-    
+
       default:
        log("SYSERR: (OLC) Invalid subcmd passed to do_oasis, subcmd - (%d)", subcmd);
 

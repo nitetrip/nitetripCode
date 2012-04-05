@@ -136,7 +136,7 @@ int mag_materials(struct char_data *ch, int item0, int item1, int item2,
 {
   struct obj_data *tobj;
   struct obj_data *obj0 = NULL, *obj1 = NULL, *obj2 = NULL;
-  
+
   switch (spellnum)
         {
         case SPELL_DECREPIFY:
@@ -187,7 +187,7 @@ int mag_materials(struct char_data *ch, int item0, int item1, int item2,
     act("A puff of smoke rises from $n's pack.", TRUE, ch, NULL, NULL, TO_ROOM);
   }
   return (TRUE);
-    
+
 }
 
 
@@ -225,7 +225,7 @@ int save_dam_reduction_factor = 2;
     act("A long bow of fine oak strung with a steel bolt appears in $n's hands.", FALSE, ch, 0, victim, TO_ROOM);
     dam = dice(6, 10) + GET_LEVEL(ch);
     break;
-  case SPELL_BOULDER: 
+  case SPELL_BOULDER:
     dam = dice(3, 100) + 100;
     dam = check_mag_resists(ch, victim, dam, ATTACK_BLUDGEON);
     break;
@@ -271,7 +271,7 @@ int save_dam_reduction_factor = 2;
     dam = MIN(90,MAX(45, 45+(GET_LEVEL(ch)-21)*15));
     dam = rand_number(2*dam, 3*dam);
     break;
-    
+
   case SPELL_COLOR_SPRAY:
     if (IS_MAGIC_USER(ch))
       dam = dice(9, 8) + 9;
@@ -302,7 +302,7 @@ int save_dam_reduction_factor = 2;
     }
     break;
   case SPELL_ELEMENTAL_BLAST:
-    savetype = SAVING_BREATH;  
+    savetype = SAVING_BREATH;
     dam = rand_number(0,3);
     switch (dam) {
       case 0: dam = check_mag_resists(ch, victim, dam, ATTACK_FIRE); break;
@@ -315,9 +315,9 @@ int save_dam_reduction_factor = 2;
     act("You delicately focus the breeze towards $N as it grows in strength and begins to tear at $S skin.", FALSE, ch, 0, victim, TO_CHAR);
     act("$n gestures towards $N, causing $M to crumple to the ground and cry out in agony as $E is flayed.", FALSE, ch, 0, victim, TO_ROOM);
     break;
-    
+
       case SPELL_ELEMENTAL_HANDS:
-    savetype = SAVING_BREATH;  
+    savetype = SAVING_BREATH;
     dam = rand_number(0,3);
     switch (dam) {
       case 0: dam = check_mag_resists(ch, victim, dam, ATTACK_FIRE); break;
@@ -344,7 +344,7 @@ int save_dam_reduction_factor = 2;
     act("You delicately focus the breeze towards $N as it grows in strength and begins to tear at $S skin.", FALSE, ch, 0, victim, TO_CHAR);
     act("$n gestures towards $N, causing $M to crumple to the ground and cry out in agony as $E is flayed.", FALSE, ch, 0, victim, TO_ROOM);
     break;
-  
+
   case SPELL_ENERGY_DRAIN:
     if (GET_LEVEL(victim) <= 2)
       dam = 100;
@@ -356,7 +356,7 @@ int save_dam_reduction_factor = 2;
     if (IS_SORCEROR(ch))
         dam = dice(50, 20) + 50;
     else
-        dam = dice(20, 10) + 30;	
+        dam = dice(20, 10) + 30;
     dam = check_mag_resists(ch, victim, dam, ATTACK_MAGIC);
     break;
     case SPELL_FIREBOLT:
@@ -371,12 +371,12 @@ int save_dam_reduction_factor = 2;
     act("You conjure up a long bow of fine oak strung with an arrow that bursts into flames.", FALSE, ch, 0, victim, TO_CHAR);
     act("A long bow of fine oak strung with a arrow that bursts into flames appears in $n's hands.", FALSE, ch, 0, victim, TO_ROOM);
     dam = dice(12, 6) + (GET_LEVEL(ch));
-    break;  
+    break;
   case SPELL_HARM:
     dam = dice(8, 8) + 8;
     dam = check_mag_resists(ch, victim, dam, ATTACK_MAGIC);
     break;
-  case SPELL_ICE_LANCE : 
+  case SPELL_ICE_LANCE :
     dam = dice(30, 30) + level;
     dam = check_mag_resists(ch, victim, dam, ATTACK_COLD);
     break;
@@ -391,7 +391,7 @@ int save_dam_reduction_factor = 2;
      dam = dice((GET_LEVEL(ch)), 8) + (GET_LEVEL(ch));
      dam = check_mag_resists(ch, victim, dam, ATTACK_MAGIC);
     break;
-  case SPELL_METEOR: 
+  case SPELL_METEOR:
     dam = dice(20, 40) + 100;
     dam = check_mag_resists(ch, victim, dam, ATTACK_BLUDGEON);
     break;
@@ -413,8 +413,8 @@ int save_dam_reduction_factor = 2;
   case SPELL_PRISMATIC_SPRAY:
     dam = MIN(165, MAX(90, 90+25*(GET_LEVEL(ch)-33)));
     dam = rand_number(2*dam, 3*dam);
-    break;  
-  case SPELL_ROAR: 
+    break;
+  case SPELL_ROAR:
     dam = dice(300, 2) + level;
     dam = check_mag_resists(ch, victim, dam, ATTACK_MAGIC);
     break;
@@ -559,7 +559,7 @@ int save_dam_reduction_factor = 2;
     dam = dice(30, 10) + level;
     dam = check_mag_resists(ch, victim, dam, ATTACK_ELECTRIC);
     break;
-  case SPELL_WAIL_OF_THE_BANSHEE:    
+  case SPELL_WAIL_OF_THE_BANSHEE:
       if (GET_LEVEL(victim)<11) dam = GET_HIT(victim);  //100% damage
       else if (GET_LEVEL(victim)<16) dam = GET_HIT(victim)/2; //50% damage
       else if (GET_LEVEL(victim)<21) dam = GET_HIT(victim)/4; //25% damage
@@ -627,7 +627,9 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
   bool accum_affect = FALSE, accum_duration = FALSE;
   bool affect2 = FALSE;
   const char *to_vict = NULL, *to_room = NULL;
-  int i, duration, new_position = GET_POS(victim);// set this to current position to avoid bugs when the position is not set
+  int i, duration, new_position;
+  if (victim != NULL)
+     new_position = GET_POS(victim);// set this to current position to avoid bugs when the position is not set
 
 
   if (victim == NULL || ch == NULL)
@@ -681,6 +683,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     accum_duration = TRUE;
     to_vict = "You feel someone protecting you.";
     break;
+
   case SPELL_BARKSKIN:
     if (affected_by_spell(victim, SPELL_ARMOR)) {
       send_to_char(ch, "This spell does not work in conjunction with Armor.\r\n");
@@ -704,13 +707,13 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     af[0].duration = duration;
     af[0].bitvector = AFF_BAT_SONAR;
     af[1].location = APPLY_SONC_RESIST;
-    af[1].modifier = -50;    
+    af[1].modifier = -50;
     af[1].duration = duration;
     accum_duration = FALSE;
     to_vict = "A whole new world of sound opens up to you.";
     to_room = "$n suddenly cocks his head as if listening.";
     break;
-  
+
   case SPELL_BENEFICENCE:
     af[0].duration = 2*GET_LEVEL(ch)/5+8;
     af[0].bitvector = AFF_BENEFICENCE;
@@ -790,7 +793,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     to_vict = "A cloud of darkness surrounds your body.";
     to_room = "A cloud of darkness surrounds $n, blotting out the light.";
     break;
-  
+
   case SPELL_CLOAK_OF_SHADOWS:
     if (!IS_GOOD_LIGHT_FOR_SHADOWS(IN_ROOM(victim)) || AFF_FLAGGED(victim, AFF_CLOAK_OF_THE_NIGHT) || AFF_FLAGGED(victim, AFF_CLOAK_OF_DARKNESS)) {
       send_to_char(ch, "%s", NOEFFECT);
@@ -803,7 +806,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
     to_vict = "You disappear into the shadows.";
     to_room = "$n disappears into the shadows.";
     break;
-  
+
   case SPELL_CLOAK_OF_THE_NIGHT:
     if (AFF_FLAGGED(victim, AFF_CLOAK_OF_SHADOWS) || AFF_FLAGGED(victim, AFF_CLOAK_OF_DARKNESS)) {
       send_to_char(ch, "%s", NOEFFECT);
@@ -897,22 +900,22 @@ case SPELL_DECREPIFY:
     to_vict = "Your eyes tingle as you become aware of the soul of man.";
     to_room = "$n's eyes glow briefly.";
     break;
-    
+
   case SPELL_DETECT_EVIL:
     af[0].duration = 12 + level;
     af[0].bitvector = AFF_DETECT_EVIL;
     accum_duration = TRUE;
     to_vict = "Your eyes tingle as you become aware of the evil of the world.";
     to_room = "$n's eyes glow briefly.";
-    break; 
-    
+    break;
+
   case SPELL_DETECT_GOOD:
     af[0].duration = 12 + level;
     af[0].bitvector = AFF_DETECT_GOOD;
     accum_duration = TRUE;
     to_vict = "Your eyes tingle as you become aware of the goodness of the world.";
     to_room = "$n's eyes glow briefly.";
-    break;    
+    break;
 
   case SPELL_DETECT_INVIS:
     af[0].duration = 12 + level;
@@ -943,7 +946,7 @@ case SPELL_DECREPIFY:
     af[0].bitvector = AFF_DREAMSIGHT;
     accum_duration = FALSE;
     to_vict = "You feel your senses heighten.";
-    to_room = "$n gets a strange twinkle in $s eyes.";    
+    to_room = "$n gets a strange twinkle in $s eyes.";
     break;
 
   case SPELL_DRAW_UPON_HOLY_MIGHT:
@@ -1091,7 +1094,7 @@ case SPELL_DECREPIFY:
     if (affected_by_spell(victim, SPELL_SHRINK)) {
       send_to_char(ch, "%s", NOEFFECT);
       return;
-    } 
+    }
     duration = 4+(GET_LEVEL(ch)>>1);
     af[0].duration = duration;
     af[0].location = APPLY_SIZE;
@@ -1473,7 +1476,7 @@ case SPELL_DECREPIFY:
     to_room = "$n is surrounded by a white aura.";
     }
        else
-   to_vict = "Nothing seems to happen.";  
+   to_vict = "Nothing seems to happen.";
    break;
   case SPELL_SECOND_SIGHT:
     af[0].duration = 8 + GET_LEVEL(ch);
@@ -1518,7 +1521,7 @@ case SPELL_DECREPIFY:
     accum_duration = FALSE;
     to_vict = "You sense a strong shield of magic protecting you.";
     break;
-  
+
 
 case SPELL_SHIELD_AGAINST_EVIL:
   case SPELL_PROTECTION_FROM_EVIL:
@@ -1662,7 +1665,6 @@ case SPELL_SHIELD_AGAINST_EVIL:
     /* $n yawns. */
     to_vict = "$N's gaze makes you feel very lethargic!";
     break;
-  
 
   case SPELL_STRENGTH:
     if (GET_ADD(victim) == 100)
@@ -1794,7 +1796,7 @@ case SPELL_SHIELD_AGAINST_EVIL:
     if (af[i].bitvector || (af[i].location != APPLY_NONE))
       affect_join(victim, af+i, accum_duration, FALSE, accum_affect, FALSE);
   }
-  
+
   else
   {
     if (IS_NPC(victim) && !affected2_by_spell(victim, spellnum))
@@ -1803,7 +1805,7 @@ case SPELL_SHIELD_AGAINST_EVIL:
 	send_to_char(ch, "%s", NOEFFECT);
 	return;
       }
-  
+
   if (affected2_by_spell(victim,spellnum) && !(accum_duration||accum_affect)) {
     send_to_char(ch, "%s", NOEFFECT);
     return;
@@ -2044,7 +2046,7 @@ void mag_areas(int level, struct char_data *ch, int spellnum, int savetype)
     spellnum = SPELL_SMITE_EVIL;
     to_char = "With a single word, you call upon the might of your faith.";
     to_room ="With a single word, $n calls upon the might of $s faith.";
-    break;    
+    break;
   case SPELL_HORNET_SWARM:
     to_char = "You make a slight buzzing sound, and a swarm of maddened hornets quickly arrives!";
     to_room = "$n makes a slight buzzing sound, summoning a swarm of maddened hornets!";
@@ -2196,41 +2198,83 @@ const char *mag_summon_fail_msgs[] = {
 #define MOB_AERIALSERVANT	19
 
 
-void mag_summons(int level, struct char_data *ch, struct obj_data *obj,
-		      int spellnum, int savetype)
+void mag_summons(int level, struct char_data *ch, struct obj_data *obj, int spellnum, int savetype)
 {
   struct char_data *mob = NULL;
   struct obj_data *tobj, *next_obj;
+  struct affected_type af;
   int pfail = 0, msg = 0, fmsg = 0, num = 1, handle_corpse = FALSE, i;
+  int duration = 0; /* duration = 0 lasts forever */
   mob_vnum mob_num;
 
   if (ch == NULL)
     return;
 
   switch (spellnum) {
-  case SPELL_CLONE:
-    msg = 10;
-    fmsg = rand_number(2, 6);	/* Random fail message. */
-    mob_num = MOB_CLONE;
-    pfail = 50;	/* FIXME 50% failure, should be based on something later. */
-    break;
-
-  case SPELL_ANIMATE_DEAD:
-    if (obj == NULL || !IS_CORPSE(obj)) {
-      act(mag_summon_fail_msgs[7], FALSE, ch, 0, 0, TO_CHAR);
-      load_mtrigger(mob);
-      return;
-    }
-    handle_corpse = TRUE;
-    msg = 11;
-    fmsg = rand_number(2, 6);	/* Random fail message. */
-    mob_num = MOB_ZOMBIE;
-    pfail = 10;	/* FIXME 10% failure, should vary in the future. */
-    break;
-
-  default:
-     log("SYSERR: unknown spellnum %d passed to mag_summons in magic.c.", spellnum);
-    return;
+    case SPELL_CLONE:
+      msg = 2;
+      fmsg = rand_number(2, 6); /* Random fail message. */
+      mob_num = MOB_CLONE;
+      pfail = 50;       /* 50% failure, should be based on something later. */
+      duration = 12;
+      break;
+    case SPELL_ANIMATE_DEAD:
+      if (obj == NULL || !IS_CORPSE(obj)) {
+        act(mag_summon_fail_msgs[7], FALSE, ch, 0, 0, TO_CHAR);
+        load_mtrigger(mob);
+        return;
+      }
+      handle_corpse = TRUE;
+      msg = 4;
+      fmsg = rand_number(2, 6); /* Random fail message. */
+      mob_num = (IS_EMBALMED_CORPSE(obj) ? MOB_EMBALMED_ZOMBIE_BASE : MOB_UNEMBALMED_ZOMBIE_BASE) + MIN(20,MAX(1, GET_CORPSE_LEVEL(obj)/2)-1);
+      pfail = 0;        /* 0% failure, should vary in the future. */
+      duration = 0;
+      break;
+    case SPELL_CONJURE_ELEMENTAL:
+      msg = 5;
+      fmsg = rand_number(2, 6); /* Random fail message. */
+      mob_num = MOB_ELEMENTAL_BASE + rand_number(0,3);
+      pfail = 25;       /* 25% failure */
+      duration = 12;
+      break;
+    case SPELL_CONJURE_UNDEAD:
+      if (!IS_GOOD_LIGHT_FOR_SHADOWS(IN_ROOM(ch))) {
+        send_to_char(ch, "You fail to conjure undead here because there aren't enough shadows!\r\n");
+        return;
+      }
+      msg = 9;
+      fmsg = 6;
+      mob_num = MOB_VAMPIRE;
+      pfail = 0;
+      duration = 24;
+      break;
+    case SPELL_GATE:
+      msg = 1;
+      fmsg = rand_number(2, 6); /* Random fail message. */
+      mob_num = MOB_GATE_I_BASE + rand_number(0,4);
+      pfail = 25;       /* 25% failure */
+      duration = 12;
+      break;
+    case SPELL_SUMMON_AVENGER:
+  msg = 7;
+      fmsg = 6;
+      mob_num = MOB_CELESTIAL_AVENGER;
+      pfail = 0;
+      duration = 24;
+      break;
+    case SPELL_SUMMON_BEAST:
+     // if (!OUTSIDE(IN_ROOM(ch))) {
+     // send_to_char(ch, "This spell may only be cast outdoors.\r\n");
+     //   return;
+     // }
+      msg = 8;
+      fmsg = 6;
+      mob_num = MOB_BEAST_I_BASE;
+      pfail = 0;
+      duration = 24;
+      break;
+    default: return;
   }
 
   if (AFF_FLAGGED(ch, AFF_CHARM)) {
@@ -2238,7 +2282,25 @@ void mag_summons(int level, struct char_data *ch, struct obj_data *obj,
     return;
   }
   if (rand_number(0, 101) < pfail) {
-    send_to_char(ch, "%s", mag_summon_fail_msgs[fmsg]);
+    if ((spellnum == SPELL_GATE) || (spellnum == SPELL_CONJURE_ELEMENTAL)) {
+      if (!(mob = read_mobile(mob_num, VIRTUAL))) {
+        send_to_char(ch, "You don't quite remember how to make that creature.\r\n");
+        return;
+      }
+      char_to_room(mob, IN_ROOM(ch));
+      act("You have summoned $N.", FALSE, ch, 0, mob, TO_CHAR);
+      act("$n has summoned $N.", FALSE, ch, 0, mob, TO_ROOM);
+      act("$N is angered by your summons!", FALSE, ch, 0, mob, TO_CHAR);
+      act("$N looks very angry!", FALSE, ch, 0, mob, TO_ROOM);
+      IS_CARRYING_W(mob) = 0;
+      IS_CARRYING_N(mob) = 0;
+      // damage(mob, ch, (GET_LEVEL(ch)<<1), TYPE_RANDOM); -- this is from CWE code, need to code type random
+      damage(mob, ch, (GET_LEVEL(ch)<<1), TYPE_HIT);
+     act(((spellnum == SPELL_GATE) ? "$N vanishes in a puff of acrid smoke." : "$N dissipates back into its natural form."), FALSE, ch, 0, mob, TO_CHAR);
+      act(((spellnum == SPELL_GATE) ? "$N vanishes in a puff of acrid smoke." : "$N dissipates back into its natural form."), FALSE, ch, 0, mob, TO_ROOM);
+      extract_char(mob);
+    }
+    else send_to_char(ch, "%s", mag_summon_fail_msgs[fmsg]);
     return;
   }
   for (i = 0; i < num; i++) {
@@ -2249,29 +2311,52 @@ void mag_summons(int level, struct char_data *ch, struct obj_data *obj,
     char_to_room(mob, IN_ROOM(ch));
     IS_CARRYING_W(mob) = 0;
     IS_CARRYING_N(mob) = 0;
+  //  if (!can_charm(ch, mob)) {
+  //    send_to_char(ch, "You are already in control of enough creatures as it is.\r\n");
+  //    extract_char(mob);
+  //    return;
+  //  }
     SET_BIT(AFF_FLAGS(mob), AFF_CHARM);
+    /* make the mobile docile... */
+    for (i=0; i<NUM_AGGR_TYPES; i++) GET_AGGRESSION(mob, i) = MIN_AGGRESSION;
+    SET_BIT(MOB_FLAGS(mob), MOB_SENTINEL); /* keeps the mobile from wandering around after charm wears off. */
+    if (duration > 0) {
+      duration = adjust_charm_duration(ch, mob, duration);
+      af.type = SPELL_CHARM;
+      af.duration = duration;
+      af.modifier = 0;
+      af.location = 0;
+      af.bitvector = AFF_CHARM;
+      affect_to_char(mob, &af);
+    }
     if (spellnum == SPELL_CLONE) {
       /* Don't mess up the prototype; use new string copies. */
       mob->player.name = strdup(GET_NAME(ch));
       mob->player.short_descr = strdup(GET_NAME(ch));
     }
     act(mag_summon_msgs[msg], FALSE, ch, 0, mob, TO_ROOM);
+    if (handle_corpse) {
+      act("$N staggers up from the ground.", FALSE, ch, 0, mob, TO_CHAR);
+      act("$N staggers up from the ground.", FALSE, ch, 0, mob, TO_ROOM);
+      for (tobj = obj->contains; tobj; tobj = next_obj) {
+        next_obj = tobj->next_content;
+        obj_from_obj(tobj);
+        obj_to_char(tobj, mob);
+      }
+      extract_obj(obj);
+    }
+    load_mtrigger(mob);
     add_follower(mob, ch);
   }
-  if (handle_corpse) {
-    for (tobj = obj->contains; tobj; tobj = next_obj) {
-      next_obj = tobj->next_content;
-      obj_from_obj(tobj);
-      obj_to_char(tobj, mob);
-    }
-    extract_obj(obj);
-  }
 }
+
 
 /* added manaadd to this function to allow for vitalize/excommunicate
 * also added to_vict to_room and to_notvict. not to be confused with send_to_char(),
 * which is also used in here for much the same thing. 		-mak 8.10.04
 */
+
+
 void mag_points(int level, struct char_data *ch, struct char_data *victim,
 		     int param1, int spellnum, int savetype)
 {
@@ -2402,7 +2487,7 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
     to_notvict = "$N heals $n.";
     to_char = "You heal $N.";
     break;
- 
+
  case SPELL_HEAL_CRITICAL:
     healing = 180;
     send_to_char(victim, "A warm feeling floods your body.\r\n");
@@ -2476,7 +2561,7 @@ void mag_unaffects(int level, struct char_data *ch, struct char_data *victim,
 
   if (victim == NULL)
     return;
-   
+
   switch (spellnum) {
   case SPELL_CURE_BLIND:
     spell = SPELL_BLINDNESS;

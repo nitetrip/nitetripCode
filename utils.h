@@ -522,6 +522,9 @@ void	update_pos(struct char_data *victim);
 
 #define IS_CORPSE(obj)		(GET_OBJ_TYPE(obj) == ITEM_CONTAINER && \
 					GET_OBJ_VAL((obj), 3) == 1)
+#define IS_UNEMBALMED_CORPSE(obj) (GET_OBJ_TYPE(obj) == ITEM_CONTAINER && (GET_OBJ_VAL((obj), 3) == 1))
+#define IS_EMBALMED_CORPSE(obj)   (GET_OBJ_TYPE(obj) == ITEM_CONTAINER && (GET_OBJ_VAL((obj), 3) == 2))
+#define GET_CORPSE_LEVEL(obj)     (GET_OBJ_VAL((obj), 4))
 
 #define CAN_WEAR(obj, part)	OBJWEAR_FLAGGED((obj), (part))
 

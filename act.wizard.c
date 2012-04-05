@@ -3498,6 +3498,7 @@ ACMD(do_set)
 
   /* perform the set */
   retval = perform_set(ch, vict, mode, buf);
+  update_pos(vict); // added this so that if a player is set to negative HP his position is updated immediately.
 
   /* save the character if a change was made */
   if (retval) {

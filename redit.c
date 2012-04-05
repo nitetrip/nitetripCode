@@ -66,9 +66,9 @@ ACMD(do_room_copy)
    zone_rnum dst_zone;
    struct descriptor_data *dsc;
    char buf[MAX_INPUT_LENGTH];
-     
+
    one_argument(argument, buf);
-   
+
    if (!*buf) {
      send_to_char(ch, "Usage: rclone <target room>\r\n");
      return;
@@ -83,24 +83,23 @@ ACMD(do_room_copy)
      send_to_char(ch, "Sorry, there is no zone for that number!\r\n");
      return;
    }
-    
+
    if (!can_edit_zone(ch, zone_table[dst_zone].number, SCMD_OASIS_REDIT) ||
        !can_edit_zone(ch, world[IN_ROOM(ch)].zone, SCMD_OASIS_REDIT)) {
      send_to_char(ch, "You may only copy rooms within your designated zone(s)!\r\n");
      return;
    }
-   
-   
+
    room_src = &world[IN_ROOM(ch)];
    CREATE(room_dst, struct room_data, 1);
 
    room_dst->zone = dst_zone;
- 
+
    /*
    * Allocate space for all strings.
    */
    send_to_char(ch, "Cloning room....\r\n");
-   
+
    room_dst->name = str_udup(world[IN_ROOM(ch)].name);
    room_dst->description = str_udup(world[IN_ROOM(ch)].description);
    room_dst->description = str_udup(world[IN_ROOM(ch)].description);
@@ -110,7 +109,7 @@ ACMD(do_room_copy)
   /*
    * Extra descriptions, if necessary.
    */
-  
+
   send_to_char(ch, "Cloning extra descriptions....\r\n");
   if (world[IN_ROOM(ch)].ex_description) {
     struct extra_descr_data *tdesc, *temp, *temp2;
@@ -130,7 +129,7 @@ ACMD(do_room_copy)
   }
    /*
     * Now save the room in the right place:
-    */ 
+    */
   send_to_char(ch, "Saving new room...\r\n");
 
   if ((room_num = add_room(room_dst)) < 0) {
@@ -167,7 +166,7 @@ ACMD(do_room_copy)
   add_to_save_list(real_zone_by_thing(atoi(buf)), SL_WLD);
   redit_save_to_disk(real_zone_by_thing(atoi(buf)));
   send_to_char(ch, "Room cloned to %d.\r\nAll Done.\r\n", buf_num);
-    
+
 }
 
 ACMD(do_dig)
@@ -210,7 +209,7 @@ ACMD(do_dig)
       return;
     }
   }
-  
+
   if ((direction = search_block(buf, dirs, FALSE)) == -1) {
     send_to_char(ch, "No such direction!\r\n");
     return;
@@ -264,14 +263,14 @@ ACMD(do_dig)
     real_zone = real_zone_by_thing(world[IN_ROOM(ch)].number);
     add_to_save_list(zone_table[real_zone].number, SL_WLD);
     redit_save_to_disk(real_zone);
-  
+
     /* Only save twice if it is two different zones */
     if (real_zone_by_thing(world[IN_ROOM(ch)].number)!=real_zone_by_thing(world[to_room].number)) {
       real_zone = real_zone_by_thing(world[to_room].number);
       add_to_save_list(zone_table[real_zone].number, SL_WLD);
       redit_save_to_disk(real_zone);
     }
-  }  
+  }
 }
 
 /****************************************************************************
@@ -442,7 +441,7 @@ void redit_save_internally(struct descriptor_data *d)
 {
   int j, room_num, new_room = FALSE;
   struct descriptor_data *dsc;
-  
+
   if (OLC_ROOM(d)->number == NOWHERE) {
     new_room = TRUE;
     OLC_ROOM(d)->number = OLC_NUM(d);
@@ -467,11 +466,10 @@ void redit_save_internally(struct descriptor_data *d)
       proto = proto->next;
       free(fproto);
     }
-  }    
-       
+  }
   world[room_num].proto_script = OLC_SCRIPT(d);
   assign_triggers(&world[room_num], WLD_TRIGGER);
-  
+
   /* Don't adjust numbers on a room update. */
   if (!new_room)
     return;

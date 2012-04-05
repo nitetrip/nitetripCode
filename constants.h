@@ -6,7 +6,7 @@ extern const char *PEACE_ROOM_WARNING;
 extern const char *FEIGNING_DEATH;
 extern const char *PC_IS_BURIED;
 extern const char *PS_RESISTS_POISON;
-
+extern const char *STRING_UNDEFINED;
 extern const char *circlemud_version;
 extern const char *dirs[];
 extern const char *room_bits[];

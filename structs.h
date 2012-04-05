@@ -112,7 +112,7 @@ struct char_data *guildmaster1;
 #define ROOM_DUMP               (1 << 17)  /* Room that DOES NOT reward for objs dropped */
 #define ROOM_REWARDDUMP         (1 << 18)  /* Dump room that rewards for objs dropped */
 #define ROOM_DUMPONTICK         (1 << 19)  /* Dump room that dumps on tick */
-#define ROOM_LIT                (1 << 20) 
+#define ROOM_LIT                (1 << 20)
 #define ROOM_PAIN               (1 << 21)  /* Pain Room  */
 #define ROOM_NOMAGIC_MSG        (1 << 22)  /* custom no magic message   */
 #define ROOM_NOSUMMON           (1 << 23)  /* summoning not allowed     */
@@ -485,6 +485,16 @@ struct char_data *guildmaster1;
 #define PRF_ALLCTELL    (1 << 27) /* Can't hear all clan channels(imm)  */
 #define PRF_DISPEXP     (1 << 28) /* Exp in the display prompt          */
 #define PRF_AUTOSPLIT   (1 << 29) /* Autosplit gold amonst the group    */
+
+
+#define MOB_UNEMBALMED_ZOMBIE_BASE     210
+#define MOB_EMBALMED_ZOMBIE_BASE       230
+#define MOB_GATE_I_BASE                250
+#define MOB_CELESTIAL_AVENGER          259
+#define MOB_BEAST_I_BASE               260
+#define MOB_VAMPIRE                    265
+#define MIN_CHARMED_MOB_VNUM           0
+#define MAX_CHARMED_MOB_VNUM           300
 
 /* Affect bits: used in char_data.char_specials.saved.affected_by */
 /* WARNING: In the world files, NEVER set the bits marked "R" ("Reserved") */
@@ -1058,7 +1068,7 @@ struct char_data *guildmaster1;
 #define MAX_AFFECT		64  /* Used in char_file_u *DO*NOT*CHANGE* */
 #define MAX_OBJ_AFFECT		6 /* Used in obj_file_elem *DO*NOT*CHANGE* */
 #define MAX_NOTE_LENGTH		1000	/* arbitrary */
-
+#define MAX_PAIN_ROOMS		1000 /* this is the maximum number of different Pain Rooms that can be occupied - pulled out of my Ass */
 /* Element types for elemental spells */
 #define ELEMENTAL_TYPE_GREY    0
 #define ELEMENTAL_TYPE_RED     1

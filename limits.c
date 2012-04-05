@@ -89,7 +89,7 @@ int graf(int grafage, int p0, int p1, int p2, int p3, int p4, int p5, int p6)
 int mana_gain(struct char_data *ch)
 {
   int gain;
-
+  
   if (IS_NPC(ch)) {
     /* Neat and fast */
     gain = GET_LEVEL(ch);
@@ -514,6 +514,7 @@ void point_update(void)
 {
   struct char_data *i, *next_char;
   struct obj_data *j, *next_thing, *jj, *next_thing2;
+  int dying_dam =0;
 
    /* rooms */
      room_rnum nr;
@@ -540,9 +541,15 @@ void point_update(void)
  *  tick.
  */
    check_size(i);
+   update_pos(i); 
+
+     if (AFF_FLAGGED(i, AFF_DEATHS_DOOR))
+        dying_dam = 0;
+     else
+        dying_dam = rand_number(1,3);
 
    /* change alignment */
-   
+
    /* Vampire sun damage */
        if ((GET_RACE(i) == RACE_VAMPIRE)  && (GET_LEVEL(i) < LVL_SAINT) && OUTSIDE(i)  && (weather_info.sunlight == SUN_RISE || weather_info.sunlight == SUN_LIGHT) && !IS_NPC(i) && (i->char_specials.vulnerable[ATTACK_LIGHT] > 0))
 	damage(i, i, GET_LEVEL(i) * 20, TYPE_SUNDAM);
@@ -589,14 +596,13 @@ void point_update(void)
       	if (damage(i, i, 2, SPELL_POISON) == -1)    
 	  continue;   Oops, they died. -gg 6/24/98  */
 
-
       if (GET_POS(i) <= POS_STUNNED)
 	update_pos(i);
     } else if (GET_POS(i) == POS_INCAP) {
-      if (damage(i, i, 1, TYPE_SUFFERING) == -1)
+      if (damage(i, i, dying_dam, TYPE_SUFFERING) == -1)
 	continue;
     } else if (GET_POS(i) == POS_MORTALLYW) {
-      if (damage(i, i, 2, TYPE_SUFFERING) == -1)
+      if (damage(i, i, dying_dam, TYPE_SUFFERING) == -1)
 	continue;
     }
     if (!IS_NPC(i)) {

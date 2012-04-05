@@ -196,10 +196,10 @@ void show_obj_modifiers(struct obj_data *obj, struct char_data *ch)
 
   if (((OBJ_FLAGGED(obj, ITEM_BLESS)) || (OBJ_FLAGGED(obj, ITEM_ANGELIC)) || ((OBJ_FLAGGED(obj, ITEM_ANTI_NEUTRAL)) && (OBJ_FLAGGED(obj, ITEM_ANTI_EVIL))) ||(OBJ_FLAGGED(obj, ITEM_GOOD_FLAGGED))) && ((AFF_FLAGGED(ch, AFF_DETECT_ALIGN)) || (AFF_FLAGGED(ch, AFF_DETECT_GOOD))))
     send_to_char(ch, " ..It glows blue!");
-    
+
   if (((OBJ_FLAGGED(obj, ITEM_EVIL_FLAGGED)) || (OBJ_FLAGGED(obj, ITEM_DEMONIC)) || (((OBJ_FLAGGED(obj, ITEM_ANTI_GOOD)) && (OBJ_FLAGGED(obj, ITEM_ANTI_NEUTRAL))))) && ((AFF_FLAGGED(ch, AFF_DETECT_EVIL)) || (AFF_FLAGGED(ch, AFF_DETECT_ALIGN))))
     send_to_char(ch, " ..it glows red!");
-    
+
   if (((OBJ_FLAGGED(obj, ITEM_ANTI_GOOD)) && (OBJ_FLAGGED(obj, ITEM_ANTI_EVIL))) && (AFF_FLAGGED(ch, AFF_DETECT_NEUTRAL)))
         send_to_char(ch, " ..it glows gray!");
 
@@ -208,7 +208,7 @@ void show_obj_modifiers(struct obj_data *obj, struct char_data *ch)
 
   if (OBJ_FLAGGED(obj, ITEM_GLOW))
     send_to_char(ch, " ..It has a soft glowing aura!");
- 
+
   if (OBJ_FLAGGED(obj, ITEM_RADIATE))
     send_to_char(ch, " ..It radiates a bright light!");
 
@@ -220,20 +220,20 @@ void show_obj_modifiers(struct obj_data *obj, struct char_data *ch)
 
 void list_obj_to_char(struct obj_data *list, struct char_data *ch, int mode, int show, int showcont)
 {
-  /* 
-    * Editing:  act.item.c act.wizard.c structs.h constants.c oasis.h act.informative.c 
+  /*
+    * Editing:  act.item.c act.wizard.c structs.h constants.c oasis.h act.informative.c
     *               config.c spec_assign.c spec_procs.c act.movement.c
-    */ 
-    
-    /* showcont values: 0 list of objs in room 
+    */
+
+    /* showcont values: 0 list of objs in room
      * 			     1 list of objs in a container in a room
      *				     2 list of objs in inv or in a container in inv/eq
      */
-   
-  
+
+
   struct obj_data *i;
   bool found = FALSE;
-  
+
   if (showcont == 0) {
     found = TRUE; /* Never want to see "Nothing." in a room. */
    for (i = list; i; i = i->next_content) {
@@ -242,14 +242,14 @@ void list_obj_to_char(struct obj_data *list, struct char_data *ch, int mode, int
    found = TRUE;
    }
    if ((!OBJ_FLAGGED(i, ITEM_GREATER_HIDDEN)) && (!OBJ_FLAGGED(i, ITEM_LESSER_HIDDEN))) {
-      show_obj_to_char(i, ch, mode);   
+      show_obj_to_char(i, ch, mode);
       found = TRUE;
    }
    }
   }
-  
+
   if (showcont == 1) {
-      
+
       for (i = list; i; i = i->next_content) {
     	 if (CAN_SEE_OBJ(ch, i)) {
     		if ((!OBJ_FLAGGED(i, ITEM_GREATER_HIDDEN)) && (!OBJ_FLAGGED(i, ITEM_LESSER_HIDDEN))) {
@@ -257,13 +257,13 @@ void list_obj_to_char(struct obj_data *list, struct char_data *ch, int mode, int
   		found = TRUE;
  }
  	        if (((OBJ_FLAGGED(i, ITEM_GREATER_HIDDEN)) || (OBJ_FLAGGED(i, ITEM_LESSER_HIDDEN))) && (GET_LEVEL(ch) > LVL_DEITY)) {
-		show_obj_to_char(i, ch, mode);   
-   		found = TRUE;	       
+		show_obj_to_char(i, ch, mode);
+   		found = TRUE;
 	       }
  }
  }
- }  
-    
+ }
+
   if (showcont == 2) {
     for (i = list; i; i = i->next_content) {
        if (CAN_SEE_OBJ(ch, i)) {
@@ -373,43 +373,37 @@ void list_one_char(struct char_data *i, struct char_data *ch)
     " is here floating."
   };
 
-  if (!IS_NPC(ch) && PRF_FLAGGED(ch, PRF_ROOMFLAGS) && IS_NPC(i)) 
+  if (!IS_NPC(ch) && PRF_FLAGGED(ch, PRF_ROOMFLAGS) && IS_NPC(i))
      send_to_char(ch,"[%d] ", GET_MOB_VNUM(i));
-  
-if (IS_NPC(i) && i->player.long_descr && GET_POS(i) == GET_DEFAULT_POS(i)) {
     if (AFF_FLAGGED(i, AFF_INVISIBLE))
       send_to_char(ch, "*");
 
     if (IS_CLOAKED(i))
       send_to_char(ch, "#");
 
-  
+
     if (AFF_FLAGGED(i, AFF_CHARM)) send_to_char(ch, "(Charmed) ");
 
-    if (AFF_FLAGGED(ch, AFF_DETECT_ALIGN)) {
-      if (IS_EVIL(i))
-	send_to_char(ch, "(Red Aura) ");
-      else if (IS_GOOD(i))
-	send_to_char(ch, "(Blue Aura) "); }
-        
-    if (AFF_FLAGGED(ch, AFF_DETECT_EVIL)) {
+    if (AFF_FLAGGED(ch, AFF_DETECT_EVIL) || AFF_FLAGGED(ch, AFF_DETECT_ALIGN)) {
         if (IS_EVIL(i))
-          send_to_char(ch, "(Red Aura) ");}
-    
-    if (AFF_FLAGGED(ch, AFF_DETECT_GOOD)) {
+          send_to_char(ch, "(Red Aura)");}
+
+    if (AFF_FLAGGED(ch, AFF_DETECT_GOOD) || AFF_FLAGGED(ch, AFF_DETECT_ALIGN)) {
         if (IS_GOOD(i))
-            send_to_char(ch, "(Blue Aura) ");}
-    
-    if (AFF_FLAGGED(ch, AFF_DETECT_NEUTRAL)) {
+            send_to_char(ch, "(Blue Aura)");}
+
+    if (AFF_FLAGGED(ch, AFF_DETECT_NEUTRAL) || AFF_FLAGGED(ch, AFF_DETECT_ALIGN)) {
         if (IS_NEUTRAL(i))
-            send_to_char(ch, "(Gray Aura) ");}
+            send_to_char(ch, "(Gray Aura)");}
 
-  if (IS_INVIS(i)) send_to_char(ch, " (invisible)");
-  if (AFF_FLAGGED(i, AFF_HIDE)) send_to_char(ch, " (hidden)");
-  if (!IS_NPC(i) && !i->desc) send_to_char(ch, " (linkless)");
-  if (!IS_NPC(i) && PLR_FLAGGED(i, PLR_WRITING)) send_to_char(ch, " (writing)");
-  if (!IS_NPC(i) && PRF_FLAGGED(i, PRF_BUILDWALK)) send_to_char(ch, " (buildwalk)");
+  //if (IS_INVIS(i)) send_to_char(ch, "(invisible)");
+  if (AFF_FLAGGED(i, AFF_HIDE)) send_to_char(ch, "(hidden)");
+  if (!IS_NPC(i) && !i->desc) send_to_char(ch, "(linkless)");
+  if (!IS_NPC(i) && PLR_FLAGGED(i, PLR_WRITING)) send_to_char(ch, "(writing)");
+  if (!IS_NPC(i) && PRF_FLAGGED(i, PRF_BUILDWALK)) send_to_char(ch, "(buildwalk)");
 
+
+if (IS_NPC(i) && i->player.long_descr && GET_POS(i) == GET_DEFAULT_POS(i)) {
     send_to_char(ch, "%s", i->player.long_descr);
 
     if (AFF_FLAGGED(i, AFF_SANCTUARY))
@@ -420,7 +414,7 @@ if (IS_NPC(i) && i->player.long_descr && GET_POS(i) == GET_DEFAULT_POS(i)) {
 
     if (AFF_FLAGGED(i, AFF_DERVISH_SPIN))
       act("...$e is whirling madly in a dervish spin!", FALSE, i, 0, ch, TO_VICT);
-      
+
     if (AFF_FLAGGED(i, AFF_BLIND))
       act("...$e is groping around blindly!", FALSE, i, 0, ch, TO_VICT);
 
@@ -437,8 +431,8 @@ if (IS_NPC(i) && i->player.long_descr && GET_POS(i) == GET_DEFAULT_POS(i)) {
      send_to_char(ch, "%s", GET_TITLE(i) != NULL ? GET_TITLE(i) : GET_NAME(ch));
 
 
-  if (AFF_FLAGGED(i, AFF_INVISIBLE))
-    send_to_char(ch, " (invisible)");
+ /*  if (AFF_FLAGGED(i, AFF_INVISIBLE))
+    send_to_char(ch, " (invisible)"); */
   if (IS_CLOAKED(i)) send_to_char(ch, " (cloaked)");
   if (AFF_FLAGGED(i, AFF_HIDE))
     send_to_char(ch, " (Hidden)");
@@ -661,7 +655,6 @@ void look_in_obj(struct char_data *ch, char *arg)
 	  break;
 	}
 
-	
       }
     } else {		/* item must be a fountain or drink container */
       if (GET_OBJ_VAL(obj, 1) <= 0)
@@ -891,11 +884,11 @@ ACMD(do_score)
 	send_to_char(ch, "You have scored %d exp, but need to progress at your guild.\r\n", GET_EXP(ch));
 	else
 	send_to_char(ch, "You have scored %d exp, and you need %d more to level.\r\n", GET_EXP(ch), level_exp(GET_CLASS(ch), GET_LEVEL(ch) + 1) - GET_EXP(ch));
-    }  
+    }
   else
 	send_to_char(ch, "You have scored %d exp, and are Immortal.\r\n", GET_EXP(ch));
- 
-  if (GET_GOLD(ch) == 1)	 
+
+  if (GET_GOLD(ch) == 1)
   send_to_char(ch, "You carry %d coin, and have %d more in the bank.\r\n", GET_GOLD(ch), GET_BANK_GOLD(ch));
   else
   send_to_char(ch, "You carry %d coins, and have %d more in the bank.\r\n", GET_GOLD(ch), GET_BANK_GOLD(ch));
@@ -1030,7 +1023,7 @@ ACMD(do_score)
 ACMD(do_inventory)
 {
   send_to_char(ch, "You are carrying:\r\n");
-  list_obj_to_char(ch->carrying, ch, SHOW_OBJ_NOMODS, TRUE, 2);
+  list_obj_to_char(ch->carrying, ch, SHOW_OBJ_SHORT, TRUE, 2);
 }
 
 
@@ -1793,9 +1786,9 @@ strcat(buf, "\r\n");
     sprintf(buf + strlen(buf), "Level             :%5d      Muhahahaha ... what a wimp!\r\n", GET_LEVEL(ch));
   else if (diff <= -5)
     sprintf(buf + strlen(buf), "Level             :%5d      Greatly Inferior\r\n", GET_LEVEL(ch));
-  else if (diff <= -2)  
+  else if (diff <= -2)
     sprintf(buf + strlen(buf), "Level             :%5d      Extremely Inferior\r\n", GET_LEVEL(ch));
-  else if (diff <= -1) 
+  else if (diff <= -1)
     sprintf(buf + strlen(buf), "Level             :%5d      Inferior\r\n", GET_LEVEL(ch));
   else if (diff == 0)
     sprintf(buf + strlen(buf), "Level             :%5d      Lower\r\n", GET_LEVEL(ch));

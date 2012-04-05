@@ -397,10 +397,13 @@
 #define TYPE_STAB		     2314
 #define TYPE_KICK                    2315
 #define TYPE_POIS                    2316
+#define TYPE_RANDOM		     2317
+
 /* new attack types can be added here - up to TYPE_SUFFERING */
 #define TYPE_SUFFERING		     2399
 #define TYPE_SUNDAM                  2400
 #define TYPE_LASTATTACK              2401 /* This is internal only */
+
 
 
 #define SAVING_PARA   0

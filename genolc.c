@@ -76,7 +76,7 @@ int genolc_checkstring(struct descriptor_data *d, const char *arg)
 
 char *str_udup(const char *txt)
 {
-  return strdup((txt && *txt) ? txt : "undefined");
+ return strdup((txt && *txt) ? txt : STRING_UNDEFINED);
 }
 
 /*

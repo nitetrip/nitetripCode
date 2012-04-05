@@ -310,7 +310,7 @@ ACMD(do_circle)
   else
      hit(ch, victim, SKILL_CIRCLE);
 
-    
+
 /*  if (FIGHTING(victim) == tmp_ch)
     stop_fighting(victim);
   if (FIGHTING(tmp_ch))

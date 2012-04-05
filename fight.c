@@ -103,7 +103,7 @@ void appear(struct char_data *ch)
   if (affected_by_spell(ch, SPELL_INVISIBLE))
     affect_from_char(ch, SPELL_INVISIBLE);
   if (affected_by_spell(ch, SKILL_SNEAK))
-    affect_from_char(ch, SKILL_SNEAK);  
+    affect_from_char(ch, SKILL_SNEAK);
   if (affected_by_spell(ch, SKILL_HIDE))
     affect_from_char(ch, SKILL_HIDE);
 
@@ -225,6 +225,8 @@ void update_pos(struct char_data *victim)
     GET_POS(victim) = POS_INCAP;
   else
     GET_POS(victim) = POS_STUNNED;
+  if (AFF_FLAGGED(victim, AFF_PARALYZE))
+    GET_POS(victim) = POS_PARALYZED;
 }
 
 
@@ -247,6 +249,8 @@ void check_killer(struct char_data *ch, struct char_data *vict)
 void set_fighting(struct char_data *ch, struct char_data *vict)
 {
   if (ch == vict)
+    return;
+  if (AFF_FLAGGED(ch, AFF_PARALYZE))
     return;
 
   if (FIGHTING(ch)) {
@@ -1465,10 +1469,13 @@ void perform_violence(void)
     }
 
     if (GET_POS(ch) < POS_FIGHTING) {
+      if (AFF_FLAGGED(ch, AFF_PARALYZE))
+         send_to_char(ch, "You are  paralyzed, unable to move!!\r\n");
       if (AFF_FLAGGED(ch, AFF_HEALING_DREAM))
 	send_to_char(ch, "You are unable to fight while in healing dream!!\r\n");
       else
         send_to_char(ch, "You can't fight while sitting!!\r\n");
+
       continue;
     }
 
@@ -1850,46 +1857,72 @@ int calc_weap_resists(struct char_data *ch, struct char_data *victim, int damage
   return(damage);
 }
 
-/* dunno where to put this, so I'm going to try here can move it later - Seymour --gotta fix this */ 
+/* Handles pain rooms  -  redone april 2012
+   This function is called every second from
+   heartbeat() in comm.c*/
 void check_pain_room()
 {
-struct descriptor_data *d;
-/* char_data *ch; */
-int pain_dam;
+
+room_rnum room_array[MAX_PAIN_ROOMS] = {}, current_room = NULL;
+int num_players = 0, num_rooms = 0, checkloop = 0, active_painrooms = 0, duplicate = 0;
+int pain_dam = 0;
+
+struct descriptor_data *d = NULL;
+struct char_data *ch = NULL, *next_ch = NULL, *i = NULL;
+/*  The first for loop runs through all players and if they room is pain flagged
+ *  it puts it in room_array. Duplicates arent put in the array.
+*/
+
+
  for (d = descriptor_list; d; d = d->next) {
-    if (d->connected) continue;
+    if (d->connected || !ROOM_FLAGGED(IN_ROOM(d->character), ROOM_PAIN)) continue; // This will speed it up, if no one is in a pain room do nothing
+    num_players++;
+    i = d->character;
+    duplicate = 0;
+      for (checkloop = 0;checkloop < num_players; checkloop++){
+      if (room_array[checkloop] == IN_ROOM(i)) // go through the array and set duplicate if a duplicate room is found
+         duplicate++;
+      }
+      if (!duplicate) {
+      room_array[num_rooms] = IN_ROOM(i);
+      num_rooms++;
+      }
+ }
 
-   if (ROOM_FLAGGED(IN_ROOM(d->character), ROOM_PAIN)){
+/*  This loop runs through all the rooms in room_array (if any) and sends each player
+ *  the pain message + does the damage
+*/
+ if (num_rooms) {
+  checkloop = 0;
+  while (checkloop < num_rooms) {
+       current_room = room_array[checkloop];
+       world[current_room].pain_check++; //
+       if (world[current_room].pain_check >= world[current_room].pain_rate){
 
-//   for (ch = world[IN_ROOM(d->character)].people; ch != NULL; ch = ch->next_in_room)
-    if (!IS_NPC(d->character)) { 
-       if (world[IN_ROOM(d->character)].pain_check >= world[IN_ROOM(d->character)].pain_rate){
-          send_to_room(IN_ROOM(d->character), "%s\r\n", world[IN_ROOM(d->character)].pain_message);
-
-       pain_dam = world[IN_ROOM(d->character)].pain_damage;
-          if(AFF_FLAGGED(d->character, AFF_SANCTUARY) && pain_dam >= 2 )
-             pain_dam *= .5;
-          if (AFF_FLAGGED(d->character, AFF_FORT) && pain_dam >= 3)
-             pain_dam *= .75;
-          if (AFF_FLAGGED(d->character, AFF_REFLECT_DAMAGE) && pain_dam >= 3)
-             pain_dam *= .75;
-
-          if (AFF_FLAGGED(d->character, AFF_DERVISH_SPIN) && pain_dam >= 2)
-             pain_dam *= .9;
-          if (GET_LEVEL(d->character) >= LVL_SAINT)
-             pain_dam = 0;
-          GET_HIT(d->character) = GET_HIT(d->character) - pain_dam;
-          world[IN_ROOM(d->character)].pain_check = 0;
-          update_pos(d->character);
-          if(GET_POS(d->character) == POS_DEAD)
-             die(d->character, d->character);
-          } else world[IN_ROOM(d->character)].pain_check++;
-    }
-   }
-
+        world[current_room].pain_check = 0; // reset the delay counter
+        for (ch = world[current_room].people; ch; ch = next_ch) { // go through each character in the room and make em hurt!
+            next_ch = ch->next_in_room;
+          if (!IS_NPC(ch)) {
+            pain_dam = world[current_room].pain_damage;
+            // damage is reduced by certain AFF Flags
+            if(AFF_FLAGGED(ch, AFF_SANCTUARY) && pain_dam >= 2 )
+              pain_dam *= .5;
+            if (AFF_FLAGGED(ch, AFF_FORT) && pain_dam >= 3)
+              pain_dam *= .75;
+            if (AFF_FLAGGED(ch, AFF_REFLECT_DAMAGE) && pain_dam >= 3)
+              pain_dam *= .75;
+            if (AFF_FLAGGED(ch, AFF_DERVISH_SPIN) && pain_dam >= 2)
+              pain_dam *= .9;
+            if (GET_LEVEL(ch) >= LVL_SAINT) // No damage to IMMS
+              pain_dam = 0; // The if statement below doesn't work properly.  for some reason it is still allowing undefined to be sent
+            if (world[current_room].pain_message == STRING_UNDEFINED) mudlog(NRM, LVL_IMPL, TRUE, "pain_message = undefined!!!!",current_room, IN_ROOM(ch) );
+             // else mudlog(NRM, LVL_IMPL, TRUE, "pain_message is NOT undefined it is %s" ,world[current_room].pain_message ); troubleshooting
+            send_to_char(ch, "%s\r\n", ((world[current_room].pain_message && str_udup(world[current_room].pain_message) != STRING_UNDEFINED) ? world[current_room].pain_message:"You feel faint from the heat and fall to your knees!!"));
+            damage(ch, ch, pain_dam, ATTACK_MISC);
+          }
+        }
+       }
+  checkloop++;
+  }
  }
 }
-
-
-
-
