@@ -114,7 +114,7 @@ struct char_data *guildmaster1;
 #define ROOM_DUMPONTICK         (1 << 19)  /* Dump room that dumps on tick */
 #define ROOM_LIT                (1 << 20)
 #define ROOM_PAIN               (1 << 21)  /* Pain Room  */
-#define ROOM_NOMAGIC_MSG        (1 << 22)  /* custom no magic message   */
+//  #define ROOM_NOMAGIC_MSG        (1 << 22)  *************************************************ADD NEXT ROOM FLAG HERE
 #define ROOM_NOSUMMON           (1 << 23)  /* summoning not allowed     */
 #define ROOM_NOSCRY             (1 << 24)  /* no scrying into the room  */
 #define ROOM_NOPORTAL           (1 << 25)  /* no portaling into room    */

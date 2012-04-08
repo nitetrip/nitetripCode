@@ -63,6 +63,12 @@ const char *dirs[] =
   "\n"
 };
 
+const char *change_weather[] = {
+  "better",
+  "worse",
+  "\n"
+};
+
 const char *abbr_dirs[] =
 {
   "n",
@@ -98,7 +104,7 @@ const char *room_bits[] = {
   "DUMPONTICK",
   "LIT",
   "PAIN",
-  "NOMAGIC_MSG",
+  "unused",                     // use this flag NEXT
   "NO_SUMMON",
   "NO_SCRY",
   "NO_PORTAL",
@@ -133,9 +139,9 @@ const char *sorted_room_bits[] = {
   "ICE",
   "IMPROOM",
   "INDOORS",
-  "LIT",  
+  "LIT",
   "NO_MAGIC",
-  "NOMAGIC_MSG",
+  "unused",                     //use NEXT (remember to resort these)
   "NO_MOB",
   "NO_PORTAL",
   "NO_SCRY",

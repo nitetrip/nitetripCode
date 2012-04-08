@@ -778,9 +778,9 @@ void oedit_disp_menu(struct descriptor_data *d)
 	  "%s6%s) Extra flags : %s%s\r\n",
 
 	  cyn, OLC_NUM(d), nrm,
-	  grn, nrm, yel, (obj->name && *obj->name) ? obj->name : "undefined",
-	  grn, nrm, yel, (obj->short_description && *obj->short_description) ? obj->short_description : "undefined",
-	  grn, nrm, yel, (obj->description && *obj->description) ? obj->description : "undefined",
+	  grn, nrm, yel, (obj->name && *obj->name) ? obj->name : STRING_UNDEFINED,
+	  grn, nrm, yel, (obj->short_description && *obj->short_description) ? obj->short_description : STRING_UNDEFINED,
+	  grn, nrm, yel, (obj->description && *obj->description) ? obj->description : STRING_UNDEFINED,
 	  grn, nrm, yel, (obj->action_description && *obj->action_description) ? obj->action_description : "<not set>\r\n",
 	  grn, nrm, cyn, tbitbuf,
 	  grn, nrm, cyn, ebitbuf

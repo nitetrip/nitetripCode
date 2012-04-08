@@ -62,8 +62,7 @@ void mobile_activity(void)
 	  continue;		/* go to next char */
       }
     }
-    
-    /* check for mob class or race options here   Anubis */   
+    /* check for mob class or race options here  */
     mob_magic_user(ch);
 
     /* If the mob has no specproc, do the default actions */
@@ -97,6 +96,7 @@ void mobile_activity(void)
     }
 
     /* Aggressive Mobs */
+  if (AFF_FLAGGED(ch, AFF_BENEFICENCE) && (rand_number(0, 100) > 25)){
     if (MOB_FLAGGED(ch, MOB_AGGRESSIVE | MOB_AGGR_TO_ALIGN)) {
       found = FALSE;
       for (vict = world[IN_ROOM(ch)].people; vict && !found; vict = vict->next_in_room) {
@@ -115,15 +115,15 @@ void mobile_activity(void)
           if (aggressive_mob_on_a_leash(ch, ch->master, vict))
             continue;
 
-   if(GET_CLASS(ch) == MOB_CLASS_THIEF)
-      hit(ch, vict, SKILL_BACKSTAB);
-	 else
-	    hit(ch, vict, TYPE_UNDEFINED);
+    if(GET_CLASS(ch) == MOB_CLASS_THIEF)
+       hit(ch, vict, SKILL_BACKSTAB);
+ 	 else
+ 	    hit(ch, vict, TYPE_UNDEFINED);
 	 found = TRUE;
 	}
       }
     }
-
+   }
     /* Mob Memory */
     if (MOB_FLAGGED(ch, MOB_MEMORY) && MEMORY(ch)) {
       found = FALSE;

@@ -2258,10 +2258,10 @@ ACMD(do_attributes)
 
 	if (ch->followers)
 	{
-    send_to_char(ch, "You are being followed by:");
+    send_to_char(ch, "You are being followed by:\r\n");
 	for (fol = ch->followers; fol; fol = fol->next) {
-      send_to_char(ch, "\r\n%s %s", found++ ? "" : "", PERS(fol->follower, ch));
-      send_to_char(ch, "%s", fol->next ? "" : "");
+      send_to_char(ch, "%s %s\r\n", found++ ? "" : "", PERS(fol->follower, ch));
+      send_to_char(ch, "%s\r\n", fol->next ? "" : "");
       found = FALSE;
       }
     }

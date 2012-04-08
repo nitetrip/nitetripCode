@@ -992,7 +992,7 @@ void redit_parse(struct descriptor_data *d, char *arg)
     break;
   case REDIT_ROOM_MIN_LEVEL_MSG:
        OLC_ROOM(d)->min_level_message = str_udup(arg);
-       if ( strcmp(OLC_ROOM(d)->min_level_message, "undefined") == 0 )
+       if ( strcmp(OLC_ROOM(d)->min_level_message, STRING_UNDEFINED) == 0 )
         OLC_ROOM(d)->min_level_message = "You are not experienced enough to go there.";
        write_to_output(d, "Min Level message set to : %s\r\n", OLC_ROOM(d)->min_level_message);
        OLC_VAL(d) = 1;
@@ -1000,7 +1000,7 @@ void redit_parse(struct descriptor_data *d, char *arg)
        return;
   case REDIT_ROOM_MAX_LEVEL_MSG:
        OLC_ROOM(d)->max_level_message = str_udup(arg);
-       if ( strcmp(OLC_ROOM(d)->max_level_message, "undefined") == 0 )
+       if ( strcmp(OLC_ROOM(d)->max_level_message, STRING_UNDEFINED) == 0 )
         OLC_ROOM(d)->max_level_message = "You are too experienced to go there.";
        write_to_output(d, "Max Level message set to : %s\r\n", OLC_ROOM(d)->max_level_message);
        OLC_VAL(d) = 1;

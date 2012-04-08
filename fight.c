@@ -1864,7 +1864,7 @@ void check_pain_room()
 {
 
 room_rnum room_array[MAX_PAIN_ROOMS] = {}, current_room = NULL;
-int num_players = 0, num_rooms = 0, checkloop = 0, active_painrooms = 0, duplicate = 0;
+int num_players = 0, num_rooms = 0, checkloop = 0, duplicate = 0;
 int pain_dam = 0;
 
 struct descriptor_data *d = NULL;
@@ -1914,10 +1914,8 @@ struct char_data *ch = NULL, *next_ch = NULL, *i = NULL;
             if (AFF_FLAGGED(ch, AFF_DERVISH_SPIN) && pain_dam >= 2)
               pain_dam *= .9;
             if (GET_LEVEL(ch) >= LVL_SAINT) // No damage to IMMS
-              pain_dam = 0; // The if statement below doesn't work properly.  for some reason it is still allowing undefined to be sent
-            if (world[current_room].pain_message == STRING_UNDEFINED) mudlog(NRM, LVL_IMPL, TRUE, "pain_message = undefined!!!!",current_room, IN_ROOM(ch) );
-             // else mudlog(NRM, LVL_IMPL, TRUE, "pain_message is NOT undefined it is %s" ,world[current_room].pain_message ); troubleshooting
-            send_to_char(ch, "%s\r\n", ((world[current_room].pain_message && str_udup(world[current_room].pain_message) != STRING_UNDEFINED) ? world[current_room].pain_message:"You feel faint from the heat and fall to your knees!!"));
+              pain_dam = 0;
+            send_to_char(ch, "%s\r\n", ((world[current_room].pain_message && strcmp(world[current_room].pain_message, STRING_UNDEFINED) != 0) ? world[current_room].pain_message:"You feel faint from the heat and fall to your knees!!"));
             damage(ch, ch, pain_dam, ATTACK_MISC);
           }
         }

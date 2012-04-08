@@ -19,6 +19,7 @@
 #include "interpreter.h"
 #include "dg_olc.h"
 #include "dg_event.h"
+#include "constants.h"
 
 /* declare externally defined globals */
 extern struct index_data **trig_index;
@@ -336,7 +337,7 @@ void trigedit_parse(struct descriptor_data *d, char *arg)
     case TRIGEDIT_NAME:
       if (OLC_TRIG(d)->name)
         free(OLC_TRIG(d)->name);
-      OLC_TRIG(d)->name = strdup((arg && *arg) ? arg : "undefined");
+      OLC_TRIG(d)->name = strdup((arg && *arg) ? arg : STRING_UNDEFINED);
       OLC_VAL(d)++;
       break;
 

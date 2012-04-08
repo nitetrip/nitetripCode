@@ -2252,7 +2252,7 @@ void mag_summons(int level, struct char_data *ch, struct obj_data *obj, int spel
     case SPELL_GATE:
       msg = 1;
       fmsg = rand_number(2, 6); /* Random fail message. */
-      mob_num = MOB_GATE_I_BASE + rand_number(0,4);
+      mob_num = MOB_GATE_I_BASE + rand_number(0,3); // this will summon mob vnum MOB_GATE_I_BASE + 0-3, so mob 250-253
       pfail = 25;       /* 25% failure */
       duration = 12;
       break;

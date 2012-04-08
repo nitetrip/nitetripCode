@@ -9,6 +9,7 @@ extern const char *PS_RESISTS_POISON;
 extern const char *STRING_UNDEFINED;
 extern const char *circlemud_version;
 extern const char *dirs[];
+extern const char *change_weather[];
 extern const char *room_bits[];
 extern const char *exit_bits[];
 extern const char *sector_types[];

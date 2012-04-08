@@ -1006,7 +1006,7 @@ void medit_parse(struct descriptor_data *d, char *arg)
     if (arg && *arg) {
       GET_LDESC(OLC_MOB(d)) = strdup(strcat(arg, "\r\n"));
     } else
-      GET_LDESC(OLC_MOB(d)) = strdup("undefined");
+      GET_LDESC(OLC_MOB(d)) = strdup(STRING_UNDEFINED);
 
     break;
 /*-------------------------------------------------------------------*/

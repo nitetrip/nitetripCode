@@ -9,6 +9,7 @@
 #include "sysdep.h"
 #include "structs.h"
 #include "utils.h"
+#include "constants.h"
 #include "db.h"
 #include "boards.h"
 #include "shop.h"
@@ -253,9 +254,9 @@ char        arg[MAX_STRING_LENGTH];
 	      "%s~\n",
 
 	      GET_OBJ_VNUM(obj),
-	      (obj->name && *obj->name) ? obj->name : "undefined",
-	      (obj->short_description && *obj->short_description) ? obj->short_description : "undefined",
-	      (obj->description && *obj->description) ?	obj->description : "undefined",
+	      (obj->name && *obj->name) ? obj->name : STRING_UNDEFINED,
+	      (obj->short_description && *obj->short_description) ? obj->short_description : STRING_UNDEFINED,
+	      (obj->description && *obj->description) ?	obj->description : STRING_UNDEFINED,
 	      buf1);
 
       sprintasciilong(buf1, GET_OBJ_EXTRA(obj));

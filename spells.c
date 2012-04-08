@@ -124,15 +124,13 @@ ASPELL(spell_control_weather)
 ASPELL(spell_create_water)
 {
   int water;
-  send_to_char(ch, "In spells.c create_water..\r\n");
   if (ch == NULL || obj == NULL){
-     send_to_char(ch, "No argument detected...\r\n");
+     mudlog(BRF, LVL_IMPL, TRUE, "Spell Create Water did not detect an argument");
     return;}
   /* level = MAX(MIN(level, LVL_IMPL), 1);	 - not used */
 
   if (GET_OBJ_TYPE(obj) == ITEM_DRINKCON) {
-         send_to_char(ch, "Item is a drink container!!\r\n");
-    if ((GET_OBJ_VAL(obj, 2) != LIQ_WATER) && (GET_OBJ_VAL(obj, 1) != 0)) {
+      if ((GET_OBJ_VAL(obj, 2) != LIQ_WATER) && (GET_OBJ_VAL(obj, 1) != 0)) {
       name_from_drinkcon(obj);
       GET_OBJ_VAL(obj, 2) = LIQ_SLIME;
       name_to_drinkcon(obj, LIQ_SLIME);

@@ -12,6 +12,7 @@
 #include "genolc.h"
 #include "genzon.h"
 #include "dg_scripts.h"
+#include "constants.h"
 
 extern zone_rnum top_of_zone_table;
 extern struct room_data *world;
@@ -367,12 +368,12 @@ int save_zone(zone_rnum zone_num)
   }
 
   /*
-   * Print zone header to file	
+   * Print zone header to file
    */
   fprintf(zfile, "#%d\n" "%s~\n" "%d %d %d %d\n",
 	  zone_table[zone_num].number,
 	  (zone_table[zone_num].name && *zone_table[zone_num].name)
-		? zone_table[zone_num].name : "undefined",
+		? zone_table[zone_num].name : STRING_UNDEFINED,
           genolc_zone_bottom(zone_num),
 	  zone_table[zone_num].top,
 	  zone_table[zone_num].lifespan,

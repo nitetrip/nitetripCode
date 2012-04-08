@@ -221,22 +221,24 @@ int call_magic(struct char_data *caster, struct char_data *cvict, struct obj_dat
     return 0;
 
   if (ROOM_FLAGGED(IN_ROOM(caster), ROOM_NOMAGIC) && (GET_LEVEL(caster) < LVL_SAINT) ) {
-    if (world[IN_ROOM(caster)].nomagic_message_caster != NULL &&
-        world[IN_ROOM(caster)].nomagic_message_room != NULL){
+      if (world[IN_ROOM(caster)].nomagic_message_caster && strcmp(world[IN_ROOM(caster)].nomagic_message_caster, STRING_UNDEFINED) != 0)
        send_to_char(caster, "%s\r\n", world[IN_ROOM(caster)].nomagic_message_caster);
+     else
+       send_to_char(caster, "Your magic fizzles out and dies.\r\n");
+     if (world[IN_ROOM(caster)].nomagic_message_room && strcmp(world[IN_ROOM(caster)].nomagic_message_room,STRING_UNDEFINED) != 0)
        act(world[IN_ROOM(caster)].nomagic_message_room, FALSE, caster, 0, 0, TO_ROOM);
-    } else {
-    send_to_char(caster, "Your magic fizzles out and dies.\r\n");
-    act("$n's magic fizzles out and dies.", FALSE, caster, 0, 0, TO_ROOM);
-    }
+     else
+       act("$n's magic fizzles out and dies.", FALSE, caster, 0, 0, TO_ROOM);
+
     return (0);
   }
-  if (ROOM_FLAGGED(IN_ROOM(caster), ROOM_PEACEFUL) &&
-      (SINFO.violent || IS_SET(SINFO.routines, MAG_DAMAGE))) {
+  if (ROOM_FLAGGED(IN_ROOM(caster), ROOM_PEACEFUL) && (SINFO.violent || IS_SET(SINFO.routines, MAG_DAMAGE))) {
     send_to_char(caster, "A flash of white light fills the room, dispelling your violent magic!\r\n");
     act("White light from no particular source suddenly fills the room, then vanishes.", FALSE, caster, 0, 0, TO_ROOM);
     return (0);
-  }
+  } 
+
+
   /* determine the type of saving throw */
   switch (casttype) {
   case CAST_STAFF:
@@ -287,49 +289,49 @@ int call_magic(struct char_data *caster, struct char_data *cvict, struct obj_dat
 
   if (IS_SET(SINFO.routines, MAG_MANUAL))
     switch (spellnum) {
-    case SPELL_ARBOREAL_FORM:   MANUAL_SPELL(spell_arboreal_form); break;
-    case SPELL_ARCANE_LORE:     MANUAL_SPELL(spell_arcane_lore); break;
-    case SPELL_ASTRAL_PROJECTION:MANUAL_SPELL(spell_astral_projection); break;
+    case SPELL_ARBOREAL_FORM:   	MANUAL_SPELL(spell_arboreal_form); break;
+    case SPELL_ARCANE_LORE:     	MANUAL_SPELL(spell_arcane_lore); break;
+    case SPELL_ASTRAL_PROJECTION:	MANUAL_SPELL(spell_astral_projection); break;
     case SPELL_ANIMAL_FRIENDSHIP:
-    case SPELL_BLOOD_QUENCH:          MANUAL_SPELL(spell_blood_quench); break;
-    case SPELL_CALM:                  MANUAL_SPELL(spell_calm); break;
-    case SPELL_CANNIBALIZE:           MANUAL_SPELL(spell_cannibalize); break;
+    case SPELL_BLOOD_QUENCH:          	MANUAL_SPELL(spell_blood_quench); break;
+    case SPELL_CALM:                  	MANUAL_SPELL(spell_calm); break;
+    case SPELL_CANNIBALIZE:           	MANUAL_SPELL(spell_cannibalize); break;
     case SPELL_CHARM_BEAST:
     case SPELL_CHARM_MONSTER:
     case SPELL_CHARM_PERSON:
     case SPELL_CONTROL_PLANT:
     case SPELL_CONTROL_UNDEAD:
     case SPELL_VAMPIRIC_GAZE:
-    case SPELL_CHARM:		MANUAL_SPELL(spell_charm); break;
+    case SPELL_CHARM:			MANUAL_SPELL(spell_charm); break;
 
    //  Spells to get portal names
     case SPELL_BEFRIEND_DRYAD:
     case SPELL_BIND_PORTAL_MAJOR:
     case SPELL_BIND_PORTAL_MINOR:
-    case SPELL_LOCATE_SHADOW_PLANE:   MANUAL_SPELL(spell_bind_portal); break;
+    case SPELL_LOCATE_SHADOW_PLANE:   	MANUAL_SPELL(spell_bind_portal); break;
 
-   case SPELL_CONTROL_WEATHER:       MANUAL_SPELL(spell_control_weather); break;
+   case SPELL_CONTROL_WEATHER:       	MANUAL_SPELL(spell_control_weather); break;
 
-    case SPELL_CREATE_WATER:	MANUAL_SPELL(spell_create_water); break;
-    case SPELL_DETECT_POISON:	MANUAL_SPELL(spell_detect_poison); break;
-    case SPELL_ENCHANT_WEAPON:  MANUAL_SPELL(spell_enchant_weapon); break;
-    case SPELL_FEIGN_DEATH:           MANUAL_SPELL(spell_feign_death); break;
-    case SPELL_FUMBLE:                MANUAL_SPELL(spell_fumble); break;
+    case SPELL_CREATE_WATER:		MANUAL_SPELL(spell_create_water); break;
+    case SPELL_DETECT_POISON:		MANUAL_SPELL(spell_detect_poison); break;
+    case SPELL_ENCHANT_WEAPON:  	MANUAL_SPELL(spell_enchant_weapon); break;
+    case SPELL_FEIGN_DEATH:           	MANUAL_SPELL(spell_feign_death); break;
+    case SPELL_FUMBLE:                	MANUAL_SPELL(spell_fumble); break;
 
-    case SPELL_ETHEREAL_PROJECTION: MANUAL_SPELL(spell_ethereal_projection);break;
-    case SPELL_HANG:            MANUAL_SPELL(spell_hang); break;
-    case SPELL_IDENTIFY:	MANUAL_SPELL(spell_identify); break;
-    case SPELL_KNOCK:                 MANUAL_SPELL(spell_knock); break;
-   case SPELL_RECHARGE:              MANUAL_SPELL(spell_recharge); break;
-    case SPELL_REST_IN_PEACE:         MANUAL_SPELL(spell_rest_in_peace); break;
+    case SPELL_ETHEREAL_PROJECTION: 	MANUAL_SPELL(spell_ethereal_projection);break;
+    case SPELL_HANG:            	MANUAL_SPELL(spell_hang); break;
+    case SPELL_IDENTIFY:		MANUAL_SPELL(spell_identify); break;
+    case SPELL_KNOCK:           	MANUAL_SPELL(spell_knock); break;
+   case SPELL_RECHARGE:              	MANUAL_SPELL(spell_recharge); break;
+    case SPELL_REST_IN_PEACE:         	MANUAL_SPELL(spell_rest_in_peace); break;
 
-    case SPELL_LOCATE_OBJECT:   MANUAL_SPELL(spell_locate_object); break;
-    case SPELL_SUMMON:		MANUAL_SPELL(spell_summon); break;
-    case SPELL_WORD_OF_RECALL:  MANUAL_SPELL(spell_recall); break;
-    case SPELL_RECALL_TO_SORIN: MANUAL_SPELL(spell_sorin_recall); break;
-    case SPELL_PHASE_DOOR:      MANUAL_SPELL(spell_phase_door); break;
-    case SPELL_TELEPORT:	MANUAL_SPELL(spell_teleport); break;
-    case SPELL_SUCCOR:                MANUAL_SPELL(spell_succor); break;
+    case SPELL_LOCATE_OBJECT:   	MANUAL_SPELL(spell_locate_object); break;
+    case SPELL_SUMMON:			MANUAL_SPELL(spell_summon); break;
+    case SPELL_WORD_OF_RECALL:  	MANUAL_SPELL(spell_recall); break;
+    case SPELL_RECALL_TO_SORIN: 	MANUAL_SPELL(spell_sorin_recall); break;
+    case SPELL_PHASE_DOOR:      	MANUAL_SPELL(spell_phase_door); break;
+    case SPELL_TELEPORT:		MANUAL_SPELL(spell_teleport); break;
+    case SPELL_SUCCOR:                	MANUAL_SPELL(spell_succor); break;
  
     // Spells to travel through portals
     case SPELL_DIMENSION_SHIFT:
@@ -345,15 +347,15 @@ int call_magic(struct char_data *caster, struct char_data *cvict, struct obj_dat
          break;
 
 
-    case SPELL_CLAN_RECALL:	MANUAL_SPELL(spell_clan_recall); break;
+    case SPELL_CLAN_RECALL:		MANUAL_SPELL(spell_clan_recall); break;
 
     case SPELL_TELEPORT_MAJOR:
-    case SPELL_TELEPORT_MINOR:        MANUAL_SPELL(spell_teleportm); break;
+    case SPELL_TELEPORT_MINOR:        	MANUAL_SPELL(spell_teleportm); break;
 
     case SPELL_TELEVIEW_MAJOR:
-    case SPELL_TELEVIEW_MINOR:	MANUAL_SPELL(spell_teleview); break;
-    case SPELL_SPOOK:           MANUAL_SPELL(spell_spook); break;
-    case SPELL_VITALITY:              MANUAL_SPELL(spell_vitality); break;
+    case SPELL_TELEVIEW_MINOR:		MANUAL_SPELL(spell_teleview); break;
+    case SPELL_SPOOK:           	MANUAL_SPELL(spell_spook); break;
+    case SPELL_VITALITY:              	MANUAL_SPELL(spell_vitality); break;
     default:
       log("Undefined case(value is %d) in function call_magic file spell_parser.c\r\n", spellnum);
     break;
@@ -470,7 +472,7 @@ void mag_objectmagic(struct char_data *ch, struct obj_data *obj,
     else
       call_magic(ch, tch, tobj, NOWHERE, GET_OBJ_VAL(obj, 3),
 		 DEFAULT_WAND_LVL, CAST_WAND);
- }   
+ }
 else
 act("You can't use $p on $N.", FALSE, ch, obj, tch, TO_CHAR);
    break;
@@ -685,6 +687,8 @@ ACMD(do_cast)
     if (!target && IS_SET(SINFO.targets, TAR_OBJ_ROOM))
       if ((tobj = get_obj_in_list_vis(ch, t, NULL, world[IN_ROOM(ch)].contents)) != NULL)
 	target = TRUE;
+  if (!target && IS_SET(SINFO.targets, TAR_WEATHER))
+      if ((param1 = search_block(t, change_weather, FALSE)) > -1) target = TRUE;
 
     if (!target && IS_SET(SINFO.targets, TAR_OBJ_WORLD))
       if ((tobj = get_obj_vis(ch, t, NULL)) != NULL)
@@ -1070,7 +1074,7 @@ spello(SPELL_BOLT_OF_STEEL, "bolt of steel", 35, 15, 2, POS_FIGHTING, TAR_CHAR_R
   spello(SPELL_CONTROL_UNDEAD, "control undead", 75, 35, 2, POS_STANDING,
         TAR_CHAR_ROOM | TAR_NOT_SELF, FALSE, MAG_MANUAL, "You feel more self-confident.");
   spello(SPELL_CONTROL_WEATHER, "control weather", 75, 25, 5, POS_STANDING,
-	TAR_IGNORE, FALSE, MAG_MANUAL,
+	TAR_WEATHER, FALSE, MAG_MANUAL,
 	NULL);
 
   spello(SPELL_CREATE_FOOD, "create food", 30, 5, 4, POS_STANDING,
