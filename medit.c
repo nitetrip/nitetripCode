@@ -68,7 +68,7 @@ const char *medit_get_mprog_type(struct mob_prog_data *mprog);
 
 void get_defaults(struct char_data *mob);
 /*-------------------------------------------------------------------*\
-  utility functions 
+  utility functions
 \*-------------------------------------------------------------------*/
 
 void medit_save_to_disk(zone_vnum foo)
@@ -81,7 +81,7 @@ void medit_setup_new(struct descriptor_data *d)
   struct char_data *mob;
 
   /*
-   * Allocate a scratch mobile structure.  
+   * Allocate a scratch mobile structure.
    */
   CREATE(mob, struct char_data, 1);
 
@@ -105,7 +105,7 @@ void medit_setup_new(struct descriptor_data *d)
   /* Has changed flag. (It hasn't so far, we just made it.) */
   OLC_VAL(d) = FALSE;
   OLC_ITEM_TYPE(d) = MOB_TRIGGER;
-  
+
   medit_disp_menu(d);
 }
 
@@ -187,7 +187,7 @@ void medit_save_internally(struct descriptor_data *d)
   mob_rnum new_rnum;
   struct descriptor_data *dsc;
   struct char_data *mob;
-  
+
   i = (real_mobile(OLC_NUM(d)) == NOBODY);
 
   if ((new_rnum = add_mobile(OLC_MOB(d), OLC_NUM(d))) == NOBODY) {
@@ -197,12 +197,12 @@ void medit_save_internally(struct descriptor_data *d)
 
   /* Make sure scripts are updated too. - Welcor */
 
-  /* 
+  /*
      Testing
-  
+
    */
 #if 0
-  if (OLC_MOB(d)->proto_script && 
+  if (OLC_MOB(d)->proto_script &&
       OLC_MOB(d)->proto_script != OLC_SCRIPT(d)) {
     struct trig_proto_list *proto, *fproto;
     proto = OLC_MOB(d)->proto_script;
@@ -211,7 +211,7 @@ void medit_save_internally(struct descriptor_data *d)
       proto = proto->next;
       free(fproto);
     }
-  }    
+  }
 #endif
   OLC_MOB(d)->proto_script = OLC_SCRIPT(d);
 
@@ -225,7 +225,7 @@ void medit_save_internally(struct descriptor_data *d)
       proto = proto->next;
       free(fproto);
     }
-  }    
+  }
   /* this will handle new instances of the mob: */
   mob_proto[new_rnum].proto_script = OLC_SCRIPT(d);
 
@@ -243,7 +243,7 @@ void medit_save_internally(struct descriptor_data *d)
 
     assign_triggers(mob, MOB_TRIGGER);
   }
-  
+
   if (!i)	/* Only renumber on new mobiles. */
     return;
 
@@ -269,7 +269,7 @@ void medit_save_internally(struct descriptor_data *d)
 }
 
 /**************************************************************************
- Menu functions 
+ Menu functions
  **************************************************************************/
 
 /*
@@ -567,13 +567,12 @@ void medit_disp_immune(struct descriptor_data *d)
   clear_screen(d);
   for (i = 0; i < MAX_ATTACK_TYPES; i++) {
     if(OLC_MOB(d)->char_specials.immune[i] == 0)
-      write_to_output(d, "%s%2d%s) %-12.12s\r\n", grn, i + 1, nrm, res_types[i]);	
+      write_to_output(d, "%s%2d%s) %-12.12s\r\n", grn, i + 1, nrm, res_types[i]);
     else
       write_to_output(d, "%s%2d%s) %-12.12s %s-set-%s\r\n", grn, i + 1, nrm, res_types[i],
-        cyn, nrm);	
-    	
-  }  
-  write_to_output(d, "\r\nEnter immunity to toggle (0 to quit) : ");			 
+        cyn, nrm);
+  }
+  write_to_output(d, "\r\nEnter immunity to toggle (0 to quit) : ");
 }
 
 /*-------------------------------------------------------------------*/
@@ -588,13 +587,13 @@ void medit_disp_vulnerable(struct descriptor_data *d)
   clear_screen(d);
   for (i = 0; i < MAX_ATTACK_TYPES; i++) {
     if(OLC_MOB(d)->char_specials.vulnerable[i] == 0)
-      write_to_output(d, "%s%2d%s) %-12.12s\r\n", grn, i + 1, nrm, res_types[i]);	
+      write_to_output(d, "%s%2d%s) %-12.12s\r\n", grn, i + 1, nrm, res_types[i]);
     else
       write_to_output(d, "%s%2d%s) %-12.12s %s-set-%s\r\n", grn, i + 1, nrm, res_types[i],
-        cyn, nrm);	
-    	
-  }  
-  write_to_output(d, "\r\nEnter vulnerability to toggle (0 to quit) : ");			 
+        cyn, nrm);
+
+  }
+  write_to_output(d, "\r\nEnter vulnerability to toggle (0 to quit) : ");
 }
 
 /*-------------------------------------------------------------------*/
@@ -610,24 +609,23 @@ void medit_disp_menu(struct descriptor_data *d)
   size_t len = 0;
   int i, nlen;
   bool resists = FALSE;
-  
+
 
   mob = OLC_MOB(d);
   get_char_colors(d->character);
   clear_screen(d);
-  get_defaults(OLC_MOB(d));
+//  Here is the actual menu
   write_to_output(d,
 	  "-- Mob Number:  [%s%d%s]\r\n"
 	  "%s1%s) Sex: %s%-7.7s%s	         %s2%s) Alias: %s%s\r\n"
 	  "%s3%s) S-Desc: %s%s\r\n"
 	  "%s4%s) L-Desc:-\r\n%s%s"
 	  "%s5%s) D-Desc:-\r\n%s%s"
-     "%s6%s) Level:       [%s%2d%s]              %sD%s) Difficulty(0-14):   [%s%d%s]\r\n" 
-     "%s    Hitroll:         [%4d]           Damroll:            [%4d]\r\n"
-     "%s    NumDamDice:      [%4d]           SizeDamDice:        [%4d]\r\n"
-     "%s    Base Hit Points: [%6d]         Armor Class:        [%4d]\r\n"
-     "%s    Exp:             [%6d]         Gold:               [%8d]\r\n"
-     "%s7%s) Alignment  : [%s%4d%s]\r\n",
+     "%s6%s) Level: [%s%2d%s]        %s7%s) Difficulty(0-14): [%s%d%s]          %s8%s) Alignment: [%s%4d%s]\r\n"
+     "      %sA%s)%s Hitroll:         [%4d]        %sB%s)%s Damroll:            [%4d]\r\n"
+     "      %sC%s)%s NumDamDice:      [%4d]        %sD%s)%s SizeDamDice:        [%4d]\r\n"
+     "      %sE%s)%s Base Hit Points: [%6d]      %sF%s)%s Armor Class:        [%4d]\r\n"
+     "      %sG%s)%s Exp:             [%6d]      %sH%s)%s Gold:               [%8d]\r\n",
 	  cyn, OLC_NUM(d), nrm,
 	  grn, nrm, yel, genders[(int)GET_SEX(mob)], nrm,
 	  grn, nrm, yel, GET_ALIAS(mob),
@@ -636,18 +634,18 @@ void medit_disp_menu(struct descriptor_data *d)
 	  grn, nrm, yel, GET_DDESC(mob),
 	  grn, nrm, cyn, GET_LEVEL(mob), nrm,
           grn, nrm, cyn, GET_DIFFICULTY(mob), nrm,
-	  cyn, GET_HITROLL(mob), GET_DAMROLL(mob),
-	  cyn, GET_NDD(mob), GET_SDD(mob), 
-	  cyn, GET_HIT(mob), GET_AC(mob), 
-	  cyn, GET_EXP(mob), GET_GOLD(mob),
-          grn, nrm, cyn, GET_ALIGNMENT(mob), nrm
+          grn, nrm, cyn, GET_ALIGNMENT(mob), nrm,
+	  grn, nrm, cyn, GET_HITROLL(mob), grn, nrm, cyn, GET_DAMROLL(mob),
+	  grn, nrm, cyn, GET_NDD(mob), grn, nrm, cyn, GET_SDD(mob),
+	  grn, nrm, cyn, GET_HIT(mob), grn, nrm, cyn, GET_AC(mob),
+	  grn, nrm, cyn, GET_EXP(mob), grn, nrm, cyn, GET_GOLD(mob)
 	  );
 
   sprintbit(MOB_FLAGS(mob), action_bits, mbitbuf, sizeof(mbitbuf));
   sprintbit(AFF_FLAGS(mob), affected_bits, abitbuf, sizeof(abitbuf));
   sprintbit(AFF2_FLAGS(mob), affected2_bits, a2bitbuf, sizeof(a2bitbuf));
 
- /* to show resists that are set  Anubis */
+ /* show set resists */
 	  for(i = 0;i < MAX_ATTACK_TYPES; i++) {
 	    if (mob->char_specials.resist[i] > 0) {
 	      nlen = snprintf(resistbuf + len, sizeof(resistbuf) - len, "%s ", res_types[i]);
@@ -662,7 +660,7 @@ void medit_disp_menu(struct descriptor_data *d)
   resists = FALSE;
   len = 0;
   nlen = 0;
-  
+
    for(i = 0;i < MAX_ATTACK_TYPES; i++) {
 	    if (mob->char_specials.immune[i] > 0) {
 	      nlen = snprintf(immunebuf + len, sizeof(immunebuf) - len, "%s ", res_types[i]);
@@ -672,12 +670,12 @@ void medit_disp_menu(struct descriptor_data *d)
         len += nlen;
 	    }
 	  }
-	if (resists == FALSE) 
+	if (resists == FALSE)
 		  snprintf(immunebuf, sizeof(immunebuf), "None");
   resists = FALSE;
   len = 0;
   nlen = 0;
-  
+
    for(i = 0;i < MAX_ATTACK_TYPES; i++) {
 	    if (mob->char_specials.vulnerable[i] > 0) {
 	      nlen = snprintf(vulnbuf + len, sizeof(vulnbuf) - len, "%s ", res_types[i]);
@@ -687,10 +685,10 @@ void medit_disp_menu(struct descriptor_data *d)
         len += nlen;
 	    }
 	  }
-	if (resists == FALSE) 
+	if (resists == FALSE)
 		  snprintf(vulnbuf, sizeof(vulnbuf), "None");
-  
-  
+
+
   write_to_output(d,
 	  "%sI%s) Position   : %s%s\r\n"
 	  "%sJ%s) Default    : %s%s\r\n"
@@ -701,9 +699,9 @@ void medit_disp_menu(struct descriptor_data *d)
 	  "%sO%s) Immune     : %s%s\r\n"
 	  "%sP%s) Vulnerable : %s%s\r\n"
 	  "%sR%s) Resist     : %s%s\r\n"
-#if CONFIG_OASIS_MPROG	 
+#if CONFIG_OASIS_MPROG
 	  "%sP%s) Mob Progs : %s%s\r\n"
-#endif   
+#endif
           "%sS%s) Script     : %s%s\r\n"
           "%sT%s) AFF2 Flags : %s%s\r\n"
           "%sU%s) Race       : %s%s\r\n"
@@ -743,8 +741,6 @@ void medit_parse(struct descriptor_data *d, char *arg)
 {
   int i = -1;
   char *oldtext = NULL;
-  int mob_lev = 0;
-  int set_difficulty = 0;
 
   if (OLC_MODE(d) > MEDIT_NUMERICAL_RESPONSE) {
     i = atoi(arg);
@@ -832,42 +828,40 @@ void medit_parse(struct descriptor_data *d, char *arg)
       OLC_MODE(d) = MEDIT_LEVEL;
       i++;
       break;
-    case 'd':
-    case 'D':
+    case '7':
       OLC_MODE(d) = MEDIT_DIFFICULTY;
-      set_difficulty = 1;
       i++;
       break;
-    case '7':
+    case '8':
       OLC_MODE(d) = MEDIT_ALIGNMENT;
       i++;
       break;
-
-/* removed by seymour, not needed with new system - try it back mak */
-    case '8':
+   case 'A':
+   case 'a':
      OLC_MODE(d) = MEDIT_HITROLL;
       i++;
       break;
-    case '9':
+    case 'B':
+    case 'b':
      OLC_MODE(d) = MEDIT_DAMROLL;
      i++;
      break;
-    case 'a':
-    case 'A':
+    case 'c':
+    case 'C':
       OLC_MODE(d) = MEDIT_NDD;
       i++;
       break;
-    case 'b':
-    case 'B':
+    case 'd':
+    case 'D':
       OLC_MODE(d) = MEDIT_SDD;
       i++;
       break;
-    case 'c':
+/*    case 'c':
     case 'C':
       OLC_MODE(d) = MEDIT_NUM_HP_DICE;
       i++;
       break;
-/*    case 'd':
+    case 'd':
     case 'D':
       OLC_MODE(d) = MEDIT_SIZE_HP_DICE;
       i++;
@@ -891,8 +885,7 @@ void medit_parse(struct descriptor_data *d, char *arg)
     case 'H':
       OLC_MODE(d) = MEDIT_GOLD;
       i++;
-      break; 
-
+      break;
     case 'i':
     case 'I':
       OLC_MODE(d) = MEDIT_POS;
@@ -920,31 +913,31 @@ void medit_parse(struct descriptor_data *d, char *arg)
       return;
     case 'n':
     case 'N':
-      OLC_MODE(d) = MEDIT_NUM_ATTACKS;         
+      OLC_MODE(d) = MEDIT_NUM_ATTACKS;
       i++;
       break;
     case 'o':
     case 'O':
-      OLC_MODE(d) = MEDIT_IMMUNE;         
+      OLC_MODE(d) = MEDIT_IMMUNE;
       medit_disp_immune(d);
       return;
     case 'p':
     case 'P':
-      OLC_MODE(d) = MEDIT_VULNERABLE;         
+      OLC_MODE(d) = MEDIT_VULNERABLE;
       medit_disp_vulnerable(d);
       return;
     case 'r':
     case 'R':
-      OLC_MODE(d) = MEDIT_RESIST;         
+      OLC_MODE(d) = MEDIT_RESIST;
       medit_disp_resist(d);
       return;
-#if CONFIG_OASIS_MPROG     
+#if CONFIG_OASIS_MPROG
     case 'p':
     case 'P':
       OLC_MODE(d) = MEDIT_MPROG;
       medit_disp_mprog(d);
       return;
-#endif  
+#endif
     case 's':
     case 'S':
       OLC_SCRIPT_EDIT_MODE(d) = SCRIPT_MAIN_MENU;
@@ -1056,10 +1049,10 @@ void medit_parse(struct descriptor_data *d, char *arg)
       TOGGLE_BIT(AFF2_FLAGS(OLC_MOB(d)), 1ULL << (i - 1));
 
     /* Remove unwanted bits right away.  But we don't have any here yet.  Anubis*/
-    
+
     medit_disp_aff2_flags(d);
     return;
-/*-----------------------------------------------------------------*/     
+/*-----------------------------------------------------------------*/
  case MEDIT_RESIST:
     if ((i = atoi(arg)) <= 0)
       break;
@@ -1231,7 +1224,7 @@ void medit_parse(struct descriptor_data *d, char *arg)
     break;
 
   case MEDIT_ADD_HP:
-    GET_MOVE(OLC_MOB(d)) = LIMIT(i, 0, 30000);
+    GET_HIT(OLC_MOB(d)) = LIMIT(i, 0, 30000);
     break;
 
   case MEDIT_AC:
@@ -1260,15 +1253,15 @@ void medit_parse(struct descriptor_data *d, char *arg)
 
   case MEDIT_LEVEL:
     GET_LEVEL(OLC_MOB(d)) = LIMIT(i, 1, 40);
-    mob_lev = GET_LEVEL(OLC_MOB(d));
-   break;
+    get_defaults(OLC_MOB(d)); // Changes to Level will bring up a set of default values
+    break;
   case MEDIT_DIFFICULTY:
-     GET_DIFFICULTY(OLC_MOB(d)) = LIMIT(i, 0, 14);
-   break;
+    GET_DIFFICULTY(OLC_MOB(d)) = LIMIT(i, 0, 14); 
+    get_defaults(OLC_MOB(d)); // Changes to Difficulty will bring up a set of default values
+    break;
   case MEDIT_ALIGNMENT:
     GET_ALIGNMENT(OLC_MOB(d)) = LIMIT(i, -1000, 1000);
-    break;    
-  
+    break;
   case MEDIT_NUM_ATTACKS:
     GET_NUM_ATTACKS(OLC_MOB(d)) = LIMIT(i, 1, 10);
     break; 
@@ -1285,9 +1278,9 @@ void medit_parse(struct descriptor_data *d, char *arg)
 /*-------------------------------------------------------------------*/
 
 /*
- * END OF CASE 
+ * END OF CASE
  * If we get here, we have probably changed something, and now want to
- * return to main menu.  Use OLC_VAL as a 'has changed' flag  
+ * return to main menu.  Use OLC_VAL as a 'has changed' flag
  */
 
   OLC_VAL(d) = TRUE;
@@ -1409,7 +1402,7 @@ case 11:
   GET_EXP(mob) = 15750;
   GET_GOLD(mob) = 750;
  break;
-case 12: 
+case 12:
   GET_DAMROLL(mob) = 8;
   GET_HITROLL(mob) = 12;
   GET_HIT(mob) = 1000;
@@ -1688,7 +1681,7 @@ case 2:
   if (GET_AC(mob) > 0)
     GET_AC(mob) - MAX(GET_AC(mob), 10);
  break;
-case 3: // 3 is the default
+case 3: // 3 is the default difficulty
   break;
 case 4:
   GET_HITROLL(mob) *= 1.5;

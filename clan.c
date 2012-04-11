@@ -642,29 +642,32 @@ void perform_imm_ctell( struct char_data *ch, int clan, const char *messg, ... )
 /* The main function */
 ACMD(do_clan)
 {
+
+ send_to_char(ch, "CLAN is not yet implemented!\r\n");
+   return;
   struct clan_type *cptr = NULL;
   struct char_data *victim = NULL;
   int i, clan;
   long amount = 0;
   char arg[MAX_INPUT_LENGTH], arg1[MAX_INPUT_LENGTH];
   bool app = FALSE;
-  
+
   if (IS_NPC(ch))
     return;
-  
-  if ( (GET_CLAN(ch) == CLAN_NONE || GET_CLAN(ch) == CLAN_UNDEFINED) && 
+
+  if ( (GET_CLAN(ch) == CLAN_NONE || GET_CLAN(ch) == CLAN_UNDEFINED) &&
 (subcmd != SCMD_CLAN_APPLY) && (subcmd != SCMD_CLAN_REVOKE) ) {
     send_to_char(ch, "You don't belong to any clan.\r\n");
     return;
   }
-  
+
   for (cptr = clan_info; cptr && cptr->number != GET_CLAN(ch); cptr = cptr->next);
-  
+
   if (cptr == NULL) {
     send_to_char(ch, "That clan does not exist.\r\n");
     return;
   }
-  
+
   switch(subcmd){
 
 /*** cwho ***/

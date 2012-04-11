@@ -2593,6 +2593,11 @@ void mag_unaffects(int level, struct char_data *ch, struct char_data *victim,
       to_vict = "You are awoken by $N";
       to_room = "$n wakes up";
     }
+    if (affected_by_spell(victim, SPELL_CHARM)) {
+      spell = SPELL_CHARM;
+      msg_not_affected = FALSE;
+      stop_follower(victim);
+    }
     break;
 
   case SPELL_DISPEL_SILENCE:

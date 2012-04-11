@@ -142,7 +142,7 @@ ACMD(do_hit)
             || (PLR_FLAGGED(vict, PLR_KILLER)) )
 	{
 	    hit(ch, vict, TYPE_UNDEFINED);
-            WAIT_STATE(ch, PULSE_VIOLENCE + 2);
+            //WAIT_STATE(ch, PULSE_VIOLENCE + 2);
 	}
     }
     else
@@ -241,11 +241,11 @@ ACMD(do_backstab)
 
   WAIT_STATE(ch, 2 * PULSE_VIOLENCE);
 }
-ACMD(do_circle) 
-{ 
-  char buf[MAX_INPUT_LENGTH]; 
-  struct char_data *victim; 
-  int percent, prob; 
+ACMD(do_circle)
+{
+  char buf[MAX_INPUT_LENGTH];
+  struct char_data *victim;
+  int percent, prob;
 
   if (IS_NPC(ch) || !GET_SKILL(ch, SKILL_CIRCLE)) {
     send_to_char(ch, "You have no idea how to do that.\r\n");

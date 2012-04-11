@@ -604,6 +604,7 @@ cpp_extern const struct command_info cmd_info[] = {
   { "sit"      , POS_RESTING , do_sit      , 0, 0 },
   { "skillset" , POS_SLEEPING, do_skillset , LVL_GOD, 0 },
   { "sleep"    , POS_SLEEPING, do_sleep    , 0, 0 },
+  { "slay"     , POS_FIGHTING, do_kill     , LVL_DEITY, 0 },
   { "slap"     , POS_RESTING , do_action   , 0, 0 },
   { "slist"    , POS_DEAD    , do_builder_list, LVL_BUILDER, SCMD_SLIST },
   { "slowns"   , POS_DEAD    , do_gen_tog  , LVL_IMPL, SCMD_SLOWNS },

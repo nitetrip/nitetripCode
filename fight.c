@@ -456,7 +456,7 @@ void perform_group_gain(struct char_data *ch, int base,
 	 send_to_char(ch, "You learn nothing from this kill.\r\n");
 	 return;
 	}
- 
+
   int share;
   share = base;
 
@@ -464,7 +464,7 @@ void perform_group_gain(struct char_data *ch, int base,
     send_to_char(ch, "You receive your share of experience -- %d points.\r\n", share);
   else
     send_to_char(ch, "You receive your share of experience -- one measly little point!\r\n");
-      
+
   gain_exp(ch, share);
   change_alignment(ch, victim);
 
@@ -542,7 +542,7 @@ void solo_gain(struct char_data *ch, struct char_data *victim)
 
   final_exp = (level_exp(GET_CLASS(ch), GET_LEVEL(ch) +1 ) / 8);
     if (exp > final_exp)
-      exp = final_exp;
+      exp = final_exp; // Max experience
 
 
    //  exp += MAX(0, (MIN(8, (level_exp(GET_CLASS(ch), GET_LEVEL(ch)))) / 8));
@@ -649,7 +649,7 @@ void dam_message(int dam, struct char_data *ch, struct char_data *victim,
       "You try to #w $N, but miss.",
       "$n tries to #w you, but misses."
     },
-    
+
     {
       "$N seems impervious to $n's #w attempt.",	/* 1: 0     */
       "Your #w has no effect on $N.",
@@ -825,7 +825,6 @@ int skill_message(int dam, struct char_data *ch, struct char_data *vict,
          * Don't send redundant color codes for TYPE_SUFFERING & other types
          * of damage without attacker_msg.
          */
-	
 
 	if (GET_POS(vict) == POS_DEAD) {
           if (msg->die_msg.attacker_msg) {
@@ -878,7 +877,7 @@ int skill_message(int dam, struct char_data *ch, struct char_data *vict,
 void backstab_message(int dam, struct char_data *ch, struct char_data *vict)
 {
 
-/* 
+/*
  * Wanted to put in multiple BS messages and this is a lot easier than with /mud/lib/misc/messages
  * Changed Backstab mults in class.c as well.  1-10x
  *
@@ -1132,7 +1131,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
    * dam_message just sends a generic "You hit $n extremely hard.".
    * skill_message is preferable to dam_message because it is more
    * descriptive.
-   * 
+   *
    * If we are _not_ attacking with a weapon (i.e. a spell), always use
    * skill_message. If we are attacking with a weapon: If this is a miss or a
    * death blow, send a skill_message if one exists; if not, default to a
@@ -1240,7 +1239,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
     if (!IS_NPC(victim)) {
       mudlog(BRF, LVL_SAINT, TRUE, "%s killed by %s at [%5d]", GET_NAME(victim), GET_NAME(ch), GET_ROOM_VNUM(IN_ROOM(victim)));
       //infochan("%s killed by %s.", GET_NAME(victim), GET_NAME(ch));
-      clanlog(victim, "%s killed by %s.", GET_NAME(victim), GET_NAME(ch)); 
+      clanlog(victim, "%s killed by %s.", GET_NAME(victim), GET_NAME(ch));
       if (MOB_FLAGGED(ch, MOB_MEMORY))
 	forget(ch, victim);
     }
@@ -1274,9 +1273,9 @@ int compute_thaco(struct char_data *ch, struct char_data *victim)
     calc_thaco = thaco(GET_CLASS(ch), GET_LEVEL(ch));
   else		/* THAC0 for monsters is set in the HitRoll */
     calc_thaco = 20;
-  calc_thaco -= str_app[STRENGTH_APPLY_INDEX(ch)].tohit; 
+  calc_thaco -= str_app[STRENGTH_APPLY_INDEX(ch)].tohit;
   calc_thaco -= GET_HITROLL(ch);
-  if(!IS_NPC(ch))  
+  if(!IS_NPC(ch))
     calc_thaco -= get_weapon_prof_to_hit(ch);
 
   return calc_thaco;
@@ -1287,13 +1286,13 @@ void hit(struct char_data *ch, struct char_data *victim, int type)
 {
   struct obj_data *wielded = GET_EQ(ch, WEAR_WIELD);
    int  level_diff, w_type, victim_ac, calc_thaco, dam, diceroll;
-  
+
   /* check if the character has a fight trigger */
   fight_mtrigger(ch);
 
   /* Do some sanity checking, in case someone flees, etc. */
   if (victim == NULL) {
-    stop_fighting(ch);       
+    stop_fighting(ch);
     return;
   }
   else if (IN_ROOM(ch) != IN_ROOM(victim)) {
