@@ -103,7 +103,7 @@
 #define STAT_GET_WIS  2
 #define STAT_GET_DEX  3
 #define STAT_GET_CON  4
-#define STAT_GET_CHA  5 
+#define STAT_GET_CHA  5
 #define STAT_QUIT     6
 #define STAT_PARSE_MENU 7
 

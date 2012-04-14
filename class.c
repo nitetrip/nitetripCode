@@ -114,7 +114,7 @@ const char *pc_class_types[] = {
   "Alchemist",
   "\n"
 };
- 
+
 const char *mob_class_abbrevs[] = {
   "Non",
   "Mag",
@@ -211,8 +211,8 @@ int parse_class(char arg)
 }
 
 int parse_full_class(char *arg)
-{  
-  
+{
+
   if(!strcmp(arg, "mage") || !strcmp(arg, "magic") || !strcmp(arg, "magicuser"))
     return CLASS_MAGIC_USER;
   else if(!strcmp(arg, "cleric"))
@@ -1809,7 +1809,6 @@ void roll_real_abils(struct char_data *ch)
 
   ch->real_abils.str_add = 0;
 
-  /*  this is no longer needed with fixed stats   Anubis
   switch (GET_CLASS(ch)) {
   case CLASS_MAGIC_USER:
     ch->real_abils.intel = table[0];
@@ -1819,7 +1818,7 @@ void roll_real_abils(struct char_data *ch)
     ch->real_abils.con = table[4];
     ch->real_abils.cha = table[5];
     break;
-  case CLASS_CLERIC:
+  case CLASS_PRIEST:
     ch->real_abils.wis = table[0];
     ch->real_abils.intel = table[1];
     ch->real_abils.str = table[2];
@@ -1827,7 +1826,7 @@ void roll_real_abils(struct char_data *ch)
     ch->real_abils.con = table[4];
     ch->real_abils.cha = table[5];
     break;
-  case CLASS_THIEF:
+  case CLASS_ROGUE:
     ch->real_abils.dex = table[0];
     ch->real_abils.str = table[1];
     ch->real_abils.con = table[2];
@@ -1835,55 +1834,21 @@ void roll_real_abils(struct char_data *ch)
     ch->real_abils.wis = table[4];
     ch->real_abils.cha = table[5];
     break;
-  case CLASS_WARRIOR:
+  case CLASS_FIGHTER:
     ch->real_abils.str = table[0];
-    ch->real_abils.dex = table[1];
-    ch->real_abils.con = table[2];
+    ch->real_abils.con = table[1];
+    ch->real_abils.dex = table[2];
     ch->real_abils.wis = table[3];
     ch->real_abils.intel = table[4];
     ch->real_abils.cha = table[5];
     if (ch->real_abils.str == 18)
       ch->real_abils.str_add = rand_number(0, 100);
     break;
-  case CLASS_PALADIN:
-  ch->real_abils.str = table[0];
-  ch->real_abils.con = table[1];
-  ch->real_abils.wis = table[2];
-  ch->real_abils.dex = table[3];
-  ch->real_abils.cha = table[4];
-  ch->real_abils.intel = table[5];
-  if (ch->real_abils.str == 18)
-    ch->real_abils.str_add = rand_number(0, 100);
-    break;
-  case CLASS_SKNIGHT:
-  ch->real_abils.str = table[0];
-  ch->real_abils.con = table[1];
-  ch->real_abils.intel = table[2];
-  ch->real_abils.dex = table[3];
-  ch->real_abils.wis = table[4];
-  ch->real_abils.cha = table[5];
-  if (ch->real_abils.str == 18)
-    ch->real_abils.str_add = rand_number(0, 100);
-    break;
-  case CLASS_ASSASSIN:
-    ch->real_abils.dex = table[0];
-    ch->real_abils.str = table[1];
-    ch->real_abils.con = table[2];
-    ch->real_abils.intel = table[3];
-    ch->real_abils.wis = table[4];
-    ch->real_abils.cha = table[5];
-    break;
-  case CLASS_CHAOSMAGE:
-    ch->real_abils.intel = table[0];
-    ch->real_abils.wis = table[1];
-    ch->real_abils.dex = table[2];
-    ch->real_abils.str = table[3];
-    ch->real_abils.con = table[4];
-    ch->real_abils.cha = table[5];
-    break;         
-  }   */
-  ch->aff_abils = ch->real_abils;
+
+  }
+//  ch->aff_abils = ch->real_abils;
   racial_ability_modifiers(ch);
+  ch->aff_abils = ch->real_abils;
   set_height_by_race(ch);
   set_weight_by_race(ch);
 }
@@ -1896,11 +1861,11 @@ void do_start(struct char_data *ch)
   GET_EXP(ch) = 1;
   SET_BIT(PRF_FLAGS(ch), PRF_AUTOEXIT); // New players get autoexit by default
   SET_BIT(PRF_FLAGS(ch), PRF_DISPHP | PRF_DISPMANA | PRF_DISPMOVE | PRF_DISPEXP | PRF_DISPTARGET); // DISPLAY ALL default for new players
-  SET_BIT(PRF_FLAGS(ch), PRF_COLOR_2); // New Players - color complete
+  SET_BIT(PRF_FLAGS(ch), (PRF_COLOR_1 * (3 & 1)) | (PRF_COLOR_2 * (3 & 2) >> 1)); // New players - color complete
+
 
 
   set_title(ch, NULL);
-  roll_real_abils(ch);
 
   GET_MAX_HIT(ch)  = 10;
   GET_MAX_MANA(ch) = 100;
@@ -1919,18 +1884,18 @@ void do_start(struct char_data *ch)
 
   case CLASS_WARRIOR:
     break;
-    
+
   case CLASS_PALADIN:
     break;
-    
+
   case CLASS_SKNIGHT:
    break;
 
   case CLASS_ASSASSIN:
    break;
-   
+
   case CLASS_CHAOSMAGE:
-   break;     
+   break;
   }
 
   advance_level(ch);

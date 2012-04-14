@@ -1546,9 +1546,9 @@ ACMD(do_switch)
     send_to_char(ch, "That's private property -- no trespassing!\r\n");
   else {
     send_to_char(ch, "%s", OK);
-    
+
     mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s switched into %s.",
-		   GET_NAME(ch), victim->player.short_descr );	
+		   GET_NAME(ch), victim->player.short_descr );
 
     ch->desc->character = victim;
     ch->desc->original = ch;

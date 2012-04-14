@@ -665,7 +665,7 @@ void game_loop(socket_t mother_desc)
      * to sleep until the next 0.1 second tick.  The first step is to
      * calculate how long we took processing the previous iteration.
      */
-    
+
     gettimeofday(&before_sleep, (struct timezone *) 0); /* current time */
     timediff(&process_time, &before_sleep, &last_time);
 

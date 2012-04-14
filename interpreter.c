@@ -27,7 +27,7 @@
 #include "tedit.h"
 #include "dg_scripts.h"
 #include "constants.h"
-#include "pfdefaults.h" //dan clan system
+#include "pfdefaults.h"
 /* external variables */
 extern room_rnum r_mortal_start_room;
 extern room_rnum r_immort_start_room;
@@ -50,7 +50,8 @@ extern int no_specials;
 extern int max_bad_pws;
 extern int selfdelete_fastwipe;
 extern struct clan_type *clan_info;
-
+extern const char *pc_race_types[];
+extern const char *pc_class_types[];
 /* external functions */
 void echo_on(struct descriptor_data *d);
 void echo_off(struct descriptor_data *d);
@@ -67,6 +68,7 @@ void read_saved_vars(struct char_data *ch);
 void perform_tell(struct char_data *ch, struct char_data *vict, char *arg);
 void clanlog(struct char_data *ch, const char *str, ...);
 void perform_cinfo( int clan_number, const char *messg, ... );
+void roll_real_abils(struct char_data *ch);
 
 /* local functions */
 int class_branch_1_guild_work(struct char_data *ch, struct char_data *guildmaster, int cmd); /* Doesn't actually return anything */
@@ -77,8 +79,6 @@ void perform_complex_alias(struct txt_q *input_q, char *orig, struct alias_data 
 int perform_alias(struct descriptor_data *d, char *orig, size_t maxlen);
 int reserved_word(char *argument);
 int _parse_name(char *arg, char *name);
-int parse_stat_menu(struct descriptor_data *d, char *arg);
-int parse_stats(struct descriptor_data *d, char *arg);
 int stats_disp_menu(struct descriptor_data *d);
 void init_stats(struct descriptor_data *d);
 int stats_assign_stat(int abil, char *arg, struct descriptor_data *d);
@@ -509,7 +509,7 @@ cpp_extern const struct command_info cmd_info[] = {
   { "nohassle" , POS_DEAD    , do_gen_tog  , LVL_SAINT, SCMD_NOHASSLE },
   { "norepeat" , POS_DEAD    , do_gen_tog  , 0, SCMD_NOREPEAT },
   { "noshout"  , POS_SLEEPING, do_gen_tog  , 1, SCMD_DEAF },
-  { "nosummon" , POS_DEAD    , do_gen_tog  , 1, SCMD_NOSUMMON },
+  { "nosummon" , POS_DEAD    , do_gen_tog  , 41, SCMD_NOSUMMON },
   { "notell"   , POS_DEAD    , do_gen_tog  , 1, SCMD_NOTELL },
   { "notitle"  , POS_DEAD    , do_wizutil  , LVL_DEITY, SCMD_NOTITLE },
   { "nowiz"    , POS_DEAD    , do_gen_tog  , LVL_SAINT, SCMD_NOWIZ },
@@ -683,7 +683,7 @@ cpp_extern const struct command_info cmd_info[] = {
   { "weather"  , POS_RESTING , do_weather  , 0, 0 },
   { "who"      , POS_DEAD    , do_who      , 0, 0 },
   { "whoami"   , POS_DEAD    , do_gen_ps   , 0, SCMD_WHOAMI },
-  { "where"    , POS_RESTING , do_where    , 1, 0 },
+  { "where"    , POS_RESTING , do_where    , LVL_DEITY, 0 },
   { "whap"     , POS_RESTING , do_action   , 0, 0 },
   { "whisper"  , POS_RESTING , do_spec_comm, 0, SCMD_WHISPER },
   { "whine"    , POS_RESTING , do_action   , 0, 0 },
@@ -1230,6 +1230,7 @@ char *any_one_arg(char *argument, char *first_arg)
  * Same as one_argument except that it takes two args and returns the rest;
  * ignores fill words
  */
+
 char *two_arguments(char *argument, char *first_arg, char *second_arg)
 {
   return (one_argument(one_argument(argument, first_arg), second_arg)); /* :-) */
@@ -1242,7 +1243,7 @@ char *two_arguments(char *argument, char *first_arg, char *second_arg)
  * (now works symmetrically -- JE 7/25/94)
  *
  * that was dumb.  it shouldn't be symmetrical.  JE 5/1/95
- * 
+ *
  * returns 1 if arg1 is an abbreviation of arg2
  */
 int is_abbrev(const char *arg1, const char *arg2)
@@ -1781,26 +1782,29 @@ void nanny(struct descriptor_data *d, char *arg)
       GET_PFILEPOS(d->character) = create_entry(GET_PC_NAME(d->character));
     /* Now GET_NAME() will work properly. */
     init_char(d->character);
-     /* --relistan for statedit -- Some code moved into CON_QSTATS 
+     /* --relistan for statedit -- Some code moved into CON_QSTATS
          See below for details */
     if (!d->olc)
       CREATE(d->olc, struct oasis_olc_data, 1);
 
     STATE(d) = CON_QSTATS;
-    init_stats(d);
+     init_stats(d);
     break;
 
- /* --relistan 2/22/99 for configurable stats */
-  case CON_QSTATS:
-    if (parse_stats(d, arg)) {
-      if(d->olc) free(d->olc);
+ case CON_QSTATS:
+    if (UPPER(*arg) == 'Y') {
+        if(d->olc) free(d->olc);
       save_char(d->character, NOWHERE);
       save_player_index();
-      write_to_output(d, "%s\r\n*** PRESS RETURN: ", motd);
+      write_to_output(d, "%s\r\n", motd);
+      write_to_output(d, "\r\n*** PRESS RETURN: \r\r\r\r"); // the \r are to fix a bug that shows the last 3 chars
       STATE(d) = CON_RMOTD;
-      mudlog(NRM, LVL_DEITY, TRUE, "%s [%s] new player.", GET_NAME(d->character), d->host);   
-    }
-    break;   
+      mudlog(NRM, LVL_DEITY, TRUE, "%s [%s] new player.", GET_NAME(d->character), d->host);
+    } else {
+     init_stats(d);
+     }
+
+    break;
 
   case CON_RMOTD:		/* read CR after printing motd   */
     write_to_output(d, "%s", MENU);
@@ -1819,7 +1823,7 @@ void nanny(struct descriptor_data *d, char *arg)
     case '1':
       reset_char(d->character);
       read_aliases(d->character);
- 
+
       if (PLR_FLAGGED(d->character, PLR_INVSTART))
 	GET_INVIS_LEV(d->character) = GET_LEVEL(d->character);
 
@@ -1831,12 +1835,12 @@ void nanny(struct descriptor_data *d, char *arg)
             GET_CLAN(d->character) = cptr->number;
         }
       }
-                                                                                                         
+
       /* can't do an 'else' here, cuz they might have a clan now. */
       if (GET_CLAN(d->character) != PFDEF_CLAN) {
         /* Now check to see if person's clan still exists */
         for (cptr = clan_info; cptr && cptr->number != GET_CLAN(d->character); cptr = cptr->next);
-                                                                                                         
+
         if (cptr == NULL) {  /* Clan no longer exists */
           GET_CLAN(d->character) = PFDEF_CLAN;
           GET_CLAN_RANK(d->character) = PFDEF_CLANRANK;
@@ -1863,7 +1867,7 @@ void nanny(struct descriptor_data *d, char *arg)
             load_room = r_newbie_start_room;}
         else
            load_room = r_mortal_start_room;
-       /* Add other start rooms here - mak */   
+       /* Add other start rooms here - mak */
       }
 
       if (PLR_FLAGGED(d->character, PLR_FROZEN))
@@ -2055,7 +2059,7 @@ void nanny(struct descriptor_data *d, char *arg)
     break;
   /* Rogue Part */
   case CLASS_ROGUE:
-   switch (*arg) 
+   switch (*arg)
 	  {
     case 't':
     case 'T':
@@ -2345,13 +2349,13 @@ void nanny(struct descriptor_data *d, char *arg)
     case 'c':
     case 'C':
       REMOVE_BIT(PLR_FLAGS(d->character), PLR_PROGRESS);
-      REMOVE_BIT(PLR_FLAGS(d->character), PLR_NOEXPGAIN);  
+      REMOVE_BIT(PLR_FLAGS(d->character), PLR_NOEXPGAIN);
 	  d->character->player.chclass = CLASS_CHAOSMAGE;
       break;
 	case 's':
     case 'S':
       REMOVE_BIT(PLR_FLAGS(d->character), PLR_PROGRESS);
-      REMOVE_BIT(PLR_FLAGS(d->character), PLR_NOEXPGAIN);  
+      REMOVE_BIT(PLR_FLAGS(d->character), PLR_NOEXPGAIN);
 	  d->character->player.chclass = CLASS_SORCEROR;
       break;
     case 'h':
@@ -2370,18 +2374,18 @@ void nanny(struct descriptor_data *d, char *arg)
       }
 	  break;
   case CLASS_ENCHANTER:
-   switch (*arg) 
+   switch (*arg)
 	  {
     case 'n':
     case 'N':
       REMOVE_BIT(PLR_FLAGS(d->character), PLR_PROGRESS);
-      REMOVE_BIT(PLR_FLAGS(d->character), PLR_NOEXPGAIN);  
+      REMOVE_BIT(PLR_FLAGS(d->character), PLR_NOEXPGAIN);
 	  d->character->player.chclass = CLASS_NECROMANCER;
       break;
 	case 'a':
     case 'A':
       REMOVE_BIT(PLR_FLAGS(d->character), PLR_PROGRESS);
-      REMOVE_BIT(PLR_FLAGS(d->character), PLR_NOEXPGAIN);  
+      REMOVE_BIT(PLR_FLAGS(d->character), PLR_NOEXPGAIN);
 	  d->character->player.chclass = CLASS_ALCHEMIST;
       break;
     case 'h':
@@ -2400,12 +2404,12 @@ void nanny(struct descriptor_data *d, char *arg)
       }
 	  break;
 	default:
-	   /* Well, this shouldn't happen */ 
+	   /* Well, this shouldn't happen */
        log("SYSERR: Erroneous exit of Branch Two Sub in Interp.c.");
 	  }
     STATE(d) = CON_PLAYING;
     break;
-    
+
   default:
     log("SYSERR: Nanny: illegal state of con'ness (%d) for '%s'; closing connection.",
 	STATE(d), d->character ? GET_NAME(d->character) : "<unknown>");
@@ -2414,72 +2418,11 @@ void nanny(struct descriptor_data *d, char *arg)
   }
 }
 
-
-/************************************************************************
- *  --Statedit  Part of UrathMud                                v1.0    *
- *  Copyright 1999 Karl N. Matthias.  All rights Reserved.              *
- *  You may freely distribute, modify, or sell this code                *
- *  as long as this copyright remains intact.                           *
- *                                                                      *
- *  Based on code by Jeremy Elson, Harvey Gilpin, and George Greer.     *
- ************************************************************************/
-
-/* --relistan 2/22/99 - 2/24/99 */
-/* --relistan 2/22/99 for player configurable stats */
-int parse_stats(struct descriptor_data *d, char *arg)
-{
-  struct char_data *ch;
-
-  ch = d->character;
-
-  switch(OLC_MODE(d)) {
-
-    case STAT_QUIT: return 1;
-
-    case STAT_PARSE_MENU:
-      if(parse_stat_menu(d, arg)) return 1;
-      break;
-
-    case STAT_GET_STR:
-      ch->real_abils.str = stats_assign_stat(ch->real_abils.str, arg, d);
-      stats_disp_menu(d);
-    break;
-
-    case STAT_GET_INT:
-      ch->real_abils.intel = stats_assign_stat(ch->real_abils.intel, arg, d);
-      stats_disp_menu(d);
-    break;
-
-    case STAT_GET_WIS:
-      ch->real_abils.wis = stats_assign_stat(ch->real_abils.wis, arg, d);
-      stats_disp_menu(d);
-    break;
-
-    case STAT_GET_DEX:
-      ch->real_abils.dex = stats_assign_stat(ch->real_abils.dex, arg, d);
-      stats_disp_menu(d);
-    break;
-
-    case STAT_GET_CON:
-      ch->real_abils.con = stats_assign_stat(ch->real_abils.con, arg, d);
-      stats_disp_menu(d);
-    break;
-
-    case STAT_GET_CHA:
-      ch->real_abils.cha = stats_assign_stat(ch->real_abils.cha, arg, d);
-      stats_disp_menu(d);
-    break;
-
-    default:
-      OLC_MODE(d) = stats_disp_menu(d); break;
-  }
-
-  return 0;
-}
-
-/* Roll up the initial stats and assign them to OLC_VAL(d) 
+/* Roll up the initial stats and assign them to OLC_VAL(d)
    This isn''t nearly as efficient as it could be, but this code
    is horked from the original roll_real_abils() code */
+// FIXME - this is probably  not needed any more
+
 void init_stats(struct descriptor_data *d)
 {
   int i, j, k, temp;
@@ -2509,123 +2452,29 @@ void init_stats(struct descriptor_data *d)
   OLC_VAL(d) = table[0] + table[1] + table[2] + table[3]
           + table[4] + table[5];
 */
-  d->character->real_abils.str_add = 0;
-srand( time(0) );
-  /* Minimum stats 8 */
-  d->character->real_abils.str = 8;
-  d->character->real_abils.intel = 8;
-  d->character->real_abils.cha = 8;
-  d->character->real_abils.dex = 8;
-  d->character->real_abils.con = 8;
-  d->character->real_abils.wis = 8;
 
   OLC_VAL(d) = 30;
-
   stats_disp_menu(d);
 
 }
 
 int stats_disp_menu(struct descriptor_data *d)
 {
+ struct char_data *ch = d->character;
+ char plr_race[MAX_INPUT_LENGTH], plr_class[MAX_INPUT_LENGTH];
+ roll_real_abils(ch);
+ sprinttype(GET_RACE(ch), pc_race_types, plr_race, sizeof(plr_race));
+ sprinttype(GET_CLASS(d->character), pc_class_types, plr_class, sizeof(plr_class));
+ send_to_char(ch, "\033[H\033[J"); // Clear the screen
+ send_to_char(ch, "Name:  %s\r\n", GET_PC_NAME(ch));
+ send_to_char(ch, "Race:  %s\r\n", plr_race);
+ send_to_char(ch, "Class: %s\r\n", plr_class);
+ send_to_char(ch, "\nAbility Scores:\r\n");
+ send_to_char(ch, "Str: %8d Int: %8d Wis: %8d Dex: %8d Con: %8d Cha %8d\r\n", GET_STR(ch), GET_INT(ch), GET_WIS(ch), GET_DEX(ch), GET_CON(ch), GET_CHA(ch));
+ send_to_char(ch, "\nDo you wish to keep these rolls (Y/N)?");
+ //OLC_MODE(d) = STAT_PARSE_MENU;
+ return 1;
 
-send_to_char(d->character,"\r\n");
-send_to_char(d->character,"-<[========[ STATS ]=======]>-\r\n");
-send_to_char(d->character," <| Total Points Left: %3d |>     You should select the letter of\r\n",OLC_VAL(d));
-send_to_char(d->character," <|                        |>     the score you wish to adjust.\r\n");
-send_to_char(d->character," <| = Select a stat:       |>     When prompted, enter the new\r\n");
-send_to_char(d->character," <| S) Strength     : %2d   |>     score, NOT the amount to add.\r\n",d->character->real_abils.str);
-send_to_char(d->character," <| I) Intelligence : %2d   |>     NOTE: If you quit before you\r\n",   d->character->real_abils.intel);
-send_to_char(d->character," <| W) Wisdom       : %2d   |>     assign all the points, you\r\n",d->character->real_abils.wis);
-send_to_char(d->character," <| D) Dexterity    : %2d   |>     will lose them forever.\r\n",d->character->real_abils.dex);
-send_to_char(d->character," <| N) Constitution : %2d   |>     \r\n",d->character->real_abils.con);
-send_to_char(d->character," <| C) Charisma     : %2d   |>     \r\n",d->character->real_abils.cha);
-send_to_char(d->character," <| Q) Quit                |>     \r\n");
-send_to_char(d->character,"-<[========================]>-    \r\n");
-send_to_char( d->character,"\r\nEnter Letter to Change: ");
-
-OLC_MODE(d) = STAT_PARSE_MENU;
-
-return 1;
-}
-
-int parse_stat_menu(struct descriptor_data *d, char *arg)
-{
-  /* Main parse loop */
-  *arg = LOWER(*arg);
-	switch (*arg) {
-	/* we don't want random stats   -Anubis
-		case 'r':
-			d->character->real_abils.str   = (rand() / (RAND_MAX / 15 + 1)+2);
-			d->character->real_abils.intel = (rand() / (RAND_MAX / 15 + 1)+2);
-			d->character->real_abils.cha   = (rand() / (RAND_MAX / 15 + 1)+2);
-			d->character->real_abils.dex   = (rand() / (RAND_MAX / 15 + 1)+2);
-			d->character->real_abils.con   = (rand() / (RAND_MAX / 15 + 1)+2);
-			d->character->real_abils.wis   = (rand() / (RAND_MAX / 15 + 1)+2);
-
-if (d->character->real_abils.str > 18)
-		d->character->real_abils.str = 18;
-
-if (d->character->real_abils.intel > 18)
-		d->character->real_abils.intel = 18;
-
-if (d->character->real_abils.cha > 18)
-		d->character->real_abils.cha = 18;
-
-if (d->character->real_abils.dex > 18)
-		d->character->real_abils.dex = 18;
-
-if (d->character->real_abils.con > 18)
-		d->character->real_abils.con = 18;
-
-if (d->character->real_abils.wis > 18)
-		d->character->real_abils.wis = 18;
-
-			
-
-			OLC_VAL(d) = (10 + rand() / (RAND_MAX / 10 + 1)+3);
-			stats_disp_menu(d);
-			break;    */
-	  case 'S':
-		case 's':
-			OLC_MODE(d) = STAT_GET_STR; 
-			send_to_char( d->character,"Enter New value: ");
-			break;
-		case 'I':
-		case 'i': 
-			OLC_MODE(d) = STAT_GET_INT; 
-			send_to_char( d->character,"Enter New value: ");
-			break;
-		case 'W':
-		case 'w': 
-			OLC_MODE(d) = STAT_GET_WIS;  
-			send_to_char( d->character,"Enter New value: ");
-			break;
-		case 'D':
-		case 'd': 
-			OLC_MODE(d) = STAT_GET_DEX;  
-			send_to_char( d->character,"Enter New value: ");
-			break;
-		case 'N':
-		case 'n': 
-			OLC_MODE(d) = STAT_GET_CON;  
-			send_to_char( d->character,"Enter New value: ");
-			break; 
-		case 'C':
-		case 'c': 
-			OLC_MODE(d) = STAT_GET_CHA;  
-			send_to_char( d->character,"Enter New value: ");
-			break;
-		case 'Q':
-		case 'q': 
-			OLC_MODE(d) = STAT_QUIT; 
-      			free(d->olc);
-      			d->olc = NULL;
-			return 1;
-  
-    default: stats_disp_menu(d);
-  }
-
-  return 0;
 }
 
 int stats_assign_stat(int abil, char *arg, struct descriptor_data *d)
@@ -2633,16 +2482,16 @@ int stats_assign_stat(int abil, char *arg, struct descriptor_data *d)
   int temp;
 
   if (abil > 0) {
-      OLC_VAL(d) = OLC_VAL(d) 
-          + abil; 
+      OLC_VAL(d) = OLC_VAL(d)
+          + abil;
       abil = 0;
   }
 
-  if (atoi(arg) > OLC_VAL(d)) 
+  if (atoi(arg) > OLC_VAL(d))
     temp = OLC_VAL(d);
   else
     temp = atoi(arg);
-  
+
   /* FIXME WILL HAVE TO CHANGE THIS WHEN RACES HAVE DIFFEREING ABILS */
   if (temp > 18) {
     if (OLC_VAL(d) < 18)
@@ -2653,7 +2502,7 @@ int stats_assign_stat(int abil, char *arg, struct descriptor_data *d)
   if (temp < 8) {
     send_to_char(d->character, "Can not lower values below 8.\r\n");
     temp = 8;
-  }  
+  }
   /* This should throw an error! */
   if (OLC_VAL(d) <= 0) {
     temp = 0;
@@ -2678,7 +2527,7 @@ int stats_assign_stat(int abil, char *arg, struct descriptor_data *d)
 
 int class_branch_guild(struct char_data *ch, struct char_data *guildmaster, int cmd)
 {
-  
+
   guildmaster1 = guildmaster;
 
   if (IS_NPC(ch) || !CMD_IS("progress"))
@@ -2712,12 +2561,12 @@ int class_branch_guild(struct char_data *ch, struct char_data *guildmaster, int 
 	  return (TRUE);
 		}
    }
-   
+
 	char buf[MAX_STRING_LENGTH], buf2[MAX_STRING_LENGTH];
-	
+
 	sprinttype(ch->player.chclass, pc_class_types, buf, sizeof(buf));
 	send_to_char(ch, "\r\n");
-	
+
 	snprintf(buf2, sizeof(buf2), "You have been persuing the path of a %s, but now it is time to take your studies further.", buf); 
 	perform_tell(guildmaster, ch, buf2);
     send_to_char(ch, "\r\n");
@@ -2852,12 +2701,12 @@ int class_branch_guild(struct char_data *ch, struct char_data *guildmaster, int 
 		send_to_char(ch, "Enter N or A for selection, h for information, or q to come back later: ");
 		break;
 	default:
-    /* Well, this shouldn't happen */ 
+    /* Well, this shouldn't happen */
 	log("SYSERR: Erroneous exit of Branch Two Sub in Interp.c.");
-	}	
 	}
-    
-	else /* Well, this shouldn't happen */ 
+	}
+
+	else /* Well, this shouldn't happen */
 	log("SYSERR: Erroneous exit of Branch If Sub in Interp.c.");
 
 
