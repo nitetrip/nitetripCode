@@ -37,7 +37,7 @@ void fix_size(struct char_data *ch);
 /* local functions */
 int has_boat(struct char_data *ch);
 int find_door(struct char_data *ch, const char *type, char *dir, const char *cmdname);
-int has_key(struct char_data *ch, obj_vnum key);
+struct obj_data *has_key(struct char_data *ch, obj_vnum key);
 void do_doorcmd(struct char_data *ch, struct obj_data *obj, int door, int scmd);
 int ok_pick(struct char_data *ch, obj_vnum keynum, int pickproof, int scmd);
 ACMD(do_gen_door);
@@ -98,7 +98,7 @@ int do_simple_move(struct char_data *ch, int dir, int need_specials_check)
 
   int need_movement, moveadd = 0;
   struct obj_data *k;
-  
+
   /*
    * Check for special routines (North is 1 in command list, but 0 here) Note
    * -- only check if following; this avoids 'double spec-proc' bug
@@ -376,19 +376,18 @@ int find_door(struct char_data *ch, const char *type, char *dir, const char *cmd
   }
 }
 
-int has_key(struct char_data *ch, obj_vnum key)
+struct obj_data *has_key(struct char_data *ch, obj_vnum key) // changed return type to obj_data pointer apr 2012
 {
   struct obj_data *o;
 
-  for (o = ch->carrying; o; o = o->next_content)
-    if (GET_OBJ_VNUM(o) == key)
-      return (1);
+  for (o = ch->carrying; o; o = o->next_content) // go through ch's inventory to check for the key
+    if (GET_OBJ_VNUM(o) == key) return (o);
 
   if (GET_EQ(ch, WEAR_HOLD))
     if (GET_OBJ_VNUM(GET_EQ(ch, WEAR_HOLD)) == key)
-      return (1);
+      return (GET_EQ(ch, WEAR_HOLD)); // return pointer to ch's held slot if it is the key to this door
 
-  return (0);
+  return (NULL); // Return a null pointer if the above isn't true
 }
 
 
@@ -437,8 +436,7 @@ const int flags_door[] =
 
 void do_doorcmd(struct char_data *ch, struct obj_data *obj, int door, int scmd)
 {
-  obj_vnum keynum;
-  keynum = DOOR_KEY(ch, obj, door);
+
   struct obj_data *o;
   char buf[MAX_STRING_LENGTH], buf2[MAX_STRING_LENGTH];
   size_t len;
@@ -479,45 +477,28 @@ void do_doorcmd(struct char_data *ch, struct obj_data *obj, int door, int scmd)
     send_to_char(ch, "*Click*\r\n");
     break;
 
-  case SCMD_UNLOCK:
-/* 
-    This makes sure that an item that is NOT the key is not destroyed.. 
-    this only really applies to IMPs or Gods or whatever the level is 
-	where you don't need a key to unlock stuff because morts will be 
-	stopped before this point. 
- */
-if (!has_key(ch, DOOR_KEY(ch, obj, door)))
-	  {
-if (GET_LEVEL(ch) >= LVL_GOD) // LEVEL GOD + can unlock all doors
-		  {
-	  UNLOCK_DOOR(IN_ROOM(ch), obj, door);
-	if (back)
-      UNLOCK_DOOR(other_room, obj, rev_dir[door]);
-    send_to_char(ch, "*Click*\r\n");
-    break;
-		  }
-else
-break;  
-	  }
- /* Check key charges */
-  for (o = ch->carrying; o; o = o->next_content)
-		{
-  if (GET_OBJ_VNUM(o) != keynum) 
-    continue;	
-  if ((GET_OBJ_VAL(o, 0) != 9999) && (GET_OBJ_VAL(o, 0) > 0))  
-	GET_OBJ_VAL(o, 0)--;
-	if (GET_OBJ_VAL(o, 0) <= 0) {
-	  extract_obj(o);
-      snprintf(buf2, sizeof(buf), "%s suddenly vanishes from sight!", o->short_description);
-	  act(buf2, FALSE, ch, 0, 0, TO_CHAR);
-	}
-	}
-/* End */
-  UNLOCK_DOOR(IN_ROOM(ch), obj, door);
-	if (back)
-      UNLOCK_DOOR(other_room, obj, rev_dir[door]);
-    send_to_char(ch, "*Click*\r\n");
-    break;
+  case SCMD_UNLOCK: // Rewrote Apr 2012
+    if (GET_LEVEL(ch) >= LVL_GOD) { // LEVEL GOD + can unlock all doors
+      UNLOCK_DOOR(IN_ROOM(ch), obj, door);
+      if (back)
+        UNLOCK_DOOR(other_room, obj, rev_dir[door]);
+        send_to_char(ch, "*Click*\r\n");
+        return;
+    }
+
+    if ((o = has_key(ch, DOOR_KEY(ch, obj, door)))) { // Assign o to the key, if ch has it
+      UNLOCK_DOOR(IN_ROOM(ch), obj, door);
+      if (back) UNLOCK_DOOR(other_room, o, rev_dir[door]); // this unlocks the door in the other direction
+      send_to_char(ch, "*Click*\r\n");
+      if ((GET_OBJ_VAL(o, 0) != 9999) && (GET_OBJ_VAL(o, 0) > 0)) // Check for key charges
+      	GET_OBJ_VAL(o, 0)--; // take a charge from the key
+      if (GET_OBJ_VAL(o, 0) <= 0) {
+      	extract_obj(o); // take key if the last charge is used
+        snprintf(buf2, sizeof(buf), "%s suddenly vanishes from sight!", o->short_description);
+      	act(buf2, FALSE, ch, 0, 0, TO_CHAR);
+      	}
+    }
+  break;
 
   case SCMD_PICK:
     TOGGLE_LOCK(IN_ROOM(ch), obj, door);
@@ -526,12 +507,13 @@ break;
     send_to_char(ch, "The lock quickly yields to your skills.\r\n");
     len = strlcpy(buf, "$n skillfully picks the lock on ", sizeof(buf));
     break;
+   default:
+    break;
   }
 
   /* Notify the room. */
   if (len < sizeof(buf))
-    snprintf(buf + len, sizeof(buf) - len, "%s%s.",
-	obj ? "" : "the ", obj ? "$p" : EXIT(ch, door)->keyword ? "$F" : "door");
+    snprintf(buf + len, sizeof(buf) - len, "%s%s.",	obj ? "" : "the ", obj ? "$p" : EXIT(ch, door)->keyword ? "$F" : "door");
   if (!obj || IN_ROOM(obj) != NOWHERE)
     act(buf, FALSE, ch, obj, obj ? 0 : EXIT(ch, door)->keyword, TO_ROOM);
 
@@ -600,8 +582,7 @@ ACMD(do_gen_door)
   two_arguments(argument, type, dir);
   if (!generic_find(type, FIND_OBJ_INV | FIND_OBJ_ROOM, ch, &victim, &obj))
     door = find_door(ch, type, dir, cmd_door[subcmd]);
-    
-     
+
   if(obj != NULL)  /* another trap check */
     if(trap_check(ch, GET_OBJ_VNUM(obj)) )
       return;

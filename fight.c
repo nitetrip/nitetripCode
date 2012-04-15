@@ -267,7 +267,7 @@ void set_fighting(struct char_data *ch, struct char_data *vict)
    /* If either party is invisible, he becomes visible */
   if (AFF_FLAGGED(ch, AFF_INVISIBLE | AFF_HIDE))
     appear(ch);
-    
+
   FIGHTING(ch) = vict;
   if (!AFF_FLAGGED(ch, AFF_HEALING_DREAM))
   {
@@ -377,7 +377,7 @@ void make_corpse(struct char_data *ch, struct char_data *killer)
   ch->carrying = NULL;
   IS_CARRYING_N(ch) = 0;
   IS_CARRYING_W(ch) = 0;
-  
+
   if(killer != NULL) {
     if(!IS_NPC(ch) && !IS_NPC(killer) )
       corpse->killer = GET_IDNUM(killer);
@@ -421,9 +421,9 @@ void raw_kill(struct char_data * ch, struct char_data * killer)
   while (ch->affected)
     affect_remove(ch, ch->affected);
 
-  /* To make ordinary commands work in scripts.  welcor*/  
-  GET_POS(ch) = POS_STANDING; 
-  
+  /* To make ordinary commands work in scripts. */
+  GET_POS(ch) = POS_STANDING;
+
   if (killer) {
     if (death_mtrigger(ch, killer))
       death_cry(ch);
@@ -432,7 +432,7 @@ void raw_kill(struct char_data * ch, struct char_data * killer)
   death_cry(ch); 
   update_pos(ch);
   make_corpse(ch, killer);
-  check_dump(ch, 0); 
+  check_dump(ch, 0);
   extract_char(ch);
 }
 
@@ -498,12 +498,12 @@ void group_gain(struct char_data *ch, struct char_data *victim)
     base = tot_gain ;
 
   for (f = k->followers; f; f = f->next)
-    if (AFF_FLAGGED(f->follower, AFF_GROUP) && IN_ROOM(f->follower) == IN_ROOM(ch)) 
-      parts_of_exp += GET_LEVEL(f->follower); 
+    if (AFF_FLAGGED(f->follower, AFF_GROUP) && IN_ROOM(f->follower) == IN_ROOM(ch))
+      parts_of_exp += GET_LEVEL(f->follower);
 
   parts_of_exp += GET_LEVEL(k);
   part_value = base / parts_of_exp;
-  
+
     if (AFF_FLAGGED(k, AFF_GROUP) && IN_ROOM(k) == IN_ROOM(ch)) {
       tot_gain = GET_LEVEL(k) * part_value;
       max_gain = level_exp(GET_CLASS(k), GET_LEVEL(k) +1 ) / 8;
@@ -521,8 +521,6 @@ void group_gain(struct char_data *ch, struct char_data *victim)
          tot_gain = max_gain;
        perform_group_gain(f->follower, tot_gain, victim);
      }
-
-
 }
 
 
@@ -807,7 +805,6 @@ int skill_message(int dam, struct char_data *ch, struct char_data *vict,
 {
   int i, j, nr;
   struct message_type *msg;
- 
   struct obj_data *weap = GET_EQ(ch, WEAR_WIELD);
 
   for (i = 0; i < MAX_MESSAGES; i++) {
@@ -1178,7 +1175,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
       send_to_char(victim, "That really did HURT!\r\n");
 
     if (GET_HIT(victim) < (GET_MAX_HIT(victim) / 4)) {
-        if (!IS_NPC(victim) && !AFF_FLAGGED(victim, AFF_HEALING_DREAM)) { 
+        if (!IS_NPC(victim) && !AFF_FLAGGED(victim, AFF_HEALING_DREAM)) {
       send_to_char(victim, "%sYou wish that your wounds would stop BLEEDING so much!%s\r\n",
 		CCRED(victim, C_SPR), CCNRM(victim, C_SPR)); }
       if (ch != victim && MOB_FLAGGED(victim, MOB_WIMPY))
@@ -1332,15 +1329,15 @@ void hit(struct char_data *ch, struct char_data *victim, int type)
     dam = TRUE;
   else if (diceroll == 1)
     dam = FALSE;
-  else {      /* new to hit system  Anubis */
-    if (calc_thaco - victim_ac <= diceroll) 
-      dam = TRUE;   
-    else 
-      dam = FALSE; 
+  else {      /* new to hit system */
+    if (calc_thaco - victim_ac <= diceroll)
+      dam = TRUE;
+    else
+      dam = FALSE;
   if (affected_by_spell(ch, SPELL_ACCURACY))
      dam = TRUE; // Accuracy hits 100% of the time
   }
-  
+
   if (!dam)
     /* the attacker missed the victim */
     damage(ch, victim, -1, type == SKILL_BACKSTAB ? SKILL_BACKSTAB : w_type);
@@ -1351,10 +1348,9 @@ void hit(struct char_data *ch, struct char_data *victim, int type)
     dam = str_app[STRENGTH_APPLY_INDEX(ch)].todam;
     dam += GET_DAMROLL(ch);
 
-    //Anubis
     if(!IS_NPC(ch))
-      dam += get_weapon_prof_dam(ch);    
- 
+      dam += get_weapon_prof_dam(ch);
+
     /* Maybe holding arrow? */
     if (wielded && GET_OBJ_TYPE(wielded) == ITEM_WEAPON) {
       /* Add weapon-based damage if a weapon is being wielded */
@@ -1444,7 +1440,7 @@ void perform_violence(void)
 {
   struct char_data *ch;
   int number_of_attacks;
-  int i; 
+  int i;
 
   for (ch = combat_list; ch; ch = next_combat_list) {
     next_combat_list = ch->next_fighting;
@@ -1491,15 +1487,14 @@ void perform_violence(void)
  if (AFF_FLAGGED(ch, AFF_REFLECT_DAMAGE))
      damage(ch, FIGHTING(ch), DAMBACK(ch), SPELL_REFLECT_DAMAGE);
 
-   
-    /* combat class and race checks here   Anubis  
+
+    /* combat class and race checks here
     if(!MOB_FLAGGED(ch, MOB_NOTDEADYET) )
     {
-     mob_magic_user(ch); 
+     mob_magic_user(ch);
     }
     */
-    
-    
+
     if (MOB_FLAGGED(ch, MOB_SPEC) && GET_MOB_SPEC(ch) && !MOB_FLAGGED(ch, MOB_NOTDEADYET)) {
       char actbuf[MAX_INPUT_LENGTH] = "";
       (GET_MOB_SPEC(ch)) (ch, ch, 0, actbuf);
@@ -1511,7 +1506,7 @@ void perform_violence(void)
 int get_num_attacks(struct char_data *ch)
 {
    int num_attacks = 1;
-   
+
    if(IS_NPC(ch) )
    {
     if(GET_MOB_ATTACKS(ch) > 0)
@@ -1528,7 +1523,7 @@ int get_num_attacks(struct char_data *ch)
     if(GET_LEVEL(ch) >= 1)
       num_attacks = 1 ;
     if(GET_LEVEL(ch) >= 10)
-      num_attacks = 2;    
+      num_attacks = 2;
   }
    else if(IS_SHAMAN(ch) || IS_CLERIC(ch) || IS_KNIGHT(ch) || IS_BATTLEMAGE(ch) || IS_ENCHANTER(ch) || IS_THIEF(ch) || IS_BARD(ch) )
    {
@@ -1582,10 +1577,10 @@ int get_num_attacks(struct char_data *ch)
     if(GET_LEVEL(ch) >= 40)
       num_attacks = 5;
    }
-   
+
   num_attacks += GET_ATTACKS(ch);
   if (num_attacks < 1)
-      num_attacks = 1;    
+      num_attacks = 1;
   return(num_attacks);
 }
 
@@ -1594,12 +1589,12 @@ int get_weapon_prof_to_hit(struct char_data *ch)
     struct obj_data *wielded = GET_EQ(ch, WEAR_WIELD);
     int w_type;
     if (wielded && GET_OBJ_TYPE(wielded) == ITEM_WEAPON)
-    {    
-      w_type = GET_OBJ_VAL(wielded, 3) + TYPE_HIT;     
+    {
+      w_type = GET_OBJ_VAL(wielded, 3) + TYPE_HIT;
     switch (w_type) {
       case TYPE_STING:
       case TYPE_PIERCE:
-      case TYPE_STAB:                   
+      case TYPE_STAB:
         if(GET_SKILL(ch, SKILL_PROF_PIERCE) <= 1 )
             return(-5);
         else if(GET_SKILL(ch, SKILL_PROF_PIERCE) <= 10 )
@@ -1615,7 +1610,7 @@ int get_weapon_prof_to_hit(struct char_data *ch)
         else if(GET_SKILL(ch, SKILL_PROF_PIERCE) <= 79 )
             return(3);
         else
-          return(4); 
+          return(4);
         break;
       case TYPE_WHIP:
         if(GET_SKILL(ch, SKILL_PROF_WHIP) <= 1 )
@@ -1633,9 +1628,9 @@ int get_weapon_prof_to_hit(struct char_data *ch)
         else if(GET_SKILL(ch, SKILL_PROF_WHIP) <= 79 )
             return(3);
         else
-            return(4); 
+            return(4);
         break;
-      case TYPE_BLUDGEON:  
+      case TYPE_BLUDGEON:
       case TYPE_POUND:
       case TYPE_CRUSH:
         if(GET_SKILL(ch, SKILL_PROF_BLUDGEON) <= 1 )
@@ -1653,7 +1648,7 @@ int get_weapon_prof_to_hit(struct char_data *ch)
         else if(GET_SKILL(ch, SKILL_PROF_BLUDGEON) <= 79 )
             return(3);
         else
-          return(4); 
+          return(4);
         break;
       case TYPE_SLASH:
       case TYPE_CLAW:
@@ -1672,28 +1667,28 @@ int get_weapon_prof_to_hit(struct char_data *ch)
         else if(GET_SKILL(ch, SKILL_PROF_SLASH) <= 79 )
             return(3);
         else
-          return(4); 
+          return(4);
         break;
-      default:          
+      default:
           return(0);
-          break;  
-       }  
+          break;
+       }
      }
-   else       
+   else
      return(0);
 }
 
 int get_weapon_prof_dam(struct char_data *ch)
   {
     struct obj_data *wielded = GET_EQ(ch, WEAR_WIELD);
-    int w_type;   
+    int w_type;
     if (wielded && GET_OBJ_TYPE(wielded) == ITEM_WEAPON)
-    {    
-      w_type = GET_OBJ_VAL(wielded, 3) + TYPE_HIT;     
+    {
+      w_type = GET_OBJ_VAL(wielded, 3) + TYPE_HIT;
     switch (w_type) {
       case TYPE_STING:
       case TYPE_PIERCE:
-      case TYPE_STAB:                   
+      case TYPE_STAB:
         if(GET_SKILL(ch, SKILL_PROF_PIERCE) <= 1 )
             return(-5);
         else if(GET_SKILL(ch, SKILL_PROF_PIERCE) <= 10 )
@@ -1709,7 +1704,7 @@ int get_weapon_prof_dam(struct char_data *ch)
         else if(GET_SKILL(ch, SKILL_PROF_PIERCE) <= 79 )
             return(3);
         else
-          return(4); 
+          return(4);
         break;
       case TYPE_WHIP:
         if(GET_SKILL(ch, SKILL_PROF_WHIP) <= 1 )
@@ -1727,9 +1722,9 @@ int get_weapon_prof_dam(struct char_data *ch)
         else if(GET_SKILL(ch, SKILL_PROF_WHIP) <= 79 )
             return(3);
         else
-            return(4); 
+            return(4);
         break;
-      case TYPE_BLUDGEON:  
+      case TYPE_BLUDGEON:
       case TYPE_POUND:
       case TYPE_CRUSH:
         if(GET_SKILL(ch, SKILL_PROF_BLUDGEON) <= 1 )
@@ -1766,14 +1761,14 @@ int get_weapon_prof_dam(struct char_data *ch)
         else if(GET_SKILL(ch, SKILL_PROF_SLASH) <= 79 )
             return(3);
         else
-          return(4); 
+          return(4);
         break;
-      default:          
+      default:
           return(0);
-          break;  
-       }  
+          break;
+       }
      }
-   else       
+   else
      return(0);
 }
 
@@ -1788,7 +1783,7 @@ int calc_weap_resists(struct char_data *ch, struct char_data *victim, int damage
      if (IS_NPC(ch) && ch->mob_specials.attack_type != 0)
         w_type = ch->mob_specials.attack_type + TYPE_HIT;
     else
-      w_type = TYPE_PUNCH; /* unarmed attack changed to punch by Anubis */
+      w_type = TYPE_PUNCH; /* unarmed attack changed to punch */
     }
 
     switch (w_type) {
@@ -1797,7 +1792,7 @@ int calc_weap_resists(struct char_data *ch, struct char_data *victim, int damage
       case TYPE_STAB:
         if(victim->char_specials.resist[ATTACK_PIERCE] > 0 || victim->char_specials.resist[ATTACK_PHYSICAL] > 0 )
          damage = damage - (damage / 3);
-        if(victim->char_specials.vulnerable[ATTACK_PIERCE] > 0 || victim->char_specials.vulnerable[ATTACK_PHYSICAL] > 0 )   
+        if(victim->char_specials.vulnerable[ATTACK_PIERCE] > 0 || victim->char_specials.vulnerable[ATTACK_PHYSICAL] > 0 )
          damage = damage + (damage / 3);
         if(victim->char_specials.immune[ATTACK_PIERCE] > 0 || victim->char_specials.immune[ATTACK_PHYSICAL] > 0 )
          damage = 0;
@@ -1806,7 +1801,7 @@ int calc_weap_resists(struct char_data *ch, struct char_data *victim, int damage
       case TYPE_WHIP:
         if(victim->char_specials.resist[ATTACK_WHIP] > 0 || victim->char_specials.resist[ATTACK_PHYSICAL] > 0 )
          damage = damage - (damage / 3);
-        if(victim->char_specials.vulnerable[ATTACK_WHIP] > 0 || victim->char_specials.vulnerable[ATTACK_PHYSICAL] > 0 )   
+        if(victim->char_specials.vulnerable[ATTACK_WHIP] > 0 || victim->char_specials.vulnerable[ATTACK_PHYSICAL] > 0 )
          damage = damage + (damage / 3);
         if(victim->char_specials.immune[ATTACK_WHIP] > 0 || victim->char_specials.immune[ATTACK_PHYSICAL] > 0 )
          damage = 0;
@@ -1817,7 +1812,7 @@ int calc_weap_resists(struct char_data *ch, struct char_data *victim, int damage
       case TYPE_CRUSH:
         if(victim->char_specials.resist[ATTACK_BLUDGEON] > 0 || victim->char_specials.resist[ATTACK_PHYSICAL] > 0 )
          damage = damage - (damage / 3);
-        if(victim->char_specials.vulnerable[ATTACK_BLUDGEON] > 0 || victim->char_specials.vulnerable[ATTACK_PHYSICAL] > 0 )   
+        if(victim->char_specials.vulnerable[ATTACK_BLUDGEON] > 0 || victim->char_specials.vulnerable[ATTACK_PHYSICAL] > 0 )
          damage = damage + (damage / 3);
         if(victim->char_specials.immune[ATTACK_BLUDGEON] > 0 || victim->char_specials.immune[ATTACK_PHYSICAL] > 0 )
          damage = 0;
@@ -1827,7 +1822,7 @@ int calc_weap_resists(struct char_data *ch, struct char_data *victim, int damage
       case TYPE_CLAW:
         if(victim->char_specials.resist[ATTACK_SLASH] > 0 || victim->char_specials.resist[ATTACK_PHYSICAL] > 0 )
          damage = damage - (damage / 3);
-        if(victim->char_specials.vulnerable[ATTACK_SLASH] > 0 || victim->char_specials.vulnerable[ATTACK_PHYSICAL] > 0 )   
+        if(victim->char_specials.vulnerable[ATTACK_SLASH] > 0 || victim->char_specials.vulnerable[ATTACK_PHYSICAL] > 0 )
          damage = damage + (damage / 3);
         if(victim->char_specials.immune[ATTACK_SLASH] > 0 || victim->char_specials.immune[ATTACK_PHYSICAL] > 0 )
          damage = 0;
@@ -1897,23 +1892,11 @@ struct char_data *ch = NULL, *next_ch = NULL, *i = NULL;
        current_room = room_array[checkloop];
        world[current_room].pain_check++; //
        if (world[current_room].pain_check >= world[current_room].pain_rate){
-
         world[current_room].pain_check = 0; // reset the delay counter
         for (ch = world[current_room].people; ch; ch = next_ch) { // go through each character in the room and make em hurt!
             next_ch = ch->next_in_room;
           if (!IS_NPC(ch)) {
             pain_dam = world[current_room].pain_damage;
-            // damage is reduced by certain AFF Flags
-            if(AFF_FLAGGED(ch, AFF_SANCTUARY) && pain_dam >= 2 )
-              pain_dam *= .5;
-            if (AFF_FLAGGED(ch, AFF_FORT) && pain_dam >= 3)
-              pain_dam *= .75;
-            if (AFF_FLAGGED(ch, AFF_REFLECT_DAMAGE) && pain_dam >= 3)
-              pain_dam *= .75;
-            if (AFF_FLAGGED(ch, AFF_DERVISH_SPIN) && pain_dam >= 2)
-              pain_dam *= .9;
-            if (GET_LEVEL(ch) >= LVL_SAINT) // No damage to IMMS
-              pain_dam = 0;
             send_to_char(ch, "%s\r\n", ((world[current_room].pain_message && strcmp(world[current_room].pain_message, STRING_UNDEFINED) != 0) ? world[current_room].pain_message:"You feel faint from the heat and fall to your knees!!"));
             damage(ch, ch, pain_dam, ATTACK_MISC);
           }
