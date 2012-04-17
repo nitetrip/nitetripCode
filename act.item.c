@@ -568,7 +568,7 @@ int perform_drop(struct char_data *ch, struct obj_data *obj,
   case SCMD_DROP:
     {
     obj_to_room(obj, IN_ROOM(ch));
-    check_dump(ch, 1);
+    if (!OBJ_FLAGGED(obj, ITEM_NO_DUMP)) check_dump(ch, 1);
     }
     return (0);
   case SCMD_DONATE:

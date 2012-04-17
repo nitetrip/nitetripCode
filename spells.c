@@ -540,20 +540,16 @@ ASPELL(spell_teleview)
 
 ASPELL(spell_summon)
 {
-
   if (ch == NULL || victim == NULL)
     return;
+ if (GET_LEVEL(ch) < LVL_GOD){
+    if (GET_LEVEL(victim) > MIN(LVL_SAINT - 1, level + 3)) {
+      send_to_char(ch, "%s", SUMMON_FAIL);
+      return; }
 
-  if (GET_LEVEL(victim) > MIN(LVL_SAINT - 1, level + 3)) {
-    send_to_char(ch, "%s", SUMMON_FAIL);
-    return;
-  }
-
-  if (ROOM_FLAGGED(IN_ROOM(victim), ROOM_NOMAGIC))
-	{
+  if (ROOM_FLAGGED(IN_ROOM(victim), ROOM_NOMAGIC)) {
     send_to_char(ch, "Powerful magic prevents your summon.\r\n");
-    return;
-	}
+    return; }
 
   if (!pk_allowed) {
     if (MOB_FLAGGED(victim, MOB_AGGRESSIVE)) {
@@ -561,10 +557,8 @@ ASPELL(spell_summon)
 	  "through time and space towards you, you realize that $E is\r\n"
 	  "aggressive and might harm you, so you wisely send $M back.",
 	  FALSE, ch, 0, victim, TO_CHAR);
-      return;
-    }
-    if (!IS_NPC(victim) && !PRF_FLAGGED(victim, PRF_SUMMONABLE) &&
-	!PLR_FLAGGED(victim, PLR_KILLER)) {
+      return; }
+    if (!IS_NPC(victim) && !PRF_FLAGGED(victim, PRF_SUMMONABLE) && !PLR_FLAGGED(victim, PLR_KILLER)) {
       send_to_char(victim, "%s just tried to summon you to: %s.\r\n"
 	      "%s failed because you have summon protection on.\r\n"
 	      "Type NOSUMMON to allow other players to summon you.\r\n",
@@ -573,18 +567,25 @@ ASPELL(spell_summon)
 
       send_to_char(ch, "You failed because %s has summon protection on.\r\n", GET_NAME(victim));
       mudlog(BRF, LVL_SAINT, TRUE, "%s failed summoning %s to %s.", GET_NAME(ch), GET_NAME(victim), world[IN_ROOM(ch)].name);
-      return;
-    }
+      return; }
   }
 
-  if (MOB_FLAGGED(victim, MOB_NOSUMMON) ||
-      (IS_NPC(victim) && mag_savingthrow(ch, victim, SAVING_SPELL, 0))) {
+  if (MOB_FLAGGED(victim, MOB_NOSUMMON) || (IS_NPC(victim) && mag_savingthrow(ch, victim, SAVING_SPELL, 0))) {
     send_to_char(ch, "%s", SUMMON_FAIL);
-    return;
-  }
+    return; }
+  if (ROOM_MIN_LEVEL(IN_ROOM(ch)) != 0 && GET_LEVEL(victim) < ROOM_MIN_LEVEL(IN_ROOM(ch)) ) { // min 0 means no min level
+     act("$N does not belong in this room!", FALSE, ch, 0, victim, TO_CHAR); // Victim does not meet min level requirements
+     return; }
 
+  if (ROOM_MAX_LEVEL(IN_ROOM(ch)) !=0 &&  GET_LEVEL(victim) > ROOM_MAX_LEVEL(IN_ROOM(ch))){ // max 0 means no max level
+    act("$N does not belong in this room!", FALSE, ch, 0, victim, TO_CHAR); // Victim does not meet max level requirements
+    return; }
+
+  if (ROOM_FLAGGED(IN_ROOM(ch), ROOM_GODROOM) || ROOM_FLAGGED(IN_ROOM(ch), ROOM_IMPROOM)){ // To make it easy, no summoning into GODROOMs and IMPROOMs
+    send_to_char(ch, "This room is too godly to play around with that kind of magic!!\r\n");
+    return; }
+ }
   act("$n disappears suddenly.", TRUE, victim, 0, 0, TO_ROOM);
-
   char_from_room(victim);
   char_to_room(victim, IN_ROOM(ch));
 

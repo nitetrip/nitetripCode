@@ -1793,7 +1793,9 @@ void nanny(struct descriptor_data *d, char *arg)
 
  case CON_QSTATS:
     if (UPPER(*arg) == 'Y') {
-        if(d->olc) free(d->olc);
+        if(d->olc) {
+        free(d->olc);
+        d->olc = NULL;}
       save_char(d->character, NOWHERE);
       save_player_index();
       write_to_output(d, "%s\r\n", motd);
@@ -1823,7 +1825,6 @@ void nanny(struct descriptor_data *d, char *arg)
     case '1':
       reset_char(d->character);
       read_aliases(d->character);
-
       if (PLR_FLAGGED(d->character, PLR_INVSTART))
 	GET_INVIS_LEV(d->character) = GET_LEVEL(d->character);
 
@@ -2472,7 +2473,7 @@ int stats_disp_menu(struct descriptor_data *d)
  send_to_char(ch, "\nAbility Scores:\r\n");
  send_to_char(ch, "Str: %8d Int: %8d Wis: %8d Dex: %8d Con: %8d Cha %8d\r\n", GET_STR(ch), GET_INT(ch), GET_WIS(ch), GET_DEX(ch), GET_CON(ch), GET_CHA(ch));
  send_to_char(ch, "\nDo you wish to keep these rolls (Y/N)?");
- //OLC_MODE(d) = STAT_PARSE_MENU;
+ OLC_MODE(d) = STAT_PARSE_MENU;
  return 1;
 
 }

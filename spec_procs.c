@@ -55,68 +55,67 @@ SPECIAL(cityguard);
 SPECIAL(pet_shops);
 SPECIAL(bank);
 
-/* New function to check if a room is dump and then dump */
+/* Check if a room is dump and then dump */
 void check_dump_on_tick(int nr)
 {
 
 if (!ROOM_FLAGGED(nr, ROOM_DUMPONTICK))
  return;
- 
+
 struct obj_data *k;
 struct char_data *j;
 
 
-for (k = world[nr].contents; k; k = world[nr].contents) {
-     extract_obj(k);
-  }
-    if (world[nr].people != NULL) 
-	{
-    for (j = world[nr].people; j; j = j->next_in_room) {
-    if (!IS_NPC(j))
-    act("Suddenly, the room seems less full!", FALSE, j, 0, 0, TO_CHAR);
+ for (k = world[nr].contents; k; k = k->next_content) {
+    if (OBJ_FLAGGED(k, ITEM_NO_DUMP)) continue;
+    extract_obj(k);
+ }
+ /* Dump room message -- Took out per request, uncomment to put back
+    if (world[nr].people != NULL) {
+     for (j = world[nr].people; j; j = j->next_in_room) {
+       if (!IS_NPC(j))
+         act("Suddenly, the room seems less full!", FALSE, j, 0, 0, TO_CHAR);
+     }
     }
-	}
+  */
 
-
-  }
+}
 
 void check_dump(struct char_data *ch, int drop)
 {
 
 if (!((ROOM_FLAGGED(IN_ROOM(ch), ROOM_DUMP)) || (ROOM_FLAGGED(IN_ROOM(ch), ROOM_REWARDDUMP))))
  return;
-  
+
  struct obj_data *k;
  struct char_data *i;
   int value = 0;
 
   if (!drop) {
-  for (k = world[IN_ROOM(ch)].contents; k; k = world[IN_ROOM(ch)].contents) {
-
-    for (i = world[IN_ROOM(ch)].people; i; i = i->next_in_room) {
-    if (CAN_SEE_OBJ(i, k))
-	send_to_char(i, "%s vanishes in a puff of smoke!", k->short_description);
-    else
-	send_to_char(i, "Something vanishes in a puff of smoke!");
-	}
-
-    extract_obj(k);
-  }
+    for (k = world[IN_ROOM(ch)].contents; k; k = k->next_content) {
+       if (OBJ_FLAGGED(k, ITEM_NO_DUMP)) continue;
+         for (i = world[IN_ROOM(ch)].people; i; i = i->next_in_room) {
+            if (CAN_SEE_OBJ(i, k))
+	      send_to_char(i, "%s vanishes in a puff of smoke!", k->short_description);
+            else
+	      send_to_char(i, "Something vanishes in a puff of smoke!");
+	  }
+        extract_obj(k);
+     }
 return;
-}
-  /* These are no longer necessary now that the function is called rather the being a room special 
+  }
+  /* These are no longer necessary now that the function is called rather the being a room special
   * if (!CMD_IS("drop"))
   *  return (FALSE);
   *  do_drop(ch, argument, cmd, SCMD_DROP);
   */
-     
-  
-  for (k = world[IN_ROOM(ch)].contents; k; k = world[IN_ROOM(ch)].contents) {
-	act("$p vanishes in a puff of smoke!", FALSE, 0, k, 0, TO_ROOM);
-    value += MAX(1, MIN(50, GET_OBJ_COST(k) / 10));
-    extract_obj(k);
-  }
 
+  for (k = world[IN_ROOM(ch)].contents; k; k = k->next_content) {
+      if (OBJ_FLAGGED(k, ITEM_NO_DUMP)) continue;
+       act("$p vanishes in a puff of smoke!", FALSE, 0, k, 0, TO_ROOM);
+       value += MAX(1, MIN(50, GET_OBJ_COST(k) / 10));
+       extract_obj(k);
+  }
   if (ROOM_FLAGGED(IN_ROOM(ch), ROOM_REWARDDUMP)) {
   send_to_char(ch, "Reward %d\r\n", value);
   if (value) {
@@ -140,7 +139,7 @@ return;
 		sprintf(buf, "You are awarded %d coin for outstanding performance.\r\n", value); 
 		send_to_char(ch, buf);
 	}
-	
+
 	GET_GOLD(ch) += value;
      }
   }

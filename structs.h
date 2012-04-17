@@ -567,7 +567,7 @@ struct char_data *guildmaster1;
 /* WARNING: In the world files, NEVER set the bits marked "R" ("Reserved") */
 #define AFF2_UNUSED             (1ULL << 0)	   /* 		*/
 
-// from CWE V
+
 /* Miscellaneous flags */
 #define MSC_HIGH_ATTACKS_THIS_ROUND     (1 << 0)   /* Boolean used during combat to adjust \
                                                     * for fractional attacks per round */
@@ -579,7 +579,7 @@ struct char_data *guildmaster1;
 #define MSC_LOST_POWERS                 (1 << 5)  /* The player lost his/her/its powers */
 #define MSC_JUST_ATTACKED               (1 << 6)  /* The NPC just attacked. Don't let him be allowed to flee! (see do_flee) */
                                                   /* No, you can use 'WAIT_STATE' to achieve this... */
-//^ from CWE
+
 
 
 /* Modes of connectedness: used by descriptor_data.state */
@@ -609,10 +609,11 @@ struct char_data *guildmaster1;
 #define CON_TEDIT	 23	/* OLC mode - text editor		*/
 #define CON_TRIGEDIT     24	/* OLC mode - trigger edit              */
 #define CON_QRACE        25     /* Race? 				*/
-#define CON_QSTATS       26 /* for choosing your starting stats   Anubis */
-#define CON_BRANCH1      27 /* First Class Branch  */
-#define CON_BRANCH2      28 /* Second Class Branch */
+#define CON_QSTATS       26     /* for choosing your starting stats     */
+#define CON_BRANCH1      27     /* First Class Branch                   */
+#define CON_BRANCH2      28     /* Second Class Branch                  */
 #define CON_CLANEDIT     29     /* OLC mode - clan editor               */
+#define CON_SWITCHED	 30     /* Is the character switched?           */
 
 /* Character equipment positions: used as index for char_data.equipment[] */
 /* NOTE: Don't confuse these constants with the ITEM_ bitvectors
@@ -698,7 +699,9 @@ struct char_data *guildmaster1;
 #define ITEM_ANTI_EVIL      (1ULL << 10) /* Not usable by evil people	*/
 #define ITEM_ANTI_NEUTRAL   (1ULL << 11) /* Not usable by neutral people	*/
 #define ITEM_NO_EQ_MSG      (1ULL << 12) /* Item will not display normal eq msg */
-#define ITEM_RADIATE        (1UL  << 13) /* Item radiates a bright light */
+#define ITEM_RADIATE        (1ULL << 13) /* Item radiates a bright light */
+#define ITEM_ANTI_HALFLING  (1ULL << 14) /* Anti Halfling                */
+#define ITEM_ANTI_MINOTAUR  (1ULL << 15) // Anti - Minotaur
 #define ITEM_NOSELL	    (1ULL << 16) /* Shopkeepers won't touch it	*/
 #define ITEM_ANTI_HUMAN     (1ULL << 17) /* Not usable by humans         */
 #define ITEM_ANTI_DWARF     (1ULL << 18) /* Not usable by dwarves        */
@@ -711,11 +714,20 @@ struct char_data *guildmaster1;
 #define ITEM_EVIL_FLAGGED   (1ULL << 25) /* item is evil flagged */
 #define ITEM_ANGELIC        (1ULL << 26) /* item is ang flagged, +100 align */
 #define ITEM_DEMONIC        (1ULL << 27) /* item is dem flagged -100 align */
-#define ITEM_NO_RECHARGE    (1ULL << 27) 
+#define ITEM_NO_RECHARGE    (1ULL << 28)
+#define ITEM_NO_DUMP	    (1ULL << 29) // Item will not be dumped
+#define ITEM_ANTI_PIXIE     (1ULL << 20) // Anti - Pixie
+#define ITEM_ANTI_ULDRA     (1ULL << 21) // Anti - Uldra
+#define ITEM_ANTI_TRITON    (1ULL << 22) // Anti - Triton
+#define ITEM_ANTI_OGRE      (1ULL << 23) // Anti - Ogre
+#define ITEM_ANTI_VAMPIRE   (1ULL << 24) // Anti- Vampire
+#define ITEM_ANTI_SHINTARI  (1ULL << 25) // Anti - Shintari
+#define ITEM_ANTI_KARADAL   (1ULL << 26) // Anti - Karadal
+#define ITEM_ANTI_VISRAEL   (1ULL << 27) // Anti Visreal
 #define ITEM_GREATER_HIDDEN (1ULL << 51) /* Item will not lose hidden if picked up */
 #define ITEM_RESERVED       (1ULL << 52) /* Reserved bit thats auto-set when no flags are selected */
 #define ITEM_LESSER_HIDDEN  (1ULL << 53) /* Item will lose hidden if picked up */
-
+// ADD NEW ONES TO 14 & 15
 
 /* =-=-=-=-=-=-=-=-=-= Class restrictions =-=-=-=-=-=-=-=-=-= */
 

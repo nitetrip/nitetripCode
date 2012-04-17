@@ -1,4 +1,4 @@
-/* 
+/*
 ************************************************************************
 *   File: act.wizard.c                                  Part of CircleMUD *
 *  Usage: Player-level god commands and other goodies                     *
@@ -1549,12 +1549,12 @@ ACMD(do_switch)
 
     mudlog(NRM, MAX(LVL_GOD, GET_INVIS_LEV(ch)), TRUE, "(GC) %s switched into %s.",
 		   GET_NAME(ch), victim->player.short_descr );
-
+    STATE(ch->desc) = CON_SWITCHED;
     ch->desc->character = victim;
     ch->desc->original = ch;
 
     victim->desc = ch->desc;
-    ch->desc = NULL;
+    // ch->desc = NULL;
   }
 }
 
@@ -1581,6 +1581,7 @@ ACMD(do_return)
     /* Now our descriptor points to our original body. */
     ch->desc->character = ch->desc->original;
     ch->desc->original = NULL;
+    STATE(ch->desc) = CON_PLAYING;
 
     /* And our body's pointer to descriptor now points to our descriptor. */
     ch->desc->character->desc = ch->desc;

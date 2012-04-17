@@ -96,18 +96,19 @@ ACMD(do_say)
 
   for (i = world[IN_ROOM(ch)].people; i; i = i->next_in_room)
   {
+//    if (STATE(i->desc) == CON_SWITCHED) FIXME needs to be like perform_act()
     if (!PLR_FLAGGED(i, PLR_WRITING) && (AWAKE(i) || CAN_SEE_ASLEEP(i))) {
 	  if (IN_ROOM(i) == IN_ROOM(ch))
 		  {
 	  if (CAN_SEE(i, ch) && (ch != i))
 		  {
 		  snprintf(buf4, sizeof(buf4), "%s", GET_NAME(ch));  /* Grab char name */
-          send_to_char(i, "%s says, '%s'\r\n", buf4, argument);
+                  send_to_char(i, "%s says, '%s'\r\n", buf4, argument);
 		  }
 	  else
-			  {		       
+			  {
 	  if (ch != i)
-	  send_to_char(i, "Someone says, '%s'\r\n", argument);
+             send_to_char(i, "Someone says, '%s'\r\n", argument);
 			  }
 		  }
 		}
@@ -115,7 +116,7 @@ ACMD(do_say)
 
 /* See say while writing */
  for (j = descriptor_list; j; j = j->next) 
- {	
+ {
    if (IS_EDITING(j) && j != ch->desc && j->character && (GET_LEVEL(j->character) >= LVL_BUILDER) && (IN_ROOM(j->character) == IN_ROOM(ch)) && AWAKE(j->character))
 	  {
       if (CAN_SEE(j->character, ch))
@@ -204,7 +205,7 @@ void perform_tell(struct char_data *ch, struct char_data *vict, char *arg)
   else {
     snprintf(buf, sizeof(buf), "%sYou tell $N, '%s'%s", CCGRN(ch, C_SPR), arg, CCNRM(ch, C_SPR));
     act(buf, FALSE, ch, 0, vict, TO_CHAR | TO_SLEEP);
-  } 
+  }
   if (!IS_NPC(vict) && !IS_NPC(ch))
     GET_LAST_TELL(vict) = GET_IDNUM(ch);
 }
@@ -226,7 +227,7 @@ int is_tell_ok(struct char_data *ch, struct char_data *vict)
       act("$E's writing a message right now; try again later.", FALSE, ch, 0, vict, TO_CHAR | TO_SLEEP);
 	  else
 /* This should be trimmed down in case of a resource hogging MUD or if tells go slow */
-	  { 
+	  {
 		for (l = descriptor_list ; GET_IDNUM(l->character) != GET_IDNUM(vict) ; l = l->next)
 		;
 		if (IS_EDITING(l))
@@ -427,14 +428,14 @@ ACMD(do_write)
     act("You can't write on $p.", FALSE, ch, paper, 0, TO_CHAR);
   else {
     char *backstr = NULL;
- 
+
     /* Something on it, display it as that's in input buffer. */
     if (paper->action_description) {
       backstr = strdup(paper->action_description);
       send_to_char(ch, "There's something written on it already:\r\n");
       send_to_char(ch, paper->action_description);
     }
- 
+
     /* we can write - hooray! */
     act("$n begins to jot down a note.", TRUE, ch, 0, 0, TO_ROOM);
     send_editor_help(ch->desc);

@@ -322,17 +322,18 @@ int call_magic(struct char_data *caster, struct char_data *cvict, struct obj_dat
     case SPELL_HANG:            	MANUAL_SPELL(spell_hang); break;
     case SPELL_IDENTIFY:		MANUAL_SPELL(spell_identify); break;
     case SPELL_KNOCK:           	MANUAL_SPELL(spell_knock); break;
-   case SPELL_RECHARGE:              	MANUAL_SPELL(spell_recharge); break;
+    case SPELL_RECHARGE:              	MANUAL_SPELL(spell_recharge); break;
     case SPELL_REST_IN_PEACE:         	MANUAL_SPELL(spell_rest_in_peace); break;
-
     case SPELL_LOCATE_OBJECT:   	MANUAL_SPELL(spell_locate_object); break;
-    case SPELL_SUMMON:			MANUAL_SPELL(spell_summon); break;
+
+    case SPELL_SUMMON_LESSER:
+    case SPELL_SUMMON_GREATER:		MANUAL_SPELL(spell_summon); break;
     case SPELL_WORD_OF_RECALL:  	MANUAL_SPELL(spell_recall); break;
     case SPELL_RECALL_TO_SORIN: 	MANUAL_SPELL(spell_sorin_recall); break;
     case SPELL_PHASE_DOOR:      	MANUAL_SPELL(spell_phase_door); break;
     case SPELL_TELEPORT:		MANUAL_SPELL(spell_teleport); break;
     case SPELL_SUCCOR:                	MANUAL_SPELL(spell_succor); break;
- 
+
     // Spells to travel through portals
     case SPELL_DIMENSION_SHIFT:
     case SPELL_DIMENSION_WALK:
@@ -1121,11 +1122,11 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
   spello(SPELL_DETECT_ALIGN, "detect alignment", 20, 10, 2, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
 	"You feel less aware.");
-        
+
   spello(SPELL_DETECT_EVIL, "detect evil", 20, 10, 2, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
 	"You feel less aware of the evil of the world.");
-        
+
   spello(SPELL_DETECT_GOOD, "detect good", 20, 10, 2, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
 	"You lose sight of the good in the world.");
@@ -1140,7 +1141,7 @@ spello(SPELL_DERVISH_SPIN, "dervish spin", 52, 50, 33, POS_STANDING,
 
   spello(SPELL_DETECT_NEUTRAL, "detect neutral", 20, 10, 2, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS,
-	"You feel less aware of the balance of the world.");      
+	"You feel less aware of the balance of the world.");
 
   spello(SPELL_DETECT_POISON, "detect poison", 15, 5, 1, POS_STANDING,
 	TAR_CHAR_ROOM | TAR_OBJ_INV | TAR_OBJ_ROOM, FALSE, MAG_MANUAL,
@@ -1427,7 +1428,7 @@ spello(SPELL_PROTECTION_FROM_EVIL, "protection from evil", 60, 20, 4, POS_STANDI
 
   spello(SPELL_RECALL_TO_SORIN, "recall to sorin", 20, 10, 2, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_MANUAL,
-        NULL);      
+        NULL);
   spello(SPELL_RECHARGE, "recharge", 150, 100, 10, POS_STANDING, TAR_OBJ_INV, FALSE, MAG_MANUAL, NULL);
   spello(SPELL_REFLECT_DAMAGE, "reflect damage", 80, 50, 5, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "The reflecting shield protecting you dissipates.");
@@ -1582,7 +1583,6 @@ spello(SPELL_TELEPORT_MAJOR, "teleport major", 70, 40, 3, POS_STANDING, TAR_CHAR
    spello(SPELL_VIGORIZE_SERIOUS, "vigorize serious", 35, 20, 5, POS_FIGHTING,
             TAR_CHAR_ROOM, FALSE, MAG_POINTS,
             NULL);
-  
    spello(SPELL_VITALIZE_MANA, "vitalize mana", 33, 33, 0, POS_STANDING,
             TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_POINTS,
             NULL);
@@ -1596,18 +1596,12 @@ spello(SPELL_TELEPORT_MAJOR, "teleport major", 70, 40, 3, POS_STANDING, TAR_CHAR
 	"Your feet seem less buoyant.");
    spello(SPELL_WINDWALK, "windwalk", 50, 25, 5, POS_STANDING,
         TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_AFFECTS, "The wind stops swirling about your body.");
-
-
    spello(SPELL_WITHER, "wither", 55, 25, 3, POS_FIGHTING,
         TAR_CHAR_ROOM | TAR_FIGHT_VICT, FALSE, MAG_AFFECTS, "Your shriveled arm grows back to normal.");
 
    spello(SPELL_WORD_OF_RECALL, "word of recall", 20, 10, 2, POS_FIGHTING,
 	TAR_CHAR_ROOM | TAR_SELF_ONLY, FALSE, MAG_MANUAL,
 	NULL);
-  
-
-
-
   /* NON-castable spells should appear below here. */
 
   spello(SPELL_IDENTIFY, "identify", 0, 0, 0, 0,

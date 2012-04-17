@@ -762,7 +762,7 @@ void game_loop(socket_t mother_desc)
 	show_string(d, comm);
       else if (d->str)		/* Writing boards, mail, etc. */
 	string_add(d, comm);
-      else if (STATE(d) != CON_PLAYING) /* In menus, etc. */
+      else if (STATE(d) != CON_PLAYING && STATE(d) != CON_SWITCHED) /* In menus, etc. */
 	nanny(d, comm);
       else {			/* else: we're playing normally. */
 	if (aliased)		/* To prevent recursive aliases. */
@@ -954,7 +954,7 @@ void record_usage(void)
 
   for (d = descriptor_list; d; d = d->next) {
     sockets_connected++;
-    if (STATE(d) == CON_PLAYING)
+    if (STATE(d) == CON_PLAYING || STATE(d) == CON_SWITCHED)
       sockets_playing++;
   }
 
@@ -1021,7 +1021,7 @@ char *make_prompt(struct descriptor_data *d)
 	    d->showstr_page, d->showstr_count);
   } else if (d->str)
     strcpy(prompt, "] ");
-  else if (STATE(d) == CON_PLAYING && !IS_NPC(d->character)) {
+  else if ((STATE(d) == CON_PLAYING || STATE(d) == CON_SWITCHED) && !IS_NPC(d->character)) {
     int count;
     size_t len = 0;
 
@@ -1125,13 +1125,13 @@ char *make_prompt(struct descriptor_data *d)
           CCNRM(d->character, C_NRM)); 
       else if (percent > 0)
           count = snprintf(prompt + len, sizeof(prompt) - len, "%sAwful%s ", CCBRD(d->character, C_NRM),
-          CCNRM(d->character, C_NRM));         
+          CCNRM(d->character, C_NRM));
 	  }
-  } /*where does this go? End of switch */   
-  
+  } /*where does this go? End of switch */
+
   if (count >= 0)
-        len += count;   
-    }	
+        len += count;
+    }
 
     if (PRF_FLAGGED(d->character, PRF_BUILDWALK) && len < sizeof(prompt)) {
       count = snprintf(prompt + len, sizeof(prompt) - len, "BUILDWALKING ");
@@ -1141,7 +1141,7 @@ char *make_prompt(struct descriptor_data *d)
     if (len < sizeof(prompt))
       strncat(prompt, "> ", sizeof(prompt) - len - 1);	/* strncat: OK */
 
-  } else if (STATE(d) == CON_PLAYING && IS_NPC(d->character))
+  } else if ((STATE(d) == CON_PLAYING || STATE(d) == CON_SWITCHED) && IS_NPC(d->character))
     snprintf(prompt, sizeof(prompt), "%s> ", GET_NAME(d->character));
   else
     *prompt = '\0';
@@ -2520,8 +2520,10 @@ void perform_act(const char *orig, struct char_data *ch, struct obj_data *obj,
   *(--buf) = '\r';
   *(++buf) = '\n';
   *(++buf) = '\0';
-  if (to->desc)
+  if (to->desc){
+    if (STATE(to->desc) == CON_SWITCHED) write_to_output(to->desc, "%s(%s%s%s)%s ",KBCN, KGRN, GET_NAME(to), KBCN, KNRM);
   write_to_output(to->desc, "%s", CAP(lbuf));
+  }
 
   if ((IS_NPC(to) && dg_act_check) && (to != ch))
     act_mtrigger(to, lbuf, ch, dg_victim, obj, dg_target, dg_arg);
@@ -2540,7 +2542,7 @@ void act(const char *str, int hide_invisible, struct char_data *ch,
 
   /*
    * Warning: the following TO_SLEEP code is a hack.
-   * 
+   *
    * I wanted to be able to tell act to deliver a message regardless of sleep
    * without adding an additional argument.  TO_SLEEP is 128 (a single bit
    * high up).  It's ONLY legal to combine TO_SLEEP with one other TO_x

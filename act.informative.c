@@ -1188,7 +1188,7 @@ ACMD(do_who)
     "*COUNT*",
     "*DEITY*",
     " *GOD* ",
-    " *IMP* ",    
+    " *IMP* ",
   };
 
 
@@ -1256,7 +1256,7 @@ ACMD(do_who)
   send_to_char(ch, "Currently on Sorin:\r\n----------------------\r\n");
 
   for (d = descriptor_list; d; d = d->next) {
-    if (!IS_PLAYING(d))
+    if (!IS_PLAYING(d) && STATE(d) != CON_SWITCHED)
       continue;
 
     if (d->original)

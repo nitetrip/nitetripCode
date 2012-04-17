@@ -628,8 +628,7 @@ void mag_affects(int level, struct char_data *ch, struct char_data *victim,
   bool affect2 = FALSE;
   const char *to_vict = NULL, *to_room = NULL;
   int i, duration, new_position;
-  if (victim != NULL)
-     new_position = GET_POS(victim);// set this to current position to avoid bugs when the position is not set
+  if (victim) new_position = GET_POS(victim);// set this to current position to avoid bugs when the position is not set
 
 
   if (victim == NULL || ch == NULL)
@@ -1948,9 +1947,8 @@ void mag_masses(int level, struct char_data *ch, int spellnum, int savetype)
     for (tch = world[IN_ROOM(ch)].people; tch; tch = tch_next) {
         tch_next = tch->next_in_room;
         if (tch == ch)
-        continue;
-  
-      switch (spellnum) 
+        continue; 
+      switch (spellnum)
         {
         case SPELL_MASS_HEAL:
         mag_points(level, ch, tch, param1, SPELL_HEAL_CRITICAL, savetype);
@@ -2173,7 +2171,7 @@ const char *mag_summon_msgs[] = {
  * Keep the \r\n because these use send_to_char.
  */
 const char *mag_summon_fail_msgs[] = {
-  "\r\n",
+ "\r\n",
   "There are no such creatures.\r\n",
   "Uh oh...\r\n",
   "Oh dear.\r\n",
@@ -2294,9 +2292,8 @@ void mag_summons(int level, struct char_data *ch, struct obj_data *obj, int spel
       act("$N looks very angry!", FALSE, ch, 0, mob, TO_ROOM);
       IS_CARRYING_W(mob) = 0;
       IS_CARRYING_N(mob) = 0;
-      // damage(mob, ch, (GET_LEVEL(ch)<<1), TYPE_RANDOM); -- this is from CWE code, need to code type random
       damage(mob, ch, (GET_LEVEL(ch)<<1), TYPE_HIT);
-     act(((spellnum == SPELL_GATE) ? "$N vanishes in a puff of acrid smoke." : "$N dissipates back into its natural form."), FALSE, ch, 0, mob, TO_CHAR);
+      act(((spellnum == SPELL_GATE) ? "$N vanishes in a puff of acrid smoke." : "$N dissipates back into its natural form."), FALSE, ch, 0, mob, TO_CHAR);
       act(((spellnum == SPELL_GATE) ? "$N vanishes in a puff of acrid smoke." : "$N dissipates back into its natural form."), FALSE, ch, 0, mob, TO_ROOM);
       extract_char(mob);
     }
@@ -2556,7 +2553,8 @@ void mag_points(int level, struct char_data *ch, struct char_data *victim,
 void mag_unaffects(int level, struct char_data *ch, struct char_data *victim,
 		        int spellnum, int type)
 {
-  int spell = 0, msg_not_affected = TRUE, new_position = GET_POS(victim);
+  int spell = 0, msg_not_affected = TRUE, new_position;
+  if (victim) new_position = GET_POS(victim);
   const char *to_vict = NULL, *to_room = NULL;
 
   if (victim == NULL)

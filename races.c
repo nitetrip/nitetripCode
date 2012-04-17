@@ -181,9 +181,6 @@ void racial_ability_modifiers(struct char_data *ch)
                 default:
                 case RACE_HUMAN:
                         break;
-
-                        break;
-
                 case RACE_ELF:
 			ch->real_abils.str -= 2;
 			ch->real_abils.intel += 1;
@@ -191,14 +188,12 @@ void racial_ability_modifiers(struct char_data *ch)
                         ch->real_abils.dex += 2;
                         ch->real_abils.con -= 2;
                         break;
-
                 case RACE_GNOME:
                         ch->real_abils.intel += 2;
                         ch->real_abils.dex += 1;
 			ch->real_abils.con += 1;
 			ch->real_abils.cha -= 1;
                         break;
-
                 case RACE_DWARF:
 			ch->real_abils.str += 1;
 			ch->real_abils.wis -= 1;
@@ -206,13 +201,11 @@ void racial_ability_modifiers(struct char_data *ch)
                         ch->real_abils.con += 1;
                         ch->real_abils.cha -= 1;
                         break;
-
 		case RACE_HALFLING:
 			ch->real_abils.str -= 1;
 			ch->real_abils.dex += 3;
 			ch->real_abils.cha += 1;
 			break;
-
 		case RACE_MINOTAUR:
 			ch->real_abils.str += 2;
 			ch->real_abils.intel -= 1;
@@ -220,26 +213,22 @@ void racial_ability_modifiers(struct char_data *ch)
 			ch->real_abils.con += 2;
 			ch->real_abils.cha -= 3;
 			break;
-
 		case RACE_PIXIE:
 			ch->real_abils.intel += 1;
 			ch->real_abils.wis += 1;
 			ch->real_abils.dex += 2;
 			ch->real_abils.con -= 2;
 			break;
-
 		case RACE_ULDRA:
 			ch->real_abils.wis += 2;
 			ch->real_abils.con += 1;
 			ch->real_abils.cha -= 1;
 			break;
-
 		case RACE_TRITON:
 			ch->real_abils.str += 1;
 			ch->real_abils.dex += 1;
 			ch->real_abils.con += 1;
 			break;
-
 		case RACE_OGRE:
 			ch->real_abils.str += 4;
 			ch->real_abils.intel -= 4;
@@ -247,7 +236,6 @@ void racial_ability_modifiers(struct char_data *ch)
 			ch->real_abils.con += 3;
 			ch->real_abils.cha -= 3;
 			break;
-
 		case RACE_VAMPIRE:
 			ch->real_abils.str += 2;
 			ch->real_abils.intel += 1;
@@ -255,27 +243,23 @@ void racial_ability_modifiers(struct char_data *ch)
 			ch->real_abils.con += 4;
 			ch->real_abils.cha += 2;
 			break;
-
 		case RACE_SHINTARI:
 			ch->real_abils.str += 2;
 			ch->real_abils.intel += 2;
 			ch->real_abils.cha -= 3;
 			break;
-
 		case RACE_KARADAL:
 			ch->real_abils.str -= 2;
 			ch->real_abils.intel += 3;
 			ch->real_abils.wis += 2;
 			ch->real_abils.con += 1;
 			break;
-
 		case RACE_VISRAEL:
 			ch->real_abils.str -= 1;
 			ch->real_abils.dex += 3;
 			ch->real_abils.intel += 2;
 			break;
 
-			
    }
 }
 
@@ -401,15 +385,32 @@ int invalid_race(struct char_data *ch, struct obj_data *obj)
 {
         if (OBJ_FLAGGED(obj, ITEM_ANTI_HUMAN) && IS_HUMAN(ch))
                 return (TRUE);
-
         if (OBJ_FLAGGED(obj, ITEM_ANTI_ELF) && IS_ELF(ch))
                 return (TRUE);
-
         if (OBJ_FLAGGED(obj, ITEM_ANTI_DWARF) && IS_DWARF(ch))
                 return (TRUE);
-
         if (OBJ_FLAGGED(obj, ITEM_ANTI_GNOME) && IS_GNOME(ch))
                 return (TRUE);
+        if (OBJ_FLAGGED(obj, ITEM_ANTI_HALFLING) && IS_HALFLING(ch))
+ 		return (TRUE);
+ 	if (OBJ_FLAGGED(obj, ITEM_ANTI_KARADAL) && IS_KARADAL(ch))
+		return (TRUE);
+	if (OBJ_FLAGGED(obj, ITEM_ANTI_MINOTAUR) && IS_MINOTAUR(ch))
+		return (TRUE);
+	if (OBJ_FLAGGED(obj, ITEM_ANTI_OGRE) && IS_OGRE(ch))
+		return (TRUE);
+	if (OBJ_FLAGGED(obj, ITEM_ANTI_PIXIE) && IS_PIXIE(ch))
+		return (TRUE);
+	if (OBJ_FLAGGED(obj, ITEM_ANTI_SHINTARI) && IS_SHINTARI(ch))
+		return (TRUE);
+	if (OBJ_FLAGGED(obj, ITEM_ANTI_TRITON) && IS_TRITON(ch))
+		return (TRUE);
+	if (OBJ_FLAGGED(obj, ITEM_ANTI_ULDRA) && IS_ULDRA(ch))
+		return (TRUE);
+  	if (OBJ_FLAGGED(obj, ITEM_ANTI_VAMPIRE) && IS_VAMPIRE(ch))
+		return (TRUE);
+	if (OBJ_FLAGGED(obj, ITEM_ANTI_VISRAEL) && IS_VISRAEL(ch))
+		return (TRUE);
 
   return (FALSE);
 }

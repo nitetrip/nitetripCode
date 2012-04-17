@@ -209,16 +209,16 @@ int selfdelete_fastwipe = YES;
 /* ROOM NUMBERS */
 
 /* virtual number of room that mortals should enter at */
-room_vnum mortal_start_room = 10103;
+room_vnum mortal_start_room = 16601;
 
 /* sorin start room */
 room_vnum sorin_start_room = 4242;
 
 /* newbie start room */
-room_vnum newbie_start_room = 9499;
+room_vnum newbie_start_room = 16601;
 
 /* recall room */
-room_vnum recall_room = 10103;
+room_vnum recall_room = 16601;
 
 /* sorin recall */
 room_vnum sorin_recall_room = 4121;

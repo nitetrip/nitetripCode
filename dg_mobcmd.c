@@ -67,7 +67,7 @@ void mob_log(char_data *mob, const char *format, ...)
   va_list args;
   char output[MAX_STRING_LENGTH];
 
-  snprintf(output, sizeof(output), "Mob (%s, VNum %d):: %s", 
+  snprintf(output, sizeof(output), "Mob (%s, VNum %d):: %s",
                    GET_SHORT(mob), GET_MOB_VNUM(mob), format);
 
   va_start(args, format);
@@ -97,7 +97,7 @@ ACMD(do_masound)
 
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
-  
+
     if (!*argument)
     {
         mob_log(ch, "masound called with no argument");
@@ -105,12 +105,12 @@ ACMD(do_masound)
     }
 
     skip_spaces(&argument);
-  
+
     was_in_room = IN_ROOM(ch);
     for (door = 0; door < NUM_OF_DIRS; door++)
     {
         struct room_direction_data *newexit;
-    
+
         if (((newexit = world[was_in_room].dir_option[door]) != NULL) &&
             newexit->to_room != NOWHERE && newexit->to_room != was_in_room)
         {
@@ -118,7 +118,7 @@ ACMD(do_masound)
             sub_write(argument, ch, TRUE, TO_ROOM);
         }
     }
-  
+
     IN_ROOM(ch) = was_in_room;
 }
 
@@ -128,7 +128,7 @@ ACMD(do_mkill)
 {
     char arg[MAX_INPUT_LENGTH];
     char_data *victim;
-  
+
     if (!MOB_OR_IMPL(ch)) {
         send_to_char(ch, "Huh?!?\r\n");
         return;
@@ -136,9 +136,9 @@ ACMD(do_mkill)
 
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
-  
+
     one_argument(argument, arg);
-    
+
     if (!*arg) {
         mob_log(ch, "mkill called with no argument");
         return;
@@ -176,7 +176,7 @@ ACMD(do_mkill)
 
 /*
  * lets the mobile destroy an object in its inventory
- * it can also destroy a worn object and it can destroy 
+ * it can also destroy a worn object and it can destroy
  * items using all.xxxxx or just plain all of them
  */
 ACMD(do_mjunk)
@@ -185,17 +185,17 @@ ACMD(do_mjunk)
     int pos, junk_all = 0;
     obj_data *obj;
     obj_data *obj_next;
-  
+
     if (!MOB_OR_IMPL(ch)) {
         send_to_char(ch, "Huh?!?\r\n");
         return;
     }
-  
+
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
 
     one_argument(argument, arg);
-  
+
     if (!*arg) {
         mob_log(ch, "mjunk called with no argument");
         return;
@@ -203,7 +203,7 @@ ACMD(do_mjunk)
 
     if (!str_cmp(arg, "all")) junk_all = 1;
 
-    if ((find_all_dots(arg) != FIND_INDIV) && !junk_all) { 
+    if ((find_all_dots(arg) != FIND_INDIV) && !junk_all) {
       /* Thanks to Carlos Myers for fixing the line below */
       if ((pos = get_obj_pos_in_equip_vis(ch, arg, NULL, ch->equipment)) >= 0) {
          extract_obj(unequip_char(ch, pos));
@@ -238,18 +238,18 @@ ACMD(do_mechoaround)
         send_to_char(ch, "Huh?!?\r\n");
         return;
     }
-  
+
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
-  
+
     p = one_argument(argument, arg);
     skip_spaces(&p);
-    
+
     if (!*arg) {
         mob_log(ch, "mechoaround called with no argument");
         return;
     }
-  
+
     if (*arg == UID_CHAR) {
       if (!(victim = get_char(arg))) {
         mob_log(ch, "mechoaround: victim (%s) does not exist",arg);
@@ -278,10 +278,10 @@ ACMD(do_msend)
 
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
-  
+
     p = one_argument(argument, arg);
     skip_spaces(&p);
-  
+
     if (!*arg) {
         mob_log(ch, "msend called with no argument");
         return;
@@ -296,7 +296,7 @@ ACMD(do_msend)
         mob_log(ch, "msend: victim (%s) does not exist",arg);
         return;
     }
-  
+
     sub_write(p, victim, TRUE, TO_CHAR);
 }
 
@@ -305,22 +305,22 @@ ACMD(do_msend)
 ACMD(do_mecho)
 {
     char *p;
-  
+
     if (!MOB_OR_IMPL(ch)) {
         send_to_char(ch, "Huh?!?\r\n");
         return;
     }
-  
+
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
-  
+
     if (!*argument) {
         mob_log(ch, "mecho called with no arguments");
         return;
     }
     p = argument;
     skip_spaces(&p);
-  
+
     sub_write(p, ch, TRUE, TO_ROOM);
 }
 
@@ -328,7 +328,7 @@ ACMD(do_mzoneecho)
 {
     int zone;
     char room_number[MAX_INPUT_LENGTH], buf[MAX_INPUT_LENGTH], *msg;
-  
+
     msg = any_one_arg(argument, room_number);
     skip_spaces(&msg);
 
@@ -338,7 +338,7 @@ ACMD(do_mzoneecho)
     else if ((zone = real_zone_by_thing(atoi(room_number))) == NOWHERE)
         mob_log(ch, "mzoneecho called for nonexistant zone");
 
-    else { 
+    else {
         sprintf(buf, "%s\r\n", msg);
         send_to_zone(buf, zone);
     }
@@ -346,7 +346,7 @@ ACMD(do_mzoneecho)
 
 /*
  * lets the mobile load an item or mobile.  All items
- * are loaded into inventory, unless it is NO-TAKE. 
+ * are loaded into inventory, unless it is NO-TAKE.
  */
 ACMD(do_mload)
 {
@@ -354,7 +354,7 @@ ACMD(do_mload)
     int number = 0;
     char_data *mob;
     obj_data *object;
-  
+
     if (!MOB_OR_IMPL(ch)) {
         send_to_char(ch, "Huh?!?\r\n");
         return;
@@ -365,9 +365,9 @@ ACMD(do_mload)
 
     if( ch->desc && GET_LEVEL(ch->desc->original) < LVL_IMPL)
         return;
-  
+
     two_arguments(argument, arg1, arg2);
-  
+
     if (!*arg1 || !*arg2 || !is_number(arg2) || ((number = atoi(arg2)) < 0)) {
         mob_log(ch, "mload: bad syntax");
         return;
@@ -381,7 +381,7 @@ ACMD(do_mload)
         char_to_room(mob, IN_ROOM(ch));
         load_mtrigger(mob);
     }
-  
+
     else if (is_abbrev(arg1, "obj")) {
         if ((object = read_object(number, VIRTUAL)) == NULL) {
             mob_log(ch, "mload: bad object vnum");
@@ -410,25 +410,25 @@ ACMD(do_mpurge)
   char arg[MAX_INPUT_LENGTH];
   char_data *victim;
   obj_data  *obj;
- 
+
   if (!MOB_OR_IMPL(ch)) {
     send_to_char(ch, "Huh?!?\r\n");
     return;
   }
-  
+
   if (AFF_FLAGGED(ch, AFF_CHARM))
     return;
 
   if (ch->desc && (GET_LEVEL(ch->desc->original) < LVL_IMPL))
     return;
-  
+
   one_argument(argument, arg);
-  
+
   if (!*arg) {
     /* 'purge' */
     char_data *vnext;
     obj_data  *obj_next;
-    
+
     for (victim = world[IN_ROOM(ch)].people; victim; victim = vnext) {
       vnext = victim->next_in_room;
       if (IS_NPC(victim) && victim != ch)
@@ -450,25 +450,25 @@ ACMD(do_mpurge)
   if (victim == NULL) {
     if (*arg == UID_CHAR)
       obj = get_obj(arg);
-    else 
+    else
       obj = get_obj_vis(ch, arg, NULL);
-    
+
     if (obj) {
       extract_obj(obj);
       obj = NULL;
-    } else 
+    } else
       mob_log(ch, "mpurge: bad argument");
-      
+
     return;
   }
-  
+
   if (!IS_NPC(victim)) {
       mob_log(ch, "mpurge: purging a PC");
       return;
   }
 
   if (victim==ch) dg_owner_purged = 1;
-  
+
   extract_char(victim);
 }
 
@@ -478,7 +478,7 @@ ACMD(do_mgoto)
 {
     char arg[MAX_INPUT_LENGTH];
     sh_int location;
-  
+
     if (!MOB_OR_IMPL(ch)) {
         send_to_char(ch, "Huh?!?\r\n");
         return;
@@ -486,22 +486,22 @@ ACMD(do_mgoto)
 
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
-  
+
     one_argument(argument, arg);
 
     if (!*arg) {
         mob_log(ch, "mgoto called with no argument");
         return;
     }
-  
+
     if ((location = find_target_room(ch, arg)) == NOWHERE) {
         mob_log(ch, "mgoto: invalid location");
         return;
     }
-  
+
     if (FIGHTING(ch))
         stop_fighting(ch);
-    
+
     char_from_room(ch);
     char_to_room(ch, location);
 }
@@ -513,32 +513,32 @@ ACMD(do_mat)
     char arg[MAX_INPUT_LENGTH];
     sh_int location;
     sh_int original;
-  
+
     if (!MOB_OR_IMPL(ch)) {
         send_to_char(ch, "Huh?!?\r\n");
         return;
     }
-  
+
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
-  
+
     argument = one_argument( argument, arg );
-  
+
     if (!*arg || !*argument) {
         mob_log(ch, "mat: bad argument");
         return;
     }
-  
+
     if ((location = find_target_room(ch, arg)) == NOWHERE) {
         mob_log(ch, "mat: invalid location");
         return;
     }
-  
+
     original = IN_ROOM(ch);
     char_from_room(ch);
     char_to_room(ch, location);
     command_interpreter(ch, argument);
-    
+
     /*
      * See if 'ch' still exists before continuing!
      * Handles 'at XXXX quit' case.
@@ -564,12 +564,12 @@ ACMD(do_mteleport)
     send_to_char(ch, "Huh?!?\r\n");
     return;
   }
- 
+
   if (AFF_FLAGGED(ch, AFF_CHARM))
     return;
 
   argument = two_arguments(argument, arg1, arg2);
-    
+
   if (!*arg1 || !*arg2) {
     mob_log(ch, "mteleport: bad syntax");
     return;
@@ -581,7 +581,7 @@ ACMD(do_mteleport)
     mob_log(ch, "mteleport target is an invalid room");
     return;
   }
-  
+
   if (!str_cmp(arg1, "all")) {
     if (target == IN_ROOM(ch)) {
       mob_log(ch, "mteleport all target is itself");
@@ -624,7 +624,7 @@ ACMD(do_mdamage) {
     send_to_char(ch, "Huh?!?\r\n");
     return;
   }
-  
+
   if (AFF_FLAGGED(ch, AFF_CHARM))
     return;
 
@@ -645,13 +645,13 @@ ACMD(do_mdamage) {
     mob_log(ch, "mdamage: victim (%s) does not exist", name);
     return;
   }
-  
+
   if (GET_LEVEL(vict)>=LVL_SAINT && (dam > 0)) {
     send_to_char(vict, "Being the cool immortal you are, you sidestep a trap,\r\n"
                        "obviously placed to kill you.\r\n");
     return;
   }
-  
+
   GET_HIT(vict) -= dam;
   update_pos(vict);
   send_char_pos(vict, dam);
@@ -676,24 +676,24 @@ ACMD(do_mforce)
         send_to_char(ch, "Huh?!?\r\n");
         return;
     }
-  
+
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
-  
+
     if (ch->desc && (GET_LEVEL(ch->desc->original) < LVL_IMPL))
         return;
-  
+
     argument = one_argument(argument, arg);
-  
+
     if (!*arg || !*argument) {
         mob_log(ch, "mforce: bad syntax");
         return;
     }
-  
+
     if (!str_cmp(arg, "all")) {
         struct descriptor_data *i;
         char_data *vch;
-    
+
         for (i = descriptor_list; i ; i = i->next) {
             if ((i->character != ch) && !i->connected &&
                 (IN_ROOM(i->character) == IN_ROOM(ch))) {
@@ -706,7 +706,7 @@ ACMD(do_mforce)
         }
     } else {
         char_data *victim;
-        
+
         if (*arg == UID_CHAR) {
           if (!(victim = get_char(arg))) {
             mob_log(ch, "mforce: victim (%s) does not exist",arg);
@@ -716,12 +716,12 @@ ACMD(do_mforce)
             mob_log(ch, "mforce: no such victim");
             return;
         }
-    
+
         if (victim == ch) {
             mob_log(ch, "mforce: forcing self");
             return;
         }
-    
+
         if (valid_dg_target(victim, 0))
             command_interpreter(victim, argument);
     }
@@ -737,20 +737,20 @@ ACMD(do_mhunt)
         send_to_char(ch, "Huh?!?\r\n");
         return;
     }
-  
+
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
-  
+
     if (ch->desc && (GET_LEVEL(ch->desc->original) < LVL_IMPL))
         return;
-  
+
     one_argument(argument, arg);
 
     if (!*arg) {
         mob_log(ch, "mhunt called with no argument");
         return;
     }
-  
+
 
     if (FIGHTING(ch)) return;
 
@@ -764,7 +764,7 @@ ACMD(do_mhunt)
         return;
     }
     HUNTING(ch) = victim;
-  
+
 
 }
 
@@ -780,15 +780,15 @@ ACMD(do_mremember)
         send_to_char(ch, "Huh?!?\r\n");
         return;
     }
-  
+
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
-  
+
     if (ch->desc && (GET_LEVEL(ch->desc->original) < LVL_IMPL))
         return;
-  
+
     argument = one_argument(argument, arg);
-  
+
     if (!*arg) {
         mob_log(ch, "mremember: bad syntax");
         return;
@@ -832,15 +832,15 @@ ACMD(do_mforget)
         send_to_char(ch, "Huh?!?\r\n");
         return;
     }
-  
+
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
-  
+
     if (ch->desc && (GET_LEVEL(ch->desc->original) < LVL_IMPL))
         return;
-  
+
     one_argument(argument, arg);
-  
+
     if (!*arg) {
         mob_log(ch, "mforget: bad syntax");
         return;
@@ -891,15 +891,15 @@ ACMD(do_mtransform)
         send_to_char(ch, "Huh?!?\r\n");
         return;
     }
-  
+
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
-  
+
     if (ch->desc) {
       send_to_char(ch, "You've got no VNUM to return to, dummy! try 'switch'\r\n");
       return;
     }
-  
+
   one_argument(argument, arg);
 
   if (!*arg)
@@ -990,10 +990,10 @@ ACMD(do_mdoor)
         send_to_char(ch, "Huh?!?\r\n");
         return;
     }
-  
+
     if (AFF_FLAGGED(ch, AFF_CHARM))
         return;
-  
+
     argument = two_arguments(argument, target, direction);
     value = one_argument(argument, field);
     skip_spaces(&value);
@@ -1002,12 +1002,12 @@ ACMD(do_mdoor)
         mob_log(ch, "mdoor called with too few args");
         return;
     }
-  
+
     if ((rm = get_room(target)) == NULL) {
         mob_log(ch, "mdoor: invalid target");
         return;
     }
-  
+
     if ((dir = search_block(direction, dirs, FALSE)) == -1) {
         mob_log(ch, "mdoor: invalid direction");
         return;
@@ -1035,9 +1035,9 @@ ACMD(do_mdoor)
     else {
         if (!newexit) {
             CREATE(newexit, struct room_direction_data, 1);
-            rm->dir_option[dir] = newexit; 
+            rm->dir_option[dir] = newexit;
         }
-    
+
         switch (fd) {
         case 1:  /* description */
             if (newexit->general_description)
