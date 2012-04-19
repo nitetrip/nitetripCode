@@ -431,27 +431,29 @@ struct char_data *guildmaster1;
 #define PLR_PROGRESS    (1 << 19) /* Player needs to progress to the next class */
 
 /* Mobile flags: used by char_data.char_specials.act */
-#define MOB_SPEC         (1 << 0)  /* Mob has a callable spec-proc	*/
-#define MOB_SENTINEL     (1 << 1)  /* Mob should not move		*/
-#define MOB_SCAVENGER    (1 << 2)  /* Mob picks up stuff on the ground	*/
-#define MOB_ISNPC        (1 << 3)  /* (R) Automatically set on all Mobs	*/
-#define MOB_AWARE	       (1 << 4)  /* Mob can't be backstabbed		*/
-#define MOB_AGGRESSIVE   (1 << 5)  /* Mob auto-attacks everybody nearby	*/
-#define MOB_STAY_ZONE    (1 << 6)  /* Mob shouldn't wander out of zone	*/
-#define MOB_WIMPY        (1 << 7)  /* Mob flees if severely injured	*/
-#define MOB_AGGR_EVIL	   (1 << 8)  /* Auto-attack any evil PC's		*/
-#define MOB_AGGR_GOOD	   (1 << 9)  /* Auto-attack any good PC's		*/
-#define MOB_AGGR_NEUTRAL (1 << 10) /* Auto-attack any neutral PC's	*/
-#define MOB_MEMORY	     (1 << 11) /* remember attackers if attacked	*/
-#define MOB_HELPER	     (1 << 12) /* attack PCs fighting other NPCs	*/
-#define MOB_NOCHARM	     (1 << 13) /* Mob can't be charmed		*/
-#define MOB_NOSUMMON	   (1 << 14) /* Mob can't be summoned		*/
-#define MOB_NOSLEEP	     (1 << 15) /* Mob can't be slept		*/
-#define MOB_NOBASH	     (1 << 16) /* Mob can't be bashed (e.g. trees)	*/
-#define MOB_NOBLIND	     (1 << 17) /* Mob can't be blinded		*/
-#define MOB_NOTDEADYET   (1 << 18) /* (R) Mob being extracted.		*/
-#define MOB_NOPARALYZE		(1 << 19) // unable t be paralyze -- need to finish up in db.c
+#define MOB_SPEC         	(1 << 0)  /* Mob has a callable spec-proc	*/
+#define MOB_SENTINEL     	(1 << 1)  /* Mob should not move		*/
+#define MOB_SCAVENGER    	(1 << 2)  /* Mob picks up stuff on the ground	*/
+#define MOB_ISNPC        	(1 << 3)  /* (R) Automatically set on all Mobs	*/
+#define MOB_AWARE	       	(1 << 4)  /* Mob can't be backstabbed		*/
+#define MOB_AGGRESSIVE   	(1 << 5)  /* Mob auto-attacks everybody nearby	*/
+#define MOB_STAY_ZONE    	(1 << 6)  /* Mob shouldn't wander out of zone	*/
+#define MOB_WIMPY        	(1 << 7)  /* Mob flees if severely injured	*/
+#define MOB_AGGR_EVIL	   	(1 << 8)  /* Auto-attack any evil PC's		*/
+#define MOB_AGGR_GOOD	   	(1 << 9)  /* Auto-attack any good PC's		*/
+#define MOB_AGGR_NEUTRAL 	(1 << 10) /* Auto-attack any neutral PC's	*/
+#define MOB_MEMORY	     	(1 << 11) /* remember attackers if attacked	*/
+#define MOB_HELPER	     	(1 << 12) /* attack PCs fighting other NPCs	*/
+#define MOB_NOCHARM	     	(1 << 13) /* Mob can't be charmed		*/
+#define MOB_NOSUMMON	   	(1 << 14) /* Mob can't be summoned		*/
+#define MOB_NOSLEEP	     	(1 << 15) /* Mob can't be slept		*/
+#define MOB_NOBASH	     	(1 << 16) /* Mob can't be bashed (e.g. trees)	*/
+#define MOB_NOBLIND	     	(1 << 17) /* Mob can't be blinded		*/
+#define MOB_NOTDEADYET   	(1 << 18) /* (R) Mob being extracted.		*/
+#define MOB_NOPARALYZE		(1 << 19) // unable to be paralyzed -- need to finish up in db.c
 #define MOB_NOSILENCE		(1 << 20) // unable to sil
+#define MOB_PLR_THIEF_COINS	(1 << 21) // Mob steals coins from players
+#define MOB_PLR_THIEF_ITEMS     (1 << 22) // Mob steals items from players
 
 /* Preference flags: used by char_data.player_specials.pref */
 #define PRF_BRIEF       (1 << 0)  /* Room descs won't normally be shown	*/

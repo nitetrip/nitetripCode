@@ -28,8 +28,8 @@
  */
 #define CONFIG_OASIS_MPROG	0
 
-/* 
- * Submodes of CLANEDIT connectedness 
+/*
+ * Submodes of CLANEDIT connectedness
  */
 #define CLANEDIT_MAIN_MENU      0
 #define CLANEDIT_CONFIRM_SAVE   1
@@ -63,7 +63,7 @@
 #define NUM_ROOM_SECTORS	10
 #define NUM_ROOM_SIZES          7
 
-#define NUM_MOB_FLAGS		18
+#define NUM_MOB_FLAGS		23
 #define NUM_MOB_CLASSES         29
 #define NUM_MOB_RACES           34
 #define NUM_MOB_SIZES           7

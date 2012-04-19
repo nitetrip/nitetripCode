@@ -438,7 +438,6 @@ void destroy_db(void)
       free(zone_table[cnt].cmd);
   }
   free(zone_table);
-  
   free_context_help();
 }
 
@@ -476,10 +475,10 @@ void boot_db(void)
 
   log("Loading help entries.");
   index_boot(DB_BOOT_HLP);
- 
+
   log("Loading zone info entries.");
   index_boot(DB_BOOT_ZNLST);
-  
+
   log("Setting up context sensitive help system for OLC");
   boot_context_help();
 
@@ -538,7 +537,7 @@ void boot_db(void)
     House_boot();
   }
 
-//dan clan system
+// clan system
   log("Loading clans.");
   load_clans();
 
@@ -716,7 +715,7 @@ int count_alias_records(FILE *fl)
   return (total_keywords);
 
   /* No, they are not evil. -gg 6/24/98 */
-ackeof:	
+ackeof:
   log("SYSERR: Unexpected end of help file.");
   exit(1);	/* Some day we hope to handle these things better... */
 }
@@ -3311,7 +3310,7 @@ char *get_name_by_id(long id)
      if (load_room == NOWHERE)
        GET_LOADROOM(ch) = NOWHERE;
      else
-       GET_LOADROOM(ch) = 4121;
+       GET_LOADROOM(ch) = 16601;
     }
 
    /*strcpy(player.pwd, GET_PASSWD(ch));*/

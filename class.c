@@ -269,8 +269,8 @@ int parse_full_class(char *arg)
     return CLASS_NECROMANCER;
   else if(!strcmp(arg, "alchemist"))
     return CLASS_ALCHEMIST;
-  else  
-    return CLASS_UNDEFINED;  
+  else
+    return CLASS_UNDEFINED;
 }
 
 /*
@@ -297,7 +297,7 @@ bitvector_t find_class_bitvector(const char *arg)
  * a character of the class is allowed to attain in any skill.  (After
  * this level, attempts to practice will say "You are already learned in
  * this area."
- * 
+ *
  * The second line controls the maximum percent gain in learnedness a
  * character is allowed per practice -- in other words, if the random
  * die throw comes out higher than this number, the gain will only be
@@ -307,7 +307,7 @@ bitvector_t find_class_bitvector(const char *arg)
  * character is allowed per practice -- in other words, if the random
  * die throw comes out below this number, the gain will be set up to
  * this number.
- * 
+ *
  * The fourth line simply sets whether the character knows 'spells'
  * or 'skills'.  This does not affect anything except the message given
  * to the character when trying to practice (i.e. "You know of the
@@ -480,7 +480,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 41: return 0;
       case 42: return 0;
       case 43: return 0;
-      case 44: return 0;    
+      case 44: return 0;
       case 45: return 0;
       case 46: return 0;
       case 47: return 0;
@@ -534,7 +534,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 41: return 0;
       case 42: return 0;
       case 43: return 0;
-      case 44: return 0;  
+      case 44: return 0;
       case 45: return 0;
       case 46: return 0;
       case 47: return 0;
@@ -588,7 +588,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 41: return 0;
       case 42: return 0;
       case 43: return 0;
-      case 44: return 0;      
+      case 44: return 0;
       case 45: return 0;
       case 46: return 0;
       case 47: return 0;
@@ -642,7 +642,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 41: return 0;
       case 42: return 0;
       case 43: return 0;
-      case 44: return 0;      
+      case 44: return 0;
       case 45: return 0;
       case 46: return 0;
       case 47: return 0;
@@ -709,7 +709,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 41: return 0;
       case 42: return 0;
       case 43: return 0;
-      case 44: return 0;    
+      case 44: return 0;
       case 45: return 0;
       case 46: return 0;
       case 47: return 0;
@@ -763,7 +763,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 41: return 0;
       case 42: return 0;
       case 43: return 0;
-      case 44: return 0;   
+      case 44: return 0;
       case 45: return 0;
       case 46: return 0;
       case 47: return 0;
@@ -817,7 +817,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 41: return 0;
       case 42: return 0;
       case 43: return 0;
-      case 44: return 0;  
+      case 44: return 0;
       case 45: return 0;
       case 46: return 0;
       case 47: return 0;
@@ -863,7 +863,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 33: return 31;
       case 34: return 29;
       case 35: return 27;
-      case 36: return 26 ;
+      case 36: return 26;
       case 37: return 25;
       case 38: return 24;
       case 39: return 23;
@@ -871,7 +871,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 41: return 0;
       case 42: return 0;
       case 43: return 0;
-      case 44: return 0;   
+      case 44: return 0;
       case 45: return 0;
       case 46: return 0;
       case 47: return 0;
@@ -925,7 +925,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 41: return 0;
       case 42: return 0;
       case 43: return 0;
-      case 44: return 0;     
+      case 44: return 0;
       case 45: return 0;
       case 46: return 0;
       case 47: return 0;
@@ -1036,13 +1036,13 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 31: return 12;
       case 32: return 11;
       case 33: return 10;
-      case 34: return   9;
-      case 35: return   8;
-      case 36: return   8;
-      case 37: return   8;
-      case 38: return   8;
-      case 39: return   8;
-      case 40: return   8;
+      case 34: return 9;
+      case 35: return 8;
+      case 36: return 8;
+      case 37: return 8;
+      case 38: return 8;
+      case 39: return 8;
+      case 40: return 8;
       case 41: return 0;
       case 42: return 0;
       case 43: return 0;
@@ -1100,7 +1100,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 41: return 0;
       case 42: return 0;
       case 43: return 0;
-      case 44: return 0;  
+      case 44: return 0;
       case 45: return 0;
       case 46: return 0;
       case 47: return 0;
@@ -1154,7 +1154,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 41: return 0;
       case 42: return 0;
       case 43: return 0;
-      case 44: return 0;  
+      case 44: return 0;
       case 45: return 0;
       case 46: return 0;
       case 47: return 0;
@@ -1208,7 +1208,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 41: return 0;
       case 42: return 0;
       case 43: return 0;
-      case 44: return 0;    
+      case 44: return 0;
       case 45: return 0;
       case 46: return 0;
       case 47: return 0;
@@ -1281,7 +1281,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       case 47: return  0;
       default:
 	log("SYSERR: Missing level for warrior paralyzation saving throw.");
-	break;	
+	break;
       }
     case SAVING_ROD:	/* Rods */
       switch (level) {
@@ -1504,7 +1504,7 @@ byte saving_throws_nat(int class_num, int type, int level)
       break;
     }
     break;
-  
+
   default:
     log("SYSERR: Invalid class saving throw.");
     break;
@@ -1585,7 +1585,7 @@ int thaco(int class_num, int level)
     case 43: return  20;
     case 44: return  20;
     case 45: return  20;
-	case 46: return  20;
+    case 46: return  20;
     case 47: return  20;
 	default:
       log("SYSERR: Missing level for mage thac0.");
@@ -1715,7 +1715,7 @@ int thaco(int class_num, int level)
   case CLASS_PALADIN:
   case CLASS_KNIGHT:
   case CLASS_SKNIGHT:
-    switch (level) {
+   switch (level) {
     case  0: return 100;
     case  1: return  1;
     case  2: return  1;
@@ -1762,7 +1762,7 @@ int thaco(int class_num, int level)
     case 43: return  20;
     case 44: return  20;
     case 45: return  20;
-	case 46: return  20;
+    case 46: return  20;
     case 47: return  20;
 	default:
       log("SYSERR: Missing level for warrior thac0.");
@@ -1937,7 +1937,7 @@ void advance_level(struct char_data *ch)
     add_mana = MIN(add_mana, 10);
     add_move = rand_number(0, 2);
     break;
-        
+
   case CLASS_BATTLEMAGE:
   case CLASS_SORCEROR:
     add_hp += rand_number(6, 10);
@@ -1957,7 +1957,7 @@ void advance_level(struct char_data *ch)
 
   case CLASS_THIEF:
   case CLASS_ROGUE:
-  case CLASS_BOUNTYHUNTER:  
+  case CLASS_BOUNTYHUNTER:
     add_hp += rand_number(7, 13);
     add_mana = 0;
     add_move = rand_number(1, 3);
@@ -1972,7 +1972,7 @@ void advance_level(struct char_data *ch)
     add_mana = 0;
     add_move = rand_number(1, 3);
     break;
-  
+
   case CLASS_BARD:
   case CLASS_JESTER:
   case CLASS_BLADE:
@@ -1981,23 +1981,23 @@ void advance_level(struct char_data *ch)
     add_mana = MIN(add_mana, 6);
     add_move = rand_number(1, 3);
     break;
-  
-  
+
+
   case CLASS_PALADIN:
-  case CLASS_RANGER: 
+  case CLASS_RANGER:
     add_hp += rand_number(11, 16);
     add_mana = rand_number(GET_LEVEL(ch), (int) (1 * GET_LEVEL(ch)));
     add_mana = MIN(add_mana, 6);
     add_move = rand_number(0, 2);
     break;
-    
+
   case CLASS_SKNIGHT:
     add_hp += rand_number(11, 16);
     add_mana = rand_number(GET_LEVEL(ch), (int) (1 * GET_LEVEL(ch)));
     add_mana = MIN(add_mana, 6);
     add_move = rand_number(0, 2);
     break;
-    
+
   case CLASS_ASSASSIN:
     add_hp += rand_number(9, 15);
     add_mana = 0;
@@ -2009,7 +2009,7 @@ void advance_level(struct char_data *ch)
     add_mana = rand_number(GET_LEVEL(ch), (int)(1.5 * GET_LEVEL(ch)));
     add_mana = MIN(add_mana, 10);
     add_move = rand_number(0, 2);
-    break;         
+    break;
   }
 
   ch->points.max_hit += MAX(1, add_hp);
@@ -2028,7 +2028,7 @@ void advance_level(struct char_data *ch)
       GET_COND(ch, i) = (char) -1;
     SET_BIT(PRF_FLAGS(ch), PRF_HOLYLIGHT);
   }
-  
+
   snoop_check(ch);
   save_char(ch, GET_LOADROOM(ch));
   check_max_on_level(ch);
@@ -2076,22 +2076,22 @@ int invalid_class(struct char_data *ch, struct obj_data *obj)
 {
   if (GET_LEVEL(ch) >= LVL_GOD)
    return FALSE;
-  
+
   if (!IS_NPC(ch))
-  {  
-  
+  {
+
   if (OBJ_CLASS(obj, ITEM_FIGHTERS_ONLY) && IS_FIGHTER_TYPE(ch))
    return FALSE;
-   
+
   if (OBJ_CLASS(obj, ITEM_PRIESTS_ONLY) && IS_PRIEST_TYPE(ch))
    return FALSE;
-   
+
   if (OBJ_CLASS(obj, ITEM_MAGES_ONLY) && IS_MAGE_TYPE(ch))
    return FALSE;
 
   if (OBJ_CLASS(obj, ITEM_ROGUES_ONLY) && IS_ROGUE_TYPE(ch))
    return FALSE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_MAGE) && IS_MAGIC_USER(ch))
     return TRUE;
 
@@ -2103,76 +2103,76 @@ int invalid_class(struct char_data *ch, struct obj_data *obj)
 
   if (OBJ_CLASS(obj, ITEM_ANTI_THIEF) && IS_THIEF(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_SKNIGHT) && IS_SKNIGHT(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_PALADIN) && IS_PALADIN(ch))
     return TRUE;
-  
+
   if (OBJ_CLASS(obj, ITEM_ANTI_ASSASSIN) && IS_ASSASSIN(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_CHAOSMAGE) && IS_CHAOSMAGE(ch))
     return TRUE;
-  
+
   if (OBJ_CLASS(obj, ITEM_ANTI_SHAMAN) && IS_SHAMAN(ch))
     return TRUE;
-  
+
   if (OBJ_CLASS(obj, ITEM_ANTI_DRUID) && IS_DRUID(ch))
     return TRUE;
-  
+
   if (OBJ_CLASS(obj, ITEM_ANTI_RANGER) && IS_RANGER(ch))
     return TRUE;
 
   if (OBJ_CLASS(obj, ITEM_ANTI_PRIEST) && IS_PRIEST(ch))
     return TRUE;
-  
+
   if (OBJ_CLASS(obj, ITEM_ANTI_DISCIPLE) && IS_DISCIPLE(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_CRUSADER) && IS_CRUSADER(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_FIGHTER) && IS_FIGHTER(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_BARBARIAN) && IS_BARBARIAN(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_MONK) && IS_MONK(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_KNIGHT) && IS_KNIGHT(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_ROGUE) && IS_ROGUE(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_BARD) && IS_BARD(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_JESTER) && IS_JESTER(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_BLADE) && IS_BLADE(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_BOUNTYHUNTER) && IS_BOUNTYHUNTER(ch))
     return TRUE;
 
   if (OBJ_CLASS(obj, ITEM_ANTI_BATTLEMAGE) && IS_BATTLEMAGE(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_SORCEROR) && IS_SORCEROR(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_ENCHANTER) && IS_ENCHANTER(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_NECROMANCER) && IS_NECROMANCER(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_ALCHEMIST) && IS_ALCHEMIST(ch))
     return TRUE;
 
@@ -2247,27 +2247,27 @@ int invalid_class(struct char_data *ch, struct obj_data *obj)
 
   if (OBJ_CLASS(obj, ITEM_ALCHEMIST_ONLY) && IS_ALCHEMIST(ch))
     return FALSE;
-  
+
   if (!GET_OBJ_CLASS(obj) || OBJ_CLASS(obj, ITEM_CLASSRESERVED) )
   return FALSE;
 
 return TRUE;
 }
 else
-  {  
-  
+  {
+
    if (OBJ_CLASS(obj, ITEM_FIGHTERS_ONLY) && IS_MOB_FIGHTER_TYPE(ch))
    return FALSE;
-   
+
   if (OBJ_CLASS(obj, ITEM_PRIESTS_ONLY) && IS_MOB_PRIEST_TYPE(ch))
    return FALSE;
-   
+
   if (OBJ_CLASS(obj, ITEM_MAGES_ONLY) && IS_MOB_MAGE_TYPE(ch))
    return FALSE;
-   
+
   if (OBJ_CLASS(obj, ITEM_ROGUES_ONLY) && IS_MOB_ROGUE_TYPE(ch))
    return FALSE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_MAGE) && IS_MOB_MAGIC_USER(ch))
     return TRUE;
 
@@ -2279,76 +2279,76 @@ else
 
   if (OBJ_CLASS(obj, ITEM_ANTI_THIEF) && IS_MOB_THIEF(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_SKNIGHT) && IS_MOB_SKNIGHT(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_PALADIN) && IS_MOB_PALADIN(ch))
     return TRUE;
-  
+
   if (OBJ_CLASS(obj, ITEM_ANTI_ASSASSIN) && IS_MOB_ASSASSIN(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_CHAOSMAGE) && IS_MOB_CHAOSMAGE(ch))
     return TRUE;
-  
+
   if (OBJ_CLASS(obj, ITEM_ANTI_SHAMAN) && IS_MOB_SHAMAN(ch))
     return TRUE;
-  
+
   if (OBJ_CLASS(obj, ITEM_ANTI_DRUID) && IS_MOB_DRUID(ch))
     return TRUE;
-  
+
   if (OBJ_CLASS(obj, ITEM_ANTI_RANGER) && IS_MOB_RANGER(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_PRIEST) && IS_MOB_PRIEST(ch))
     return TRUE;
-  
+
   if (OBJ_CLASS(obj, ITEM_ANTI_DISCIPLE) && IS_MOB_DISCIPLE(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_CRUSADER) && IS_MOB_CRUSADER(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_FIGHTER) && IS_MOB_FIGHTER(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_BARBARIAN) && IS_MOB_BARBARIAN(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_MONK) && IS_MOB_MONK(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_KNIGHT) && IS_MOB_KNIGHT(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_ROGUE) && IS_MOB_ROGUE(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_BARD) && IS_MOB_BARD(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_JESTER) && IS_MOB_JESTER(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_BLADE) && IS_MOB_BLADE(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_BOUNTYHUNTER) && IS_MOB_BOUNTYHUNTER(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_BATTLEMAGE) && IS_MOB_BATTLEMAGE(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_SORCEROR) && IS_MOB_SORCEROR(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_ENCHANTER) && IS_MOB_ENCHANTER(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_NECROMANCER) && IS_MOB_NECROMANCER(ch))
     return TRUE;
-    
+
   if (OBJ_CLASS(obj, ITEM_ANTI_ALCHEMIST) && IS_MOB_ALCHEMIST(ch))
     return TRUE;
 
@@ -2423,7 +2423,7 @@ else
 
   if (OBJ_CLASS(obj, ITEM_ALCHEMIST_ONLY) && IS_MOB_ALCHEMIST(ch))
     return FALSE;
-  
+
 
   if (!GET_OBJ_CLASS(obj) || OBJ_CLASS(obj, ITEM_CLASSRESERVED) )
   return FALSE;
@@ -2438,9 +2438,9 @@ return TRUE;
  * SPELLS AND SKILLS.  This area defines which spells are assigned to
  * which classes, and the minimum level the character must be to use
  * the spell or skill.
-    spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_MAGIC_MISSILE, CLASS_MAGIC_USER, 1); 
+    spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_MAGIC_MISSILE, CLASS_MAGIC_USER, 1);
                 ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^
-                (first prereq)  (second prereq) (actual skill/spell)     (Class)    (level) 
+                (first prereq)  (second prereq) (actual skill/spell)     (Class)    (level)
 
    The code assumes if there is not a first prereq, there wont be a second prereq.
  */
@@ -2451,7 +2451,7 @@ void init_spell_levels(void)
   /* MAGES */
   spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_MAGIC_USER, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_MAGIC_USER, 1);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_MAGIC_USER, 1); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_MAGIC_USER, 1);
   spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_SHIELD, CLASS_MAGIC_USER, 1);
 
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_MAGIC_MISSILE, CLASS_MAGIC_USER, 1);
@@ -2483,15 +2483,15 @@ void init_spell_levels(void)
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_POISON, CLASS_MAGIC_USER, 9);
   spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_CHARM_MONSTER, CLASS_MAGIC_USER, 14);
 
-  
+
    /* BATTLEMAGE */
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_BATTLEMAGE, 1); 
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_BATTLEMAGE, 1); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_BATTLEMAGE, 1);
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_BATTLEMAGE, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_MAGIC_MISSILE, CLASS_BATTLEMAGE, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FLEET_FEET, CLASS_BATTLEMAGE, 2);
- spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_CHARM_PERSON, CLASS_BATTLEMAGE, 14);
-  
-spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE, 2);
+  spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_CHARM_PERSON, CLASS_BATTLEMAGE, 14);
+
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE, 2);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_MAGIC, CLASS_BATTLEMAGE, 2);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CHILL_TOUCH, CLASS_BATTLEMAGE, 3);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_INFRAVISION, CLASS_BATTLEMAGE, 3);
@@ -2519,13 +2519,13 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FIREBALL, CLASS_BATTLEMAGE, 15);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CHARM, CLASS_BATTLEMAGE, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_BATTLEMAGE, 16);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CLENCHED_FIST, CLASS_BATTLEMAGE, 21); 
-   
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CLENCHED_FIST, CLASS_BATTLEMAGE, 21);
+
    /*  CHAOS MAGES  */
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_PIERCE, CLASS_CHAOSMAGE, 25);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_SLASH, CLASS_CHAOSMAGE, 25);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_CHAOSMAGE, 1);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_CHAOSMAGE, 1); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_CHAOSMAGE, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_MAGIC_MISSILE, CLASS_CHAOSMAGE, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FLEET_FEET, CLASS_CHAOSMAGE, 2);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_CHAOSMAGE, 2);
@@ -2555,15 +2555,15 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FIREBALL, CLASS_CHAOSMAGE, 15);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CHARM, CLASS_CHAOSMAGE, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_CHAOSMAGE, 16);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CLENCHED_FIST, CLASS_CHAOSMAGE, 21);  
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CLENCHED_FIST, CLASS_CHAOSMAGE, 21);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ENCHANT_WEAPON, CLASS_CHAOSMAGE, 26);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CLONE, CLASS_CHAOSMAGE, 30); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CLONE, CLASS_CHAOSMAGE, 30);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ETHEREAL_PROJECTION, CLASS_CHAOSMAGE, 35);
   spell_level(SPELL_ETHEREAL_PROJECTION,TYPE_UNDEFINED, SPELL_ETHEREAL_SPHERE, CLASS_CHAOSMAGE, 40);
 
   /* SORCORER */
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_SORCEROR, 1);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_SORCEROR, 1); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_SORCEROR, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_MAGIC_MISSILE, CLASS_SORCEROR, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FLEET_FEET, CLASS_SORCEROR, 2);
   spell_level(SPELL_SHRINK, TYPE_UNDEFINED, SPELL_ENLARGE, CLASS_SORCEROR, 23);
@@ -2595,7 +2595,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FIREBALL, CLASS_SORCEROR, 15);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CHARM, CLASS_SORCEROR, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_SORCEROR, 16);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CLENCHED_FIST, CLASS_SORCEROR, 21);  
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CLENCHED_FIST, CLASS_SORCEROR, 21);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ENCHANT_WEAPON, CLASS_SORCEROR, 26);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ICE_LANCE, CLASS_SORCEROR, 26);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_PILLAR_OF_FLAME, CLASS_SORCEROR, 26);
@@ -2613,7 +2613,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
 
   /* ENCHANTER */
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_ENCHANTER, 1);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_ENCHANTER, 1); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_ENCHANTER, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_MAGIC_MISSILE, CLASS_ENCHANTER, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FLEET_FEET, CLASS_ENCHANTER, 2);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_ENCHANTER, 2);
@@ -2641,12 +2641,12 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_POISON, CLASS_ENCHANTER, 9);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FIREBALL, CLASS_ENCHANTER, 15);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CHARM, CLASS_ENCHANTER, 16);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_ENCHANTER, 16); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_ENCHANTER, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ENCHANT_WEAPON, CLASS_ENCHANTER, 17);
 
   /* ALCHEMIST */
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_ALCHEMIST, 1);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_ALCHEMIST, 1); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_ALCHEMIST, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_MAGIC_MISSILE, CLASS_ALCHEMIST, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FLEET_FEET, CLASS_ALCHEMIST, 2);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_ALCHEMIST, 2);
@@ -2674,7 +2674,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_POISON, CLASS_ALCHEMIST, 14);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FIREBALL, CLASS_ALCHEMIST, 15);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CHARM, CLASS_ALCHEMIST, 16);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_ALCHEMIST, 16); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_ALCHEMIST, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ENCHANT_WEAPON, CLASS_ALCHEMIST, 17);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ENCHANT_WEAPON, CLASS_ALCHEMIST, 26);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CLONE, CLASS_ALCHEMIST, 30);
@@ -2682,12 +2682,12 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(SPELL_ASTRAL_PROJECTION,TYPE_UNDEFINED, SPELL_ETHEREAL_PROJECTION, CLASS_ALCHEMIST, 36);
   spell_level(SPELL_ASTRAL_PROJECTION, SPELL_ETHEREAL_PROJECTION, SPELL_ASTRAL_ASCENSION, CLASS_ALCHEMIST,40);
   spell_level(SPELL_ASTRAL_ASCENSION,TYPE_UNDEFINED, SPELL_ETHEREAL_SPHERE, CLASS_ALCHEMIST, 40);
-  
+
   /* NECROMANCER */
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_BLINDNESS, CLASS_NECROMANCER, 25);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_WHIP, CLASS_NECROMANCER, 25);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_NECROMANCER, 1);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_NECROMANCER, 1); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FEATHER_FALL, CLASS_NECROMANCER, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_MAGIC_MISSILE, CLASS_NECROMANCER, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FLEET_FEET, CLASS_NECROMANCER, 2);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_NECROMANCER, 2);
@@ -2706,8 +2706,8 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(SPELL_FLEET_FEET, TYPE_UNDEFINED, SPELL_HASTE, CLASS_NECROMANCER, 8);
   spell_level(SPELL_INVISIBLE,SPELL_INFRAVISION, SPELL_IMPROVED_INVISIBILITY, CLASS_NECROMANCER, 8);
   spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_CONTROL_UNDEAD, CLASS_NECROMANCER, 8);
- 
- spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_SLEEP, CLASS_NECROMANCER, 8);
+
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_SLEEP, CLASS_NECROMANCER, 8);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_LIGHTNING_BOLT, CLASS_NECROMANCER, 9);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_BLINDNESS, CLASS_NECROMANCER, 9);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_POISON, CLASS_NECROMANCER, 9);
@@ -2721,11 +2721,11 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CHARM, CLASS_NECROMANCER, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_NECROMANCER, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ENCHANT_WEAPON, CLASS_NECROMANCER, 17);
-  spell_level(SPELL_CHILL_TOUCH, TYPE_UNDEFINED, SPELL_RESISTANCE_TO_COLD, CLASS_NECROMANCER, 20); 
+  spell_level(SPELL_CHILL_TOUCH, TYPE_UNDEFINED, SPELL_RESISTANCE_TO_COLD, CLASS_NECROMANCER, 20);
   spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_GHOUL_GAUNTLET, CLASS_NECROMANCER, 21);
   spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_WITHER, CLASS_NECROMANCER, 25);
   spell_level(SPELL_DETECT_INVIS,TYPE_UNDEFINED, SPELL_BAT_SONAR, CLASS_NECROMANCER, 26);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DEATHS_DOOR, CLASS_NECROMANCER, 26); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DEATHS_DOOR, CLASS_NECROMANCER, 26);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DECREPIFY, CLASS_NECROMANCER, 26);
   spell_level(SPELL_ARMOR, SPELL_BLINDNESS, SPELL_SHADOW_ARMOR, CLASS_NECROMANCER, 26);
   spell_level(SPELL_SHADOW_ARMOR, SPELL_BAT_SONAR, SPELL_CLOAK_OF_SHADOWS, CLASS_NECROMANCER, 27);
@@ -2733,7 +2733,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(SPELL_CHARM,SPELL_DEATHS_DOOR, SPELL_ANIMATE_DEAD, CLASS_NECROMANCER, 27);
   spell_level(SPELL_VITALIZE_MANA,SPELL_ENERGY_DRAIN, SPELL_BLOOD_REVEL, CLASS_NECROMANCER, 28);
   spell_level(SPELL_RESISTANCE_TO_ELEC, TYPE_UNDEFINED, SPELL_IMMUNITY_TO_ELEC, CLASS_NECROMANCER, 36);
-  
+
  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CLONE, CLASS_NECROMANCER, 30);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FINGER_OF_DEATH, CLASS_NECROMANCER, 30);
   spell_level(SPELL_BAT_SONAR,TYPE_UNDEFINED, SPELL_GRANT_BAT_SONAR, CLASS_NECROMANCER, 30);
@@ -2744,7 +2744,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(SPELL_RESISTANCE_TO_COLD, TYPE_UNDEFINED, SPELL_IMMUNITY_TO_COLD, CLASS_NECROMANCER, 36);
   spell_level(SPELL_HANG, SPELL_FINGER_OF_DEATH, SPELL_MASS_SUICIDE, CLASS_NECROMANCER, 40);
   /* PRIESTS */
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_PRIEST, 1); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_PRIEST, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CURE_LIGHT, CLASS_PRIEST, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ARMOR, CLASS_PRIEST, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CREATE_FOOD,CLASS_PRIEST, 2);
@@ -2773,9 +2773,9 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(SPELL_DETECT_EVIL,SPELL_FLAMESTRIKE, SPELL_DISPEL_EVIL, CLASS_PRIEST, 14);
   spell_level(SPELL_DETECT_GOOD,SPELL_POISON, SPELL_DISPEL_GOOD, CLASS_PRIEST, 14);
 
-  
+
   /* CLERICS */
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_CLERIC, 1); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_CLERIC, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CURE_LIGHT, CLASS_CLERIC, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ARMOR, CLASS_CLERIC, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CREATE_FOOD,CLASS_CLERIC, 2);
@@ -2820,7 +2820,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CALL_LIGHTNING, CLASS_CLERIC, 15);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VIGORIZE_SERIOUS, CLASS_CLERIC, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_HEAL, CLASS_CLERIC, 16);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_CLERIC, 16); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_CLERIC, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CONTROL_WEATHER, CLASS_CLERIC, 17);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_SENSE_LIFE, CLASS_CLERIC, 18);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_HARM, CLASS_CLERIC, 19);
@@ -2836,7 +2836,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(SPELL_DISPEL_EVIL,SPELL_BLESS, SPELL_REMOVE_CURSE, CLASS_CLERIC, 26);
 
   /* DISCIPLES */
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_DISCIPLE, 1); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_DISCIPLE, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CURE_LIGHT, CLASS_DISCIPLE, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ARMOR, CLASS_DISCIPLE, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CREATE_FOOD,CLASS_DISCIPLE, 2);
@@ -2872,7 +2872,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CALL_LIGHTNING, CLASS_DISCIPLE, 15);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_HEAL, CLASS_DISCIPLE, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VIGORIZE_SERIOUS, CLASS_DISCIPLE, 16);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_DISCIPLE, 16); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_DISCIPLE, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CONTROL_WEATHER, CLASS_DISCIPLE, 17);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_SENSE_LIFE, CLASS_DISCIPLE, 18);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_HARM, CLASS_DISCIPLE, 19);
@@ -2897,7 +2897,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   /* CRUSADERS */
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_PIERCE, CLASS_CRUSADER, 25);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_SLASH, CLASS_CRUSADER, 25);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_CRUSADER, 1); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_CRUSADER, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CURE_LIGHT, CLASS_CRUSADER, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ARMOR, CLASS_CRUSADER, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CREATE_FOOD,CLASS_CRUSADER, 2);
@@ -2933,7 +2933,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CALL_LIGHTNING, CLASS_CRUSADER, 15);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_HEAL, CLASS_CRUSADER, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VIGORIZE_SERIOUS, CLASS_CRUSADER, 16);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_CRUSADER, 16); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_CRUSADER, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CONTROL_WEATHER, CLASS_CRUSADER, 17);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_SENSE_LIFE, CLASS_CRUSADER, 18);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_HARM, CLASS_CRUSADER, 19);
@@ -2948,7 +2948,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(SPELL_SMITE_EVIL, TYPE_UNDEFINED, SPELL_HOLY_WORD, CLASS_CRUSADER, 33);
   spell_level(SPELL_SMITE_GOOD, TYPE_UNDEFINED, SPELL_UNHOLY_WORD, CLASS_CRUSADER, 33);
   spell_level(SPELL_HOLY_WORD,SPELL_UNHOLY_WORD, SPELL_EXCOMMUNICATE, CLASS_CRUSADER, 40);
-  
+
   /* SHAMANS */
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_SHAMAN, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CURE_LIGHT, CLASS_SHAMAN, 1);
@@ -2978,7 +2978,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_EARTHQUAKE, CLASS_SHAMAN, 12);
   spell_level(SPELL_DETECT_EVIL,SPELL_FLAMESTRIKE, SPELL_DISPEL_EVIL, CLASS_SHAMAN, 14);
   spell_level(SPELL_DETECT_GOOD,SPELL_POISON, SPELL_DISPEL_GOOD, CLASS_SHAMAN, 14);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_SHAMAN, 16); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_SHAMAN, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_PILLAR_OF_FLAME, CLASS_SHAMAN, 26);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_HORNET_SWARM, CLASS_SHAMAN, 27);
 
@@ -3017,7 +3017,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(SPELL_DETECT_EVIL,SPELL_FLAMESTRIKE, SPELL_DISPEL_EVIL, CLASS_DRUID, 14);
   spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_CONTROL_PLANT, CLASS_DRUID, 14);
   spell_level(SPELL_DETECT_GOOD,SPELL_POISON, SPELL_DISPEL_GOOD, CLASS_DRUID, 14);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_DRUID, 16); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_DRUID, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_PILLAR_OF_FLAME, CLASS_DRUID, 26);
   spell_level(SPELL_ELEMENTAL_HANDS, TYPE_UNDEFINED, SPELL_ELEMENTAL_STRIKE, CLASS_DRUID, 26);
   spell_level(SPELL_CREATE_FOOD,SPELL_CREATE_WATER, SPELL_SUSTAIN, CLASS_DRUID, 26);
@@ -3034,12 +3034,10 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(SPELL_ELEMENTAL_BURST, TYPE_UNDEFINED, SPELL_ELEMENTAL_BLAST, CLASS_DRUID, 35);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_HEALING_WIND, CLASS_DRUID, 35);
   spell_level(SPELL_ARBOREAL_FORM, SPELL_GROUP_ARMOR, SPELL_FORESTATION, CLASS_DRUID, 40);
-  
-  
+
   /* RANGERS */
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_RANGER, 1);
   spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_ANIMAL_FRIENDSHIP, CLASS_RANGER, 1);
-
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_PIERCE, CLASS_RANGER, 25);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_SLASH, CLASS_RANGER, 25);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CURE_LIGHT, CLASS_RANGER, 1);
@@ -3069,7 +3067,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_REMOVE_POISON, CLASS_RANGER, 10);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ELEMENTAL_HANDS, CLASS_RANGER, 11);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_WORD_OF_RECALL, CLASS_RANGER, 12);
-  
+
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_EARTHQUAKE, CLASS_RANGER, 12);
   spell_level(SPELL_DETECT_EVIL,SPELL_FLAMESTRIKE, SPELL_DISPEL_EVIL, CLASS_RANGER, 14);
   spell_level(SPELL_DETECT_GOOD,SPELL_POISON, SPELL_DISPEL_GOOD, CLASS_RANGER, 14);
@@ -3084,7 +3082,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(SPELL_FLAMING_ARROW, TYPE_UNDEFINED, SPELL_HAIL_OF_ARROWS, CLASS_RANGER, 30);
   spell_level(SPELL_HAIL_OF_ARROWS, TYPE_UNDEFINED, SPELL_HORNETS_DART, CLASS_RANGER, 31);
 
-  
+
   /* ROGUES */
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_SNEAK, CLASS_ROGUE, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_PIERCE, CLASS_ROGUE, 1);
@@ -3104,7 +3102,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_TRACK, CLASS_THIEF, 15);
 
   /*   ASSASSINS	*/
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_ASSASSIN, 25); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_ASSASSIN, 25);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_SNEAK, CLASS_ASSASSIN, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_PIERCE, CLASS_ASSASSIN, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_SLASH, CLASS_ASSASSIN, 1);
@@ -3114,7 +3112,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_HIDE, CLASS_ASSASSIN, 5);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_TRACK, CLASS_ASSASSIN, 15);
   spell_level(SKILL_BACKSTAB,TYPE_UNDEFINED, SKILL_CIRCLE, CLASS_ASSASSIN, 26);
-  
+
   /* Bounty Hunter */
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_SNEAK, CLASS_BOUNTYHUNTER, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_PIERCE, CLASS_BOUNTYHUNTER, 1);
@@ -3126,7 +3124,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_TRACK, CLASS_BOUNTYHUNTER, 15);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_SLASH, CLASS_BOUNTYHUNTER, 26);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_BOUNTYHUNTER, 26);
-  
+
   /* BARDS */
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_SNEAK, CLASS_BARD, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_PIERCE, CLASS_BARD, 1);
@@ -3146,7 +3144,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_LIGHTNING_BOLT, CLASS_BARD, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_BLINDNESS, CLASS_BARD, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_SHOCKING_GRASP, CLASS_BARD, 16);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_BARD, 16); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_BARD, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ARMOR, CLASS_BARD, 17);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_POISON, CLASS_BARD, 17);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_ROAR, CLASS_BARD, 17);
@@ -3177,7 +3175,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FLEET_FEET, CLASS_JESTER, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_INVISIBLE, CLASS_JESTER, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_SHOCKING_GRASP, CLASS_JESTER, 16);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_JESTER, 16); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_JESTER, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_LIGHTNING_BOLT, CLASS_JESTER, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_BLINDNESS, CLASS_JESTER, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_POISON, CLASS_JESTER, 17);
@@ -3202,7 +3200,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_PIERCE, CLASS_BLADE, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_SLASH, CLASS_BLADE, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_STEAL, CLASS_BLADE, 4);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_HIDE, CLASS_BLADE, 5);      
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_HIDE, CLASS_BLADE, 5);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FREE_ACTION, CLASS_BLADE, 12);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_MAGIC_MISSILE, CLASS_BLADE, 15);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BLADE, 15);
@@ -3214,7 +3212,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_FLEET_FEET, CLASS_BLADE, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_INVISIBLE, CLASS_BLADE, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_SHOCKING_GRASP, CLASS_BLADE, 16);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_BLADE, 16); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_VITALIZE_MANA, CLASS_BLADE, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_LIGHTNING_BOLT, CLASS_BLADE, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_BLINDNESS, CLASS_BLADE, 16);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_POISON, CLASS_BLADE, 17);
@@ -3250,7 +3248,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
    spell_level(SPELL_ACCURACY, TYPE_UNDEFINED, SPELL_STRENGTH_BURST, CLASS_WARRIOR, 7);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_TRACK, CLASS_WARRIOR, 9);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_BASH, CLASS_WARRIOR, 12);
- 
+
    /* MONKS */
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_PIERCE, CLASS_MONK, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_SLASH, CLASS_MONK, 1);
@@ -3306,7 +3304,7 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_WHIP, CLASS_SKNIGHT, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_PIERCE, CLASS_SKNIGHT, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_SLASH, CLASS_SKNIGHT, 1);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_SKNIGHT, 1); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_SKNIGHT, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_KICK, CLASS_SKNIGHT, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_RESCUE, CLASS_SKNIGHT, 3);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_TRACK, CLASS_SKNIGHT, 9);
@@ -3320,13 +3318,13 @@ spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_INVIS, CLASS_BATTLEMAGE,
   /* Pal */
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_PIERCE, CLASS_PALADIN, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_SLASH, CLASS_PALADIN, 1);
-  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_PALADIN, 1); 
+  spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_PROF_BLUDGEON, CLASS_PALADIN, 1);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_RESCUE, CLASS_PALADIN, 1);
   /* spell_level(SKILL_LAYHANDS, CLASS_PALADIN, 5); */
   spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_SYNOSTODWEOMER, CLASS_PALADIN, 15);
 
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SKILL_BASH, CLASS_PALADIN, 12);
-  spell_level(SPELL_MAGICAL_VESTMANTS, TYPE_UNDEFINED, SPELL_DRAW_UPON_HOLY_MIGHT, CLASS_PALADIN, 11);  
+  spell_level(SPELL_MAGICAL_VESTMANTS, TYPE_UNDEFINED, SPELL_DRAW_UPON_HOLY_MIGHT, CLASS_PALADIN, 11);
   spell_level(TYPE_UNDEFINED, TYPE_UNDEFINED, SPELL_TOWER_OF_STRENGTH, CLASS_PALADIN, 25);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_CURE_LIGHT, CLASS_PALADIN, 26);
   spell_level(TYPE_UNDEFINED,TYPE_UNDEFINED, SPELL_DETECT_EVIL, CLASS_PALADIN, 26);
@@ -3409,11 +3407,11 @@ int level_exp(int chclass, int level)
       case 33: return 9450000;
       case 34: return 10300000;
       case 35: return 11250000;
-      case 36: return 12250000;   
+      case 36: return 12250000;
       case 37: return 13250000;
       case 38: return 14250000;
       case 39: return 15250000;
-      case 40: return 16250000;  
+      case 40: return 16250000;
       /* add new levels here */
       case LVL_SAINT: return 46250000;
     }
@@ -3425,7 +3423,7 @@ int level_exp(int chclass, int level)
     case CLASS_DRUID:
     case CLASS_RANGER:
     case CLASS_DISCIPLE:
-    case CLASS_CRUSADER:    
+    case CLASS_CRUSADER:
     switch (level) {
       case  0: return 0;
       case  1: return 1;
@@ -3463,11 +3461,11 @@ int level_exp(int chclass, int level)
       case 33: return 9450000;
       case 34: return 10300000;
       case 35: return 11250000;
-      case 36: return 12250000;   
+      case 36: return 12250000;
       case 37: return 13250000;
       case 38: return 14250000;
       case 39: return 15250000;
-      case 40: return 16250000;  
+      case 40: return 16250000;
       /* add new levels here */
       case LVL_SAINT: return 46250000;
     }
@@ -3516,11 +3514,11 @@ int level_exp(int chclass, int level)
       case 33: return 9450000;
       case 34: return 10300000;
       case 35: return 11250000;
-      case 36: return 12250000;   
+      case 36: return 12250000;
       case 37: return 13250000;
       case 38: return 14250000;
       case 39: return 15250000;
-      case 40: return 16250000;  
+      case 40: return 16250000;
       /* add new levels here */
       case LVL_SAINT: return 46250000;
     }
@@ -3568,16 +3566,16 @@ int level_exp(int chclass, int level)
       case 33: return 9450000;
       case 34: return 10300000;
       case 35: return 11250000;
-      case 36: return 12250000;   
+      case 36: return 12250000;
       case 37: return 13250000;
       case 38: return 14250000;
       case 39: return 15250000;
-      case 40: return 16250000;  
+      case 40: return 16250000;
       /* add new levels here */
       case LVL_SAINT: return 46250000;
     }
     break;
-    
+
     case CLASS_SKNIGHT:
     switch (level) {
       case  0: return 0;
@@ -3625,7 +3623,7 @@ int level_exp(int chclass, int level)
        case LVL_SAINT: return 46250000;
      }
      break;
-     
+
          case CLASS_PALADIN:
     switch (level) {
       case  0: return 0;
@@ -3672,7 +3670,7 @@ int level_exp(int chclass, int level)
       case LVL_SAINT: return 46250000;
     }
     break;
-   
+
     case CLASS_CHAOSMAGE:
     switch (level) {
       case  0: return 0;
@@ -3711,13 +3709,13 @@ int level_exp(int chclass, int level)
       case 33: return 9450000;
       case 34: return 10300000;
       case 35: return 11250000;
-      case 36: return 12250000;   
+      case 36: return 12250000;
       case 37: return 13250000;
       case 38: return 14250000;
       case 39: return 15250000;
-      case 40: return 16250000;  
+      case 40: return 16250000;
       /* add new levels here */
-      case LVL_SAINT: return 46250000;    
+      case LVL_SAINT: return 46250000;
     }
     break;
 
@@ -3759,15 +3757,15 @@ int level_exp(int chclass, int level)
       case 33: return 9450000;
       case 34: return 10300000;
       case 35: return 11250000;
-      case 36: return 12250000;   
+      case 36: return 12250000;
       case 37: return 13250000;
       case 38: return 14250000;
       case 39: return 15250000;
-      case 40: return 16250000;  
+      case 40: return 16250000;
       /* add new levels here */
       case LVL_SAINT: return 46250000;
     }
-    break;            
+    break;
   }
 
   /*
@@ -3780,7 +3778,7 @@ int level_exp(int chclass, int level)
 }
 
 
-/* 
+/*
  * Default titles of male characters.
  */
 const char *title_male(int chclass, int level)
@@ -4357,7 +4355,7 @@ const char *title_male(int chclass, int level)
       case LVL_GOD: return "the God of Steel";
       default: return "the Blade";
     }
-    break; 
+    break;
 
 
 
@@ -4550,7 +4548,7 @@ const char *title_male(int chclass, int level)
       default: return "the Shadow Knight";
     }
     break;
-    
+
 
 
 
@@ -4561,7 +4559,7 @@ const char *title_male(int chclass, int level)
 }
 
 
-/* 
+/*
  * Default titles of female characters.
  */
 const char *title_female(int chclass, int level)
@@ -5137,7 +5135,7 @@ switch (chclass) {
       case LVL_GOD: return "the God of Steel";
       default: return "the Blade";
     }
-    break; 
+    break;
 
 
 
@@ -5330,7 +5328,7 @@ switch (chclass) {
       default: return "the Shadow Knight";
     }
     break;
-    
+
 
   }
 

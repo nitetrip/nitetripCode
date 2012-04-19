@@ -63,7 +63,7 @@ if (!ROOM_FLAGGED(nr, ROOM_DUMPONTICK))
  return;
 
 struct obj_data *k;
-struct char_data *j;
+//struct char_data *j;
 
 
  for (k = world[nr].contents; k; k = k->next_content) {
@@ -136,7 +136,7 @@ return;
 	}
 
 	else if ( value == 1 )	{
-		sprintf(buf, "You are awarded %d coin for outstanding performance.\r\n", value); 
+		sprintf(buf, "You are awarded %d coin for outstanding performance.\r\n", value);
 		send_to_char(ch, buf);
 	}
 
@@ -168,8 +168,8 @@ void sort_spells(void)
   /* initialize array, avoiding reserved. */
   for (a = 1; a <= MAX_SKILLS; a++)
     spell_sort_info[a] = a;
-  
-  qsort(&spell_sort_info[1], MAX_SKILLS, sizeof(int), compare_spells);  
+
+  qsort(&spell_sort_info[1], MAX_SKILLS, sizeof(int), compare_spells);
 }
 
 const char *how_good(int percent)
@@ -229,7 +229,7 @@ void list_skills(struct char_data *ch)
   len = snprintf(buf2, sizeof(buf2), "You have %d practice session%s remaining.\r\n"
 	"You know of the following %ss:\r\n", GET_PRACTICES(ch),
 	GET_PRACTICES(ch) == 1 ? "" : "s", SPLSKL(ch));
-  
+
   for (sortpos = 1; sortpos <= MAX_SKILLS; sortpos++) {
     i = spell_sort_info[sortpos];
     spell_prof = " (superb)";
@@ -285,7 +285,7 @@ SPECIAL(guild)
  /* is there a first prereq? if so check they have practiced it */
 	if (percent >= GET_SKILL(ch,spell_info[skill_num].first_prereq[(int) GET_CLASS(ch)]))
 	{
-	    sprintf(buf, "But your skill in %s is only %d%%\r\n", 
+	    sprintf(buf, "But your skill in %s is only %d%%\r\n",
 	    	spell_info[spell_info[skill_num].first_prereq[(int) GET_CLASS(ch)]].name,
 	    	GET_SKILL(ch,spell_info[skill_num].first_prereq[(int) GET_CLASS(ch)]));
 	    send_to_char(ch, buf);
@@ -296,7 +296,7 @@ SPECIAL(guild)
     /* is there a second prereq? if so check they have practiced it */
 	    if (percent >= GET_SKILL(ch,spell_info[skill_num].second_prereq[(int) GET_CLASS(ch)]))
 	    {
-	        sprintf(buf, "But your skill in %s is only %d%%\r\n", 
+	        sprintf(buf, "But your skill in %s is only %d%%\r\n",
 	    	    spell_info[spell_info[skill_num].second_prereq[(int) GET_CLASS(ch)]].name,
 	    	    GET_SKILL(ch,spell_info[skill_num].second_prereq[(int) GET_CLASS(ch)]));
 	            send_to_char(ch, buf);
@@ -421,7 +421,8 @@ SPECIAL(mayor)
 
 void npc_steal(struct char_data *ch, struct char_data *victim)
 {
-  int gold;
+  int gold, i = 0;
+  struct obj_data *o = NULL, *inventory_array[100];
 
   if (IS_NPC(victim))
     return;
@@ -430,17 +431,30 @@ void npc_steal(struct char_data *ch, struct char_data *victim)
   if (!CAN_SEE(ch, victim))
     return;
 
-  if (AWAKE(victim) && (rand_number(0, GET_LEVEL(ch)) == 0)) {
-    act("You discover that $n has $s hands in your wallet.", FALSE, ch, 0, victim, TO_VICT);
-    act("$n tries to steal gold from $N.", TRUE, ch, 0, victim, TO_NOTVICT);
+  if (AWAKE(victim) && (rand_number(0, GET_LEVEL(ch)) == 0)) { // sleeping victims will have 100% chance of geting stolen from
+    act("You discover that $n has $s hands in your pockets.", FALSE, ch, 0, victim, TO_VICT);
+    act("$n tries to steal from $N.", TRUE, ch, 0, victim, TO_NOTVICT);
   } else {
-    /* Steal some gold coins */
-    gold = (GET_GOLD(victim) * rand_number(1, 10)) / 100;
-    if (gold > 0) {
-      GET_GOLD(ch) += gold;
-      GET_GOLD(victim) -= gold;
-    }
-  }
+       if (MOB_FLAGGED(ch,  MOB_PLR_THIEF_COINS)){ // Steal some gold coins
+         gold = (GET_GOLD(victim) * rand_number(1, 10)) / 100; // pick a random amount of gold to steal
+         if (gold > 0) {
+         GET_GOLD(ch) += gold;
+         GET_GOLD(victim) -= gold;
+         } // it is possible to get coins AND gear stolen at the same time if mob has both flags set.
+       if(MOB_FLAGGED(ch, MOB_PLR_THIEF_ITEMS)){ // Steal a piece of gear - 50% chance of getting stolen from
+         for (o = victim->carrying; o && i < 100; o = o->next_content) { // check max of 100(seeable) items in inventory
+            if (CAN_SEE_OBJ(ch, o)){
+              inventory_array[i] = o; // put any items the thief can see in an array
+              i++;}
+          }
+          if (i) { // As long as there an object that can be seen to steal
+            o = inventory_array[rand_number(0, i-1)]; // Randomly pick an item from inventory to steal
+            mudlog(BRF, LVL_IMPL, TRUE, "%s stole %s from %s", GET_NAME(ch), GET_OBJ_NAME(o), GET_NAME(victim));
+            obj_from_char(o);
+            obj_to_char(o, ch); }
+          }
+       }
+   }
 }
 
 
@@ -464,16 +478,18 @@ SPECIAL(snake)
 
 SPECIAL(thief)
 {
-  struct char_data *cons;
+  struct char_data *cons, *people_in_room[100];
+  int i = 0;
 
-  if (cmd || GET_POS(ch) != POS_STANDING)
+  if (GET_POS(ch) != POS_STANDING)
     return (FALSE);
-
   for (cons = world[IN_ROOM(ch)].people; cons; cons = cons->next_in_room)
-    if (!IS_NPC(cons) && GET_LEVEL(cons) < LVL_SAINT && !rand_number(0, 4)) {
-      npc_steal(ch, cons);
-      return (TRUE);
-    }
+    if (!IS_NPC(cons) && GET_LEVEL(cons) < LVL_SAINT ) {
+      people_in_room[i] = cons; // make an array of people in the room
+      i++; }
+    if (i) {
+      npc_steal(ch, people_in_room[rand_number(0,i-1)]); // steal from a random person in the room
+      return (TRUE);}
 
   return (FALSE);
 }

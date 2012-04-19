@@ -28,7 +28,7 @@ extern int no_specials;
 /* external functions */
 ACMD(do_get);
 ACMD(do_action);
-
+SPECIAL(thief);
 /* local functions */
 void mobile_activity(void);
 void clearMemory(struct char_data *ch);
@@ -50,6 +50,10 @@ void mobile_activity(void)
     if (!IS_MOB(ch))
       continue;
 
+    // Mobs that steal from players
+    if (MOB_FLAGGED(ch, MOB_PLR_THIEF_COINS) || MOB_FLAGGED(ch, MOB_PLR_THIEF_ITEMS))
+        thief(ch, NULL, 0, NULL);
+
     /* Examine call for special procedure */
     if (MOB_FLAGGED(ch, MOB_SPEC) && !no_specials) {
       if (mob_index[GET_MOB_RNUM(ch)].func == NULL) {
@@ -64,6 +68,7 @@ void mobile_activity(void)
     }
     /* check for mob class or race options here  */
     mob_magic_user(ch);
+
 
     /* If the mob has no specproc, do the default actions */
     if (FIGHTING(ch) || !AWAKE(ch))
@@ -295,10 +300,10 @@ bool mob_magic_user(struct char_data *ch)
 
   if(GET_CLASS(ch) != MOB_CLASS_MAGIC_USER)
     return (FALSE);
-  
+
   if (GET_POS(ch) != POS_FIGHTING)
     return (FALSE);
-  
+
   /* pseudo-randomly choose someone in the room who is fighting me */
   for (vict = world[IN_ROOM(ch)].people; vict; vict = vict->next_in_room)
     if (FIGHTING(vict) == ch && !rand_number(0, 4))
@@ -362,4 +367,3 @@ bool mob_magic_user(struct char_data *ch)
   return (TRUE);
 
 }
-

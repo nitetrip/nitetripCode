@@ -271,6 +271,8 @@ const char *action_bits[] = {
   "NOTDEADYET",
   "NO_PARALYZE",
   "NO_SILENCE",
+  "PLR_THIEF_COINS",
+  "PLR_THIEF_ITEMS",
   "DEAD",    /* You should never see this. */
   "\n"
 };
@@ -288,8 +290,7 @@ const char *preference_bits[] = {
   "AUTOEX",
   "NO_HASS",
   "QUEST",
-  "SUMN",
-  "NO_REP",
+  "SUMN",  "NO_REP",
   "LIGHT",
   "C1",
   "C2",

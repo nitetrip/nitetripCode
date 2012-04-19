@@ -464,7 +464,7 @@ void	update_pos(struct char_data *victim);
                       !PLR_FLAGGED((ch), PLR_WRITING) || (GET_POS(ch) == POS_SLEEPING && CAN_SEE_ASLEEP(ch)))
 #define IS_MOBILE(ch) (GET_POS(ch)>POS_SLEEPING)
 
-#define CONFIG_SORCERERS_GUILD 10131 //for succor
+#define CONFIG_SORCERERS_GUILD 16684 //for succor
 
 /* These three deprecated. */
 #define WAIT_STATE(ch, cycle) do { GET_WAIT_STATE(ch) = (cycle); } while(0)
