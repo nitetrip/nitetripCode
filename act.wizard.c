@@ -1132,6 +1132,7 @@ k->player.long_descr : "<None>\r\n");
     send_to_char(ch, "%sAttack type:%s %s", CCCYN(ch, C_NRM), CCGRN(ch, C_NRM), attack_hit_text[(int)
       k->mob_specials.attack_type].singular);
     send_to_char(ch, " %s# of Attacks:%s %d\r\n", CCCYN(ch, C_NRM), CCGRN(ch, C_NRM), k->mob_specials.num_attacks);
+    sprintbit(MOB_FLAGS(k), action_bits, buf, sizeof(buf));
     send_to_char(ch, "%sNPC flags:%s %s\r\n", CCCYN(ch, C_NRM), CCGRN(ch, C_NRM),  buf);
   } else {
     send_to_char(ch, " %sIdle Timer%s %d tics\r\n", CCCYN(ch, C_NRM), CCGRN(ch, C_NRM), k->char_specials.timer);

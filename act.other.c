@@ -193,7 +193,7 @@ ACMD(do_hide)
   }
 
   send_to_char(ch, "You attempt to hide yourself.\r\n");
-  
+
   if (affected_by_spell(ch, SKILL_HIDE))
     affect_from_char(ch, SKILL_HIDE); 
 
@@ -346,7 +346,7 @@ ACMD(do_progress)
 	return;
 		}
   if (GET_LEVEL(ch) < 10)
-		{ 
+		{
 	send_to_char(ch, "You are not quite ready for that yet.\r\n");
 	return;
 		}
@@ -433,7 +433,6 @@ ACMD(do_title)
 //       send_to_char(ch, "You must use * for your name in your title.\r\n");
 //    return;
 //    }
-  
 
    else if (strlen(argument) > MAX_TITLE_LENGTH) {
     send_to_char(ch, "Sorry, titles can't be longer than %d characters.\r\n", MAX_TITLE_LENGTH);
@@ -824,7 +823,7 @@ ACMD(do_wimpy)
       else if (wimp_lev > 20)
 	send_to_char(ch, "You can't set wimpy above 20%%\r\n");
         else {
-	GET_WIMP_LEV(ch) = wimp_lev;	
+	GET_WIMP_LEV(ch) = wimp_lev;
 	wimp = GET_WIMP_LEV(ch);
  	maxhit = GET_MAX_HIT(ch);
 	wimpval = ((wimp / 100) * maxhit);
@@ -1084,7 +1083,7 @@ ACMD(do_gen_tog)
     break;
   case SCMD_ALLCTELL:
     if (GET_LEVEL(ch) < LVL_IMPL) {
-      send_to_char(ch, "You are not high enough to listen to all clan channels.\r\n");      
+      send_to_char(ch, "You are not high enough to listen to all clan channels.\r\n");
       return;
     }
     result = PRF_TOG_CHK(ch, PRF_ALLCTELL);
@@ -1176,7 +1175,7 @@ ACMD(do_file)
      req_lines = 15; /* default is the last 15 lines */
    else
      req_lines = atoi(value);
-   
+
    if (!(req_file=fopen(fields[l].file,"r"))) {
      mudlog(BRF, LVL_IMPL, TRUE,
             "SYSERR: Error opening file %s using 'file' command.",
@@ -1192,15 +1191,15 @@ ACMD(do_file)
    rewind(req_file);
 
    req_lines = MIN(MIN(req_lines, num_lines),150);
-   
+
    buf[0] = '\0';
 
    get_line(req_file,line);
    while (!feof(req_file)) {
      cur_line++;
-     if(cur_line > (num_lines - req_lines)) 
+     if(cur_line > (num_lines - req_lines))
        sprintf(buf+strlen(buf),"%s\r\n", line);
-	   
+
      get_line(req_file,line);
    }
    fclose(req_file);
@@ -1214,17 +1213,16 @@ ACMD(do_detect_traps)
   struct obj_data *k;
   int percent;
   bool found_trap = FALSE;
-  
+
   percent = rand_number(1, 101);
-  if (percent <= GET_SKILL(ch, SKILL_DETECT_TRAPS)) {  
+  if (percent <= GET_SKILL(ch, SKILL_DETECT_TRAPS)) {
     for (k = world[IN_ROOM(ch)].contents; k; k = k->next_content) {
       if(GET_OBJ_TYPE(k) == ITEM_TRAP && GET_LEVEL(ch) >= GET_OBJ_LEVEL(k) ) {
-        send_to_char(ch, "You spot %s!\r\n", k->short_description);        
+        send_to_char(ch, "You spot %s!\r\n", k->short_description);
         return;
-        }      
+        }
     }
-   }  
-    
+   }
   if (found_trap == FALSE)
     send_to_char(ch, "You don't see any traps here.\r\n");
 }
@@ -1288,4 +1286,10 @@ void check_progression(struct char_data *ch)
            SET_BIT(PLR_FLAGS(ch), PLR_NOEXPGAIN);
                    SET_BIT(PLR_FLAGS(ch), PLR_PROGRESS);
                         }
+}
+
+
+int list_profinciencies(struct char_data *ch, char *argument)
+{
+  
 }
