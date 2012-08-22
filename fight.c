@@ -225,7 +225,7 @@ void update_pos(struct char_data *victim)
     GET_POS(victim) = POS_INCAP;
   else
     GET_POS(victim) = POS_STUNNED;
-  if (AFF_FLAGGED(victim, AFF_PARALYZE))
+  if (AFF_FLAGGED(victim, AFF_PARALYZE) && GET_POS(victim) > POS_PARALYZED)
     GET_POS(victim) = POS_PARALYZED;
 }
 

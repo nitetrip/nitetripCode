@@ -395,8 +395,8 @@ struct char_data *guildmaster1;
 #define POS_DEAD          0     /* dead                 */
 #define POS_MORTALLYW     1     /* mortally wounded     */
 #define POS_INCAP         2     /* incapacitated        */
-#define POS_PARALYZED     3     /* paralyzed            */
-#define POS_STUNNED       4     /* stunned              */
+#define POS_STUNNED       3     /* stunned              */
+#define POS_PARALYZED     4     /* paralyzed            */
 #define POS_BURIED        5     /* buried (for RIP spell) */
 #define POS_FAKEDEAD      6     /* feigning death       */
 #define POS_SLEEPING      7     /* sleeping             */
