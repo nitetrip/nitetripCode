@@ -903,7 +903,7 @@ const char *extra_bits[] = {
   "UNUSED49",
   "UNUSED50",
   "GREATER_HIDDEN",
-  "NOBITS", 
+  "NOBITS",
   "LESSER_HIDDEN",
   "UNUSED55",
   "UNUSED56",

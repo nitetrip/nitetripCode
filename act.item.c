@@ -242,7 +242,7 @@ void perform_get_from_container(struct char_data *ch, struct obj_data *obj,
       {
       act("You are not experienced enough to get $p!", FALSE, ch, obj, 0, TO_CHAR);
       return;
-      }    
+      }
         if ( (GET_LEVEL(ch) > GET_OBJ_MAX_LEVEL(obj)) && (GET_LEVEL(ch) < LVL_SAINT) && GET_OBJ_MAX_LEVEL(obj))
       {
       act("You are too experienced to get $p!", FALSE, ch, obj, 0, TO_CHAR);
@@ -722,13 +722,11 @@ void perform_give(struct char_data *ch, struct char_data *vict,
     act("$N is not experienced enough to take $p!", FALSE, ch, obj, vict, TO_CHAR);  
     return;
     }
- if ((GET_LEVEL(vict) > GET_OBJ_MAX_LEVEL(obj)) && (GET_LEVEL(vict) < LVL_SAINT) ) {
+ if ((GET_OBJ_MAX_LEVEL(obj)) && (GET_LEVEL(vict) > GET_OBJ_MAX_LEVEL(obj)) && (GET_LEVEL(vict) < LVL_SAINT) ) {
     act("$N is too experienced to take $p!", FALSE, ch, obj, vict, TO_CHAR);
     return;
     }
 
-    
- 
   if (OBJ_FLAGGED(obj, ITEM_NODROP)) {
     act("You can't let go of $p!!  It seems to be stuck!", FALSE, ch, obj, 0, TO_CHAR);
     return;
@@ -790,7 +788,7 @@ void perform_give_gold(struct char_data *ch, struct char_data *vict,
 
   if (IS_NPC(ch) || (GET_LEVEL(ch) < LVL_DEITY))
     GET_GOLD(ch) -= amount;
-  GET_GOLD(vict) += amount;
+    GET_GOLD(vict) += amount;
 
   bribe_mtrigger(vict, ch, amount);
 }
@@ -819,7 +817,7 @@ ACMD(do_give)
       send_to_char(ch, "What do you want to give %d of?\r\n", amount);
     else if (!(vict = give_find_vict(ch, argument)))
       return;
-    else if (!(obj = get_obj_in_list_vis(ch, arg, NULL, ch->carrying))) 
+    else if (!(obj = get_obj_in_list_vis(ch, arg, NULL, ch->carrying)))
       send_to_char(ch, "You don't seem to have any %ss.\r\n", arg);
     else {
       while (obj && amount--) {

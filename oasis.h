@@ -72,7 +72,7 @@
 #define NUM_ATTACK_TYPES	15
 
 #define NUM_ITEM_TYPES		24
-#define NUM_ITEM_FLAGS		54
+#define NUM_ITEM_FLAGS		41
 #define NUM_ITEMCLASS_FLAGS     61
 #define NUM_ITEM_WEARS 		15
 #define NUM_APPLIES		31
